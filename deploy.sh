@@ -67,7 +67,7 @@ gcloud run deploy $SERVICE_NAME \
   --set-env-vars JWT_SECRET=dev-jwt-secret-key \
   --set-env-vars NNA_REGISTRY_BASE_URL=https://registry.dev.reviz.dev \
   --set-env-vars NNA_REGISTRY_API_KEY=your-api-key \
-  --service-account 116756405696741720548@revize-453014.iam.gserviceaccount.com
+  --service-account ci-cd-service-account@revize-453014.iam.gserviceaccount.com
 
 # Get the service URL
 SERVICE_URL=$(gcloud run services describe $SERVICE_NAME --region=$REGION --format='value(status.url)')

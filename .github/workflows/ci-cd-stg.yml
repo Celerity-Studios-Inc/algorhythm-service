@@ -49,7 +49,7 @@ jobs:
             --region us-central1 \
             --platform managed \
             --execution-environment=gen2 \
-            --service-account=116756405696741720548@revize-453014.iam.gserviceaccount.com \
+            --service-account=ci-cd-service-account@revize-453014.iam.gserviceaccount.com \
             --allow-unauthenticated \
             --port 8080 \
             --memory 2Gi \
