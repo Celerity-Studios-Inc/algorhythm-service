@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  algorhythm:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - MONGODB_URI=mongodb://mongo:27017/algorhythm_dev
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=dev-algorhythm-secret-change-in-production
+      - NNA_REGISTRY_BASE_URL=https://registry.dev.reviz.dev
+    depends_on:
+      - mongo
+      - redis
+    networks:
+      - algorhythm-network
+    volumes:
+      - algorhythm-logs:/app/logs
+
+  mongo:
+    image: mongo:7.0
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: algorhythm_dev
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - algorhythm-network
+
+  redis:
+    image: redis:7.0-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - algorhythm-network
+    command: redis-server --appendonly yes
+
+volumes:
+  mongo-data:
+  redis-data:
+  algorhythm-logs:
+
+networks:
+  algorhythm-network:
+    driver: bridge

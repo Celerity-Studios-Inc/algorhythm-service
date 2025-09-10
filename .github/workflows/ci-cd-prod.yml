@@ -1,0 +1,121 @@
+name: AlgoRhythm Service CI/CD (Production)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'package.json'
+      - 'tsconfig.json'
+      - 'docker/**'
+      - 'README.md'
+      - '.github/workflows/ci-cd-prod.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'package.json'
+      - 'tsconfig.json'
+      - 'docker/**'
+      - 'README.md'
+      - '.github/workflows/ci-cd-prod.yml'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_TAG: gcr.io/${{ secrets.GCP_PROJECT_ID }}/algorhythm-service:${{ github.sha }}-${{ github.run_id }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Run e2e tests
+        run: npm run test:e2e
+
+      - name: Build Docker image
+        run: docker build --platform linux/amd64 --no-cache -t $IMAGE_TAG -f docker/Dockerfile.cloudrun .
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Configure Docker for Google Cloud
+        run: gcloud auth configure-docker
+
+      - name: Push Docker image
+        run: docker push $IMAGE_TAG
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy algorhythm-service \
+            --image $IMAGE_TAG \
+            --region us-central1 \
+            --platform managed \
+            --execution-environment=gen2 \
+            --service-account=116756405696741720548@revize-453014.iam.gserviceaccount.com \
+            --allow-unauthenticated \
+            --port 8080 \
+            --memory 4Gi \
+            --cpu 4 \
+            --max-instances 100 \
+            --min-instances 5 \
+            --concurrency 100 \
+            --timeout 300 \
+            --set-secrets=MONGODB_URI=MONGODB_URI:latest \
+            --set-secrets=REDIS_URL=REDIS_URL:latest \
+            --set-secrets=JWT_SECRET=JWT_SECRET:latest \
+            --set-env-vars "NODE_ENV=production,ENVIRONMENT=production,PORT=8080,NNA_REGISTRY_BASE_URL=https://registry.reviz.dev,NNA_REGISTRY_API_KEY=${{ secrets.NNA_REGISTRY_API_KEY }}"
+
+      - name: Update Traffic to Latest Revision
+        run: |
+          gcloud run services update-traffic algorhythm-service \
+            --region us-central1 \
+            --to-latest
+
+      - name: Post-deploy health check
+        run: |
+          SERVICE_URL=$(gcloud run services describe algorhythm-service --region us-central1 --format='value(status.url)')
+          echo "Checking health endpoint: $SERVICE_URL/api/v1/health"
+          for i in {1..15}; do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$SERVICE_URL/api/v1/health")
+            if [ "$STATUS" = "200" ]; then
+              echo "Health check passed."
+              exit 0
+            fi
+            echo "Waiting for service to become healthy... ($i/15)"
+            sleep 10
+          done
+          echo "Health check failed!"
+          exit 1
+
+      - name: Performance test
+        run: |
+          SERVICE_URL=$(gcloud run services describe algorhythm-service --region us-central1 --format='value(status.url)')
+          echo "Running performance test on: $SERVICE_URL"
+          # Basic performance test - can be expanded
+          for i in {1..10}; do
+            RESPONSE_TIME=$(curl -w "%{time_total}" -s -o /dev/null "$SERVICE_URL/api/v1/health")
+            echo "Response time $i: ${RESPONSE_TIME}s"
+          done
+
+      - name: Output Production URL
+        run: |
+          SERVICE_URL=$(gcloud run services describe algorhythm-service --region us-central1 --format='value(status.url)')
+          echo "🌐 AlgoRhythm Production Service URL: $SERVICE_URL"
+          echo "📚 Swagger Docs: $SERVICE_URL/api/docs"
+          echo "🏥 Health Check: $SERVICE_URL/api/v1/health"
+          echo "🎵 Ready for ReViz Expo integration!"

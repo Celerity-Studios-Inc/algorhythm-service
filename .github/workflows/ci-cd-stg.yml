@@ -1,0 +1,93 @@
+name: AlgoRhythm Service CI/CD (Staging)
+
+on:
+  push:
+    branches: [staging]
+  pull_request:
+    branches: [staging]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_TAG: gcr.io/${{ secrets.GCP_PROJECT_ID }}/algorhythm-service-staging:${{ github.sha }}-${{ github.run_id }}-stg
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build Docker image
+        run: docker build --platform linux/amd64 --no-cache -t $IMAGE_TAG -f docker/Dockerfile.cloudrun .
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Configure Docker for Google Cloud
+        run: gcloud auth configure-docker
+
+      - name: Push Docker image
+        run: docker push $IMAGE_TAG
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy algorhythm-service-staging \
+            --image $IMAGE_TAG \
+            --region us-central1 \
+            --platform managed \
+            --execution-environment=gen2 \
+            --service-account=116756405696741720548@revize-453014.iam.gserviceaccount.com \
+            --allow-unauthenticated \
+            --port 8080 \
+            --memory 2Gi \
+            --cpu 2 \
+            --max-instances 20 \
+            --min-instances 2 \
+            --concurrency 100 \
+            --timeout 300 \
+            --set-secrets=MONGODB_URI=MONGODB_URI:latest \
+            --set-secrets=REDIS_URL=REDIS_URL:latest \
+            --set-secrets=JWT_SECRET=JWT_SECRET:latest \
+            --set-env-vars "NODE_ENV=staging,ENVIRONMENT=staging,PORT=8080,NNA_REGISTRY_BASE_URL=https://registry.stg.reviz.dev,NNA_REGISTRY_API_KEY=${{ secrets.NNA_REGISTRY_API_KEY }}"
+
+      - name: Update Traffic to Latest Revision
+        run: |
+          gcloud run services update-traffic algorhythm-service-staging \
+            --region us-central1 \
+            --to-latest
+
+      - name: Post-deploy health check
+        run: |
+          SERVICE_URL=$(gcloud run services describe algorhythm-service-staging --region us-central1 --format='value(status.url)')
+          echo "Checking health endpoint: $SERVICE_URL/api/v1/health"
+          for i in {1..10}; do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$SERVICE_URL/api/v1/health")
+            if [ "$STATUS" = "200" ]; then
+              echo "Health check passed."
+              exit 0
+            fi
+            echo "Waiting for service to become healthy... ($i/10)"
+            sleep 6
+          done
+          echo "Health check failed!"
+          exit 1
+
+      - name: Output Staging URL
+        run: |
+          SERVICE_URL=$(gcloud run services describe algorhythm-service-staging --region us-central1 --format='value(status.url)')
+          echo "🌐 AlgoRhythm Staging Service URL: $SERVICE_URL"
+          echo "📚 Swagger Docs: $SERVICE_URL/api/docs"
+          echo "🏥 Health Check: $SERVICE_URL/api/v1/health"
