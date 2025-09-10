@@ -12,9 +12,9 @@ export class IndexBuilderService {
   private readonly logger = new Logger(IndexBuilderService.name);
 
   constructor(
-    @InjectModel(CompatibilityScore.name)
+    @InjectModel('CompatibilityScore')
     private readonly compatibilityScoreModel: Model<CompatibilityScoreDocument>,
-    @InjectModel(RecommendationCache.name)
+    @InjectModel('RecommendationCache')
     private readonly recommendationCacheModel: Model<RecommendationCacheDocument>,
     private readonly nnaRegistryService: NnaRegistryService,
     private readonly cacheService: CacheService,

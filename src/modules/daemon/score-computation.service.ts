@@ -12,7 +12,7 @@ export class ScoreComputationService {
   private readonly logger = new Logger(ScoreComputationService.name);
 
   constructor(
-    @InjectModel(CompatibilityScore.name)
+    @InjectModel('CompatibilityScore')
     private readonly compatibilityScoreModel: Model<CompatibilityScoreDocument>,
     private readonly nnaRegistryService: NnaRegistryService,
     private readonly ruleBasedScoringService: RuleBasedScoringService,

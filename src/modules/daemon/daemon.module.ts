@@ -16,8 +16,8 @@ import { RecommendationCacheSchema } from '../../models/recommendation-cache.sch
   imports: [
     ScheduleModule.forRoot(),
     MongooseModule.forFeature([
-      { name: CompatibilityScoreSchema.name, schema: CompatibilityScoreSchema },
-      { name: RecommendationCacheSchema.name, schema: RecommendationCacheSchema },
+      { name: 'CompatibilityScore', schema: CompatibilityScoreSchema },
+      { name: 'RecommendationCache', schema: RecommendationCacheSchema },
     ]),
     NnaIntegrationModule,
     CachingModule,
