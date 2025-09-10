@@ -14,6 +14,7 @@ import { CachingModule } from './modules/caching/caching.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { HealthModule } from './modules/health/health.module';
 import { SeedingModule } from './modules/seeding/seeding.module';
+import { DaemonModule } from './modules/daemon/daemon.module';
 
 // Configuration
 import { EnvironmentValidationService } from './config/environment-validation';
@@ -89,6 +90,7 @@ import { RedisModule } from './config/redis.config';
     AnalyticsModule,
     HealthModule,
     SeedingModule,
+    DaemonModule,
   ],
   providers: [
     EnvironmentValidationService,
