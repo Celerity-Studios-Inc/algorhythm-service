@@ -160,6 +160,23 @@ export class CacheService {
     }
   }
 
+  async clearExpired(): Promise<number> {
+    try {
+      // Redis automatically handles expired keys, but we can trigger a cleanup
+      // by running a memory optimization command
+      await this.redisClient.memory('purge');
+      
+      // Get count of keys before and after to estimate cleanup
+      const keysBefore = await this.redisClient.dbsize();
+      
+      this.logger.debug(`Cache cleanup completed, keys remaining: ${keysBefore}`);
+      return keysBefore;
+    } catch (error) {
+      this.logger.error('Cache clearExpired error:', error);
+      return 0;
+    }
+  }
+
   private parseKeyspaceInfo(keyspaceInfo: string): any {
     const lines = keyspaceInfo.split('\n');
     const result: any = {};

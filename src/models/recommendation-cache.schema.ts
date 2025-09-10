@@ -42,6 +42,7 @@ export class RecommendationCache extends Document {
 }
 
 export const RecommendationCacheSchema = SchemaFactory.createForClass(RecommendationCache);
+export type RecommendationCacheDocument = RecommendationCache & Document;
 
 // Indexes for analytics and caching
 RecommendationCacheSchema.index({ song_id: 1, user_id: 1, created_at: -1 });
