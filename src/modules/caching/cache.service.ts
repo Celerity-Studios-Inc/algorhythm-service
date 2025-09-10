@@ -164,7 +164,7 @@ export class CacheService {
     try {
       // Redis automatically handles expired keys, but we can trigger a cleanup
       // by running a memory optimization command
-      await this.redisClient.memory('purge');
+      await this.redisClient.memory('STATS');
       
       // Get count of keys before and after to estimate cleanup
       const keysBefore = await this.redisClient.dbsize();

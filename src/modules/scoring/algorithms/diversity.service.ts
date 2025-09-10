@@ -94,4 +94,26 @@ export class DiversityService {
       compatibility_score: rec.compatibility_score * (1 + Math.random() * SCORING_THRESHOLDS.DIVERSITY_FACTOR),
     })).sort((a, b) => b.compatibility_score - a.compatibility_score);
   }
+
+  async computeDiversityScore(song: any, template: any): Promise<number> {
+    // Simple diversity score based on template characteristics
+    // This is a placeholder implementation
+    if (!template || !template.tags) {
+      return 0.5; // Default diversity score
+    }
+
+    const tags = template.tags || [];
+    const diversityFactors = {
+      style_variety: tags.length / 10, // More tags = more diverse
+      uniqueness: Math.random() * 0.3, // Random factor for uniqueness
+    };
+
+    // Combine factors with weights
+    const diversityScore = (
+      diversityFactors.style_variety * 0.7 +
+      diversityFactors.uniqueness * 0.3
+    );
+
+    return Math.min(diversityScore, 1.0); // Cap at 1.0
+  }
 }

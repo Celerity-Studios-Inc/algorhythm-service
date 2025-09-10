@@ -72,9 +72,9 @@ export class IndexBuilderService {
         metadata: {
           song_metadata: song,
           template_metadata: template,
-          compatibility_score: compatibilityScore.score,
+          compatibility_score: compatibilityScore.final_score,
           freshness_boost: compatibilityScore.freshness_boost || 0,
-          diversity_score: compatibilityScore.diversity_score || 0,
+          diversity_score: 0, // Will be computed separately
         },
         created_at: new Date(),
         updated_at: new Date(),
@@ -143,7 +143,7 @@ export class IndexBuilderService {
 
       // Pre-load into Redis cache
       for (const rec of topRecommendations) {
-        const cacheKey = `recommendation:${rec.song_id}:${rec.template_id}`;
+        const cacheKey = `recommendation:${rec.song_id}:${rec.recommended_template_id}`;
         await this.cacheService.set(cacheKey, rec, 3600);
       }
 
