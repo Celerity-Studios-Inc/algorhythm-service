@@ -15,9 +15,9 @@ This guide provides comprehensive testing strategies for the AlgoRhythm service 
 ### **1. Basic Health Check**
 ```bash
 # Test all environments
-curl https://algorhythm.dev.reviz.dev/api/v1/health
-curl https://algorhythm.stg.reviz.dev/api/v1/health
-curl https://algorhythm.reviz.dev/api/v1/health
+curl https://dev.algorhythm.dev/api/v1/health
+curl https://stg.algorhythm.dev/api/v1/health
+curl https://prod.algorhythm.dev/api/v1/health
 ```
 
 ### **2. Run Automated Test Script**

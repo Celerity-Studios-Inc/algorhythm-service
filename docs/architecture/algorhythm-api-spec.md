@@ -6,6 +6,19 @@
 **Target Platform**: ReViz Expo Mobile App  
 **Architecture**: Hybrid Microservice leveraging NNA Registry Infrastructure
 
+## 🌐 **Canonical URLs**
+
+AlgoRhythm service is deployed across three environments with the following canonical URLs:
+
+- **Development**: `https://dev.algorhythm.dev`
+- **Staging**: `https://stg.algorhythm.dev`
+- **Production**: `https://prod.algorhythm.dev`
+
+**Base API URLs:**
+- Development: `https://dev.algorhythm.dev/api/v1`
+- Staging: `https://stg.algorhythm.dev/api/v1`
+- Production: `https://prod.algorhythm.dev/api/v1`
+
 ---
 
 ## 🎯 Overview
@@ -30,7 +43,7 @@ AlgoRhythm is the intelligent recommendation engine that powers ReViz's "Start w
                            │
 ┌──────────────────────────▼──────────────────────────────┐
 │                   API Gateway                            │
-│            (registry.dev.reviz.dev/api)                  │
+│            (dev.algorhythm.dev/api)                      │
 └──────────────┬────────────────────────┬─────────────────┘
                │                        │
 ┌──────────────▼──────────┐  ┌─────────▼─────────────────┐
@@ -56,7 +69,7 @@ AlgoRhythm is the intelligent recommendation engine that powers ReViz's "Start w
 Returns the best complete composite template for a selected song.
 
 ```http
-POST /api/v1/algorhythm/recommend/template
+POST /api/v1/recommendations
 ```
 
 **Request:**
@@ -128,7 +141,7 @@ POST /api/v1/algorhythm/recommend/template
 Returns alternative complete composites with variations in a specific layer.
 
 ```http
-POST /api/v1/algorhythm/recommend/variations
+POST /api/v1/recommendations/variations
 ```
 
 **Request:**
@@ -180,7 +193,7 @@ POST /api/v1/algorhythm/recommend/variations
 Returns recommended categories for layer customization (for square cards UI).
 
 ```http
-POST /api/v1/algorhythm/recommend/categories
+POST /api/v1/recommendations/categories
 ```
 
 **Request:**
@@ -228,7 +241,7 @@ POST /api/v1/algorhythm/recommend/categories
 Returns specific variants within a category (for circle options UI).
 
 ```http
-POST /api/v1/algorhythm/recommend/category-variants
+POST /api/v1/recommendations/category-variants
 ```
 
 **Request:**
@@ -274,7 +287,7 @@ POST /api/v1/algorhythm/recommend/category-variants
 Records user selections for improving recommendations.
 
 ```http
-POST /api/v1/algorhythm/analytics/selection
+POST /api/v1/analytics/events
 ```
 
 **Request:**
@@ -308,7 +321,7 @@ POST /api/v1/algorhythm/analytics/selection
 Returns currently trending templates for the home/discover screen.
 
 ```http
-GET /api/v1/algorhythm/trending?limit=10&offset=0
+GET /api/v1/analytics/trending?limit=10&offset=0
 ```
 
 **Response:**
@@ -449,7 +462,7 @@ algorhythm:
 
 ### **Health Check Endpoint**
 ```http
-GET /api/v1/algorhythm/health
+GET /api/v1/health
 ```
 
 ```json
@@ -485,18 +498,18 @@ AlgoRhythm inherits authentication from the NNA Registry Service:
 ### **Environment Configuration**
 ```yaml
 # Development
-ALGORHYTHM_API_URL: https://registry.dev.reviz.dev/api/v1/algorhythm
-REDIS_URL: redis://localhost:6379
+ALGORHYTHM_API_URL: https://dev.algorhythm.dev/api/v1
+REDIS_URL: redis://10.0.0.3:6379
 MODEL_PATH: ./models/dev/
 
 # Staging
-ALGORHYTHM_API_URL: https://registry.stg.reviz.dev/api/v1/algorhythm
-REDIS_URL: redis://redis.stg.reviz.dev:6379
+ALGORHYTHM_API_URL: https://stg.algorhythm.dev/api/v1
+REDIS_URL: redis://10.0.0.3:6379
 MODEL_PATH: gs://reviz-models-staging/
 
 # Production
-ALGORHYTHM_API_URL: https://registry.reviz.dev/api/v1/algorhythm
-REDIS_URL: redis://redis.reviz.dev:6379
+ALGORHYTHM_API_URL: https://prod.algorhythm.dev/api/v1
+REDIS_URL: redis://10.0.0.3:6379
 MODEL_PATH: gs://reviz-models-production/
 ```
 
