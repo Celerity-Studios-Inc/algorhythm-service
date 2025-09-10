@@ -10,7 +10,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
-      IMAGE_TAG: gcr.io/${{ secrets.GCP_PROJECT_ID }}/algorhythm-service-staging:${{ github.sha }}-${{ github.run_id }}-stg
+      IMAGE_TAG: us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/algorhythm-repo/algorhythm-service-staging:${{ github.sha }}-${{ github.run_id }}-stg
 
     steps:
       - name: Checkout code
@@ -37,7 +37,7 @@ jobs:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
       - name: Configure Docker for Google Cloud
-        run: gcloud auth configure-docker
+        run: gcloud auth configure-docker us-central1-docker.pkg.dev
 
       - name: Push Docker image
         run: docker push $IMAGE_TAG
