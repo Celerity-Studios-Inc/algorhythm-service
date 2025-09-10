@@ -75,10 +75,11 @@ jobs:
             --min-instances 5 \
             --concurrency 100 \
             --timeout 300 \
-            --set-secrets=MONGODB_URI=MONGODB_URI:latest \
-            --set-secrets=REDIS_URL=REDIS_URL:latest \
-            --set-secrets=JWT_SECRET=JWT_SECRET:latest \
-            --set-env-vars "NODE_ENV=production,ENVIRONMENT=production,PORT=8080,NNA_REGISTRY_BASE_URL=https://registry.reviz.dev,NNA_REGISTRY_API_KEY=${{ secrets.NNA_REGISTRY_API_KEY }}"
+            --set-secrets=MONGODB_URI=algorhythm-mongodb-uri:latest \
+            --set-secrets=REDIS_URL=algorhythm-redis-url:latest \
+            --set-secrets=JWT_SECRET=algorhythm-jwt-secret:latest \
+            --set-secrets=NNA_REGISTRY_API_KEY=algorhythm-nna-api-key:latest \
+            --set-env-vars "NODE_ENV=production,ENVIRONMENT=production,PORT=8080,NNA_REGISTRY_BASE_URL=https://registry.reviz.dev"
 
       - name: Update Traffic to Latest Revision
         run: |
