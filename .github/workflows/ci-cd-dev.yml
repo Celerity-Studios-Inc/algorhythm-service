@@ -58,7 +58,11 @@ jobs:
             --min-instances 1 \
             --concurrency 100 \
             --timeout 300 \
-            --set-env-vars "NODE_ENV=development,ENVIRONMENT=development,MONGODB_URI=mongodb+srv://admin:PTtQFc0N9gftuRIX@registryservice.xhmyito.mongodb.net/algorhythm-service-dev?retryWrites=true&w=majority&appName=algorhythmService,REDIS_URL=redis://10.0.0.3:6379,JWT_SECRET=algorhythm-dev-jwt-secret-key,NNA_REGISTRY_BASE_URL=https://registry.dev.reviz.dev,NNA_REGISTRY_API_KEY=algorhythm-dev-nna-api-key,ALGORHYTHM_BASE_URL=https://dev.algorhythm.dev"
+            --set-secrets=MONGODB_URI=algorhythm-mongodb-uri-dev:latest \
+            --set-secrets=REDIS_URL=algorhythm-redis-url-dev:latest \
+            --set-secrets=JWT_SECRET=algorhythm-jwt-secret-dev:latest \
+            --set-secrets=NNA_REGISTRY_API_KEY=algorhythm-nna-api-key-dev:latest \
+            --set-env-vars "NODE_ENV=development,ENVIRONMENT=development,NNA_REGISTRY_BASE_URL=https://registry.dev.reviz.dev,ALGORHYTHM_BASE_URL=https://dev.algorhythm.dev"
 
       - name: Update Traffic to Latest Revision
         run: |
