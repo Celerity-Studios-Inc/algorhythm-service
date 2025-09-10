@@ -64,7 +64,7 @@ export class ScoreComputationService {
         });
 
         // Compute base compatibility score
-        const baseScore = await this.ruleBasedScoringService.computeScore(song, template);
+        const scoreBreakdown = await this.ruleBasedScoringService.computeScore(song, template);
 
         // Compute freshness boost
         const freshnessBoost = await this.freshnessBoostService.computeFreshnessBoost(template);
@@ -72,8 +72,17 @@ export class ScoreComputationService {
         // Compute diversity score
         const diversityScore = await this.diversityService.computeDiversityScore(song, template);
 
+        // Calculate weighted base score from breakdown
+        const baseScore = (
+          scoreBreakdown.tempo_score * 0.2 +
+          scoreBreakdown.genre_score * 0.3 +
+          scoreBreakdown.energy_score * 0.2 +
+          scoreBreakdown.style_score * 0.15 +
+          scoreBreakdown.mood_score * 0.15
+        ) * 100; // Convert to 0-100 scale
+
         // Calculate final score
-        const finalScore = Math.min(baseScore + freshnessBoost + diversityScore, 100);
+        const finalScore = Math.min(baseScore + (freshnessBoost * 10) + (diversityScore * 10), 100);
 
         if (existingScore) {
           // Update existing score

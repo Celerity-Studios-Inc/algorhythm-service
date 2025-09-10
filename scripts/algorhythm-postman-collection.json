@@ -1,0 +1,325 @@
+{
+  "info": {
+    "name": "AlgoRhythm Service API Tests",
+    "description": "Comprehensive API testing collection for AlgoRhythm service",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url_dev",
+      "value": "https://dev.algorhythm.dev",
+      "type": "string"
+    },
+    {
+      "key": "base_url_staging",
+      "value": "https://stg.algorhythm.dev",
+      "type": "string"
+    },
+    {
+      "key": "base_url_prod",
+      "value": "https://prod.algorhythm.dev",
+      "type": "string"
+    },
+    {
+      "key": "test_song_id",
+      "value": "test-song-123",
+      "type": "string"
+    },
+    {
+      "key": "test_user_id",
+      "value": "test-user-456",
+      "type": "string"
+    },
+    {
+      "key": "test_template_id",
+      "value": "test-template-789",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "item": [
+        {
+          "name": "Health Check - Dev",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url_dev}}/api/v1/health",
+              "host": ["{{base_url_dev}}"],
+              "path": ["api", "v1", "health"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Health Check - Staging",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url_staging}}/api/v1/health",
+              "host": ["{{base_url_staging}}"],
+              "path": ["api", "v1", "health"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Health Check - Production",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url_prod}}/api/v1/health",
+              "host": ["{{base_url_prod}}"],
+              "path": ["api", "v1", "health"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Recommendations",
+      "item": [
+        {
+          "name": "Get Recommendations - Dev",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"song_id\": \"{{test_song_id}}\",\n  \"user_id\": \"{{test_user_id}}\",\n  \"limit\": 5,\n  \"user_context\": {\n    \"preferences\": {\n      \"energy_preference\": \"high\",\n      \"style_preference\": \"modern\"\n    }\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url_dev}}/api/v1/recommendations",
+              "host": ["{{base_url_dev}}"],
+              "path": ["api", "v1", "recommendations"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Recommendations - Staging",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"song_id\": \"{{test_song_id}}\",\n  \"user_id\": \"{{test_user_id}}\",\n  \"limit\": 5\n}"
+            },
+            "url": {
+              "raw": "{{base_url_staging}}/api/v1/recommendations",
+              "host": ["{{base_url_staging}}"],
+              "path": ["api", "v1", "recommendations"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Analytics",
+      "item": [
+        {
+          "name": "Track Event",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event_type\": \"recommendation_viewed\",\n  \"user_id\": \"{{test_user_id}}\",\n  \"song_id\": \"{{test_song_id}}\",\n  \"template_id\": \"{{test_template_id}}\",\n  \"metadata\": {\n    \"test\": true,\n    \"timestamp\": \"{{$timestamp}}\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url_dev}}/api/v1/analytics/events",
+              "host": ["{{base_url_dev}}"],
+              "path": ["api", "v1", "analytics", "events"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Analytics Metrics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url_dev}}/api/v1/analytics/metrics",
+              "host": ["{{base_url_dev}}"],
+              "path": ["api", "v1", "analytics", "metrics"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Performance Metrics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url_dev}}/api/v1/analytics/performance",
+              "host": ["{{base_url_dev}}"],
+              "path": ["api", "v1", "analytics", "performance"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Daemon (Dev Only)",
+      "item": [
+        {
+          "name": "Get Daemon Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url_dev}}/api/v1/daemon/stats",
+              "host": ["{{base_url_dev}}"],
+              "path": ["api", "v1", "daemon", "stats"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Trigger Index Build",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url_dev}}/api/v1/daemon/trigger-index-build",
+              "host": ["{{base_url_dev}}"],
+              "path": ["api", "v1", "daemon", "trigger-index-build"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Trigger Score Update",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url_dev}}/api/v1/daemon/trigger-score-update",
+              "host": ["{{base_url_dev}}"],
+              "path": ["api", "v1", "daemon", "trigger-score-update"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Warm Cache",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url_dev}}/api/v1/daemon/warm-cache",
+              "host": ["{{base_url_dev}}"],
+              "path": ["api", "v1", "daemon", "warm-cache"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "NNA Registry Integration",
+      "item": [
+        {
+          "name": "Get Asset by Address",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url_dev}}/api/v1/nna/assets/test-address",
+              "host": ["{{base_url_dev}}"],
+              "path": ["api", "v1", "nna", "assets", "test-address"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Search Assets",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url_dev}}/api/v1/nna/search?q=test&limit=10",
+              "host": ["{{base_url_dev}}"],
+              "path": ["api", "v1", "nna", "search"],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "test"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Cache Management",
+      "item": [
+        {
+          "name": "Get Cache Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url_dev}}/api/v1/cache/stats",
+              "host": ["{{base_url_dev}}"],
+              "path": ["api", "v1", "cache", "stats"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Set Cache Value",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"key\": \"test-key-{{$timestamp}}\",\n  \"value\": \"test-value\",\n  \"ttl\": 60\n}"
+            },
+            "url": {
+              "raw": "{{base_url_dev}}/api/v1/cache/set",
+              "host": ["{{base_url_dev}}"],
+              "path": ["api", "v1", "cache", "set"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

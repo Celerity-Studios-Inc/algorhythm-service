@@ -15,6 +15,7 @@ export const stagingConfig = {
 
   // NNA Registry Integration
   NNA_REGISTRY_BASE_URL: 'https://registry.stg.reviz.dev',
+  ALGORHYTHM_BASE_URL: 'https://stg.algorhythm.dev',
   NNA_REGISTRY_API_KEY: 'algorhythm-stg-nna-api-key',
 
   // Logging
