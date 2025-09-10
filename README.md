@@ -190,3 +190,4 @@ npm run cache-warmup
 Proprietary - Celerity Studios Inc.
 # Test deployment after GitHub secrets setup - Wed Sep 10 14:04:47 MDT 2025
 # Test deployment with complete IAM roles - Wed Sep 10 14:38:31 MDT 2025
+# Test deployment after fixing Artifact Registry permissions - Wed Sep 10 14:43:07 MDT 2025
