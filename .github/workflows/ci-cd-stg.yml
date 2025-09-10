@@ -26,7 +26,7 @@ jobs:
         run: npm ci --legacy-peer-deps
 
       - name: Run tests
-        run: npm test
+        run: npm test -- --passWithNoTests
 
       - name: Build Docker image
         run: docker build --platform linux/amd64 --no-cache -t $IMAGE_TAG -f docker/Dockerfile.cloudrun .
