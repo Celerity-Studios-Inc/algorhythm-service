@@ -62,7 +62,7 @@ jobs:
             --set-secrets=REDIS_URL=algorhythm-redis-url-dev:latest \
             --set-secrets=JWT_SECRET=algorhythm-jwt-secret-dev:latest \
             --set-secrets=NNA_REGISTRY_API_KEY=algorhythm-nna-api-key-dev:latest \
-                    --set-env-vars "NODE_ENV=development,ENVIRONMENT=development,PORT=8080,NNA_REGISTRY_BASE_URL=https://registry.dev.reviz.dev,ALGORHYTHM_BASE_URL=https://dev.algorhythm.dev"
+                    --set-env-vars "NODE_ENV=development,ENVIRONMENT=development,NNA_REGISTRY_BASE_URL=https://registry.dev.reviz.dev,ALGORHYTHM_BASE_URL=https://dev.algorhythm.dev"
 
       - name: Update Traffic to Latest Revision
         run: |

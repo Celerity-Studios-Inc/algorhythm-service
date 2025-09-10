@@ -2,7 +2,6 @@
 export const productionConfig = {
   NODE_ENV: 'production',
   ENVIRONMENT: 'production',
-  PORT: 8080,
 
   // Database Configuration (AlgoRhythm-specific database)
   MONGODB_URI: 'mongodb+srv://admin:PTtQFc0N9gftuRIX@registryservice.xhmyito.mongodb.net/algorhythm-service-production?retryWrites=true&w=majority&appName=algorhythmService',

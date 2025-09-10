@@ -2,7 +2,6 @@
 export const stagingConfig = {
   NODE_ENV: 'staging',
   ENVIRONMENT: 'staging',
-  PORT: 8080,
 
   // Database Configuration (AlgoRhythm-specific database)
   MONGODB_URI: 'mongodb+srv://admin:PTtQFc0N9gftuRIX@registryservice.xhmyito.mongodb.net/algorhythm-service-staging?retryWrites=true&w=majority&appName=algorhythmService',
