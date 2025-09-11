@@ -160,6 +160,20 @@ kubectl apply -f k8s/staging/
 kubectl apply -f k8s/production/
 ```
 
+## 📚 Documentation
+
+### **For ReViz Expo Developers**
+- 🚀 **[Developer Integration Guide](./docs/REVIZ_EXPO_DEVELOPER_GUIDE.md)** - Complete integration guide
+- 📋 **[Quick Reference Card](./docs/QUICK_REFERENCE.md)** - Essential endpoints and configs
+- 💻 **[Integration Examples](./docs/INTEGRATION_EXAMPLES.md)** - Real-world code examples
+- 🔗 **[ReViz Expo Integration Guide](./docs/architecture/reviz-expo-algorhythm-guide.md)** - Detailed API guide
+
+### **Technical Documentation**
+- 📖 **[API Specification](./docs/architecture/algorhythm-api-spec.md)** - Complete API reference
+- 🌍 **[Environment Configuration](./docs/environments/ALGORHYTHM_ENVIRONMENT_CONFIGURATION_REFERENCE.md)** - Environment setup
+- 🧪 **[Testing Guide](./docs/TESTING_GUIDE.md)** - Testing strategies
+- 🚀 **[Deployment Guide](./DEPLOYMENT.md)** - Deployment instructions
+
 ## 📈 Monitoring
 
 - **Health Check**: `/api/v1/health`

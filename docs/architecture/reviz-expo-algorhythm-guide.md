@@ -10,16 +10,18 @@
 
 AlgoRhythm service is deployed across three environments with the following canonical URLs:
 
-- **Development**: `https://dev.algorhythm.dev`
-- **Staging**: `https://stg.algorhythm.dev`
-- **Production**: `https://prod.algorhythm.dev`
+- **Development**: `https://algorhythm-service-dev-5jm4duk5oa-uc.a.run.app` (Currently Active)
+- **Staging**: `https://stg.algorhythm.media` (Planned)
+- **Production**: `https://prod.algorhythm.media` (Planned)
 
 **Configuration Example:**
 ```typescript
 const ALGORHYTHM_API = __DEV__ 
-  ? 'https://dev.algorhythm.dev'
-  : 'https://prod.algorhythm.dev';
+  ? 'https://algorhythm-service-dev-5jm4duk5oa-uc.a.run.app'
+  : 'https://prod.algorhythm.media';
 ```
+
+**Note**: Custom domains (`dev.algorhythm.media`) are planned but not yet configured. Use the Cloud Run URLs for now.
 
 ---
 
@@ -42,13 +44,13 @@ This guide shows how to integrate with **AlgoRhythm** - ReViz's AI recommendatio
 When user selects a song, get the perfect template instantly:
 
 ```typescript
-// When user selects "Pretty Little Baby" by Connie Francis
+// When user selects a song (e.g., "Pretty Little Baby" by Connie Francis)
 const recommendTemplate = async (songId: string): Promise<VideoTemplate> => {
-  const response = await fetch(`${ALGORHYTHM_API}/api/v1/recommendations`, {
+  const response = await fetch(`${ALGORHYTHM_API}/api/v1/recommend/template`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${authToken}`
+      'Authorization': `Bearer ${userJwtToken}` // Required for authentication
     },
     body: JSON.stringify({
       song_id: songId, // e.g., "G.POP.VIN.001"

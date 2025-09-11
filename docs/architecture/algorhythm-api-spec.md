@@ -10,14 +10,34 @@
 
 AlgoRhythm service is deployed across three environments with the following canonical URLs:
 
-- **Development**: `https://dev.algorhythm.dev`
-- **Staging**: `https://stg.algorhythm.dev`
-- **Production**: `https://prod.algorhythm.dev`
+- **Development**: `https://algorhythm-service-dev-5jm4duk5oa-uc.a.run.app` ✅ **LIVE**
+- **Staging**: `https://stg.algorhythm.media` (Planned)
+- **Production**: `https://prod.algorhythm.media` (Planned)
 
 **Base API URLs:**
-- Development: `https://dev.algorhythm.dev/api/v1`
-- Staging: `https://stg.algorhythm.dev/api/v1`
-- Production: `https://prod.algorhythm.dev/api/v1`
+- Development: `https://algorhythm-service-dev-5jm4duk5oa-uc.a.run.app/api/v1` ✅ **ACTIVE**
+- Staging: `https://stg.algorhythm.media/api/v1` (Planned)
+- Production: `https://prod.algorhythm.media/api/v1` (Planned)
+
+**Note**: Custom domains are planned but not yet configured. Use Cloud Run URLs for current development.
+
+## 🚀 **Deployment Status**
+
+### **Current Status: ✅ LIVE AND READY**
+- **Service**: Deployed and running on Google Cloud Run
+- **Authentication**: JWT-based authentication working
+- **Database**: MongoDB connected and healthy
+- **NNA Registry**: Connected and accessible
+- **Cache**: Redis connected (some performance issues)
+- **API Documentation**: Available at `/api/docs`
+
+### **Available Assets**
+- **Stars Layer (S)**: 3 assets (1 base + 2 variants of "Gigi")
+- **Songs Layer (G)**: In development (being created)
+- **Other Layers**: Planned for future development
+
+### **Ready for Integration**
+The service is fully functional and ready for ReViz Expo integration. The system is waiting for Songs Layer assets to be created in the NNA Registry.
 
 ---
 

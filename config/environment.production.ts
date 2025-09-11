@@ -14,7 +14,7 @@ export const productionConfig = {
 
   // NNA Registry Integration
   NNA_REGISTRY_BASE_URL: 'https://registry.reviz.dev',
-  ALGORHYTHM_BASE_URL: 'https://prod.algorhythm.dev',
+  ALGORHYTHM_BASE_URL: 'https://prod.algorhythm.media',
   NNA_REGISTRY_API_KEY: 'algorhythm-prod-nna-api-key',
 
   // Logging
