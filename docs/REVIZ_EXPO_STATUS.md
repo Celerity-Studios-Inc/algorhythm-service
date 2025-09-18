@@ -19,16 +19,40 @@
 ### **⚠️ Current Limitations**
 - **Video Templates**: No pre-generated templates available yet
 - **Cache**: Redis cache has issues (not critical for functionality)
-- **JWT Compatibility**: Cannot use NNA Registry tokens directly
+
+### **✅ Recent Improvements**
+- **JWT Compatibility**: ✅ **FIXED** - Can now use NNA Registry tokens directly!
 
 ---
 
 ## 🔐 **Authentication**
 
-### **JWT Token Requirements**
-ReViz Expo developers **CANNOT** use NNA Registry JWT tokens directly. AlgoRhythm requires its own JWT tokens.
+### **✅ JWT Token Compatibility - FIXED!**
+**Great news!** ReViz Expo developers can now use **NNA Registry JWT tokens directly** with AlgoRhythm! 
 
-### **Generate AlgoRhythm JWT Token**
+The service now supports **dual JWT verification**:
+1. **Primary**: AlgoRhythm JWT tokens (if you have them)
+2. **Fallback**: NNA Registry JWT tokens (automatic fallback)
+
+### **How It Works**
+```typescript
+// ✅ This now works! Use your existing NNA Registry JWT token
+const nnaRegistryToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."; // Your NNA token
+
+// Make API calls directly with NNA Registry token
+const response = await fetch('https://dev.algorhythm.media/api/v1/recommend/template', {
+  method: 'POST',
+  headers: {
+    'Authorization': `Bearer ${nnaRegistryToken}`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    song_id: "1.018.001.001"
+  })
+});
+```
+
+### **Alternative: Generate AlgoRhythm JWT Token** (if needed)
 ```typescript
 const jwt = require('jsonwebtoken');
 
@@ -43,9 +67,6 @@ const generateAlgoRhythmToken = (userId: string, email: string) => {
   };
   return jwt.sign(payload, secret);
 };
-
-// Example usage
-const token = generateAlgoRhythmToken('user-123', 'user@example.com');
 ```
 
 ### **Working JWT Token** (24h validity)

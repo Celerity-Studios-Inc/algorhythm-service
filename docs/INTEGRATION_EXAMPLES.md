@@ -34,7 +34,7 @@ const JWT_SECRET = 'algorhythm-dev-jwt-secret-key';
 
 ### **2. Authentication Service**
 
-**⚠️ Important**: ReViz Expo developers cannot use NNA Registry JWT tokens directly. AlgoRhythm requires its own JWT tokens.
+**✅ Great News**: ReViz Expo developers can now use NNA Registry JWT tokens directly! AlgoRhythm supports dual JWT verification with automatic fallback.
 
 ```typescript
 // services/AlgoRhythmAuth.ts
@@ -43,6 +43,15 @@ import jwt from 'jsonwebtoken';
 export class AlgoRhythmAuth {
   private static JWT_SECRET = 'algorhythm-dev-jwt-secret-key';
   
+  // ✅ You can now use NNA Registry tokens directly!
+  static getAuthHeaders(token: string) {
+    return {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    };
+  }
+  
+  // Optional: Generate AlgoRhythm-specific tokens if needed
   static generateToken(userId: string, email: string, role: string = 'user'): string {
     const payload = {
       userId,
@@ -53,13 +62,6 @@ export class AlgoRhythmAuth {
     };
     
     return jwt.sign(payload, this.JWT_SECRET);
-  }
-  
-  static getAuthHeaders(token: string) {
-    return {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    };
   }
 }
 ```
