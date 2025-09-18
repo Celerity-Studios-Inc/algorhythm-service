@@ -21,7 +21,7 @@ exports.ScoringModule = ScoringModule = __decorate([
     (0, common_1.Module)({
         imports: [
             mongoose_1.MongooseModule.forFeature([
-                { name: compatibility_score_schema_1.CompatibilityScore.name, schema: compatibility_score_schema_1.CompatibilityScoreSchema },
+                { name: 'CompatibilityScore', schema: compatibility_score_schema_1.CompatibilityScoreSchema },
             ]),
         ],
         providers: [
@@ -30,7 +30,12 @@ exports.ScoringModule = ScoringModule = __decorate([
             freshness_boost_service_1.FreshnessBoostService,
             diversity_service_1.DiversityService,
         ],
-        exports: [scoring_service_1.ScoringService],
+        exports: [
+            scoring_service_1.ScoringService,
+            rule_based_scoring_service_1.RuleBasedScoringService,
+            freshness_boost_service_1.FreshnessBoostService,
+            diversity_service_1.DiversityService,
+        ],
     })
 ], ScoringModule);
 //# sourceMappingURL=scoring.module.js.map

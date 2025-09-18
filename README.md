@@ -163,6 +163,7 @@ kubectl apply -f k8s/production/
 ## 📚 Documentation
 
 ### **For ReViz Expo Developers**
+- 📊 **[Integration Status](./docs/REVIZ_EXPO_STATUS.md)** - Current status and ready-to-use info
 - 🚀 **[Developer Integration Guide](./docs/REVIZ_EXPO_DEVELOPER_GUIDE.md)** - Complete integration guide
 - 📋 **[Quick Reference Card](./docs/QUICK_REFERENCE.md)** - Essential endpoints and configs
 - 💻 **[Integration Examples](./docs/INTEGRATION_EXAMPLES.md)** - Real-world code examples

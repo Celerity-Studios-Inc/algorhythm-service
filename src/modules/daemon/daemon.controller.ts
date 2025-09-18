@@ -1,6 +1,6 @@
 import { Controller, Post, Get, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtFallbackGuard } from '../auth/guards/jwt-fallback.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { DaemonService } from './daemon.service';
@@ -9,7 +9,7 @@ import { IndexBuilderService } from './index-builder.service';
 
 @ApiTags('Daemon')
 @Controller('api/v1/daemon')
-@UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtFallbackGuard, RolesGuard)
 @ApiBearerAuth()
 export class DaemonController {
   constructor(

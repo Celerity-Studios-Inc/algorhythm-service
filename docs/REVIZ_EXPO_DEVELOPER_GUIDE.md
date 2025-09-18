@@ -11,11 +11,12 @@
 ## 🚀 **Quick Start**
 
 ### **1. Service Status**
-- ✅ **AlgoRhythm Service**: Deployed and running
-- ✅ **Authentication**: JWT-based auth working
+- ✅ **AlgoRhythm Service**: Deployed and running at `https://dev.algorhythm.media`
+- ✅ **Authentication**: JWT-based auth working (requires AlgoRhythm-specific tokens)
 - ✅ **Database**: Connected and healthy
 - ✅ **NNA Registry**: Connected and accessible
-- ⚠️ **Songs Layer**: In development (you're creating these)
+- ✅ **Songs Layer**: Available (1 song: "Try Everything" by Shakira)
+- ⚠️ **Video Templates**: In development (no pre-generated templates yet)
 
 ### **2. Canonical URLs & Endpoints**
 
@@ -36,8 +37,8 @@ const ALGORHYTHM_URLS = {
 
 #### **Current Endpoints**
 ```typescript
-// Development Environment (Currently Active)
-const ALGORHYTHM_API = 'https://algorhythm-service-dev-5jm4duk5oa-uc.a.run.app';
+// Development Environment (Canonical URL - WORKING!)
+const ALGORHYTHM_API = 'https://dev.algorhythm.media';
 
 // Available Endpoints
 const ENDPOINTS = {
@@ -52,6 +53,10 @@ const ENDPOINTS = {
 ---
 
 ## 🔐 **Authentication Setup**
+
+### **⚠️ Important: JWT Token Compatibility**
+
+**ReViz Expo developers CANNOT use NNA Registry JWT tokens directly.** AlgoRhythm uses a different JWT secret.
 
 ### **JWT Token Generation**
 AlgoRhythm uses its own JWT secret. Generate tokens using:
@@ -403,7 +408,16 @@ const getPerformanceMetrics = async () => {
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGMxZjBkNmQzNjgxNmMzYjIyZTBlMzYiLCJlbWFpbCI6ImFqYXlAY2VsZXJpdHkuc3R1ZGlvIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NTc1NDM0MjgsImV4cCI6MTc1NzYyOTgyOH0.znTO_i_gmHnhD2Ti2fdbTIVJGOHh2SjC0mQO2ao2OLU
 ```
 
-### **Available Star Assets**
+### **Available Assets**
+
+#### **Songs Layer (G) - ✅ Available**
+- **"Try Everything" by Shakira**: 
+  - NNA Address: `1.018.001.001`
+  - MongoDB ID: `68c30009d634c261d50ec610`
+  - Genre: Pop, BPM: 120, Energy: High
+  - Status: ✅ Ready for recommendations
+
+#### **Stars Layer (S) - ✅ Available**
 - **Base**: `68c1f147d36816c3b22e0e3a` (Gigi - Brown hair, brown eyes)
 - **Variant 1**: `68c1f19ed36816c3b22e0e42` (Gigi - Brown hair, blue eyes)
 - **Variant 2**: `68c1fd6054937bc693d46618` (Gigi - Pink hair, brown eyes)

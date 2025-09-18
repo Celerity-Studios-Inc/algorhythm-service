@@ -35,3 +35,4 @@ export declare const CompatibilityScoreSchema: import("mongoose").Schema<Compati
 }> & {
     __v: number;
 }>;
+export type CompatibilityScoreDocument = CompatibilityScore & Document;

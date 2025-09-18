@@ -14,8 +14,8 @@ const ALGORHYTHM_CANONICAL = {
 
 ### **Current Active URLs**
 ```typescript
-// Development (Currently Active)
-const ALGORHYTHM_API = 'https://algorhythm-service-dev-5jm4duk5oa-uc.a.run.app';
+// Development (Canonical URL - WORKING!)
+const ALGORHYTHM_API = 'https://dev.algorhythm.media';
 
 // Health Check
 const HEALTH_URL = `${ALGORHYTHM_API}/api/v1/health`;
@@ -81,7 +81,10 @@ POST /api/v1/analytics/events
 
 ## 🧪 **Test Data**
 
-### **Current Star Assets**
+### **Available Songs**
+- **"Try Everything" by Shakira**: `1.018.001.001` (NNA Address)
+
+### **Available Star Assets**
 - Base: `68c1f147d36816c3b22e0e3a` (Gigi - Brown hair, brown eyes)
 - Variant 1: `68c1f19ed36816c3b22e0e42` (Gigi - Brown hair, blue eyes)  
 - Variant 2: `68c1fd6054937bc693d46618` (Gigi - Pink hair, brown eyes)

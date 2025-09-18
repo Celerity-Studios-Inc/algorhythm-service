@@ -17,7 +17,7 @@ export const ALGORHYTHM_CONFIG = {
   
   // Current Active URLs (use these for now)
   apiUrl: __DEV__ 
-    ? 'https://algorhythm-service-dev-5jm4duk5oa-uc.a.run.app'
+    ? 'https://dev.algorhythm.media'
     : 'https://prod.algorhythm.media',
   
   endpoints: {
@@ -33,6 +33,8 @@ const JWT_SECRET = 'algorhythm-dev-jwt-secret-key';
 ```
 
 ### **2. Authentication Service**
+
+**⚠️ Important**: ReViz Expo developers cannot use NNA Registry JWT tokens directly. AlgoRhythm requires its own JWT tokens.
 
 ```typescript
 // services/AlgoRhythmAuth.ts
@@ -478,10 +480,10 @@ const testWithCurrentAssets = async () => {
   const health = await service.checkHealth();
   console.log('Health:', health);
   
-  // Test with mock song (will fail until Songs Layer is created)
+  // Test with available song: "Try Everything" by Shakira
   try {
     const recommendation = await service.recommendTemplate(
-      'mock-song-001',
+      '1.018.001.001', // NNA Address for "Try Everything"
       {
         user_id: 'test-user',
         preferences: {
@@ -493,7 +495,8 @@ const testWithCurrentAssets = async () => {
     );
     console.log('Recommendation:', recommendation);
   } catch (error) {
-    console.log('Expected error (no songs yet):', error.message);
+    console.log('Expected error (no templates yet):', error.message);
+    // This will return: "No templates available for song: 1.018.001.001"
   }
 };
 ```

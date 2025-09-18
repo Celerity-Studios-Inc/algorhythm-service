@@ -21,6 +21,7 @@ const caching_module_1 = require("./modules/caching/caching.module");
 const analytics_module_1 = require("./modules/analytics/analytics.module");
 const health_module_1 = require("./modules/health/health.module");
 const seeding_module_1 = require("./modules/seeding/seeding.module");
+const daemon_module_1 = require("./modules/daemon/daemon.module");
 const environment_validation_1 = require("./config/environment-validation");
 const redis_config_1 = require("./config/redis.config");
 let AppModule = class AppModule {
@@ -76,6 +77,7 @@ exports.AppModule = AppModule = __decorate([
             analytics_module_1.AnalyticsModule,
             health_module_1.HealthModule,
             seeding_module_1.SeedingModule,
+            daemon_module_1.DaemonModule,
         ],
         providers: [
             environment_validation_1.EnvironmentValidationService,

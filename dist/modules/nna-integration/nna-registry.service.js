@@ -252,6 +252,62 @@ let NnaRegistryService = NnaRegistryService_1 = class NnaRegistryService {
     convertMfaToHfn(mfa) {
         return mfa;
     }
+    async getAllSongs() {
+        try {
+            const url = `${this.baseUrl}/api/assets`;
+            this.logger.debug('Fetching all songs');
+            const response = await (0, rxjs_1.firstValueFrom)(this.httpService.get(url, {
+                headers: this.getHeaders(),
+                params: {
+                    layer: 'G',
+                    limit: 10000,
+                    sort: 'createdAt',
+                    order: 'desc',
+                },
+                timeout: 30000,
+            }));
+            if (response.data?.success && response.data?.data) {
+                const songs = response.data.data;
+                this.logger.debug(`Retrieved ${songs.length} songs`);
+                return songs;
+            }
+            else {
+                this.logger.warn('No songs found');
+                return [];
+            }
+        }
+        catch (error) {
+            return this.handleHttpError(error, 'getAllSongs', []);
+        }
+    }
+    async getAllTemplates() {
+        try {
+            const url = `${this.baseUrl}/api/assets`;
+            this.logger.debug('Fetching all templates');
+            const response = await (0, rxjs_1.firstValueFrom)(this.httpService.get(url, {
+                headers: this.getHeaders(),
+                params: {
+                    layer: 'C',
+                    limit: 10000,
+                    sort: 'createdAt',
+                    order: 'desc',
+                },
+                timeout: 30000,
+            }));
+            if (response.data?.success && response.data?.data) {
+                const templates = response.data.data;
+                this.logger.debug(`Retrieved ${templates.length} templates`);
+                return templates;
+            }
+            else {
+                this.logger.warn('No templates found');
+                return [];
+            }
+        }
+        catch (error) {
+            return this.handleHttpError(error, 'getAllTemplates', []);
+        }
+    }
 };
 exports.NnaRegistryService = NnaRegistryService;
 exports.NnaRegistryService = NnaRegistryService = NnaRegistryService_1 = __decorate([
