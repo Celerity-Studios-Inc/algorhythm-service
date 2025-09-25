@@ -5,6 +5,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { JwtFallbackGuard } from './guards/jwt-fallback.guard';
 import { RolesGuard } from './guards/roles.guard';
+import { AuthController } from './auth.controller';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { RolesGuard } from './guards/roles.guard';
       inject: [ConfigService],
     }),
   ],
+  controllers: [AuthController],
   providers: [JwtStrategy, JwtAuthGuard, JwtFallbackGuard, RolesGuard],
   exports: [JwtStrategy, JwtAuthGuard, JwtFallbackGuard, RolesGuard],
 })
