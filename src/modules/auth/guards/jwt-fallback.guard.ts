@@ -27,13 +27,15 @@ export class JwtFallbackGuard implements CanActivate {
       };
       
       return true;
-    } catch (algorhythmError) {
-      // If AlgoRhythm verification fails, try NNA Registry JWT secret as fallback
-      try {
-        const nnaSecret = this.configService.get<string>('NNA_REGISTRY_JWT_SECRET');
-        if (!nnaSecret) {
-          throw new UnauthorizedException('NNA Registry JWT secret not configured');
-        }
+      } catch (algorhythmError) {
+        // If AlgoRhythm verification fails, try NNA Registry JWT secret as fallback
+        try {
+          const nnaSecret = this.configService.get<string>('NNA_REGISTRY_JWT_SECRET');
+          console.log('🔍 JWT Fallback Debug: NNA_REGISTRY_JWT_SECRET loaded:', nnaSecret ? 'YES' : 'NO');
+          console.log('🔍 JWT Fallback Debug: Secret length:', nnaSecret ? nnaSecret.length : 0);
+          if (!nnaSecret) {
+            throw new UnauthorizedException('NNA Registry JWT secret not configured');
+          }
 
         const payload = jwt.verify(token, nnaSecret) as any;
         
