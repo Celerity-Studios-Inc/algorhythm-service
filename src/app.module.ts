@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { WinstonModule } from 'nest-winston';
+import { APP_FILTER, APP_INTERCEPTOR, APP_GUARD } from '@nestjs/core';
 import * as winston from 'winston';
 
 // Feature modules
@@ -19,6 +20,12 @@ import { DaemonModule } from './modules/daemon/daemon.module';
 // Configuration
 import { EnvironmentValidationService } from './config/environment-validation';
 import { RedisModule } from './config/redis.config';
+
+// Error handling and monitoring
+import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
+import { ErrorLoggingInterceptor } from './common/interceptors/error-logging.interceptor';
+import { RateLimitingGuard } from './common/guards/rate-limiting.guard';
+import { HealthMonitorService } from './common/services/health-monitor.service';
 
 @Module({
   imports: [
@@ -94,6 +101,19 @@ import { RedisModule } from './config/redis.config';
   ],
   providers: [
     EnvironmentValidationService,
+    HealthMonitorService,
+    {
+      provide: APP_FILTER,
+      useClass: GlobalExceptionFilter,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ErrorLoggingInterceptor,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RateLimitingGuard,
+    },
   ],
 })
 export class AppModule {}
