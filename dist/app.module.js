@@ -12,6 +12,7 @@ const config_1 = require("@nestjs/config");
 const mongoose_1 = require("@nestjs/mongoose");
 const throttler_1 = require("@nestjs/throttler");
 const nest_winston_1 = require("nest-winston");
+const core_1 = require("@nestjs/core");
 const winston = require("winston");
 const auth_module_1 = require("./modules/auth/auth.module");
 const recommendations_module_1 = require("./modules/recommendations/recommendations.module");
@@ -24,6 +25,10 @@ const seeding_module_1 = require("./modules/seeding/seeding.module");
 const daemon_module_1 = require("./modules/daemon/daemon.module");
 const environment_validation_1 = require("./config/environment-validation");
 const redis_config_1 = require("./config/redis.config");
+const global_exception_filter_1 = require("./common/filters/global-exception.filter");
+const error_logging_interceptor_1 = require("./common/interceptors/error-logging.interceptor");
+const rate_limiting_guard_1 = require("./common/guards/rate-limiting.guard");
+const health_monitor_service_1 = require("./common/services/health-monitor.service");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -81,6 +86,19 @@ exports.AppModule = AppModule = __decorate([
         ],
         providers: [
             environment_validation_1.EnvironmentValidationService,
+            health_monitor_service_1.HealthMonitorService,
+            {
+                provide: core_1.APP_FILTER,
+                useClass: global_exception_filter_1.GlobalExceptionFilter,
+            },
+            {
+                provide: core_1.APP_INTERCEPTOR,
+                useClass: error_logging_interceptor_1.ErrorLoggingInterceptor,
+            },
+            {
+                provide: core_1.APP_GUARD,
+                useClass: rate_limiting_guard_1.RateLimitingGuard,
+            },
         ],
     })
 ], AppModule);

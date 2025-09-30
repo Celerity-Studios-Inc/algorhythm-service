@@ -8,6 +8,15 @@ import {
 } from '@nestjs/common';
 import { Response, Request } from 'express';
 
+// Extend Express Request interface to include requestId
+declare global {
+  namespace Express {
+    interface Request {
+      requestId?: string;
+    }
+  }
+}
+
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
   private readonly logger = new Logger(GlobalExceptionFilter.name);
