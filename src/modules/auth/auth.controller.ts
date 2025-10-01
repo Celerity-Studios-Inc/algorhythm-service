@@ -1,5 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { JwtFallbackGuard } from './guards/jwt-fallback.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -21,6 +22,17 @@ export class AuthController {
         length: nnaJwtSecret ? nnaJwtSecret.length : 0,
         preview: nnaJwtSecret ? `${nnaJwtSecret.substring(0, 8)}...` : 'undefined'
       },
+      timestamp: new Date().toISOString()
+    };
+  }
+
+  @Post('test-jwt')
+  @UseGuards(JwtFallbackGuard)
+  testJwtFallback(@Body() body: any) {
+    return {
+      success: true,
+      message: 'JWT fallback authentication successful',
+      user: body.user || 'No user data in body',
       timestamp: new Date().toISOString()
     };
   }
