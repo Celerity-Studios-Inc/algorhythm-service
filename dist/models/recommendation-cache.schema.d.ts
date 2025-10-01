@@ -29,3 +29,4 @@ export declare const RecommendationCacheSchema: import("mongoose").Schema<Recomm
 }> & {
     __v: number;
 }>;
+export type RecommendationCacheDocument = RecommendationCache & Document;

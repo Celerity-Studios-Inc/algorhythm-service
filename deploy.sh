@@ -60,14 +60,15 @@ gcloud run deploy $SERVICE_NAME \
   --min-instances 1 \
   --concurrency 100 \
   --timeout 300 \
-  --set-env-vars NODE_ENV=production \
-  --set-env-vars PORT=3000 \
+  --set-env-vars NODE_ENV=development \
+  --set-env-vars ENVIRONMENT=development \
   --set-env-vars MONGODB_URI="mongodb+srv://admin:PTtQFc0N9gftuRIX@registryservice.xhmyito.mongodb.net/algorhythm-service-dev?retryWrites=true&w=majority&appName=algorhythmService" \
   --set-env-vars REDIS_URL=redis://10.0.0.3:6379 \
   --set-env-vars JWT_SECRET=dev-jwt-secret-key \
   --set-env-vars NNA_REGISTRY_BASE_URL=https://registry.dev.reviz.dev \
+  --set-env-vars ALGORHYTHM_BASE_URL=https://dev.algorhythm.media \
   --set-env-vars NNA_REGISTRY_API_KEY=your-api-key \
-  --service-account 116756405696741720548@revize-453014.iam.gserviceaccount.com
+  --service-account ci-cd-service-account@revize-453014.iam.gserviceaccount.com
 
 # Get the service URL
 SERVICE_URL=$(gcloud run services describe $SERVICE_NAME --region=$REGION --format='value(status.url)')

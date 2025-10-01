@@ -2,7 +2,6 @@
 export const productionConfig = {
   NODE_ENV: 'production',
   ENVIRONMENT: 'production',
-  PORT: 8080,
 
   // Database Configuration (AlgoRhythm-specific database)
   MONGODB_URI: 'mongodb+srv://admin:PTtQFc0N9gftuRIX@registryservice.xhmyito.mongodb.net/algorhythm-service-production?retryWrites=true&w=majority&appName=algorhythmService',
@@ -12,9 +11,13 @@ export const productionConfig = {
 
   // Authentication (AlgoRhythm-specific JWT)
   JWT_SECRET: 'algorhythm-prod-jwt-secret-key',
+  
+  // NNA Registry JWT Secret (for fallback verification)
+  NNA_REGISTRY_JWT_SECRET: 'nna-registry-prod-jwt-secret-key',
 
   // NNA Registry Integration
   NNA_REGISTRY_BASE_URL: 'https://registry.reviz.dev',
+  ALGORHYTHM_BASE_URL: 'https://prod.algorhythm.media',
   NNA_REGISTRY_API_KEY: 'algorhythm-prod-nna-api-key',
 
   // Logging

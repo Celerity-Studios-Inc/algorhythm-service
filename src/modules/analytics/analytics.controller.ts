@@ -14,14 +14,14 @@ import {
   ApiBearerAuth,
   ApiQuery 
 } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtFallbackGuard } from '../auth/guards/jwt-fallback.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { AnalyticsService } from './analytics.service';
 
 @ApiTags('analytics')
 @Controller('analytics')
-@UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtFallbackGuard, RolesGuard)
 @ApiBearerAuth()
 export class AnalyticsController {
   constructor(private readonly analyticsService: AnalyticsService) {}
@@ -33,8 +33,8 @@ export class AnalyticsController {
   @Get('metrics/recommendations')
   @Roles('admin', 'analyst')
   async getRecommendationMetrics(
-    @Query('start', new DefaultValuePipe(new Date(Date.now() - 24 * 60 * 60 * 1000)), ParseDatePipe) start: Date,
-    @Query('end', new DefaultValuePipe(new Date()), ParseDatePipe) end: Date,
+    @Query('start', new DefaultValuePipe(new Date(Date.now() - 24 * 60 * 60 * 1000)), new ParseDatePipe()) start: Date,
+    @Query('end', new DefaultValuePipe(new Date()), new ParseDatePipe()) end: Date,
   ) {
     const metrics = await this.analyticsService.getRecommendationMetrics({ start, end });
     
@@ -53,8 +53,8 @@ export class AnalyticsController {
   @Get('metrics/performance')
   @Roles('admin', 'analyst')
   async getPerformanceMetrics(
-    @Query('start', new DefaultValuePipe(new Date(Date.now() - 60 * 60 * 1000)), ParseDatePipe) start: Date,
-    @Query('end', new DefaultValuePipe(new Date()), ParseDatePipe) end: Date,
+    @Query('start', new DefaultValuePipe(new Date(Date.now() - 60 * 60 * 1000)), new ParseDatePipe()) start: Date,
+    @Query('end', new DefaultValuePipe(new Date()), new ParseDatePipe()) end: Date,
   ) {
     const metrics = await this.analyticsService.getPerformanceMetrics({ start, end });
     

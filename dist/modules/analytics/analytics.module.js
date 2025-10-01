@@ -21,8 +21,8 @@ exports.AnalyticsModule = AnalyticsModule = __decorate([
     (0, common_1.Module)({
         imports: [
             mongoose_1.MongooseModule.forFeature([
-                { name: analytics_event_schema_1.AnalyticsEvent.name, schema: analytics_event_schema_1.AnalyticsEventSchema },
-                { name: user_preference_schema_1.UserPreference.name, schema: user_preference_schema_1.UserPreferenceSchema },
+                { name: 'AnalyticsEvent', schema: analytics_event_schema_1.AnalyticsEventSchema },
+                { name: 'UserPreference', schema: user_preference_schema_1.UserPreferenceSchema },
             ]),
             caching_module_1.CachingModule,
         ],

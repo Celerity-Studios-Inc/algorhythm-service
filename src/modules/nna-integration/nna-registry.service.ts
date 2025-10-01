@@ -311,4 +311,66 @@ export class NnaRegistryService {
     // This would implement the reverse conversion logic
     return mfa;
   }
+
+  async getAllSongs(): Promise<any[]> {
+    try {
+      const url = `${this.baseUrl}/api/assets`;
+      this.logger.debug('Fetching all songs');
+
+      const response: AxiosResponse = await firstValueFrom(
+        this.httpService.get(url, {
+          headers: this.getHeaders(),
+          params: {
+            layer: 'G', // Songs layer
+            limit: 10000,
+            sort: 'createdAt',
+            order: 'desc',
+          },
+          timeout: 30000,
+        })
+      );
+
+      if (response.data?.success && response.data?.data) {
+        const songs = response.data.data;
+        this.logger.debug(`Retrieved ${songs.length} songs`);
+        return songs;
+      } else {
+        this.logger.warn('No songs found');
+        return [];
+      }
+    } catch (error) {
+      return this.handleHttpError(error, 'getAllSongs', []);
+    }
+  }
+
+  async getAllTemplates(): Promise<any[]> {
+    try {
+      const url = `${this.baseUrl}/api/assets`;
+      this.logger.debug('Fetching all templates');
+
+      const response: AxiosResponse = await firstValueFrom(
+        this.httpService.get(url, {
+          headers: this.getHeaders(),
+          params: {
+            layer: 'C', // Composites/Templates layer
+            limit: 10000,
+            sort: 'createdAt',
+            order: 'desc',
+          },
+          timeout: 30000,
+        })
+      );
+
+      if (response.data?.success && response.data?.data) {
+        const templates = response.data.data;
+        this.logger.debug(`Retrieved ${templates.length} templates`);
+        return templates;
+      } else {
+        this.logger.warn('No templates found');
+        return [];
+      }
+    } catch (error) {
+      return this.handleHttpError(error, 'getAllTemplates', []);
+    }
+  }
 }

@@ -75,6 +75,19 @@ let DiversityService = class DiversityService {
             compatibility_score: rec.compatibility_score * (1 + Math.random() * compatibility_weights_1.SCORING_THRESHOLDS.DIVERSITY_FACTOR),
         })).sort((a, b) => b.compatibility_score - a.compatibility_score);
     }
+    async computeDiversityScore(song, template) {
+        if (!template || !template.tags) {
+            return 0.5;
+        }
+        const tags = template.tags || [];
+        const diversityFactors = {
+            style_variety: tags.length / 10,
+            uniqueness: Math.random() * 0.3,
+        };
+        const diversityScore = (diversityFactors.style_variety * 0.7 +
+            diversityFactors.uniqueness * 0.3);
+        return Math.min(diversityScore, 1.0);
+    }
 };
 exports.DiversityService = DiversityService;
 exports.DiversityService = DiversityService = __decorate([

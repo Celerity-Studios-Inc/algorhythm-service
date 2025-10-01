@@ -155,6 +155,18 @@ let CacheService = CacheService_1 = class CacheService {
             };
         }
     }
+    async clearExpired() {
+        try {
+            await this.redisClient.memory('STATS');
+            const keysBefore = await this.redisClient.dbsize();
+            this.logger.debug(`Cache cleanup completed, keys remaining: ${keysBefore}`);
+            return keysBefore;
+        }
+        catch (error) {
+            this.logger.error('Cache clearExpired error:', error);
+            return 0;
+        }
+    }
     parseKeyspaceInfo(keyspaceInfo) {
         const lines = keyspaceInfo.split('\n');
         const result = {};

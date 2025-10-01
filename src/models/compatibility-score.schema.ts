@@ -50,6 +50,7 @@ export class CompatibilityScore extends Document {
 }
 
 export const CompatibilityScoreSchema = SchemaFactory.createForClass(CompatibilityScore);
+export type CompatibilityScoreDocument = CompatibilityScore & Document;
 
 // Create compound indexes for efficient querying
 CompatibilityScoreSchema.index({ song_id: 1, template_id: 1 }, { unique: true });

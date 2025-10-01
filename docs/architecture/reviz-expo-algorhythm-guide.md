@@ -6,6 +6,23 @@
 **Target Team**: ReViz Expo Mobile Development Team  
 **Previous Version**: reviz_expo_api_guide.md (NNA-only version)
 
+## 🌐 **Canonical URLs**
+
+AlgoRhythm service is deployed across three environments with the following canonical URLs:
+
+- **Development**: `https://algorhythm-service-dev-5jm4duk5oa-uc.a.run.app` (Currently Active)
+- **Staging**: `https://stg.algorhythm.media` (Planned)
+- **Production**: `https://prod.algorhythm.media` (Planned)
+
+**Configuration Example:**
+```typescript
+const ALGORHYTHM_API = __DEV__ 
+  ? 'https://algorhythm-service-dev-5jm4duk5oa-uc.a.run.app'
+  : 'https://prod.algorhythm.media';
+```
+
+**Note**: Custom domains (`dev.algorhythm.media`) are planned but not yet configured. Use the Cloud Run URLs for now.
+
 ---
 
 ## 🚀 What's New in v2.0
@@ -27,13 +44,13 @@ This guide shows how to integrate with **AlgoRhythm** - ReViz's AI recommendatio
 When user selects a song, get the perfect template instantly:
 
 ```typescript
-// When user selects "Pretty Little Baby" by Connie Francis
+// When user selects a song (e.g., "Pretty Little Baby" by Connie Francis)
 const recommendTemplate = async (songId: string): Promise<VideoTemplate> => {
-  const response = await fetch(`${ALGORHYTHM_API}/recommend/template`, {
+  const response = await fetch(`${ALGORHYTHM_API}/api/v1/recommend/template`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${authToken}`
+      'Authorization': `Bearer ${userJwtToken}` // Required for authentication
     },
     body: JSON.stringify({
       song_id: songId, // e.g., "G.POP.VIN.001"
@@ -95,7 +112,7 @@ const getLayerVariations = async (
   layer: 'star' | 'look' | 'moves' | 'world',
   songId: string
 ): Promise<LayerVariation[]> => {
-  const response = await fetch(`${ALGORHYTHM_API}/recommend/variations`, {
+  const response = await fetch(`${ALGORHYTHM_API}/api/v1/recommendations/variations`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -168,7 +185,7 @@ const getCategoryRecommendations = async (
   layer: LayerType,
   currentTemplateId: string
 ): Promise<CategoryRecommendation[]> => {
-  const response = await fetch(`${ALGORHYTHM_API}/recommend/categories`, {
+  const response = await fetch(`${ALGORHYTHM_API}/api/v1/recommendations/categories`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -244,7 +261,7 @@ const getCategoryVariants = async (
   categoryId: string,
   currentTemplateId: string
 ): Promise<VariantOption[]> => {
-  const response = await fetch(`${ALGORHYTHM_API}/recommend/category-variants`, {
+  const response = await fetch(`${ALGORHYTHM_API}/api/v1/recommendations/category-variants`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -342,7 +359,7 @@ const trackSelection = async (
   context?: any
 ) => {
   try {
-    await fetch(`${ALGORHYTHM_API}/analytics/selection`, {
+    await fetch(`${ALGORHYTHM_API}/api/v1/analytics/events`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -485,7 +502,7 @@ const getTemplateWithFallback = async (songId: string): Promise<Template> => {
 // Preload trending templates on app launch
 const preloadTrendingTemplates = async () => {
   try {
-    const trending = await fetch(`${ALGORHYTHM_API}/trending?limit=10`);
+    const trending = await fetch(`${ALGORHYTHM_API}/api/v1/analytics/trending?limit=10`);
     const data = await trending.json();
     
     // Preload preview videos
@@ -605,7 +622,7 @@ const AlgoRhythmStatus = () => {
 
   const checkHealth = async () => {
     try {
-      const response = await fetch(`${ALGORHYTHM_API}/health`);
+      const response = await fetch(`${ALGORHYTHM_API}/api/v1/health`);
       const data = await response.json();
       setHealth(data);
     } catch (error) {
@@ -651,13 +668,13 @@ const AlgoRhythmStatus = () => {
 ### **API Endpoints**
 ```typescript
 const ALGORHYTHM_ENDPOINTS = {
-  recommendTemplate: '/recommend/template',
-  getVariations: '/recommend/variations',
-  getCategories: '/recommend/categories',
-  getCategoryVariants: '/recommend/category-variants',
-  trackSelection: '/analytics/selection',
-  getTrending: '/trending',
-  health: '/health'
+  recommendTemplate: '/api/v1/recommendations',
+  getVariations: '/api/v1/recommendations/variations',
+  getCategories: '/api/v1/recommendations/categories',
+  getCategoryVariants: '/api/v1/recommendations/category-variants',
+  trackSelection: '/api/v1/analytics/events',
+  getTrending: '/api/v1/analytics/trending',
+  health: '/api/v1/health'
 };
 ```
 

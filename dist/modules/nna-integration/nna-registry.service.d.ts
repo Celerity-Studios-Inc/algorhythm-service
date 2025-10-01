@@ -27,4 +27,6 @@ export declare class NnaRegistryService {
     private handleHttpError;
     convertHfnToMfa(hfn: string): string;
     convertMfaToHfn(mfa: string): string;
+    getAllSongs(): Promise<any[]>;
+    getAllTemplates(): Promise<any[]>;
 }

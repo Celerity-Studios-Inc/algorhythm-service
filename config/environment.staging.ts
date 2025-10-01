@@ -2,7 +2,6 @@
 export const stagingConfig = {
   NODE_ENV: 'staging',
   ENVIRONMENT: 'staging',
-  PORT: 8080,
 
   // Database Configuration (AlgoRhythm-specific database)
   MONGODB_URI: 'mongodb+srv://admin:PTtQFc0N9gftuRIX@registryservice.xhmyito.mongodb.net/algorhythm-service-staging?retryWrites=true&w=majority&appName=algorhythmService',
@@ -12,9 +11,13 @@ export const stagingConfig = {
 
   // Authentication (AlgoRhythm-specific JWT)
   JWT_SECRET: 'algorhythm-stg-jwt-secret-key',
+  
+  // NNA Registry JWT Secret (for fallback verification)
+  NNA_REGISTRY_JWT_SECRET: 'nna-registry-stg-jwt-secret-key',
 
   // NNA Registry Integration
   NNA_REGISTRY_BASE_URL: 'https://registry.stg.reviz.dev',
+  ALGORHYTHM_BASE_URL: 'https://stg.algorhythm.media',
   NNA_REGISTRY_API_KEY: 'algorhythm-stg-nna-api-key',
 
   // Logging

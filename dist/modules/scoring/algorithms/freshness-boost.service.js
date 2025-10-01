@@ -30,6 +30,13 @@ let FreshnessBoostService = class FreshnessBoostService {
         const boost = this.calculateBoost(createdAt);
         return Math.min(baseScore * boost, 1.0);
     }
+    async computeFreshnessBoost(template) {
+        if (!template || !template.created_at) {
+            return 1.0;
+        }
+        const createdAt = new Date(template.created_at);
+        return this.calculateBoost(createdAt);
+    }
 };
 exports.FreshnessBoostService = FreshnessBoostService;
 exports.FreshnessBoostService = FreshnessBoostService = __decorate([

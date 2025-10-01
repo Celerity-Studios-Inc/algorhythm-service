@@ -9,7 +9,7 @@ import { CompatibilityScore, CompatibilityScoreSchema } from '../../models/compa
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: CompatibilityScore.name, schema: CompatibilityScoreSchema },
+      { name: 'CompatibilityScore', schema: CompatibilityScoreSchema },
     ]),
   ],
   providers: [
@@ -18,6 +18,11 @@ import { CompatibilityScore, CompatibilityScoreSchema } from '../../models/compa
     FreshnessBoostService,
     DiversityService,
   ],
-  exports: [ScoringService],
+  exports: [
+    ScoringService,
+    RuleBasedScoringService,
+    FreshnessBoostService,
+    DiversityService,
+  ],
 })
 export class ScoringModule {}
