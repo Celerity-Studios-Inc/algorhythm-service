@@ -9,8 +9,6 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    env:
-      IMAGE_TAG: us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/algorhythm-repo/algorhythm-service-dev:${{ github.sha }}-${{ github.run_id }}-dev
 
     steps:
       - name: Checkout code
@@ -29,6 +27,8 @@ jobs:
         run: npm test -- --passWithNoTests
 
       - name: Build Docker image
+        env:
+          IMAGE_TAG: us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/algorhythm-repo/algorhythm-service-dev:${{ github.sha }}-${{ github.run_id }}-dev
         run: docker build --platform linux/amd64 --no-cache -t $IMAGE_TAG -f docker/Dockerfile.cloudrun .
 
       - name: Authenticate to Google Cloud
@@ -40,9 +40,13 @@ jobs:
         run: gcloud auth configure-docker us-central1-docker.pkg.dev
 
       - name: Push Docker image
+        env:
+          IMAGE_TAG: us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/algorhythm-repo/algorhythm-service-dev:${{ github.sha }}-${{ github.run_id }}-dev
         run: docker push $IMAGE_TAG
 
       - name: Deploy to Cloud Run
+        env:
+          IMAGE_TAG: us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/algorhythm-repo/algorhythm-service-dev:${{ github.sha }}-${{ github.run_id }}-dev
         run: |
           gcloud run deploy algorhythm-service-dev \
             --image $IMAGE_TAG \
