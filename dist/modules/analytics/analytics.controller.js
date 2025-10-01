@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AnalyticsController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
-const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
+const jwt_fallback_guard_1 = require("../auth/guards/jwt-fallback.guard");
 const roles_decorator_1 = require("../../common/decorators/roles.decorator");
 const roles_guard_1 = require("../auth/guards/roles.guard");
 const analytics_service_1 = require("./analytics.service");
@@ -65,8 +65,8 @@ __decorate([
     (0, swagger_1.ApiQuery)({ name: 'end', type: Date, description: 'End date for metrics' }),
     (0, common_1.Get)('metrics/recommendations'),
     (0, roles_decorator_1.Roles)('admin', 'analyst'),
-    __param(0, (0, common_1.Query)('start', new common_1.DefaultValuePipe(new Date(Date.now() - 24 * 60 * 60 * 1000)), common_1.ParseDatePipe)),
-    __param(1, (0, common_1.Query)('end', new common_1.DefaultValuePipe(new Date()), common_1.ParseDatePipe)),
+    __param(0, (0, common_1.Query)('start', new common_1.DefaultValuePipe(new Date(Date.now() - 24 * 60 * 60 * 1000)), new common_1.ParseDatePipe())),
+    __param(1, (0, common_1.Query)('end', new common_1.DefaultValuePipe(new Date()), new common_1.ParseDatePipe())),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Date,
         Date]),
@@ -77,8 +77,8 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Performance metrics retrieved successfully' }),
     (0, common_1.Get)('metrics/performance'),
     (0, roles_decorator_1.Roles)('admin', 'analyst'),
-    __param(0, (0, common_1.Query)('start', new common_1.DefaultValuePipe(new Date(Date.now() - 60 * 60 * 1000)), common_1.ParseDatePipe)),
-    __param(1, (0, common_1.Query)('end', new common_1.DefaultValuePipe(new Date()), common_1.ParseDatePipe)),
+    __param(0, (0, common_1.Query)('start', new common_1.DefaultValuePipe(new Date(Date.now() - 60 * 60 * 1000)), new common_1.ParseDatePipe())),
+    __param(1, (0, common_1.Query)('end', new common_1.DefaultValuePipe(new Date()), new common_1.ParseDatePipe())),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Date,
         Date]),
@@ -97,7 +97,7 @@ __decorate([
 exports.AnalyticsController = AnalyticsController = __decorate([
     (0, swagger_1.ApiTags)('analytics'),
     (0, common_1.Controller)('analytics'),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, common_1.UseGuards)(jwt_fallback_guard_1.JwtFallbackGuard, roles_guard_1.RolesGuard),
     (0, swagger_1.ApiBearerAuth)(),
     __metadata("design:paramtypes", [analytics_service_1.AnalyticsService])
 ], AnalyticsController);

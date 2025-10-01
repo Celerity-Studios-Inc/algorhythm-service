@@ -1,0 +1,91 @@
+name: NNA Registry Service CI/CD (stg)
+
+on:
+  push:
+    branches: [stg]
+  pull_request:
+    branches: [stg]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_TAG: gcr.io/${{ secrets.GCP_PROJECT_ID }}/nna-registry-service-staging:${{ github.sha }}-${{ github.run_id }}-stg
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build Docker image
+        run: docker build --platform linux/amd64 --no-cache -t $IMAGE_TAG .
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Configure Docker for Google Cloud
+        run: gcloud auth configure-docker
+
+      - name: Push Docker image
+        run: docker push $IMAGE_TAG
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy nna-registry-service-staging \
+            --image $IMAGE_TAG \
+            --region us-central1 \
+            --platform managed \
+            --execution-environment=gen2 \
+            --service-account=nna-registry-service-staging@revize-453014.iam.gserviceaccount.com \
+            --allow-unauthenticated \
+            --set-secrets=/etc/gcp/key=gcp-sa-key-stg:latest \
+            --set-secrets=/app/firebase-key.json=firebase-service-account-stg:latest \
+            --set-secrets=MONGODB_URI=mongodb-uri-stg:latest \
+            --set-secrets=JWT_SECRET=JWT_SECRET_STG:latest \
+            --set-secrets=GCP_BUCKET_NAME=GCP_BUCKET_NAME_STG:latest \
+            --set-secrets=SENTRY_DSN=sentry-dsn:latest \
+            --set-secrets=GCP_PROJECT_ID=GCP_PROJECT_ID:latest \
+            --set-secrets=TIKTOK_CLIENT_KEY=TIKTOK_CLIENT_KEY_STG:latest \
+            --set-secrets=TIKTOK_CLIENT_SECRET=TIKTOK_CLIENT_SECRET_STG:latest \
+            --set-env-vars "NODE_ENV=staging,ENVIRONMENT=staging,GOOGLE_APPLICATION_CREDENTIALS=/etc/gcp/key"
+
+      - name: Update Traffic to Latest Revision
+        run: |
+          gcloud run services update-traffic nna-registry-service-staging \
+            --region us-central1 \
+            --to-latest
+
+      - name: Post-deploy health check
+        run: |
+          SERVICE_URL=$(gcloud run services describe nna-registry-service-staging --region us-central1 --format='value(status.url)')
+          echo "Checking health endpoint: $SERVICE_URL/api/health"
+          for i in {1..10}; do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$SERVICE_URL/api/health")
+            if [ "$STATUS" = "200" ]; then
+              echo "Health check passed."
+              exit 0
+            fi
+            echo "Waiting for service to become healthy... ($i/10)"
+            sleep 6
+          done
+          echo "Health check failed!"
+          exit 1
+
+      - name: Output Staging URL
+        run: |
+          SERVICE_URL=$(gcloud run services describe nna-registry-service-staging --region us-central1 --format='value(status.url)')
+          echo "🌐 Staging Service URL: $SERVICE_URL"
+          echo "📚 Swagger Docs: $SERVICE_URL/api/docs"

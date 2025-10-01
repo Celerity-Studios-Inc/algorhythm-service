@@ -12,7 +12,9 @@ const jwt_1 = require("@nestjs/jwt");
 const config_1 = require("@nestjs/config");
 const jwt_strategy_1 = require("./strategies/jwt.strategy");
 const jwt_auth_guard_1 = require("./guards/jwt-auth.guard");
+const jwt_fallback_guard_1 = require("./guards/jwt-fallback.guard");
 const roles_guard_1 = require("./guards/roles.guard");
+const auth_controller_1 = require("./auth.controller");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
@@ -28,8 +30,9 @@ exports.AuthModule = AuthModule = __decorate([
                 inject: [config_1.ConfigService],
             }),
         ],
-        providers: [jwt_strategy_1.JwtStrategy, jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard],
-        exports: [jwt_strategy_1.JwtStrategy, jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard],
+        controllers: [auth_controller_1.AuthController],
+        providers: [jwt_strategy_1.JwtStrategy, jwt_auth_guard_1.JwtAuthGuard, jwt_fallback_guard_1.JwtFallbackGuard, roles_guard_1.RolesGuard],
+        exports: [jwt_strategy_1.JwtStrategy, jwt_auth_guard_1.JwtAuthGuard, jwt_fallback_guard_1.JwtFallbackGuard, roles_guard_1.RolesGuard],
     })
 ], AuthModule);
 //# sourceMappingURL=auth.module.js.map

@@ -9,8 +9,8 @@ import { CachingModule } from '../caching/caching.module';
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: AnalyticsEvent.name, schema: AnalyticsEventSchema },
-      { name: UserPreference.name, schema: UserPreferenceSchema },
+      { name: 'AnalyticsEvent', schema: AnalyticsEventSchema },
+      { name: 'UserPreference', schema: UserPreferenceSchema },
     ]),
     CachingModule,
   ],

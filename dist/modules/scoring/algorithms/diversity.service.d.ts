@@ -4,4 +4,5 @@ export declare class DiversityService {
     private groupByStyleFamily;
     private determineStyleFamily;
     private addRandomTieBreaker;
+    computeDiversityScore(song: any, template: any): Promise<number>;
 }

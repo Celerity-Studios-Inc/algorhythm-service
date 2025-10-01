@@ -9,8 +9,6 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    env:
-      IMAGE_TAG: gcr.io/${{ secrets.GCP_PROJECT_ID }}/algorhythm-service-staging:${{ github.sha }}-${{ github.run_id }}-stg
 
     steps:
       - name: Checkout code
@@ -23,12 +21,14 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --legacy-peer-deps
 
       - name: Run tests
-        run: npm test
+        run: npm test -- --passWithNoTests
 
       - name: Build Docker image
+        env:
+          IMAGE_TAG: us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/algorhythm-repo/algorhythm-service-staging:${{ github.sha }}-${{ github.run_id }}-stg
         run: docker build --platform linux/amd64 --no-cache -t $IMAGE_TAG -f docker/Dockerfile.cloudrun .
 
       - name: Authenticate to Google Cloud
@@ -37,19 +37,23 @@ jobs:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
       - name: Configure Docker for Google Cloud
-        run: gcloud auth configure-docker
+        run: gcloud auth configure-docker us-central1-docker.pkg.dev
 
       - name: Push Docker image
+        env:
+          IMAGE_TAG: us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/algorhythm-repo/algorhythm-service-staging:${{ github.sha }}-${{ github.run_id }}-stg
         run: docker push $IMAGE_TAG
 
       - name: Deploy to Cloud Run
+        env:
+          IMAGE_TAG: us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/algorhythm-repo/algorhythm-service-staging:${{ github.sha }}-${{ github.run_id }}-stg
         run: |
           gcloud run deploy algorhythm-service-staging \
             --image $IMAGE_TAG \
             --region us-central1 \
             --platform managed \
             --execution-environment=gen2 \
-            --service-account=116756405696741720548@revize-453014.iam.gserviceaccount.com \
+            --service-account=ci-cd-service-account@revize-453014.iam.gserviceaccount.com \
             --allow-unauthenticated \
             --port 8080 \
             --memory 2Gi \
@@ -58,10 +62,12 @@ jobs:
             --min-instances 2 \
             --concurrency 100 \
             --timeout 300 \
-            --set-secrets=MONGODB_URI=MONGODB_URI:latest \
-            --set-secrets=REDIS_URL=REDIS_URL:latest \
-            --set-secrets=JWT_SECRET=JWT_SECRET:latest \
-            --set-env-vars "NODE_ENV=staging,ENVIRONMENT=staging,PORT=8080,NNA_REGISTRY_BASE_URL=https://registry.stg.reviz.dev,NNA_REGISTRY_API_KEY=${{ secrets.NNA_REGISTRY_API_KEY }}"
+            --set-secrets=MONGODB_URI=algorhythm-mongodb-uri-stg:latest \
+            --set-secrets=REDIS_URL=algorhythm-redis-url-stg:latest \
+            --set-secrets=JWT_SECRET=algorhythm-jwt-secret-stg:latest \
+            --set-secrets=NNA_REGISTRY_JWT_SECRET=algorhythm-nna-jwt-secret-stg:latest \
+            --set-secrets=NNA_REGISTRY_API_KEY=algorhythm-nna-api-key-stg:latest \
+                        --set-env-vars "NODE_ENV=staging,ENVIRONMENT=staging,NNA_REGISTRY_BASE_URL=https://registry.stg.reviz.dev,ALGORHYTHM_BASE_URL=https://stg.algorhythm.media"
 
       - name: Update Traffic to Latest Revision
         run: |

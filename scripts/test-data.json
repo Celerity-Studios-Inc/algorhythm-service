@@ -1,0 +1,16 @@
+{
+  "song_id": "test-song-123",
+  "user_id": "test-user-456",
+  "limit": 5,
+  "user_context": {
+    "preferences": {
+      "energy_preference": "high",
+      "style_preference": "modern",
+      "genre_preferences": ["electronic", "pop"]
+    },
+    "device_info": {
+      "platform": "web",
+      "version": "1.0.0"
+    }
+  }
+}

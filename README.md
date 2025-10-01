@@ -160,6 +160,21 @@ kubectl apply -f k8s/staging/
 kubectl apply -f k8s/production/
 ```
 
+## 📚 Documentation
+
+### **For ReViz Expo Developers**
+- 📊 **[Integration Status](./docs/REVIZ_EXPO_STATUS.md)** - Current status and ready-to-use info
+- 🚀 **[Developer Integration Guide](./docs/REVIZ_EXPO_DEVELOPER_GUIDE.md)** - Complete integration guide
+- 📋 **[Quick Reference Card](./docs/QUICK_REFERENCE.md)** - Essential endpoints and configs
+- 💻 **[Integration Examples](./docs/INTEGRATION_EXAMPLES.md)** - Real-world code examples
+- 🔗 **[ReViz Expo Integration Guide](./docs/architecture/reviz-expo-algorhythm-guide.md)** - Detailed API guide
+
+### **Technical Documentation**
+- 📖 **[API Specification](./docs/architecture/algorhythm-api-spec.md)** - Complete API reference
+- 🌍 **[Environment Configuration](./docs/environments/ALGORHYTHM_ENVIRONMENT_CONFIGURATION_REFERENCE.md)** - Environment setup
+- 🧪 **[Testing Guide](./docs/TESTING_GUIDE.md)** - Testing strategies
+- 🚀 **[Deployment Guide](./DEPLOYMENT.md)** - Deployment instructions
+
 ## 📈 Monitoring
 
 - **Health Check**: `/api/v1/health`
@@ -188,3 +203,8 @@ npm run cache-warmup
 ## 📄 License
 
 Proprietary - Celerity Studios Inc.
+# Test deployment after GitHub secrets setup - Wed Sep 10 14:04:47 MDT 2025
+# Test deployment with complete IAM roles - Wed Sep 10 14:38:31 MDT 2025
+# Test deployment after fixing Artifact Registry permissions - Wed Sep 10 14:43:07 MDT 2025
+# Testing deployment with existing secrets - Wed Sep 10 15:03:13 MDT 2025
+# Fresh deployment with verified secrets - Wed Sep 10 15:12:51 MDT 2025

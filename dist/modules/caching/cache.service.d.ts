@@ -22,5 +22,6 @@ export declare class CacheService {
         cache_hits?: number;
         cache_misses?: number;
     }>;
+    clearExpired(): Promise<number>;
     private parseKeyspaceInfo;
 }
