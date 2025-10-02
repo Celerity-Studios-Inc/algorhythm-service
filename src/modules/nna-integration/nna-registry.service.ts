@@ -313,19 +313,31 @@ export class NnaRegistryService {
   // Convert HFN to MFA format
   async convertHfnToMfa(hfn: string): Promise<string> {
     try {
-      // First try to find the asset by searching all assets and matching the name
+      // Parse HFN format: L.CAT.SUB.XXX (e.g., G.POP.CON.003)
+      const hfnParts = hfn.split('.');
+      if (hfnParts.length !== 4) {
+        this.logger.warn(`Invalid HFN format: ${hfn}`);
+        return hfn;
+      }
+
+      const [layer, category, subcategory, sequential] = hfnParts;
+      
+      // Use efficient filtering API instead of fetching all assets
       const url = `${this.baseUrl}/api/assets`;
-      this.logger.debug(`Searching for HFN: ${hfn}`);
+      this.logger.debug(`Converting HFN: ${hfn} (Layer: ${layer}, Category: ${category}, Subcategory: ${subcategory})`);
 
       const response: AxiosResponse = await firstValueFrom(
         this.httpService.get(url, {
           headers: this.getHeaders(),
           params: {
-            limit: 1000,
+            layer,
+            category,
+            subcategory,
+            limit: 100, // Much smaller limit since we're filtering
             sort: 'createdAt',
             order: 'desc',
           },
-          timeout: 10000,
+          timeout: 5000,
         })
       );
 
@@ -334,8 +346,7 @@ export class NnaRegistryService {
         // Look for an asset with matching name/friendlyName
         const matchingAsset = assets.find(asset => 
           asset.name === hfn || 
-          asset.friendlyName === hfn ||
-          asset.nna_address === hfn
+          asset.friendlyName === hfn
         );
 
         if (matchingAsset && matchingAsset.nna_address) {
