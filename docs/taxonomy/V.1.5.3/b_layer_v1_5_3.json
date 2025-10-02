@@ -1,0 +1,260 @@
+{
+  "B": {
+    "name": "Branded",
+    "naming_convention": "B.[CategoryCode].[SubCategoryCode].[Sequential].png",
+    "categories": {
+      "001": {
+        "code": "FAS",
+        "name": "Fashion",
+        "subcategories": {
+          "001": {"code": "GUC", "name": "Gucci"},
+          "002": {"code": "LOU", "name": "Louis_Vuitton"},
+          "003": {"code": "BAL", "name": "Balenciaga"},
+          "004": {"code": "CHA", "name": "Chanel"},
+          "005": {"code": "DIO", "name": "Dior"},
+          "006": {"code": "PRA", "name": "Prada"},
+          "007": {"code": "VER", "name": "Versace"},
+          "008": {"code": "HER", "name": "Hermes"},
+          "009": {"code": "BUR", "name": "Burberry"},
+          "010": {"code": "FEN", "name": "Fendi"},
+          "011": {"code": "GIV", "name": "Givenchy"},
+          "012": {"code": "YSL", "name": "Yves_Saint_Laurent"},
+          "013": {"code": "VAL", "name": "Valentino"},
+          "014": {"code": "DOL", "name": "Dolce_Gabbana"},
+          "015": {"code": "BOT", "name": "Bottega_Veneta"}
+        }
+      },
+      "002": {
+        "code": "BEV",
+        "name": "Beverages",
+        "subcategories": {
+          "001": {"code": "COK", "name": "Coca_Cola"},
+          "002": {"code": "PEP", "name": "Pepsi"},
+          "003": {"code": "RDB", "name": "Red_Bull"},
+          "004": {"code": "MON", "name": "Monster"},
+          "005": {"code": "STA", "name": "Starbucks"},
+          "006": {"code": "DUN", "name": "Dunkin"},
+          "007": {"code": "PRD", "name": "Prime"},
+          "008": {"code": "GFU", "name": "G_Fuel"},
+          "009": {"code": "GAT", "name": "Gatorade"},
+          "010": {"code": "VIT", "name": "Vitamin_Water"},
+          "011": {"code": "HEI", "name": "Heineken"},
+          "012": {"code": "BUD", "name": "Budweiser"},
+          "013": {"code": "COR", "name": "Corona"},
+          "014": {"code": "JAC", "name": "Jack_Daniels"},
+          "015": {"code": "HEN", "name": "Hennessy"}
+        }
+      },
+      "003": {
+        "code": "TEC",
+        "name": "Technology",
+        "subcategories": {
+          "001": {"code": "APP", "name": "Apple"},
+          "002": {"code": "SAM", "name": "Samsung"},
+          "003": {"code": "GOO", "name": "Google"},
+          "004": {"code": "MIC", "name": "Microsoft"},
+          "005": {"code": "SON", "name": "Sony"},
+          "006": {"code": "NIN", "name": "Nintendo"},
+          "007": {"code": "TES", "name": "Tesla"},
+          "008": {"code": "MET", "name": "Meta"},
+          "009": {"code": "AMA", "name": "Amazon"},
+          "010": {"code": "NVI", "name": "Nvidia"},
+          "011": {"code": "INT", "name": "Intel"},
+          "012": {"code": "AMD", "name": "AMD"},
+          "013": {"code": "LG", "name": "LG"},
+          "014": {"code": "DEL", "name": "Dell"},
+          "015": {"code": "HP", "name": "HP"}
+        }
+      },
+      "004": {
+        "code": "SPO",
+        "name": "Sports",
+        "subcategories": {
+          "001": {"code": "NIK", "name": "Nike"},
+          "002": {"code": "ADI", "name": "Adidas"},
+          "003": {"code": "JOR", "name": "Jordan"},
+          "004": {"code": "PUM", "name": "Puma"},
+          "005": {"code": "REE", "name": "Reebok"},
+          "006": {"code": "NBL", "name": "New_Balance"},
+          "007": {"code": "UND", "name": "Under_Armour"},
+          "008": {"code": "ASI", "name": "Asics"},
+          "009": {"code": "CON", "name": "Converse"},
+          "010": {"code": "VAN", "name": "Vans"},
+          "011": {"code": "FIL", "name": "Fila"},
+          "012": {"code": "CHA", "name": "Champion"},
+          "013": {"code": "YEE", "name": "Yeezy"},
+          "014": {"code": "SUP", "name": "Supreme"},
+          "015": {"code": "BAP", "name": "Bape"}
+        }
+      },
+      "005": {
+        "code": "AUT",
+        "name": "Automotive",
+        "subcategories": {
+          "001": {"code": "MER", "name": "Mercedes_Benz"},
+          "002": {"code": "BMW", "name": "BMW"},
+          "003": {"code": "AUD", "name": "Audi"},
+          "004": {"code": "TES", "name": "Tesla"},
+          "005": {"code": "FER", "name": "Ferrari"},
+          "006": {"code": "LAM", "name": "Lamborghini"},
+          "007": {"code": "POR", "name": "Porsche"},
+          "008": {"code": "TOY", "name": "Toyota"},
+          "009": {"code": "HON", "name": "Honda"},
+          "010": {"code": "FOR", "name": "Ford"},
+          "011": {"code": "CHE", "name": "Chevrolet"},
+          "012": {"code": "BUG", "name": "Bugatti"},
+          "013": {"code": "MAS", "name": "Maserati"},
+          "014": {"code": "BEN", "name": "Bentley"},
+          "015": {"code": "ROL", "name": "Rolls_Royce"}
+        }
+      },
+      "006": {
+        "code": "ENT",
+        "name": "Entertainment",
+        "subcategories": {
+          "001": {"code": "NET", "name": "Netflix"},
+          "002": {"code": "DIS", "name": "Disney"},
+          "003": {"code": "SPO", "name": "Spotify"},
+          "004": {"code": "YOU", "name": "YouTube"},
+          "005": {"code": "HBO", "name": "HBO"},
+          "006": {"code": "AMA", "name": "Amazon_Prime"},
+          "007": {"code": "APP", "name": "Apple_Music"},
+          "008": {"code": "TIK", "name": "TikTok"},
+          "009": {"code": "INS", "name": "Instagram"},
+          "010": {"code": "TWI", "name": "Twitch"},
+          "011": {"code": "XBO", "name": "Xbox"},
+          "012": {"code": "PST", "name": "PlayStation"},
+          "013": {"code": "EPI", "name": "Epic_Games"},
+          "014": {"code": "ROB", "name": "Roblox"},
+          "015": {"code": "MIN", "name": "Minecraft"}
+        }
+      },
+      "007": {
+        "code": "FNB",
+        "name": "Food",
+        "subcategories": {
+          "001": {"code": "MCD", "name": "McDonalds"},
+          "002": {"code": "BKI", "name": "Burger_King"},
+          "003": {"code": "KFC", "name": "KFC"},
+          "004": {"code": "SUB", "name": "Subway"},
+          "005": {"code": "TAC", "name": "Taco_Bell"},
+          "006": {"code": "CHI", "name": "Chipotle"},
+          "007": {"code": "DOM", "name": "Dominos"},
+          "008": {"code": "PZH", "name": "Pizza_Hut"},
+          "009": {"code": "WEN", "name": "Wendys"},
+          "010": {"code": "POP", "name": "Popeyes"},
+          "011": {"code": "CHK", "name": "Chick_fil_A"},
+          "012": {"code": "INO", "name": "In_N_Out"},
+          "013": {"code": "FIV", "name": "Five_Guys"},
+          "014": {"code": "SHK", "name": "Shake_Shack"},
+          "015": {"code": "PAN", "name": "Panda_Express"}
+        }
+      },
+      "008": {
+        "code": "BEA",
+        "name": "Beauty",
+        "subcategories": {
+          "001": {"code": "LOR", "name": "LOreal"},
+          "002": {"code": "MAC", "name": "MAC"},
+          "003": {"code": "NYX", "name": "NYX"},
+          "004": {"code": "MAY", "name": "Maybelline"},
+          "005": {"code": "SEP", "name": "Sephora"},
+          "006": {"code": "ULT", "name": "Ulta"},
+          "007": {"code": "FEN", "name": "Fenty_Beauty"},
+          "008": {"code": "GLO", "name": "Glossier"},
+          "009": {"code": "CHA", "name": "Charlotte_Tilbury"},
+          "010": {"code": "DIO", "name": "Dior_Beauty"},
+          "011": {"code": "NAR", "name": "NARS"},
+          "012": {"code": "TOO", "name": "Too_Faced"},
+          "013": {"code": "URB", "name": "Urban_Decay"},
+          "014": {"code": "KYL", "name": "Kylie_Cosmetics"},
+          "015": {"code": "PAT", "name": "Pat_McGrath"}
+        }
+      },
+      "009": {
+        "code": "LIF",
+        "name": "Lifestyle",
+        "subcategories": {
+          "001": {"code": "IKE", "name": "IKEA"},
+          "002": {"code": "AIR", "name": "Airbnb"},
+          "003": {"code": "UBE", "name": "Uber"},
+          "004": {"code": "LYF", "name": "Lyft"},
+          "005": {"code": "PEL", "name": "Peloton"},
+          "006": {"code": "LUL", "name": "Lululemon"},
+          "007": {"code": "NES", "name": "Nespresso"},
+          "008": {"code": "DYS", "name": "Dyson"},
+          "009": {"code": "WHF", "name": "Whole_Foods"},
+          "010": {"code": "TAR", "name": "Target"},
+          "011": {"code": "WAL", "name": "Walmart"},
+          "012": {"code": "COS", "name": "Costco"},
+          "013": {"code": "TRA", "name": "Trader_Joes"},
+          "014": {"code": "CVS", "name": "CVS"},
+          "015": {"code": "WAG", "name": "Walgreens"}
+        }
+      },
+      "010": {
+        "code": "FIN",
+        "name": "Financial",
+        "subcategories": {
+          "001": {"code": "VIS", "name": "Visa"},
+          "002": {"code": "MAS", "name": "Mastercard"},
+          "003": {"code": "AMX", "name": "American_Express"},
+          "004": {"code": "PAY", "name": "PayPal"},
+          "005": {"code": "VEN", "name": "Venmo"},
+          "006": {"code": "CAS", "name": "Cash_App"},
+          "007": {"code": "BTC", "name": "Bitcoin"},
+          "008": {"code": "ETH", "name": "Ethereum"},
+          "009": {"code": "BIN", "name": "Binance"},
+          "010": {"code": "COI", "name": "Coinbase"},
+          "011": {"code": "ROB", "name": "Robinhood"},
+          "012": {"code": "SQU", "name": "Square"},
+          "013": {"code": "STR", "name": "Stripe"},
+          "014": {"code": "JPM", "name": "JP_Morgan"},
+          "015": {"code": "GOL", "name": "Goldman_Sachs"}
+        }
+      },
+      "011": {
+        "code": "MUS",
+        "name": "Music",
+        "subcategories": {
+          "001": {"code": "UNI", "name": "Universal_Music"},
+          "002": {"code": "SON", "name": "Sony_Music"},
+          "003": {"code": "WAR", "name": "Warner_Music"},
+          "004": {"code": "DEF", "name": "Def_Jam"},
+          "005": {"code": "COL", "name": "Columbia"},
+          "006": {"code": "ATL", "name": "Atlantic"},
+          "007": {"code": "INT", "name": "Interscope"},
+          "008": {"code": "REP", "name": "Republic"},
+          "009": {"code": "RCA", "name": "RCA"},
+          "010": {"code": "XL", "name": "XL_Recordings"},
+          "011": {"code": "YG", "name": "YG_Entertainment"},
+          "012": {"code": "SM", "name": "SM_Entertainment"},
+          "013": {"code": "JYP", "name": "JYP_Entertainment"},
+          "014": {"code": "BIG", "name": "Big_Hit"},
+          "015": {"code": "HYB", "name": "HYBE"}
+        }
+      },
+      "012": {
+        "code": "CRY",
+        "name": "Crypto_Web3",
+        "subcategories": {
+          "001": {"code": "NFT", "name": "NFT_Platforms"},
+          "002": {"code": "OPN", "name": "OpenSea"},
+          "003": {"code": "RAR", "name": "Rarible"},
+          "004": {"code": "FND", "name": "Foundation"},
+          "005": {"code": "SUP", "name": "SuperRare"},
+          "006": {"code": "NIB", "name": "Nifty_Gateway"},
+          "007": {"code": "AXI", "name": "Axie_Infinity"},
+          "008": {"code": "DEC", "name": "Decentraland"},
+          "009": {"code": "SAN", "name": "Sandbox"},
+          "010": {"code": "UNI", "name": "Uniswap"},
+          "011": {"code": "PAN", "name": "PancakeSwap"},
+          "012": {"code": "MET", "name": "MetaMask"},
+          "013": {"code": "CHA", "name": "Chainlink"},
+          "014": {"code": "POL", "name": "Polygon"},
+          "015": {"code": "SOL", "name": "Solana"}
+        }
+      }
+    }
+  }
+}

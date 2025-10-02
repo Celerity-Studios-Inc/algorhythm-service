@@ -1,0 +1,360 @@
+{
+  "L": {
+    "name": "Looks",
+    "naming_convention": "L.[CategoryCode].[SubCategoryCode].[Sequential].png",
+    "categories": {
+      "001": {
+        "code": "ATH",
+        "name": "Athleisure",
+        "subcategories": {
+          "001": {"code": "YGA", "name": "Yoga"},
+          "002": {"code": "RUN", "name": "Running"},
+          "003": {"code": "GYM", "name": "Gym"},
+          "004": {"code": "TEN", "name": "Tennis"},
+          "005": {"code": "GOL", "name": "Golf"},
+          "006": {"code": "BAS", "name": "Basketball"},
+          "007": {"code": "SOC", "name": "Soccer"},
+          "008": {"code": "CYC", "name": "Cycling"},
+          "009": {"code": "SWM", "name": "Swimming"},
+          "010": {"code": "OUT", "name": "Outdoor"}
+        }
+      },
+      "002": {
+        "code": "BOH",
+        "name": "Bohemian",
+        "subcategories": {
+          "001": {"code": "HIE", "name": "Hippie"},
+          "002": {"code": "GYP", "name": "Gypsy"},
+          "003": {"code": "FES", "name": "Festival"},
+          "004": {"code": "FLO", "name": "Floral"},
+          "005": {"code": "FLP", "name": "Flowing"},
+          "006": {"code": "ETH", "name": "Ethnic"},
+          "007": {"code": "ART", "name": "Artistic"},
+          "008": {"code": "VIN", "name": "Vintage_Boho"},
+          "009": {"code": "MOD", "name": "Modern_Boho"},
+          "010": {"code": "LUX", "name": "Luxury_Boho"}
+        }
+      },
+      "003": {
+        "code": "CAS",
+        "name": "Casual",
+        "subcategories": {
+          "001": {"code": "BAS", "name": "Basic"},
+          "002": {"code": "COM", "name": "Comfortable"},
+          "003": {"code": "REL", "name": "Relaxed"},
+          "004": {"code": "WEE", "name": "Weekend"},
+          "005": {"code": "EVE", "name": "Everyday"},
+          "006": {"code": "MIN", "name": "Minimalist"},
+          "007": {"code": "LAY", "name": "Layered"},
+          "008": {"code": "COZ", "name": "Cozy"},
+          "009": {"code": "SPO", "name": "Sporty_Casual"},
+          "010": {"code": "CHI", "name": "Chic_Casual"}
+        }
+      },
+      "004": {
+        "code": "EDG",
+        "name": "Edgy",
+        "subcategories": {
+          "001": {"code": "PUN", "name": "Punk"},
+          "002": {"code": "GOT", "name": "Gothic"},
+          "003": {"code": "GRU", "name": "Grunge"},
+          "004": {"code": "ROC", "name": "Rock"},
+          "005": {"code": "MET", "name": "Metal"},
+          "006": {"code": "ALT", "name": "Alternative"},
+          "007": {"code": "CYB", "name": "Cyberpunk"},
+          "008": {"code": "IND", "name": "Industrial"},
+          "009": {"code": "DRK", "name": "Dark"},
+          "010": {"code": "REB", "name": "Rebel"}
+        }
+      },
+      "005": {
+        "code": "ELE",
+        "name": "Elegant",
+        "subcategories": {
+          "001": {"code": "CLF", "name": "Classic"},
+          "002": {"code": "SOP", "name": "Sophisticated"},
+          "003": {"code": "GRA", "name": "Grace"},
+          "004": {"code": "REF", "name": "Refined"},
+          "005": {"code": "TIM", "name": "Timeless"},
+          "006": {"code": "LUX", "name": "Luxurious"},
+          "007": {"code": "MIN", "name": "Minimalist_Elegant"},
+          "008": {"code": "MOD", "name": "Modern_Elegant"},
+          "009": {"code": "FEM", "name": "Feminine"},
+          "010": {"code": "ROY", "name": "Royal"}
+        }
+      },
+      "006": {
+        "code": "ETH",
+        "name": "Ethnic",
+        "subcategories": {
+          "001": {"code": "AFR", "name": "African"},
+          "002": {"code": "ASI", "name": "Asian"},
+          "003": {"code": "IND", "name": "Indian"},
+          "004": {"code": "MID", "name": "Middle_Eastern"},
+          "005": {"code": "LAT", "name": "Latin"},
+          "006": {"code": "NAT", "name": "Native"},
+          "007": {"code": "EUR", "name": "European"},
+          "008": {"code": "PAC", "name": "Pacific"},
+          "009": {"code": "CAR", "name": "Caribbean"},
+          "010": {"code": "MED", "name": "Mediterranean"}
+        }
+      },
+      "007": {
+        "code": "FOR",
+        "name": "Formal",
+        "subcategories": {
+          "001": {"code": "BLT", "name": "Black_Tie"},
+          "002": {"code": "EVE", "name": "Evening"},
+          "003": {"code": "GAL", "name": "Gala"},
+          "004": {"code": "COC", "name": "Cocktail"},
+          "005": {"code": "RED", "name": "Red_Carpet"},
+          "006": {"code": "WED", "name": "Wedding"},
+          "007": {"code": "PRM", "name": "Prom"},
+          "008": {"code": "BUS", "name": "Business_Formal"},
+          "009": {"code": "ACA", "name": "Academic"},
+          "010": {"code": "MIL", "name": "Military_Formal"}
+        }
+      },
+      "008": {
+        "code": "FUT",
+        "name": "Futuristic",
+        "subcategories": {
+          "001": {"code": "CYB", "name": "Cyber"},
+          "002": {"code": "NEN", "name": "Neon"},
+          "003": {"code": "HOL", "name": "Holographic"},
+          "004": {"code": "MET", "name": "Metallic"},
+          "005": {"code": "SPA", "name": "Space"},
+          "006": {"code": "TEK", "name": "Tech"},
+          "007": {"code": "DYS", "name": "Dystopian"},
+          "008": {"code": "UTO", "name": "Utopian"},
+          "009": {"code": "SCI", "name": "Sci_Fi"},
+          "010": {"code": "VRA", "name": "VR_AR"}
+        }
+      },
+      "009": {
+        "code": "GLA",
+        "name": "Glamour",
+        "subcategories": {
+          "001": {"code": "HOL", "name": "Hollywood"},
+          "002": {"code": "VEG", "name": "Vegas"},
+          "003": {"code": "BRO", "name": "Broadway"},
+          "004": {"code": "STA", "name": "Stage"},
+          "005": {"code": "SPR", "name": "Sparkle"},
+          "006": {"code": "SEQ", "name": "Sequin"},
+          "007": {"code": "FEA", "name": "Feather"},
+          "008": {"code": "DIA", "name": "Diamond"},
+          "009": {"code": "GLT", "name": "Glitter"},
+          "010": {"code": "LUX", "name": "Luxury_Glam"}
+        }
+      },
+      "010": {
+        "code": "MIN",
+        "name": "Minimalist",
+        "subcategories": {
+          "001": {"code": "CLE", "name": "Clean"},
+          "002": {"code": "SIM", "name": "Simple"},
+          "003": {"code": "NEU", "name": "Neutral"},
+          "004": {"code": "BAS", "name": "Basic"},
+          "005": {"code": "MON", "name": "Monochrome"},
+          "006": {"code": "STR", "name": "Structured"},
+          "007": {"code": "ESS", "name": "Essential"},
+          "008": {"code": "QUI", "name": "Quiet"},
+          "009": {"code": "MOD", "name": "Modern_Min"},
+          "010": {"code": "SCN", "name": "Scandinavian"}
+        }
+      },
+      "011": {
+        "code": "PRE",
+        "name": "Preppy",
+        "subcategories": {
+          "001": {"code": "IVY", "name": "Ivy_League"},
+          "002": {"code": "COL", "name": "Collegiate"},
+          "003": {"code": "NAU", "name": "Nautical"},
+          "004": {"code": "CON", "name": "Country_Club"},
+          "005": {"code": "TEN", "name": "Tennis"},
+          "006": {"code": "EQU", "name": "Equestrian"},
+          "007": {"code": "LAC", "name": "Lacrosse"},
+          "008": {"code": "HAM", "name": "Hamptons"},
+          "009": {"code": "NEN", "name": "New_England"},
+          "010": {"code": "MOD", "name": "Modern_Prep"}
+        }
+      },
+      "012": {
+        "code": "PRO",
+        "name": "Professional",
+        "subcategories": {
+          "001": {"code": "BUS", "name": "Business"},
+          "002": {"code": "COR", "name": "Corporate"},
+          "003": {"code": "EXE", "name": "Executive"},
+          "004": {"code": "OFF", "name": "Office"},
+          "005": {"code": "SMA", "name": "Smart"},
+          "006": {"code": "POW", "name": "Power"},
+          "007": {"code": "CRE", "name": "Creative_Pro"},
+          "008": {"code": "TEC", "name": "Tech_Pro"},
+          "009": {"code": "MED", "name": "Medical"},
+          "010": {"code": "LEG", "name": "Legal"}
+        }
+      },
+      "013": {
+        "code": "ROM",
+        "name": "Romantic",
+        "subcategories": {
+          "001": {"code": "FEM", "name": "Feminine"},
+          "002": {"code": "SOF", "name": "Soft"},
+          "003": {"code": "FLO", "name": "Floral"},
+          "004": {"code": "LAC", "name": "Lace"},
+          "005": {"code": "RUF", "name": "Ruffle"},
+          "006": {"code": "PAS", "name": "Pastel"},
+          "007": {"code": "VIC", "name": "Victorian"},
+          "008": {"code": "COT", "name": "Cottagecore"},
+          "009": {"code": "FAI", "name": "Fairycore"},
+          "010": {"code": "DRE", "name": "Dreamy"}
+        }
+      },
+      "014": {
+        "code": "STA",
+        "name": "Stage_Performance",
+        "subcategories": {
+          "001": {"code": "CON", "name": "Concert"},
+          "002": {"code": "THR", "name": "Theater"},
+          "003": {"code": "DAN", "name": "Dance"},
+          "004": {"code": "MUS", "name": "Musical"},
+          "005": {"code": "OPE", "name": "Opera"},
+          "006": {"code": "CIR", "name": "Circus"},
+          "007": {"code": "CAB", "name": "Cabaret"},
+          "008": {"code": "FES", "name": "Festival"},
+          "009": {"code": "BRO", "name": "Broadway"},
+          "010": {"code": "POP", "name": "Pop_Star"}
+        }
+      },
+      "015": {
+        "code": "STR",
+        "name": "Streetwear",
+        "subcategories": {
+          "001": {"code": "HYP", "name": "Hypebeast"},
+          "002": {"code": "URB", "name": "Urban"},
+          "003": {"code": "SKA", "name": "Skate"},
+          "004": {"code": "HIP", "name": "Hip_Hop"},
+          "005": {"code": "SUP", "name": "Supreme_Style"},
+          "006": {"code": "OFF", "name": "Off_White"},
+          "007": {"code": "YEE", "name": "Yeezy"},
+          "008": {"code": "VET", "name": "Vetements"},
+          "009": {"code": "BAL", "name": "Balenciaga"},
+          "010": {"code": "JORDAN", "name": "Jordan"}
+        }
+      },
+      "016": {
+        "code": "TRA",
+        "name": "Traditional",
+        "subcategories": {
+          "001": {"code": "KIM", "name": "Kimono"},
+          "002": {"code": "SAR", "name": "Sari"},
+          "003": {"code": "CHE", "name": "Cheongsam"},
+          "004": {"code": "HAN", "name": "Hanbok"},
+          "005": {"code": "DIR", "name": "Dirndl"},
+          "006": {"code": "KIL", "name": "Kilt"},
+          "007": {"code": "DAS", "name": "Dashiki"},
+          "008": {"code": "PON", "name": "Poncho"},
+          "009": {"code": "KAF", "name": "Kaftan"},
+          "010": {"code": "THO", "name": "Thobe"}
+        }
+      },
+      "017": {
+        "code": "UNI",
+        "name": "Uniform",
+        "subcategories": {
+          "001": {"code": "MIL", "name": "Military"},
+          "002": {"code": "POL", "name": "Police"},
+          "003": {"code": "MED", "name": "Medical"},
+          "004": {"code": "SCH", "name": "School"},
+          "005": {"code": "SPO", "name": "Sports"},
+          "006": {"code": "WOR", "name": "Work"},
+          "007": {"code": "CHF", "name": "Chef"},
+          "008": {"code": "PIL", "name": "Pilot"},
+          "009": {"code": "FIR", "name": "Firefighter"},
+          "010": {"code": "SAI", "name": "Sailor"}
+        }
+      },
+      "018": {
+        "code": "VIN",
+        "name": "Vintage",
+        "subcategories": {
+          "001": {"code": "20S", "name": "1920s"},
+          "002": {"code": "50S", "name": "1950s"},
+          "003": {"code": "60S", "name": "1960s"},
+          "004": {"code": "70S", "name": "1970s"},
+          "005": {"code": "80S", "name": "1980s"},
+          "006": {"code": "90S", "name": "1990s"},
+          "007": {"code": "Y2K", "name": "Y2K"},
+          "008": {"code": "PIN", "name": "Pin_Up"},
+          "009": {"code": "VIC", "name": "Victorian"},
+          "010": {"code": "ART", "name": "Art_Deco"}
+        }
+      },
+      "019": {
+        "code": "WRK",
+        "name": "Workwear",
+        "subcategories": {
+          "001": {"code": "UNI", "name": "Uniform"},
+          "002": {"code": "MED", "name": "Medical"},
+          "003": {"code": "CHF", "name": "Chef"},
+          "004": {"code": "CON", "name": "Construction"},
+          "005": {"code": "OFF", "name": "Office"},
+          "006": {"code": "TEC", "name": "Tech_Worker"},
+          "007": {"code": "CRE", "name": "Creative_Professional"},
+          "008": {"code": "MEC", "name": "Mechanic"},
+          "009": {"code": "FAR", "name": "Farmer"},
+          "010": {"code": "SER", "name": "Service_Industry"}
+        }
+      },
+      "020": {
+        "code": "GOT",
+        "name": "Gothic",
+        "subcategories": {
+          "001": {"code": "TRA", "name": "Traditional_Goth"},
+          "002": {"code": "VIC", "name": "Victorian_Goth"},
+          "003": {"code": "CYB", "name": "Cyber_Goth"},
+          "004": {"code": "PAS", "name": "Pastel_Goth"},
+          "005": {"code": "VAM", "name": "Vampire"},
+          "006": {"code": "WIT", "name": "Witchy"},
+          "007": {"code": "ROM", "name": "Romantic_Goth"},
+          "008": {"code": "IND", "name": "Industrial_Goth"},
+          "009": {"code": "LOL", "name": "Lolita_Goth"},
+          "010": {"code": "NU", "name": "Nu_Goth"}
+        }
+      },
+      "021": {
+        "code": "SUS",
+        "name": "Sustainable",
+        "subcategories": {
+          "001": {"code": "ECO", "name": "Eco_Friendly"},
+          "002": {"code": "REC", "name": "Recycled"},
+          "003": {"code": "ORG", "name": "Organic"},
+          "004": {"code": "VEG", "name": "Vegan"},
+          "005": {"code": "UPC", "name": "Upcycled"},
+          "006": {"code": "SLO", "name": "Slow_Fashion"},
+          "007": {"code": "ETH", "name": "Ethical"},
+          "008": {"code": "ZER", "name": "Zero_Waste"},
+          "009": {"code": "FAI", "name": "Fair_Trade"},
+          "010": {"code": "LOC", "name": "Local_Made"}
+        }
+      },
+      "022": {
+        "code": "TEC",
+        "name": "Tech_Wear",
+        "subcategories": {
+          "001": {"code": "FUT", "name": "Futuristic"},
+          "002": {"code": "UTI", "name": "Utility"},
+          "003": {"code": "WEA", "name": "Weather_Resistant"},
+          "004": {"code": "MOD", "name": "Modular"},
+          "005": {"code": "SMT", "name": "Smart_Clothing"},
+          "006": {"code": "LED", "name": "LED_Integrated"},
+          "007": {"code": "TAC", "name": "Tactical"},
+          "008": {"code": "ADV", "name": "Advanced_Materials"},
+          "009": {"code": "MIN", "name": "Minimalist_Tech"},
+          "010": {"code": "ACT", "name": "Active_Tech"}
+        }
+      }
+    }
+  }
+}

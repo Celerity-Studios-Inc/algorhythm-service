@@ -1,0 +1,286 @@
+{
+  "S": {
+    "name": "Stars",
+    "naming_convention": "S.[CategoryCode].[SubCategoryCode].[Sequential].png",
+    "categories": {
+      "001": {
+        "code": "ALT",
+        "name": "Alternative",
+        "subcategories": {
+          "001": {"code": "IND", "name": "Indie"},
+          "002": {"code": "PUN", "name": "Punk"},
+          "003": {"code": "GOT", "name": "Gothic"},
+          "004": {"code": "GRU", "name": "Grunge"},
+          "005": {"code": "EMO", "name": "Emo"},
+          "006": {"code": "SCE", "name": "Scene"}
+        }
+      },
+      "002": {
+        "code": "BBG",
+        "name": "Baby",
+        "subcategories": {
+          "001": {"code": "NEW", "name": "Newborn"},
+          "002": {"code": "INF", "name": "Infant"},
+          "003": {"code": "TOD", "name": "Toddler"},
+          "004": {"code": "CHE", "name": "Cherub"},
+          "005": {"code": "ANG", "name": "Angel"},
+          "006": {"code": "CUT", "name": "Cutie"}
+        }
+      },
+      "003": {
+        "code": "BOY",
+        "name": "Boy",
+        "subcategories": {
+          "001": {"code": "TEE", "name": "Teen"},
+          "002": {"code": "YOU", "name": "Young"},
+          "003": {"code": "COO", "name": "Cool"},
+          "004": {"code": "FRE", "name": "Fresh"},
+          "005": {"code": "URB", "name": "Urban"},
+          "006": {"code": "STR", "name": "Street"}
+        }
+      },
+      "004": {
+        "code": "CLS",
+        "name": "Classic",
+        "subcategories": {
+          "001": {"code": "TIM", "name": "Timeless"},
+          "002": {"code": "ELE", "name": "Elegant"},
+          "003": {"code": "REF", "name": "Refined"},
+          "004": {"code": "TRA", "name": "Traditional"},
+          "005": {"code": "VIN", "name": "Vintage"},
+          "006": {"code": "HER", "name": "Heritage"}
+        }
+      },
+      "005": {
+        "code": "DSC",
+        "name": "Disco",
+        "subcategories": {
+          "001": {"code": "GLI", "name": "Glitter"},
+          "002": {"code": "FUN", "name": "Funk"},
+          "003": {"code": "RET", "name": "Retro"},
+          "004": {"code": "DAN", "name": "Dance"},
+          "005": {"code": "PAR", "name": "Party"},
+          "006": {"code": "GRO", "name": "Groove"}
+        }
+      },
+      "006": {
+        "code": "DRK",
+        "name": "Dark",
+        "subcategories": {
+          "001": {"code": "MYS", "name": "Mysterious"},
+          "002": {"code": "SHA", "name": "Shadow"},
+          "003": {"code": "NIG", "name": "Night"},
+          "004": {"code": "GOT", "name": "Gothic"},
+          "005": {"code": "INT", "name": "Intense"},
+          "006": {"code": "BRO", "name": "Brooding"}
+        }
+      },
+      "007": {
+        "code": "ETH",
+        "name": "Ethnic_Diversity",
+        "subcategories": {
+          "001": {"code": "AFR", "name": "African"},
+          "002": {"code": "ASI", "name": "Asian"},
+          "003": {"code": "LAT", "name": "Latin"},
+          "004": {"code": "MID", "name": "Middle_Eastern"},
+          "005": {"code": "IND", "name": "Indigenous"},
+          "006": {"code": "MIX", "name": "Mixed"},
+          "007": {"code": "PAC", "name": "Pacific_Islander"},
+          "008": {"code": "SOU", "name": "South_Asian"}
+        }
+      },
+      "008": {
+        "code": "GLA",
+        "name": "Glamour",
+        "subcategories": {
+          "001": {"code": "FAS", "name": "Fashion"},
+          "002": {"code": "BEA", "name": "Beauty"},
+          "003": {"code": "LUX", "name": "Luxury"},
+          "004": {"code": "STY", "name": "Style"},
+          "005": {"code": "ELE", "name": "Elegance"},
+          "006": {"code": "COU", "name": "Couture"}
+        }
+      },
+      "009": {
+        "code": "GRL",
+        "name": "Girl",
+        "subcategories": {
+          "001": {"code": "TEE", "name": "Teen"},
+          "002": {"code": "YOU", "name": "Young"},
+          "003": {"code": "CUT", "name": "Cute"},
+          "004": {"code": "FRE", "name": "Fresh"},
+          "005": {"code": "URB", "name": "Urban"},
+          "006": {"code": "STR", "name": "Street"}
+        }
+      },
+      "010": {
+        "code": "HIP",
+        "name": "Hip_Hop",
+        "subcategories": {
+          "001": {"code": "URB", "name": "Urban"},
+          "002": {"code": "STR", "name": "Street"},
+          "003": {"code": "COO", "name": "Cool"},
+          "004": {"code": "FRE", "name": "Fresh"},
+          "005": {"code": "REA", "name": "Real"},
+          "006": {"code": "AUT", "name": "Authentic"}
+        }
+      },
+      "011": {
+        "code": "IND",
+        "name": "Indie",
+        "subcategories": {
+          "001": {"code": "ALT", "name": "Alternative"},
+          "002": {"code": "CRE", "name": "Creative"},
+          "003": {"code": "UNI", "name": "Unique"},
+          "004": {"code": "ART", "name": "Artistic"},
+          "005": {"code": "UND", "name": "Underground"},
+          "006": {"code": "DIY", "name": "DIY"}
+        }
+      },
+      "012": {
+        "code": "KPO",
+        "name": "K_Pop",
+        "subcategories": {
+          "001": {"code": "IDO", "name": "Idol"},
+          "002": {"code": "VIS", "name": "Visual"},
+          "003": {"code": "PER", "name": "Performance"},
+          "004": {"code": "STY", "name": "Style"},
+          "005": {"code": "TRE", "name": "Trendy"},
+          "006": {"code": "GLO", "name": "Global"}
+        }
+      },
+      "013": {
+        "code": "PER",
+        "name": "Performance",
+        "subcategories": {
+          "001": {"code": "STA", "name": "Stage"},
+          "002": {"code": "SHO", "name": "Show"},
+          "003": {"code": "DAN", "name": "Dance"},
+          "004": {"code": "ACT", "name": "Act"},
+          "005": {"code": "SIN", "name": "Sing"},
+          "006": {"code": "ENT", "name": "Entertain"}
+        }
+      },
+      "014": {
+        "code": "POP",
+        "name": "Pop",
+        "subcategories": {
+          "001": {"code": "MAI", "name": "Mainstream"},
+          "002": {"code": "TRE", "name": "Trendy"},
+          "003": {"code": "POP", "name": "Popular"},
+          "004": {"code": "FRE", "name": "Fresh"},
+          "005": {"code": "MOD", "name": "Modern"},
+          "006": {"code": "CUR", "name": "Current"}
+        }
+      },
+      "015": {
+        "code": "PRO",
+        "name": "Professional",
+        "subcategories": {
+          "001": {"code": "BUS", "name": "Business"},
+          "002": {"code": "COR", "name": "Corporate"},
+          "003": {"code": "EXE", "name": "Executive"},
+          "004": {"code": "EXP", "name": "Expert"},
+          "005": {"code": "SPE", "name": "Specialist"},
+          "006": {"code": "LEA", "name": "Leader"}
+        }
+      },
+      "016": {
+        "code": "REG",
+        "name": "Regional",
+        "subcategories": {
+          "001": {"code": "LOC", "name": "Local"},
+          "002": {"code": "CUL", "name": "Cultural"},
+          "003": {"code": "TRA", "name": "Traditional"},
+          "004": {"code": "NAT", "name": "Native"},
+          "005": {"code": "AUT", "name": "Authentic"},
+          "006": {"code": "HER", "name": "Heritage"}
+        }
+      },
+      "017": {
+        "code": "ROC",
+        "name": "Rock",
+        "subcategories": {
+          "001": {"code": "BAN", "name": "Band"},
+          "002": {"code": "GUI", "name": "Guitar"},
+          "003": {"code": "DRU", "name": "Drums"},
+          "004": {"code": "STA", "name": "Stage"},
+          "005": {"code": "LIV", "name": "Live"},
+          "006": {"code": "ENE", "name": "Energy"}
+        }
+      },
+      "018": {
+        "code": "ROM",
+        "name": "Romantic",
+        "subcategories": {
+          "001": {"code": "LOV", "name": "Love"},
+          "002": {"code": "PAS", "name": "Passion"},
+          "003": {"code": "SWE", "name": "Sweet"},
+          "004": {"code": "TEN", "name": "Tender"},
+          "005": {"code": "EMO", "name": "Emotional"},
+          "006": {"code": "HEA", "name": "Heart"}
+        }
+      },
+      "019": {
+        "code": "SNT",
+        "name": "Saint",
+        "subcategories": {
+          "001": {"code": "HOL", "name": "Holy"},
+          "002": {"code": "PUR", "name": "Pure"},
+          "003": {"code": "DIV", "name": "Divine"},
+          "004": {"code": "BLE", "name": "Blessed"},
+          "005": {"code": "SAC", "name": "Sacred"},
+          "006": {"code": "SPI", "name": "Spiritual"}
+        }
+      },
+      "020": {
+        "code": "TEN",
+        "name": "Teen",
+        "subcategories": {
+          "001": {"code": "YOU", "name": "Young"},
+          "002": {"code": "FRE", "name": "Fresh"},
+          "003": {"code": "SCH", "name": "School"},
+          "004": {"code": "TRE", "name": "Trendy"},
+          "005": {"code": "SOC", "name": "Social"},
+          "006": {"code": "ACT", "name": "Active"}
+        }
+      },
+      "021": {
+        "code": "URB",
+        "name": "Urban",
+        "subcategories": {
+          "001": {"code": "CIT", "name": "City"},
+          "002": {"code": "STR", "name": "Street"},
+          "003": {"code": "MET", "name": "Metro"},
+          "004": {"code": "MOD", "name": "Modern"},
+          "005": {"code": "CON", "name": "Contemporary"},
+          "006": {"code": "HIP", "name": "Hip"}
+        }
+      },
+      "022": {
+        "code": "VIN",
+        "name": "Vintage",
+        "subcategories": {
+          "001": {"code": "RET", "name": "Retro"},
+          "002": {"code": "CLA", "name": "Classic"},
+          "003": {"code": "OLD", "name": "Old_School"},
+          "004": {"code": "NOS", "name": "Nostalgic"},
+          "005": {"code": "TIM", "name": "Timeless"},
+          "006": {"code": "HIS", "name": "Historic"}
+        }
+      },
+      "023": {
+        "code": "VIR",
+        "name": "Virtual",
+        "subcategories": {
+          "001": {"code": "AIA", "name": "AI_Avatar"},
+          "002": {"code": "DIG", "name": "Digital_Human"},
+          "003": {"code": "CGI", "name": "CGI"},
+          "004": {"code": "SYN", "name": "Synthetic"},
+          "005": {"code": "HOL", "name": "Hologram"},
+          "006": {"code": "MET", "name": "Meta_Human"}
+        }
+      }
+    }
+  }
+}

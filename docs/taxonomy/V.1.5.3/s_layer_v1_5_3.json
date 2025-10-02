@@ -1,0 +1,287 @@
+{
+  "S": {
+    "name": "Stars",
+    "naming_convention": "S.[CategoryCode].[SubCategoryCode].[Sequential].png",
+    "categories": {
+      "001": {
+        "code": "AFM",
+        "name": "African_Male",
+        "subcategories": {
+          "001": {"code": "WES", "name": "West_African"},
+          "002": {"code": "EAS", "name": "East_African"},
+          "003": {"code": "SOU", "name": "South_African"},
+          "004": {"code": "NOR", "name": "North_African"},
+          "005": {"code": "CEN", "name": "Central_African"}
+        }
+      },
+      "002": {
+        "code": "AFF",
+        "name": "African_Female",
+        "subcategories": {
+          "001": {"code": "WES", "name": "West_African"},
+          "002": {"code": "EAS", "name": "East_African"},
+          "003": {"code": "SOU", "name": "South_African"},
+          "004": {"code": "NOR", "name": "North_African"},
+          "005": {"code": "CEN", "name": "Central_African"}
+        }
+      },
+      "003": {
+        "code": "ASM",
+        "name": "Asian_Male",
+        "subcategories": {
+          "001": {"code": "EAS", "name": "East_Asian"},
+          "002": {"code": "SOU", "name": "South_Asian"},
+          "003": {"code": "SEA", "name": "Southeast_Asian"},
+          "004": {"code": "CEN", "name": "Central_Asian"},
+          "005": {"code": "WES", "name": "West_Asian"}
+        }
+      },
+      "004": {
+        "code": "ASF",
+        "name": "Asian_Female",
+        "subcategories": {
+          "001": {"code": "EAS", "name": "East_Asian"},
+          "002": {"code": "SOU", "name": "South_Asian"},
+          "003": {"code": "SEA", "name": "Southeast_Asian"},
+          "004": {"code": "CEN", "name": "Central_Asian"},
+          "005": {"code": "WES", "name": "West_Asian"}
+        }
+      },
+      "005": {
+        "code": "BLA",
+        "name": "Black_American",
+        "subcategories": {
+          "001": {"code": "MAL", "name": "Male"},
+          "002": {"code": "FEM", "name": "Female"},
+          "003": {"code": "YNG", "name": "Young"},
+          "004": {"code": "MAT", "name": "Mature"},
+          "005": {"code": "URB", "name": "Urban"},
+          "006": {"code": "CON", "name": "Contemporary"}
+        }
+      },
+      "006": {
+        "code": "BXT",
+        "name": "Biracial_Mixed",
+        "subcategories": {
+          "001": {"code": "AFE", "name": "Afro_European"},
+          "002": {"code": "ASE", "name": "Asian_European"},
+          "003": {"code": "LAE", "name": "Latino_European"},
+          "004": {"code": "AFA", "name": "Afro_Asian"},
+          "005": {"code": "MUL", "name": "Multi_Ethnic"},
+          "006": {"code": "IND", "name": "Indigenous_Mixed"}
+        }
+      },
+      "007": {
+        "code": "CAC",
+        "name": "Caucasian",
+        "subcategories": {
+          "001": {"code": "NOR", "name": "Northern_European"},
+          "002": {"code": "SOU", "name": "Southern_European"},
+          "003": {"code": "EAS", "name": "Eastern_European"},
+          "004": {"code": "WES", "name": "Western_European"},
+          "005": {"code": "MED", "name": "Mediterranean"},
+          "006": {"code": "AME", "name": "American"}
+        }
+      },
+      "008": {
+        "code": "EAS",
+        "name": "East_Asian",
+        "subcategories": {
+          "001": {"code": "KOR", "name": "Korean"},
+          "002": {"code": "JPN", "name": "Japanese"},
+          "003": {"code": "CHN", "name": "Chinese"},
+          "004": {"code": "TWN", "name": "Taiwanese"},
+          "005": {"code": "MON", "name": "Mongolian"},
+          "006": {"code": "VIE", "name": "Vietnamese"}
+        }
+      },
+      "009": {
+        "code": "HIS",
+        "name": "Hispanic",
+        "subcategories": {
+          "001": {"code": "MEX", "name": "Mexican"},
+          "002": {"code": "PUE", "name": "Puerto_Rican"},
+          "003": {"code": "CUB", "name": "Cuban"},
+          "004": {"code": "COL", "name": "Colombian"},
+          "005": {"code": "ARG", "name": "Argentinian"},
+          "006": {"code": "VEN", "name": "Venezuelan"},
+          "007": {"code": "BRA", "name": "Brazilian"}
+        }
+      },
+      "010": {
+        "code": "IND",
+        "name": "Indian",
+        "subcategories": {
+          "001": {"code": "NOR", "name": "North_Indian"},
+          "002": {"code": "SOU", "name": "South_Indian"},
+          "003": {"code": "BEN", "name": "Bengali"},
+          "004": {"code": "PUN", "name": "Punjabi"},
+          "005": {"code": "GUJ", "name": "Gujarati"},
+          "006": {"code": "MAR", "name": "Marathi"}
+        }
+      },
+      "011": {
+        "code": "MID",
+        "name": "Middle_Eastern",
+        "subcategories": {
+          "001": {"code": "ARA", "name": "Arab"},
+          "002": {"code": "PER", "name": "Persian"},
+          "003": {"code": "TUR", "name": "Turkish"},
+          "004": {"code": "ISR", "name": "Israeli"},
+          "005": {"code": "KUR", "name": "Kurdish"},
+          "006": {"code": "ARM", "name": "Armenian"}
+        }
+      },
+      "012": {
+        "code": "PIF",
+        "name": "Pacific_Islander",
+        "subcategories": {
+          "001": {"code": "HAW", "name": "Hawaiian"},
+          "002": {"code": "SAM", "name": "Samoan"},
+          "003": {"code": "FIJ", "name": "Fijian"},
+          "004": {"code": "TON", "name": "Tongan"},
+          "005": {"code": "MAO", "name": "Maori"},
+          "006": {"code": "TAH", "name": "Tahitian"}
+        }
+      },
+      "013": {
+        "code": "NAT",
+        "name": "Native_American",
+        "subcategories": {
+          "001": {"code": "NAM", "name": "North_American"},
+          "002": {"code": "CEN", "name": "Central_American"},
+          "003": {"code": "SOU", "name": "South_American"},
+          "004": {"code": "INE", "name": "Inuit_Eskimo"},
+          "005": {"code": "MES", "name": "Mestizo"},
+          "006": {"code": "AND", "name": "Andean"}
+        }
+      },
+      "014": {
+        "code": "NOR",
+        "name": "Nordic",
+        "subcategories": {
+          "001": {"code": "SWE", "name": "Swedish"},
+          "002": {"code": "NOR", "name": "Norwegian"},
+          "003": {"code": "DAN", "name": "Danish"},
+          "004": {"code": "FIN", "name": "Finnish"},
+          "005": {"code": "ICE", "name": "Icelandic"},
+          "006": {"code": "BAL", "name": "Baltic"}
+        }
+      },
+      "015": {
+        "code": "SEA",
+        "name": "Southeast_Asian",
+        "subcategories": {
+          "001": {"code": "THA", "name": "Thai"},
+          "002": {"code": "VIE", "name": "Vietnamese"},
+          "003": {"code": "PHI", "name": "Filipino"},
+          "004": {"code": "IND", "name": "Indonesian"},
+          "005": {"code": "MAL", "name": "Malaysian"},
+          "006": {"code": "SIN", "name": "Singaporean"},
+          "007": {"code": "BUR", "name": "Burmese"}
+        }
+      },
+      "016": {
+        "code": "SOA",
+        "name": "South_Asian",
+        "subcategories": {
+          "001": {"code": "IND", "name": "Indian"},
+          "002": {"code": "PAK", "name": "Pakistani"},
+          "003": {"code": "BAN", "name": "Bangladeshi"},
+          "004": {"code": "SRI", "name": "Sri_Lankan"},
+          "005": {"code": "NEP", "name": "Nepali"},
+          "006": {"code": "BHU", "name": "Bhutanese"}
+        }
+      },
+      "017": {
+        "code": "MUL",
+        "name": "Multi_Ethnic",
+        "subcategories": {
+          "001": {"code": "DIV", "name": "Diverse_Mix"},
+          "002": {"code": "GLO", "name": "Global_Fusion"},
+          "003": {"code": "URB", "name": "Urban_Mix"},
+          "004": {"code": "COS", "name": "Cosmopolitan"},
+          "005": {"code": "INT", "name": "International"},
+          "006": {"code": "MET", "name": "Metro_Mix"}
+        }
+      },
+      "018": {
+        "code": "TEE",
+        "name": "Teen",
+        "subcategories": {
+          "001": {"code": "GEN", "name": "Gen_Z"},
+          "002": {"code": "HIG", "name": "High_School"},
+          "003": {"code": "COL", "name": "College"},
+          "004": {"code": "YNG", "name": "Young_Teen"},
+          "005": {"code": "OLD", "name": "Older_Teen"},
+          "006": {"code": "INF", "name": "Influencer"}
+        }
+      },
+      "019": {
+        "code": "MAT",
+        "name": "Mature",
+        "subcategories": {
+          "001": {"code": "MIL", "name": "Millennial"},
+          "002": {"code": "GEX", "name": "Gen_X"},
+          "003": {"code": "BOO", "name": "Boomer"},
+          "004": {"code": "ADU", "name": "Adult"},
+          "005": {"code": "MID", "name": "Middle_Aged"},
+          "006": {"code": "SEN", "name": "Senior"}
+        }
+      },
+      "020": {
+        "code": "FAN",
+        "name": "Fantasy",
+        "subcategories": {
+          "001": {"code": "ELF", "name": "Elven"},
+          "002": {"code": "FAI", "name": "Fairy"},
+          "003": {"code": "VAM", "name": "Vampire"},
+          "004": {"code": "WER", "name": "Werewolf"},
+          "005": {"code": "ANG", "name": "Angel"},
+          "006": {"code": "DEM", "name": "Demon"},
+          "007": {"code": "MYT", "name": "Mythical"}
+        }
+      },
+      "021": {
+        "code": "ANI",
+        "name": "Anime",
+        "subcategories": {
+          "001": {"code": "SHO", "name": "Shounen"},
+          "002": {"code": "SHJ", "name": "Shoujo"},
+          "003": {"code": "SEI", "name": "Seinen"},
+          "004": {"code": "JOS", "name": "Josei"},
+          "005": {"code": "CHI", "name": "Chibi"},
+          "006": {"code": "KAW", "name": "Kawaii"},
+          "007": {"code": "MEK", "name": "Mecha"}
+        }
+      },
+      "022": {
+        "code": "AIV",
+        "name": "AI_Virtual",
+        "subcategories": {
+          "001": {"code": "REA", "name": "Realistic_AI"},
+          "002": {"code": "STY", "name": "Stylized_AI"},
+          "003": {"code": "VTU", "name": "VTuber"},
+          "004": {"code": "HOL", "name": "Holographic"},
+          "005": {"code": "SYN", "name": "Synthetic"},
+          "006": {"code": "DIG", "name": "Digital_Human"},
+          "007": {"code": "AVA", "name": "Avatar"}
+        }
+      },
+      "023": {
+        "code": "DIV",
+        "name": "Diverse_Inclusive",
+        "subcategories": {
+          "001": {"code": "NBN", "name": "Non_Binary"},
+          "002": {"code": "TRA", "name": "Trans"},
+          "003": {"code": "GEN", "name": "Gender_Fluid"},
+          "004": {"code": "AND", "name": "Androgynous"},
+          "005": {"code": "PLU", "name": "Plus_Size"},
+          "006": {"code": "DIS", "name": "Differently_Abled"},
+          "007": {"code": "VIT", "name": "Vitiligo"},
+          "008": {"code": "ALB", "name": "Albino"}
+        }
+      }
+    }
+  }
+}

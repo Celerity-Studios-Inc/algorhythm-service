@@ -1,0 +1,437 @@
+{
+  "G": {
+    "name": "Songs",
+    "naming_convention": "G.[CategoryCode].[SubCategoryCode].[Sequential].mp3",
+    "categories": {
+      "001": {
+        "code": "AFR",
+        "name": "African",
+        "subcategories": {
+          "001": {"code": "AFB", "name": "Afrobeats"},
+          "002": {"code": "AFT", "name": "Afro_Tech"},
+          "003": {"code": "AMA", "name": "Amapiano"},
+          "004": {"code": "AMF", "name": "Amapiano_Funk"},
+          "005": {"code": "APO", "name": "Afro_Pop"},
+          "006": {"code": "AZO", "name": "Azonto"},
+          "007": {"code": "BFL", "name": "Bongo_Flava"},
+          "008": {"code": "GQO", "name": "Gqom"},
+          "009": {"code": "HIL", "name": "Highlife"},
+          "010": {"code": "KWA", "name": "Kwaito"},
+          "011": {"code": "NDO", "name": "Ndombolo"},
+          "012": {"code": "SOU", "name": "Soukous"},
+          "013": {"code": "AFH", "name": "Afro_House"}
+        }
+      },
+      "002": {
+        "code": "ASI",
+        "name": "Asian",
+        "subcategories": {
+          "001": {"code": "JPO", "name": "J_Pop"},
+          "002": {"code": "KPO", "name": "K_Pop"},
+          "003": {"code": "CPO", "name": "C_Pop"},
+          "004": {"code": "TPO", "name": "T_Pop"},
+          "005": {"code": "VPO", "name": "V_Pop"},
+          "006": {"code": "JRO", "name": "J_Rock"},
+          "007": {"code": "KRO", "name": "K_Rock"},
+          "008": {"code": "JIN", "name": "J_Indie"},
+          "009": {"code": "KIN", "name": "K_Indie"},
+          "010": {"code": "JAZ", "name": "J_Asian_Z"},
+          "011": {"code": "KRB", "name": "K_RnB"},
+          "012": {"code": "JTR", "name": "J_Trap"}
+        }
+      },
+      "003": {
+        "code": "BLU",
+        "name": "Blues",
+        "subcategories": {
+          "001": {"code": "CLA", "name": "Classic"},
+          "002": {"code": "ELE", "name": "Electric"},
+          "003": {"code": "DEL", "name": "Delta"},
+          "004": {"code": "CHI", "name": "Chicago"},
+          "005": {"code": "TEX", "name": "Texas"},
+          "006": {"code": "MOD", "name": "Modern_Blues"},
+          "007": {"code": "BLR", "name": "Blues_Rock"},
+          "008": {"code": "SOU", "name": "Soul_Blues"},
+          "009": {"code": "ACO", "name": "Acoustic_Blues"},
+          "010": {"code": "JMP", "name": "Jump_Blues"}
+        }
+      },
+      "004": {
+        "code": "CAM",
+        "name": "Central_American",
+        "subcategories": {
+          "001": {"code": "REG", "name": "Reggaeton"},
+          "002": {"code": "SAL", "name": "Salsa"},
+          "003": {"code": "BAC", "name": "Bachata"},
+          "004": {"code": "MER", "name": "Merengue"},
+          "005": {"code": "CUM", "name": "Cumbia"},
+          "006": {"code": "RAN", "name": "Ranchera"},
+          "007": {"code": "MAR", "name": "Mariachi"},
+          "008": {"code": "TAN", "name": "Tango"},
+          "009": {"code": "BOS", "name": "Bossa_Nova"},
+          "010": {"code": "LAP", "name": "Latin_Pop"}
+        }
+      },
+      "005": {
+        "code": "CAR",
+        "name": "Caribbean",
+        "subcategories": {
+          "001": {"code": "DAN", "name": "Dancehall"},
+          "002": {"code": "SOC", "name": "Soca"},
+          "003": {"code": "CAL", "name": "Calypso"},
+          "004": {"code": "REG", "name": "Reggae"},
+          "005": {"code": "DUB", "name": "Dub"},
+          "006": {"code": "STE", "name": "Steelpan"},
+          "007": {"code": "ZOU", "name": "Zouk"},
+          "008": {"code": "KOM", "name": "Kompa"},
+          "009": {"code": "BOU", "name": "Bouyon"},
+          "010": {"code": "CHU", "name": "Chutney"}
+        }
+      },
+      "006": {
+        "code": "CLS",
+        "name": "Classical",
+        "subcategories": {
+          "001": {"code": "ORC", "name": "Orchestra"},
+          "002": {"code": "OPE", "name": "Opera"},
+          "003": {"code": "CHA", "name": "Chamber"},
+          "004": {"code": "BAR", "name": "Baroque"},
+          "005": {"code": "ROM", "name": "Romantic"},
+          "006": {"code": "MOD", "name": "Modern"},
+          "007": {"code": "CON", "name": "Contemporary"},
+          "008": {"code": "MIN", "name": "Minimalist"},
+          "009": {"code": "SYM", "name": "Symphonic"},
+          "010": {"code": "CHO", "name": "Choral"}
+        }
+      },
+      "007": {
+        "code": "CTY",
+        "name": "Country",
+        "subcategories": {
+          "001": {"code": "NAS", "name": "Nashville"},
+          "002": {"code": "TEX", "name": "Texas"},
+          "003": {"code": "MOD", "name": "Modern"},
+          "004": {"code": "TRA", "name": "Traditional"},
+          "005": {"code": "OUT", "name": "Outlaw"},
+          "006": {"code": "ALT", "name": "Alternative"},
+          "007": {"code": "POP", "name": "Pop_Country"},
+          "008": {"code": "BLU", "name": "Bluegrass"},
+          "009": {"code": "HON", "name": "Honky_Tonk"},
+          "010": {"code": "WES", "name": "Western"}
+        }
+      },
+      "008": {
+        "code": "EDM",
+        "name": "Electronic",
+        "subcategories": {
+          "001": {"code": "HOU", "name": "House"},
+          "002": {"code": "TEC", "name": "Techno"},
+          "003": {"code": "TRA", "name": "Trance"},
+          "004": {"code": "DUB", "name": "Dubstep"},
+          "005": {"code": "DNB", "name": "Drum_Bass"},
+          "006": {"code": "FUT", "name": "Future_Bass"},
+          "007": {"code": "TRP", "name": "Trap"},
+          "008": {"code": "PRO", "name": "Progressive"},
+          "009": {"code": "ELE", "name": "Electro"},
+          "010": {"code": "AMB", "name": "Ambient"},
+          "011": {"code": "BIG", "name": "Big_Room"},
+          "012": {"code": "HAR", "name": "Hardstyle"},
+          "013": {"code": "BRE", "name": "Breakbeat"},
+          "014": {"code": "DEE", "name": "Deep_House"},
+          "015": {"code": "TEH", "name": "Tech_House"},
+          "016": {"code": "MEL", "name": "Melodic_House"},
+          "017": {"code": "AFH", "name": "Afro_House"},
+          "018": {"code": "PHO", "name": "Phonk"},
+          "019": {"code": "WAV", "name": "Wave"},
+          "020": {"code": "VAP", "name": "Vaporwave"}
+        }
+      },
+      "009": {
+        "code": "EXP",
+        "name": "Experimental",
+        "subcategories": {
+          "001": {"code": "AVA", "name": "Avant_Garde"},
+          "002": {"code": "NOI", "name": "Noise"},
+          "003": {"code": "GLI", "name": "Glitch"},
+          "004": {"code": "IDM", "name": "IDM"},
+          "005": {"code": "DRO", "name": "Drone"},
+          "006": {"code": "FIE", "name": "Field_Recording"},
+          "007": {"code": "AME", "name": "Ambient_Experimental"},
+          "008": {"code": "MUS", "name": "Musique_Concrete"},
+          "009": {"code": "SOU", "name": "Sound_Art"},
+          "010": {"code": "MIN", "name": "Minimalist"}
+        }
+      },
+      "010": {
+        "code": "FOL",
+        "name": "Folk",
+        "subcategories": {
+          "001": {"code": "TRA", "name": "Traditional"},
+          "002": {"code": "IND", "name": "Indie_Folk"},
+          "003": {"code": "WOR", "name": "World_Folk"},
+          "004": {"code": "CON", "name": "Contemporary"},
+          "005": {"code": "ACO", "name": "Acoustic"},
+          "006": {"code": "NEO", "name": "Neo_Folk"},
+          "007": {"code": "PSY", "name": "Psychedelic_Folk"},
+          "008": {"code": "FRE", "name": "Freak_Folk"},
+          "009": {"code": "ANT", "name": "Anti_Folk"},
+          "010": {"code": "CHA", "name": "Chamber_Folk"}
+        }
+      },
+      "011": {
+        "code": "FUS",
+        "name": "Fusion",
+        "subcategories": {
+          "001": {"code": "GLO", "name": "Global_Mashup"},
+          "002": {"code": "CRO", "name": "Cross_Genre"},
+          "003": {"code": "JAZ", "name": "Jazz_Fusion"},
+          "004": {"code": "ROC", "name": "Rock_Fusion"},
+          "005": {"code": "ELE", "name": "Electronic_Fusion"},
+          "006": {"code": "WOR", "name": "World_Fusion"},
+          "007": {"code": "LAT", "name": "Latin_Fusion"},
+          "008": {"code": "AIG", "name": "AI_Generated"},
+          "009": {"code": "REM", "name": "Remix_Culture"},
+          "010": {"code": "HYB", "name": "Hybrid_Genres"}
+        }
+      },
+      "012": {
+        "code": "GAM",
+        "name": "Gaming",
+        "subcategories": {
+          "001": {"code": "CHI", "name": "Chiptune"},
+          "002": {"code": "EPI", "name": "Epic_Soundtrack"},
+          "003": {"code": "RET", "name": "Retro_Pixel"},
+          "004": {"code": "SYN", "name": "Synthwave"},
+          "005": {"code": "VGM", "name": "Video_Game_Music"},
+          "006": {"code": "ESP", "name": "Esports_Anthem"},
+          "007": {"code": "MMO", "name": "MMO_Soundtrack"},
+          "008": {"code": "BAT", "name": "Battle_Music"},
+          "009": {"code": "AMG", "name": "Ambient_Game"},
+          "010": {"code": "8BT", "name": "8_Bit"}
+        }
+      },
+      "013": {
+        "code": "HIP",
+        "name": "Hip_Hop",
+        "subcategories": {
+          "001": {"code": "BOM", "name": "Boom_Bap"},
+          "002": {"code": "CHO", "name": "Chopped_Screwed"},
+          "003": {"code": "CLO", "name": "Cloud_Rap"},
+          "004": {"code": "CON", "name": "Conscious"},
+          "005": {"code": "CRU", "name": "Crunk"},
+          "006": {"code": "DRI", "name": "Drill"},
+          "007": {"code": "EMO", "name": "Emo_Rap"},
+          "008": {"code": "GFU", "name": "G_Funk"},
+          "009": {"code": "GRI", "name": "Grime"},
+          "010": {"code": "HYP", "name": "Hyphy"},
+          "011": {"code": "JTR", "name": "Jazz_Trap"},
+          "012": {"code": "LOF", "name": "Lofi_Hip_Hop"},
+          "013": {"code": "MUM", "name": "Mumble_Rap"},
+          "014": {"code": "OLD", "name": "Old_School"},
+          "015": {"code": "TRP", "name": "Trap"},
+          "016": {"code": "UKR", "name": "UK_Rap"},
+          "017": {"code": "WCO", "name": "West_Coast"},
+          "018": {"code": "ECO", "name": "East_Coast"}
+        }
+      },
+      "014": {
+        "code": "IND",
+        "name": "Indie",
+        "subcategories": {
+          "001": {"code": "DRE", "name": "Dream_Pop"},
+          "002": {"code": "ELE", "name": "Electro_Indie"},
+          "003": {"code": "FOL", "name": "Folk_Indie"},
+          "004": {"code": "GAR", "name": "Garage"},
+          "005": {"code": "INP", "name": "Indie_Pop"},
+          "006": {"code": "INR", "name": "Indie_Rock"},
+          "007": {"code": "SYN", "name": "Synth_Pop"},
+          "008": {"code": "BED", "name": "Bedroom_Pop"},
+          "009": {"code": "SHO", "name": "Shoegaze"},
+          "010": {"code": "LOF", "name": "Lo_Fi"}
+        }
+      },
+      "015": {
+        "code": "JAZ",
+        "name": "Jazz",
+        "subcategories": {
+          "001": {"code": "BEB", "name": "Bebop"},
+          "002": {"code": "COO", "name": "Cool_Jazz"},
+          "003": {"code": "FRE", "name": "Free_Jazz"},
+          "004": {"code": "FUS", "name": "Fusion"},
+          "005": {"code": "LAT", "name": "Latin_Jazz"},
+          "006": {"code": "SMO", "name": "Smooth_Jazz"},
+          "007": {"code": "SWI", "name": "Swing"},
+          "008": {"code": "ACI", "name": "Acid_Jazz"},
+          "009": {"code": "MOD", "name": "Modal_Jazz"},
+          "010": {"code": "HRB", "name": "Hard_Bop"}
+        }
+      },
+      "016": {
+        "code": "LAT",
+        "name": "Latin",
+        "subcategories": {
+          "001": {"code": "REG", "name": "Reggaeton"},
+          "002": {"code": "SAL", "name": "Salsa"},
+          "003": {"code": "BAC", "name": "Bachata"},
+          "004": {"code": "MER", "name": "Merengue"},
+          "005": {"code": "CUM", "name": "Cumbia"},
+          "006": {"code": "RAN", "name": "Ranchera"},
+          "007": {"code": "MAR", "name": "Mariachi"},
+          "008": {"code": "TAN", "name": "Tango"},
+          "009": {"code": "BOS", "name": "Bossa_Nova"},
+          "010": {"code": "LAP", "name": "Latin_Pop"},
+          "011": {"code": "BBS", "name": "Bad_Bunny_Style"},
+          "012": {"code": "LTR", "name": "Latin_Trap"}
+        }
+      },
+      "017": {
+        "code": "MID",
+        "name": "Middle_Eastern",
+        "subcategories": {
+          "001": {"code": "ARP", "name": "Arabic_Pop"},
+          "002": {"code": "TUP", "name": "Turkish_Pop"},
+          "003": {"code": "PEP", "name": "Persian_Pop"},
+          "004": {"code": "DAB", "name": "Dabke"},
+          "005": {"code": "KHA", "name": "Khaleeji"},
+          "006": {"code": "MAG", "name": "Maghrebi"},
+          "007": {"code": "SHA", "name": "Shaabi"},
+          "008": {"code": "MIZ", "name": "Mizrahi"},
+          "009": {"code": "SUF", "name": "Sufi"},
+          "010": {"code": "ORI", "name": "Oriental"}
+        }
+      },
+      "018": {
+        "code": "POP",
+        "name": "Pop",
+        "subcategories": {
+          "001": {"code": "CLA", "name": "Classic_Pop"},
+          "002": {"code": "CON", "name": "Contemporary_Pop"},
+          "003": {"code": "TEE", "name": "Teen_Pop"},
+          "004": {"code": "DAN", "name": "Dance_Pop"},
+          "005": {"code": "POW", "name": "Power_Pop"},
+          "006": {"code": "BUB", "name": "Bubblegum_Pop"},
+          "007": {"code": "ELE", "name": "Electronic_Pop"},
+          "008": {"code": "BAL", "name": "Pop_Ballads"},
+          "009": {"code": "JPO", "name": "J_Pop"},
+          "010": {"code": "KPO", "name": "K_Pop"},
+          "011": {"code": "HYP", "name": "Hyper_Pop"},
+          "012": {"code": "DAR", "name": "Dark_Pop"}
+        }
+      },
+      "019": {
+        "code": "PUN",
+        "name": "Punk",
+        "subcategories": {
+          "001": {"code": "POP", "name": "Pop_Punk"},
+          "002": {"code": "HAR", "name": "Hardcore"},
+          "003": {"code": "POS", "name": "Post_Punk"},
+          "004": {"code": "SKA", "name": "Ska_Punk"},
+          "005": {"code": "EMO", "name": "Emo"},
+          "006": {"code": "CRU", "name": "Crust_Punk"},
+          "007": {"code": "GOT", "name": "Gothic_Rock"},
+          "008": {"code": "ANA", "name": "Anarcho_Punk"},
+          "009": {"code": "GAR", "name": "Garage_Punk"},
+          "010": {"code": "STR", "name": "Street_Punk"}
+        }
+      },
+      "020": {
+        "code": "RNB",
+        "name": "R_and_B",
+        "subcategories": {
+          "001": {"code": "CON", "name": "Contemporary"},
+          "002": {"code": "NEO", "name": "Neo_Soul"},
+          "003": {"code": "FUN", "name": "Funk"},
+          "004": {"code": "ALT", "name": "Alternative_RnB"},
+          "005": {"code": "TRS", "name": "Trap_Soul"},
+          "006": {"code": "CLA", "name": "Classic_RnB"},
+          "007": {"code": "MOD", "name": "Modern_RnB"},
+          "008": {"code": "AFR", "name": "Afro_RnB"},
+          "009": {"code": "SOU", "name": "Soul"},
+          "010": {"code": "MOT", "name": "Motown"}
+        }
+      },
+      "021": {
+        "code": "ROC",
+        "name": "Rock",
+        "subcategories": {
+          "001": {"code": "ALT", "name": "Alternative"},
+          "002": {"code": "CLA", "name": "Classic_Rock"},
+          "003": {"code": "MET", "name": "Metal"},
+          "004": {"code": "HAR", "name": "Hard_Rock"},
+          "005": {"code": "IND", "name": "Indie_Rock"},
+          "006": {"code": "PRO", "name": "Progressive"},
+          "007": {"code": "PSY", "name": "Psychedelic"},
+          "008": {"code": "GAR", "name": "Garage_Rock"},
+          "009": {"code": "POP", "name": "Pop_Rock"},
+          "010": {"code": "GRU", "name": "Grunge"},
+          "011": {"code": "PUN", "name": "Punk_Rock"},
+          "012": {"code": "SOU", "name": "Southern_Rock"}
+        }
+      },
+      "022": {
+        "code": "SOC",
+        "name": "Social_Media",
+        "subcategories": {
+          "001": {"code": "TIK", "name": "TikTok_Viral"},
+          "002": {"code": "INS", "name": "Instagram_Reels"},
+          "003": {"code": "YTS", "name": "YouTube_Shorts"},
+          "004": {"code": "SNA", "name": "Snapchat_Sounds"},
+          "005": {"code": "TWI", "name": "Twitter_Clips"},
+          "006": {"code": "FAC", "name": "Facebook_Watch"},
+          "007": {"code": "PIN", "name": "Pinterest_Audio"},
+          "008": {"code": "LIN", "name": "LinkedIn_Professional"},
+          "009": {"code": "DIS", "name": "Discord_Gaming"},
+          "010": {"code": "TWC", "name": "Twitch_Streams"}
+        }
+      },
+      "023": {
+        "code": "TRA",
+        "name": "Traditional",
+        "subcategories": {
+          "001": {"code": "CUL", "name": "Cultural"},
+          "002": {"code": "HER", "name": "Heritage"},
+          "003": {"code": "CER", "name": "Ceremonial"},
+          "004": {"code": "REL", "name": "Religious"},
+          "005": {"code": "ETH", "name": "Ethnic"},
+          "006": {"code": "ANC", "name": "Ancestral"},
+          "007": {"code": "IND", "name": "Indigenous"},
+          "008": {"code": "CLR", "name": "Classical_Regional"},
+          "009": {"code": "HIS", "name": "Historical"},
+          "010": {"code": "RIT", "name": "Ritualistic"}
+        }
+      },
+      "024": {
+        "code": "AIG",
+        "name": "AI_Generated",
+        "subcategories": {
+          "001": {"code": "VOC", "name": "AI_Vocals"},
+          "002": {"code": "INS", "name": "AI_Instrumental"},
+          "003": {"code": "MAS", "name": "AI_Mashups"},
+          "004": {"code": "REM", "name": "AI_Remixes"},
+          "005": {"code": "VAR", "name": "AI_Variations"},
+          "006": {"code": "GEN", "name": "Generative_Loops"},
+          "007": {"code": "STE", "name": "Stem_Isolation"},
+          "008": {"code": "HUM", "name": "Human_AI_Hybrid"},
+          "009": {"code": "CON", "name": "AI_Continuation"},
+          "010": {"code": "STY", "name": "Style_Transfer"}
+        }
+      },
+      "025": {
+        "code": "IMM",
+        "name": "Immersive",
+        "subcategories": {
+          "001": {"code": "SPA", "name": "Spatial_Audio"},
+          "002": {"code": "360", "name": "360_Degree"},
+          "003": {"code": "BIN", "name": "Binaural"},
+          "004": {"code": "3DS", "name": "3D_Sound"},
+          "005": {"code": "DOL", "name": "Dolby_Atmos"},
+          "006": {"code": "SON", "name": "Sony_360"},
+          "007": {"code": "APP", "name": "Apple_Spatial"},
+          "008": {"code": "AMB", "name": "Ambisonic"},
+          "009": {"code": "VIR", "name": "Virtual_Reality"},
+          "010": {"code": "AUG", "name": "Augmented_Audio"}
+        }
+      }
+    }
+  }
+}

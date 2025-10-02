@@ -1,0 +1,200 @@
+{
+  "T": {
+    "name": "Training_Data",
+    "naming_convention": "T.[CategoryCode].[SubCategoryCode].[Sequential].set",
+    "categories": {
+      "001": {
+        "code": "REF",
+        "name": "Reference_Materials",
+        "subcategories": {
+          "001": {"code": "IMG", "name": "Reference_Images"},
+          "002": {"code": "VID", "name": "Reference_Videos"},
+          "003": {"code": "AUD", "name": "Reference_Audio"},
+          "004": {"code": "STY", "name": "Style_Guides"},
+          "005": {"code": "MOO", "name": "Mood_Boards"},
+          "006": {"code": "COL", "name": "Color_Palettes"},
+          "007": {"code": "TEX", "name": "Texture_References"},
+          "008": {"code": "LIG", "name": "Lighting_References"},
+          "009": {"code": "COM", "name": "Composition_Guides"},
+          "010": {"code": "MOT", "name": "Motion_References"}
+        }
+      },
+      "002": {
+        "code": "PRO",
+        "name": "Generation_Prompts",
+        "subcategories": {
+          "001": {"code": "CRE", "name": "Creative_Prompts"},
+          "002": {"code": "TEC", "name": "Technical_Prompts"},
+          "003": {"code": "STY", "name": "Style_Prompts"},
+          "004": {"code": "MOO", "name": "Mood_Prompts"},
+          "005": {"code": "NEG", "name": "Negative_Prompts"},
+          "006": {"code": "CON", "name": "Control_Prompts"},
+          "007": {"code": "SEE", "name": "Seed_Values"},
+          "008": {"code": "PAR", "name": "Parameter_Sets"},
+          "009": {"code": "CHN", "name": "Chain_Prompts"},
+          "010": {"code": "MUL", "name": "Multi_Prompts"}
+        }
+      },
+      "003": {
+        "code": "MOD",
+        "name": "Model_Training",
+        "subcategories": {
+          "001": {"code": "DAT", "name": "Dataset"},
+          "002": {"code": "EPO", "name": "Epochs"},
+          "003": {"code": "BAT", "name": "Batch_Sizes"},
+          "004": {"code": "LER", "name": "Learning_Rates"},
+          "005": {"code": "OPT", "name": "Optimizers"},
+          "006": {"code": "REG", "name": "Regularization"},
+          "007": {"code": "AUG", "name": "Augmentation"},
+          "008": {"code": "PRE", "name": "Pre_Training"},
+          "009": {"code": "FIN", "name": "Fine_Tuning"},
+          "010": {"code": "TRA", "name": "Transfer_Learning"}
+        }
+      },
+      "004": {
+        "code": "ETH",
+        "name": "Ethical_Sources",
+        "subcategories": {
+          "001": {"code": "CON", "name": "Consent_Based"},
+          "002": {"code": "CRE", "name": "Creator_Owned"},
+          "003": {"code": "LIC", "name": "Licensed"},
+          "004": {"code": "OPE", "name": "Open_Source"},
+          "005": {"code": "FAI", "name": "Fair_Use"},
+          "006": {"code": "COM", "name": "Commercial"},
+          "007": {"code": "PUB", "name": "Public_Domain"},
+          "008": {"code": "ATT", "name": "Attribution"},
+          "009": {"code": "VER", "name": "Verified"},
+          "010": {"code": "CER", "name": "Certified_Ethical"}
+        }
+      },
+      "005": {
+        "code": "QUA",
+        "name": "Quality_Data",
+        "subcategories": {
+          "001": {"code": "VAL", "name": "Validated_Sets"},
+          "002": {"code": "CUR", "name": "Curated"},
+          "003": {"code": "CLN", "name": "Clean"},
+          "004": {"code": "BAL", "name": "Balanced"},
+          "005": {"code": "DIV", "name": "Diverse"},
+          "006": {"code": "REP", "name": "Representative"},
+          "007": {"code": "ACC", "name": "Accurate"},
+          "008": {"code": "CON", "name": "Consistent"},
+          "009": {"code": "COM", "name": "Complete"},
+          "010": {"code": "REL", "name": "Relevant"}
+        }
+      },
+      "006": {
+        "code": "PER",
+        "name": "Performance",
+        "subcategories": {
+          "001": {"code": "MET", "name": "Metrics"},
+          "002": {"code": "BEN", "name": "Benchmarks"},
+          "003": {"code": "TES", "name": "Test_Results"},
+          "004": {"code": "ACC", "name": "Accuracy"},
+          "005": {"code": "SPE", "name": "Speed"},
+          "006": {"code": "EFF", "name": "Efficiency"},
+          "007": {"code": "SCA", "name": "Scalability"},
+          "008": {"code": "ROB", "name": "Robustness"},
+          "009": {"code": "GEN", "name": "Generalization"},
+          "010": {"code": "CON", "name": "Consistency"}
+        }
+      },
+      "007": {
+        "code": "ATT",
+        "name": "Attribution",
+        "subcategories": {
+          "001": {"code": "SOU", "name": "Source_Tracking"},
+          "002": {"code": "CRE", "name": "Creator_Credits"},
+          "003": {"code": "TIM", "name": "Timestamps"},
+          "004": {"code": "VER", "name": "Version_Control"},
+          "005": {"code": "CHA", "name": "Chain_of_Custody"},
+          "006": {"code": "AUT", "name": "Authenticity"},
+          "007": {"code": "PRO", "name": "Provenance"},
+          "008": {"code": "HIS", "name": "History"},
+          "009": {"code": "MOD", "name": "Modifications"},
+          "010": {"code": "LIN", "name": "Lineage"}
+        }
+      },
+      "008": {
+        "code": "RIG",
+        "name": "Rights_Docs",
+        "subcategories": {
+          "001": {"code": "LEG", "name": "Legal_Clearance"},
+          "002": {"code": "LIC", "name": "Licenses"},
+          "003": {"code": "PER", "name": "Permissions"},
+          "004": {"code": "CON", "name": "Contracts"},
+          "005": {"code": "TER", "name": "Terms"},
+          "006": {"code": "REL", "name": "Releases"},
+          "007": {"code": "WAI", "name": "Waivers"},
+          "008": {"code": "AGR", "name": "Agreements"},
+          "009": {"code": "COM", "name": "Compliance"},
+          "010": {"code": "CLE", "name": "Clearance"}
+        }
+      },
+      "009": {
+        "code": "PRC",
+        "name": "Production_Ready",
+        "subcategories": {
+          "001": {"code": "FIN", "name": "Final_Assets"},
+          "002": {"code": "APP", "name": "Approved"},
+          "003": {"code": "VER", "name": "Verified"},
+          "004": {"code": "OPT", "name": "Optimized"},
+          "005": {"code": "PAC", "name": "Packaged"},
+          "006": {"code": "DEP", "name": "Deployment_Ready"},
+          "007": {"code": "STG", "name": "Staged"},
+          "008": {"code": "QA", "name": "QA_Passed"},
+          "009": {"code": "REL", "name": "Release_Candidate"},
+          "010": {"code": "PRO", "name": "Production"}
+        }
+      },
+      "010": {
+        "code": "PRV",
+        "name": "Provenance",
+        "subcategories": {
+          "001": {"code": "CHA", "name": "Chain_of_Custody"},
+          "002": {"code": "ORI", "name": "Origin"},
+          "003": {"code": "HIS", "name": "History"},
+          "004": {"code": "TRA", "name": "Tracking"},
+          "005": {"code": "VER", "name": "Verification"},
+          "006": {"code": "AUT", "name": "Authentication"},
+          "007": {"code": "CER", "name": "Certification"},
+          "008": {"code": "VAL", "name": "Validation"},
+          "009": {"code": "TIM", "name": "Timeline"},
+          "010": {"code": "BLO", "name": "Blockchain"}
+        }
+      },
+      "011": {
+        "code": "SYN",
+        "name": "Synthetic_Data",
+        "subcategories": {
+          "001": {"code": "GEN", "name": "AI_Generated"},
+          "002": {"code": "SIM", "name": "Simulated"},
+          "003": {"code": "AUG", "name": "Augmented"},
+          "004": {"code": "VAR", "name": "Variations"},
+          "005": {"code": "MIX", "name": "Mixed_Reality"},
+          "006": {"code": "COM", "name": "Composite"},
+          "007": {"code": "HYB", "name": "Hybrid"},
+          "008": {"code": "PRO", "name": "Procedural"},
+          "009": {"code": "AUT", "name": "Automated"},
+          "010": {"code": "ENH", "name": "Enhanced"}
+        }
+      },
+      "012": {
+        "code": "ANN",
+        "name": "Annotations",
+        "subcategories": {
+          "001": {"code": "LAB", "name": "Labels"},
+          "002": {"code": "MET", "name": "Metadata"},
+          "003": {"code": "TAG", "name": "Tags"},
+          "004": {"code": "CAT", "name": "Categories"},
+          "005": {"code": "BOX", "name": "Bounding_Boxes"},
+          "006": {"code": "SEG", "name": "Segmentation"},
+          "007": {"code": "KEY", "name": "Keypoints"},
+          "008": {"code": "DES", "name": "Descriptions"},
+          "009": {"code": "TRA", "name": "Transcriptions"},
+          "010": {"code": "CLA", "name": "Classifications"}
+        }
+      }
+    }
+  }
+}

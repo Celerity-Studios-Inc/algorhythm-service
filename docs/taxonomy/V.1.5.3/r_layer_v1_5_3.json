@@ -1,0 +1,200 @@
+{
+  "R": {
+    "name": "Rights",
+    "naming_convention": "R.[CategoryCode].[SubCategoryCode].[Sequential].json",
+    "categories": {
+      "001": {
+        "code": "OWN",
+        "name": "Ownership",
+        "subcategories": {
+          "001": {"code": "COP", "name": "Copyright"},
+          "002": {"code": "IP", "name": "Intellectual_Property"},
+          "003": {"code": "TRA", "name": "Trademark"},
+          "004": {"code": "PAT", "name": "Patent"},
+          "005": {"code": "EXC", "name": "Exclusive"},
+          "006": {"code": "SHA", "name": "Shared"},
+          "007": {"code": "JOI", "name": "Joint"},
+          "008": {"code": "SOL", "name": "Sole"},
+          "009": {"code": "TRN", "name": "Transfer"},
+          "010": {"code": "RET", "name": "Retained"}
+        }
+      },
+      "002": {
+        "code": "USG",
+        "name": "Usage",
+        "subcategories": {
+          "001": {"code": "COM", "name": "Commercial"},
+          "002": {"code": "PER", "name": "Personal"},
+          "003": {"code": "EDU", "name": "Educational"},
+          "004": {"code": "NON", "name": "Non_Commercial"},
+          "005": {"code": "EDI", "name": "Editorial"},
+          "006": {"code": "ADV", "name": "Advertising"},
+          "007": {"code": "BRO", "name": "Broadcast"},
+          "008": {"code": "DIG", "name": "Digital"},
+          "009": {"code": "PRI", "name": "Print"},
+          "010": {"code": "SOC", "name": "Social_Media"}
+        }
+      },
+      "003": {
+        "code": "REV",
+        "name": "Revenue",
+        "subcategories": {
+          "001": {"code": "SPL", "name": "Revenue_Split"},
+          "002": {"code": "ROY", "name": "Royalties"},
+          "003": {"code": "FLT", "name": "Flat_Fee"},
+          "004": {"code": "PER", "name": "Percentage"},
+          "005": {"code": "UPF", "name": "Upfront"},
+          "006": {"code": "BAC", "name": "Backend"},
+          "007": {"code": "MIL", "name": "Milestone"},
+          "008": {"code": "REC", "name": "Recurring"},
+          "009": {"code": "ONE", "name": "One_Time"},
+          "010": {"code": "TIE", "name": "Tiered"}
+        }
+      },
+      "004": {
+        "code": "TER",
+        "name": "Territory",
+        "subcategories": {
+          "001": {"code": "GLO", "name": "Global"},
+          "002": {"code": "NAM", "name": "North_America"},
+          "003": {"code": "EUR", "name": "Europe"},
+          "004": {"code": "ASI", "name": "Asia"},
+          "005": {"code": "LAM", "name": "Latin_America"},
+          "006": {"code": "AFR", "name": "Africa"},
+          "007": {"code": "OCE", "name": "Oceania"},
+          "008": {"code": "MID", "name": "Middle_East"},
+          "009": {"code": "SPE", "name": "Specific_Countries"},
+          "010": {"code": "EXC", "name": "Excluding"}
+        }
+      },
+      "005": {
+        "code": "DUR",
+        "name": "Duration",
+        "subcategories": {
+          "001": {"code": "PER", "name": "Perpetual"},
+          "002": {"code": "LIM", "name": "Limited"},
+          "003": {"code": "YEA", "name": "Years"},
+          "004": {"code": "MON", "name": "Months"},
+          "005": {"code": "REN", "name": "Renewable"},
+          "006": {"code": "EXP", "name": "Expiring"},
+          "007": {"code": "TER", "name": "Term"},
+          "008": {"code": "SEA", "name": "Seasonal"},
+          "009": {"code": "EVE", "name": "Event_Based"},
+          "010": {"code": "CON", "name": "Conditional"}
+        }
+      },
+      "006": {
+        "code": "PAY",
+        "name": "Payment",
+        "subcategories": {
+          "001": {"code": "STR", "name": "Structure"},
+          "002": {"code": "TER", "name": "Terms"},
+          "003": {"code": "SCH", "name": "Schedule"},
+          "004": {"code": "MET", "name": "Method"},
+          "005": {"code": "CUR", "name": "Currency"},
+          "006": {"code": "TAX", "name": "Tax"},
+          "007": {"code": "FEE", "name": "Fees"},
+          "008": {"code": "ADV", "name": "Advance"},
+          "009": {"code": "REC", "name": "Recoupment"},
+          "010": {"code": "AUD", "name": "Audit"}
+        }
+      },
+      "007": {
+        "code": "BRA",
+        "name": "Brand",
+        "subcategories": {
+          "001": {"code": "LOG", "name": "Logo_Rights"},
+          "002": {"code": "TRA", "name": "Trademark"},
+          "003": {"code": "NAM", "name": "Name_Rights"},
+          "004": {"code": "IMG", "name": "Image_Rights"},
+          "005": {"code": "SLO", "name": "Slogan"},
+          "006": {"code": "COL", "name": "Colors"},
+          "007": {"code": "STY", "name": "Style_Guide"},
+          "008": {"code": "END", "name": "Endorsement"},
+          "009": {"code": "SPO", "name": "Sponsorship"},
+          "010": {"code": "LIC", "name": "Licensing"}
+        }
+      },
+      "008": {
+        "code": "CRE",
+        "name": "Creator",
+        "subcategories": {
+          "001": {"code": "ATT", "name": "Attribution"},
+          "002": {"code": "MOR", "name": "Moral_Rights"},
+          "003": {"code": "CRE", "name": "Credit"},
+          "004": {"code": "APP", "name": "Approval"},
+          "005": {"code": "MOD", "name": "Modification"},
+          "006": {"code": "DER", "name": "Derivative"},
+          "007": {"code": "INT", "name": "Integrity"},
+          "008": {"code": "REM", "name": "Removal"},
+          "009": {"code": "WAI", "name": "Waiver"},
+          "010": {"code": "RET", "name": "Retention"}
+        }
+      },
+      "009": {
+        "code": "PLA",
+        "name": "Platform",
+        "subcategories": {
+          "001": {"code": "DIS", "name": "Distribution_Rights"},
+          "002": {"code": "STR", "name": "Streaming"},
+          "003": {"code": "DOW", "name": "Download"},
+          "004": {"code": "BRO", "name": "Broadcast"},
+          "005": {"code": "SOC", "name": "Social_Media"},
+          "006": {"code": "MOB", "name": "Mobile"},
+          "007": {"code": "WEB", "name": "Web"},
+          "008": {"code": "APP", "name": "Apps"},
+          "009": {"code": "GAM", "name": "Gaming"},
+          "010": {"code": "MET", "name": "Metaverse"}
+        }
+      },
+      "010": {
+        "code": "ENF",
+        "name": "Enforcement",
+        "subcategories": {
+          "001": {"code": "LEG", "name": "Legal_Action"},
+          "002": {"code": "TAK", "name": "Takedown"},
+          "003": {"code": "MON", "name": "Monitoring"},
+          "004": {"code": "AUT", "name": "Automated"},
+          "005": {"code": "MAN", "name": "Manual"},
+          "006": {"code": "BLO", "name": "Blocking"},
+          "007": {"code": "REP", "name": "Reporting"},
+          "008": {"code": "ARB", "name": "Arbitration"},
+          "009": {"code": "MED", "name": "Mediation"},
+          "010": {"code": "TEC", "name": "Technical_Protection"}
+        }
+      },
+      "011": {
+        "code": "COL",
+        "name": "Collaboration",
+        "subcategories": {
+          "001": {"code": "MUL", "name": "Multi_Party"},
+          "002": {"code": "JOI", "name": "Joint_Ownership"},
+          "003": {"code": "SPL", "name": "Split_Rights"},
+          "004": {"code": "SHA", "name": "Shared_Revenue"},
+          "005": {"code": "CON", "name": "Contributor"},
+          "006": {"code": "FEA", "name": "Featured"},
+          "007": {"code": "GUE", "name": "Guest"},
+          "008": {"code": "REM", "name": "Remix"},
+          "009": {"code": "SAM", "name": "Sample"},
+          "010": {"code": "COV", "name": "Cover"}
+        }
+      },
+      "012": {
+        "code": "DAT",
+        "name": "Data_Rights",
+        "subcategories": {
+          "001": {"code": "PRI", "name": "Privacy"},
+          "002": {"code": "GDP", "name": "GDPR"},
+          "003": {"code": "CCP", "name": "CCPA"},
+          "004": {"code": "CON", "name": "Consent"},
+          "005": {"code": "DEL", "name": "Deletion"},
+          "006": {"code": "POR", "name": "Portability"},
+          "007": {"code": "ACC", "name": "Access"},
+          "008": {"code": "REC", "name": "Rectification"},
+          "009": {"code": "RES", "name": "Restriction"},
+          "010": {"code": "OBJ", "name": "Objection"}
+        }
+      }
+    }
+  }
+}

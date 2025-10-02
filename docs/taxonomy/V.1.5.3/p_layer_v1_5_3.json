@@ -1,0 +1,288 @@
+{
+  "P": {
+    "name": "Personalize",
+    "naming_convention": "P.[CategoryCode].[SubCategoryCode].[Sequential].png",
+    "categories": {
+      "001": {
+        "code": "FAC",
+        "name": "Face",
+        "subcategories": {
+          "001": {"code": "SWP", "name": "Face_Swap"},
+          "002": {"code": "ENH", "name": "Enhance"},
+          "003": {"code": "AGE", "name": "Age_Progression"},
+          "004": {"code": "YNG", "name": "Youthify"},
+          "005": {"code": "SMI", "name": "Smile"},
+          "006": {"code": "EXP", "name": "Expression"},
+          "007": {"code": "MAK", "name": "Makeup"},
+          "008": {"code": "BEA", "name": "Beautify"}
+        }
+      },
+      "002": {
+        "code": "VOI",
+        "name": "Voice",
+        "subcategories": {
+          "001": {"code": "CLO", "name": "Voice_Clone"},
+          "002": {"code": "MOD", "name": "Modify"},
+          "003": {"code": "ACC", "name": "Accent"},
+          "004": {"code": "PIT", "name": "Pitch"},
+          "005": {"code": "TON", "name": "Tone"},
+          "006": {"code": "AGE", "name": "Age_Voice"},
+          "007": {"code": "GEN", "name": "Gender"},
+          "008": {"code": "EMO", "name": "Emotion"}
+        }
+      },
+      "003": {
+        "code": "BOD",
+        "name": "Body",
+        "subcategories": {
+          "001": {"code": "TYP", "name": "Body_Type"},
+          "002": {"code": "POS", "name": "Pose"},
+          "003": {"code": "MOV", "name": "Movement"},
+          "004": {"code": "FIT", "name": "Fitness"},
+          "005": {"code": "HEI", "name": "Height"},
+          "006": {"code": "BUI", "name": "Build"},
+          "007": {"code": "MUS", "name": "Muscle"},
+          "008": {"code": "SLI", "name": "Slim"}
+        }
+      },
+      "004": {
+        "code": "HAI",
+        "name": "Hair",
+        "subcategories": {
+          "001": {"code": "STY", "name": "Style"},
+          "002": {"code": "COL", "name": "Color"},
+          "003": {"code": "LEN", "name": "Length"},
+          "004": {"code": "TEX", "name": "Texture"},
+          "005": {"code": "CUR", "name": "Curl"},
+          "006": {"code": "STR", "name": "Straight"},
+          "007": {"code": "WAV", "name": "Wavy"},
+          "008": {"code": "BRA", "name": "Braided"}
+        }
+      },
+      "005": {
+        "code": "CLO",
+        "name": "Clothing",
+        "subcategories": {
+          "001": {"code": "OUT", "name": "Outfit_Swap"},
+          "002": {"code": "STY", "name": "Style"},
+          "003": {"code": "COL", "name": "Color"},
+          "004": {"code": "BRA", "name": "Brand"},
+          "005": {"code": "CAS", "name": "Casual"},
+          "006": {"code": "FOR", "name": "Formal"},
+          "007": {"code": "SPO", "name": "Sport"},
+          "008": {"code": "VIN", "name": "Vintage"}
+        }
+      },
+      "006": {
+        "code": "ENV",
+        "name": "Environment",
+        "subcategories": {
+          "001": {"code": "BAC", "name": "Background"},
+          "002": {"code": "SET", "name": "Setting"},
+          "003": {"code": "LOC", "name": "Location"},
+          "004": {"code": "WEA", "name": "Weather"},
+          "005": {"code": "TIM", "name": "Time_of_Day"},
+          "006": {"code": "SEA", "name": "Season"},
+          "007": {"code": "IND", "name": "Indoor"},
+          "008": {"code": "OUT", "name": "Outdoor"}
+        }
+      },
+      "007": {
+        "code": "STY",
+        "name": "Style_Transfer",
+        "subcategories": {
+          "001": {"code": "ART", "name": "Artistic"},
+          "002": {"code": "PER", "name": "Period"},
+          "003": {"code": "CUL", "name": "Cultural"},
+          "004": {"code": "GEN", "name": "Genre"},
+          "005": {"code": "MOD", "name": "Modern"},
+          "006": {"code": "VIN", "name": "Vintage"},
+          "007": {"code": "FUT", "name": "Futuristic"},
+          "008": {"code": "ANI", "name": "Anime"}
+        }
+      },
+      "008": {
+        "code": "GRO",
+        "name": "Group",
+        "subcategories": {
+          "001": {"code": "MUL", "name": "Multi_Person"},
+          "002": {"code": "FAM", "name": "Family"},
+          "003": {"code": "FRI", "name": "Friends"},
+          "004": {"code": "COU", "name": "Couple"},
+          "005": {"code": "TEA", "name": "Team"},
+          "006": {"code": "CRO", "name": "Crowd"},
+          "007": {"code": "DUO", "name": "Duo"},
+          "008": {"code": "TRI", "name": "Trio"}
+        }
+      },
+      "009": {
+        "code": "EMO",
+        "name": "Emotion",
+        "subcategories": {
+          "001": {"code": "HAP", "name": "Happy"},
+          "002": {"code": "SAD", "name": "Sad"},
+          "003": {"code": "ANG", "name": "Angry"},
+          "004": {"code": "SUR", "name": "Surprised"},
+          "005": {"code": "NEU", "name": "Neutral"},
+          "006": {"code": "EXC", "name": "Excited"},
+          "007": {"code": "CON", "name": "Confident"},
+          "008": {"code": "THO", "name": "Thoughtful"}
+        }
+      },
+      "010": {
+        "code": "AGE",
+        "name": "Age",
+        "subcategories": {
+          "001": {"code": "PRO", "name": "Progression"},
+          "002": {"code": "YOU", "name": "Youth"},
+          "003": {"code": "TEE", "name": "Teen"},
+          "004": {"code": "ADU", "name": "Adult"},
+          "005": {"code": "MID", "name": "Middle_Age"},
+          "006": {"code": "SEN", "name": "Senior"},
+          "007": {"code": "CHI", "name": "Child"},
+          "008": {"code": "BAB", "name": "Baby"}
+        }
+      },
+      "011": {
+        "code": "ETH",
+        "name": "Ethnicity",
+        "subcategories": {
+          "001": {"code": "HER", "name": "Heritage_Blend"},
+          "002": {"code": "MIX", "name": "Mixed"},
+          "003": {"code": "GLO", "name": "Global"},
+          "004": {"code": "REG", "name": "Regional"},
+          "005": {"code": "CUL", "name": "Cultural"},
+          "006": {"code": "TRA", "name": "Traditional"},
+          "007": {"code": "MOD", "name": "Modern"},
+          "008": {"code": "FUS", "name": "Fusion"}
+        }
+      },
+      "012": {
+        "code": "MOV",
+        "name": "Movement",
+        "subcategories": {
+          "001": {"code": "GES", "name": "Gesture"},
+          "002": {"code": "DAN", "name": "Dance_Style"},
+          "003": {"code": "WAL", "name": "Walk"},
+          "004": {"code": "RUN", "name": "Run"},
+          "005": {"code": "JUM", "name": "Jump"},
+          "006": {"code": "SPI", "name": "Spin"},
+          "007": {"code": "FLO", "name": "Flow"},
+          "008": {"code": "STI", "name": "Still"}
+        }
+      },
+      "013": {
+        "code": "TIM",
+        "name": "Time_Period",
+        "subcategories": {
+          "001": {"code": "ERA", "name": "Era"},
+          "002": {"code": "HIS", "name": "Historical"},
+          "003": {"code": "MOD", "name": "Modern"},
+          "004": {"code": "FUT", "name": "Future"},
+          "005": {"code": "VIN", "name": "Vintage"},
+          "006": {"code": "RET", "name": "Retro"},
+          "007": {"code": "CLA", "name": "Classic"},
+          "008": {"code": "CON", "name": "Contemporary"}
+        }
+      },
+      "014": {
+        "code": "WEA",
+        "name": "Weather",
+        "subcategories": {
+          "001": {"code": "SUN", "name": "Sunny"},
+          "002": {"code": "RAI", "name": "Rainy"},
+          "003": {"code": "CLO", "name": "Cloudy"},
+          "004": {"code": "SNO", "name": "Snowy"},
+          "005": {"code": "WIN", "name": "Windy"},
+          "006": {"code": "STR", "name": "Stormy"},
+          "007": {"code": "FOG", "name": "Foggy"},
+          "008": {"code": "CLE", "name": "Clear"}
+        }
+      },
+      "015": {
+        "code": "ACT",
+        "name": "Activity",
+        "subcategories": {
+          "001": {"code": "SPO", "name": "Sport"},
+          "002": {"code": "HOB", "name": "Hobby"},
+          "003": {"code": "WOR", "name": "Work"},
+          "004": {"code": "PLA", "name": "Play"},
+          "005": {"code": "REL", "name": "Relax"},
+          "006": {"code": "TRA", "name": "Travel"},
+          "007": {"code": "PAR", "name": "Party"},
+          "008": {"code": "STU", "name": "Study"}
+        }
+      },
+      "016": {
+        "code": "ACC",
+        "name": "Accessibility",
+        "subcategories": {
+          "001": {"code": "SIG", "name": "Sign_Language"},
+          "002": {"code": "AUD", "name": "Audio_Description"},
+          "003": {"code": "SUB", "name": "Subtitles"},
+          "004": {"code": "BRA", "name": "Braille"},
+          "005": {"code": "MOB", "name": "Mobility"},
+          "006": {"code": "VIS", "name": "Visual"},
+          "007": {"code": "HEA", "name": "Hearing"},
+          "008": {"code": "COG", "name": "Cognitive"}
+        }
+      },
+      "017": {
+        "code": "INT",
+        "name": "Interactive",
+        "subcategories": {
+          "001": {"code": "CLI", "name": "Clickable"},
+          "002": {"code": "DYN", "name": "Dynamic"},
+          "003": {"code": "RES", "name": "Responsive"},
+          "004": {"code": "ANI", "name": "Animated"},
+          "005": {"code": "GAM", "name": "Gamified"},
+          "006": {"code": "TAP", "name": "Tap"},
+          "007": {"code": "SWI", "name": "Swipe"},
+          "008": {"code": "DRA", "name": "Drag"}
+        }
+      },
+      "018": {
+        "code": "AI_",
+        "name": "AI_Enhancement",
+        "subcategories": {
+          "001": {"code": "UPS", "name": "Upscale"},
+          "002": {"code": "OPT", "name": "Optimize"},
+          "003": {"code": "ENH", "name": "Enhance"},
+          "004": {"code": "GEN", "name": "Generate"},
+          "005": {"code": "AUT", "name": "Auto"},
+          "006": {"code": "SMT", "name": "Smart"},
+          "007": {"code": "INT", "name": "Intelligent"},
+          "008": {"code": "ADA", "name": "Adaptive"}
+        }
+      },
+      "019": {
+        "code": "SOC",
+        "name": "Social",
+        "subcategories": {
+          "001": {"code": "SHA", "name": "Share"},
+          "002": {"code": "COL", "name": "Collaborate"},
+          "003": {"code": "TAG", "name": "Tag"},
+          "004": {"code": "LIK", "name": "Like"},
+          "005": {"code": "COM", "name": "Comment"},
+          "006": {"code": "FOL", "name": "Follow"},
+          "007": {"code": "TRE", "name": "Trending"},
+          "008": {"code": "VIR", "name": "Viral"}
+        }
+      },
+      "020": {
+        "code": "NFT",
+        "name": "NFT_Features",
+        "subcategories": {
+          "001": {"code": "MIN", "name": "Mint"},
+          "002": {"code": "TRA", "name": "Trade"},
+          "003": {"code": "OWN", "name": "Own"},
+          "004": {"code": "COL", "name": "Collect"},
+          "005": {"code": "RAR", "name": "Rarity"},
+          "006": {"code": "UNI", "name": "Unique"},
+          "007": {"code": "LIM", "name": "Limited"},
+          "008": {"code": "EXC", "name": "Exclusive"}
+        }
+      }
+    }
+  }
+}

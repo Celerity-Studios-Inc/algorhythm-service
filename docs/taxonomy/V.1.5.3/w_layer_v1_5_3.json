@@ -1,0 +1,536 @@
+{
+  "W": {
+    "name": "Worlds",
+    "naming_convention": "W.[CategoryCode].[SubCategoryCode].[Sequential].png",
+    "categories": {
+      "001": {
+        "code": "ABS",
+        "name": "Abstract",
+        "subcategories": {
+          "001": {"code": "SUR", "name": "Surreal"},
+          "002": {"code": "ART", "name": "Artistic"},
+          "003": {"code": "GEO", "name": "Geometric"},
+          "004": {"code": "FLU", "name": "Fluid"},
+          "005": {"code": "DRE", "name": "Dreamlike"},
+          "006": {"code": "PSY", "name": "Psychedelic"},
+          "007": {"code": "MIN", "name": "Minimalist"},
+          "008": {"code": "CHA", "name": "Chaotic"},
+          "009": {"code": "FRA", "name": "Fractal"},
+          "010": {"code": "VOI", "name": "Void"}
+        }
+      },
+      "002": {
+        "code": "ARC",
+        "name": "Arctic",
+        "subcategories": {
+          "001": {"code": "FRO", "name": "Frozen"},
+          "002": {"code": "ICE", "name": "Ice_Cave"},
+          "003": {"code": "SNO", "name": "Snowscape"},
+          "004": {"code": "GLA", "name": "Glacier"},
+          "005": {"code": "TUN", "name": "Tundra"},
+          "006": {"code": "AUR", "name": "Aurora"},
+          "007": {"code": "BER", "name": "Iceberg"},
+          "008": {"code": "POL", "name": "Polar"},
+          "009": {"code": "BLI", "name": "Blizzard"},
+          "010": {"code": "FRO", "name": "Frost"}
+        }
+      },
+      "003": {
+        "code": "BCH",
+        "name": "Beach",
+        "subcategories": {
+          "001": {"code": "TRO", "name": "Tropical"},
+          "002": {"code": "COA", "name": "Coastal"},
+          "003": {"code": "SUN", "name": "Sunset"},
+          "004": {"code": "PAL", "name": "Palm_Trees"},
+          "005": {"code": "WAV", "name": "Waves"},
+          "006": {"code": "SAN", "name": "Sandy"},
+          "007": {"code": "ROC", "name": "Rocky"},
+          "008": {"code": "LAG", "name": "Lagoon"},
+          "009": {"code": "PIE", "name": "Pier"},
+          "010": {"code": "BOA", "name": "Boardwalk"}
+        }
+      },
+      "004": {
+        "code": "CIT",
+        "name": "City",
+        "subcategories": {
+          "001": {"code": "URB", "name": "Urban"},
+          "002": {"code": "MET", "name": "Metropolitan"},
+          "003": {"code": "SKY", "name": "Skyline"},
+          "004": {"code": "DOW", "name": "Downtown"},
+          "005": {"code": "STR", "name": "Street"},
+          "006": {"code": "ALL", "name": "Alley"},
+          "007": {"code": "ROF", "name": "Rooftop"},
+          "008": {"code": "NIG", "name": "Night_City"},
+          "009": {"code": "NEO", "name": "Neon_City"},
+          "010": {"code": "BRI", "name": "Bridge"}
+        }
+      },
+      "005": {
+        "code": "CLB",
+        "name": "Club",
+        "subcategories": {
+          "001": {"code": "NIG", "name": "Nightclub"},
+          "002": {"code": "DAN", "name": "Dance_Floor"},
+          "003": {"code": "VIP", "name": "VIP_Lounge"},
+          "004": {"code": "BAR", "name": "Bar"},
+          "005": {"code": "DJB", "name": "DJ_Booth"},
+          "006": {"code": "STG", "name": "Stage"},
+          "007": {"code": "LAS", "name": "Laser_Show"},
+          "008": {"code": "SMO", "name": "Smoke_Machine"},
+          "009": {"code": "STR", "name": "Strobe"},
+          "010": {"code": "LED", "name": "LED_Wall"}
+        }
+      },
+      "006": {
+        "code": "CYB",
+        "name": "Cyberpunk",
+        "subcategories": {
+          "001": {"code": "NEO", "name": "Neon_City"},
+          "002": {"code": "DYS", "name": "Dystopian"},
+          "003": {"code": "HOL", "name": "Holographic"},
+          "004": {"code": "AUG", "name": "Augmented"},
+          "005": {"code": "HAC", "name": "Hacker_Den"},
+          "006": {"code": "MEG", "name": "Megacity"},
+          "007": {"code": "RAI", "name": "Rain_Slick"},
+          "008": {"code": "GLI", "name": "Glitch"},
+          "009": {"code": "CYB", "name": "Cyber_Cafe"},
+          "010": {"code": "NET", "name": "Network"}
+        }
+      },
+      "007": {
+        "code": "DES",
+        "name": "Desert",
+        "subcategories": {
+          "001": {"code": "DUN", "name": "Dunes"},
+          "002": {"code": "OAS", "name": "Oasis"},
+          "003": {"code": "ARI", "name": "Arid"},
+          "004": {"code": "CAN", "name": "Canyon"},
+          "005": {"code": "MES", "name": "Mesa"},
+          "006": {"code": "MIR", "name": "Mirage"},
+          "007": {"code": "CAC", "name": "Cactus"},
+          "008": {"code": "SAN", "name": "Sandstorm"},
+          "009": {"code": "ROC", "name": "Rock_Formation"},
+          "010": {"code": "NOM", "name": "Nomadic"}
+        }
+      },
+      "008": {
+        "code": "FAN",
+        "name": "Fantasy",
+        "subcategories": {
+          "001": {"code": "MAG", "name": "Magical"},
+          "002": {"code": "MYT", "name": "Mythical"},
+          "003": {"code": "CAS", "name": "Castle"},
+          "004": {"code": "DRA", "name": "Dragon_Lair"},
+          "005": {"code": "ELV", "name": "Elven_Forest"},
+          "006": {"code": "DWA", "name": "Dwarven_Hall"},
+          "007": {"code": "FAI", "name": "Fairy_Garden"},
+          "008": {"code": "WIZ", "name": "Wizard_Tower"},
+          "009": {"code": "ENC", "name": "Enchanted"},
+          "010": {"code": "REA", "name": "Realm"}
+        }
+      },
+      "009": {
+        "code": "FAR",
+        "name": "Farm",
+        "subcategories": {
+          "001": {"code": "RUR", "name": "Rural"},
+          "002": {"code": "BAR", "name": "Barn"},
+          "003": {"code": "FIE", "name": "Fields"},
+          "004": {"code": "ORC", "name": "Orchard"},
+          "005": {"code": "VIN", "name": "Vineyard"},
+          "006": {"code": "GRE", "name": "Greenhouse"},
+          "007": {"code": "SIL", "name": "Silo"},
+          "008": {"code": "COT", "name": "Cottage"},
+          "009": {"code": "PAS", "name": "Pasture"},
+          "010": {"code": "WIN", "name": "Windmill"}
+        }
+      },
+      "010": {
+        "code": "FOR",
+        "name": "Forest",
+        "subcategories": {
+          "001": {"code": "WOO", "name": "Woods"},
+          "002": {"code": "JUN", "name": "Jungle"},
+          "003": {"code": "TRE", "name": "Trees"},
+          "004": {"code": "RAI", "name": "Rainforest"},
+          "005": {"code": "CAN", "name": "Canopy"},
+          "006": {"code": "MIS", "name": "Misty"},
+          "007": {"code": "AUT", "name": "Autumn"},
+          "008": {"code": "ENC", "name": "Enchanted"},
+          "009": {"code": "BIR", "name": "Birch"},
+          "010": {"code": "PIN", "name": "Pine"}
+        }
+      },
+      "011": {
+        "code": "FUT",
+        "name": "Futuristic",
+        "subcategories": {
+          "001": {"code": "SCI", "name": "Sci_Fi"},
+          "002": {"code": "SPA", "name": "Space_Station"},
+          "003": {"code": "TEC", "name": "High_Tech"},
+          "004": {"code": "HOL", "name": "Holodeck"},
+          "005": {"code": "NEO", "name": "Neo_City"},
+          "006": {"code": "MOO", "name": "Moon_Base"},
+          "007": {"code": "MAR", "name": "Mars_Colony"},
+          "008": {"code": "CRY", "name": "Crystal_City"},
+          "009": {"code": "LAB", "name": "Tech_Lab"},
+          "010": {"code": "POR", "name": "Portal"}
+        }
+      },
+      "012": {
+        "code": "GAL",
+        "name": "Galaxy",
+        "subcategories": {
+          "001": {"code": "SPA", "name": "Space"},
+          "002": {"code": "COS", "name": "Cosmic"},
+          "003": {"code": "STA", "name": "Stars"},
+          "004": {"code": "NEB", "name": "Nebula"},
+          "005": {"code": "PLA", "name": "Planets"},
+          "006": {"code": "AST", "name": "Asteroid_Field"},
+          "007": {"code": "BLA", "name": "Black_Hole"},
+          "008": {"code": "QUA", "name": "Quasar"},
+          "009": {"code": "WOR", "name": "Wormhole"},
+          "010": {"code": "MIL", "name": "Milky_Way"}
+        }
+      },
+      "013": {
+        "code": "GAR",
+        "name": "Garden",
+        "subcategories": {
+          "001": {"code": "BOT", "name": "Botanical"},
+          "002": {"code": "FLO", "name": "Floral"},
+          "003": {"code": "ROS", "name": "Rose_Garden"},
+          "004": {"code": "JAP", "name": "Japanese"},
+          "005": {"code": "ZEN", "name": "Zen"},
+          "006": {"code": "SPA", "name": "Spanish"},
+          "007": {"code": "ENG", "name": "English"},
+          "008": {"code": "HER", "name": "Herb"},
+          "009": {"code": "WAT", "name": "Water"},
+          "010": {"code": "SEC", "name": "Secret"}
+        }
+      },
+      "014": {
+        "code": "HIS",
+        "name": "Historical",
+        "subcategories": {
+          "001": {"code": "ANC", "name": "Ancient"},
+          "002": {"code": "MED", "name": "Medieval"},
+          "003": {"code": "REN", "name": "Renaissance"},
+          "004": {"code": "VIC", "name": "Victorian"},
+          "005": {"code": "EDW", "name": "Edwardian"},
+          "006": {"code": "ART", "name": "Art_Deco"},
+          "007": {"code": "BAR", "name": "Baroque"},
+          "008": {"code": "ROM", "name": "Roman"},
+          "009": {"code": "GRE", "name": "Greek"},
+          "010": {"code": "EGY", "name": "Egyptian"}
+        }
+      },
+      "015": {
+        "code": "HOM",
+        "name": "Home",
+        "subcategories": {
+          "001": {"code": "LIV", "name": "Living_Room"},
+          "002": {"code": "KIT", "name": "Kitchen"},
+          "003": {"code": "BED", "name": "Bedroom"},
+          "004": {"code": "BAT", "name": "Bathroom"},
+          "005": {"code": "DIN", "name": "Dining_Room"},
+          "006": {"code": "STU", "name": "Studio"},
+          "007": {"code": "GAR", "name": "Garage"},
+          "008": {"code": "BAS", "name": "Basement"},
+          "009": {"code": "ATT", "name": "Attic"},
+          "010": {"code": "PAT", "name": "Patio"}
+        }
+      },
+      "016": {
+        "code": "IND",
+        "name": "Industrial",
+        "subcategories": {
+          "001": {"code": "FAC", "name": "Factory"},
+          "002": {"code": "WAR", "name": "Warehouse"},
+          "003": {"code": "STE", "name": "Steel_Mill"},
+          "004": {"code": "POW", "name": "Power_Plant"},
+          "005": {"code": "HAN", "name": "Hangar"},
+          "006": {"code": "DOC", "name": "Docks"},
+          "007": {"code": "REF", "name": "Refinery"},
+          "008": {"code": "CON", "name": "Construction"},
+          "009": {"code": "ABN", "name": "Abandoned"},
+          "010": {"code": "PIP", "name": "Pipeline"}
+        }
+      },
+      "017": {
+        "code": "INT",
+        "name": "Interactive",
+        "subcategories": {
+          "001": {"code": "RES", "name": "Responsive"},
+          "002": {"code": "DYN", "name": "Dynamic"},
+          "003": {"code": "TOU", "name": "Touch_Reactive"},
+          "004": {"code": "SOD", "name": "Sound_Reactive"},
+          "005": {"code": "MOT", "name": "Motion_Sensor"},
+          "006": {"code": "AUD", "name": "Audio_Visual"},
+          "007": {"code": "PRO", "name": "Projection"},
+          "008": {"code": "IMM", "name": "Immersive"},
+          "009": {"code": "GAM", "name": "Gamified"},
+          "010": {"code": "AI", "name": "AI_Powered"}
+        }
+      },
+      "018": {
+        "code": "LAK",
+        "name": "Lake",
+        "subcategories": {
+          "001": {"code": "WAT", "name": "Water"},
+          "002": {"code": "REF", "name": "Reflective"},
+          "003": {"code": "MIS", "name": "Misty"},
+          "004": {"code": "SUN", "name": "Sunrise"},
+          "005": {"code": "MON", "name": "Moonlit"},
+          "006": {"code": "DOC", "name": "Dock"},
+          "007": {"code": "BOA", "name": "Boat_House"},
+          "008": {"code": "FIS", "name": "Fishing_Pier"},
+          "009": {"code": "SWA", "name": "Swan_Lake"},
+          "010": {"code": "FRO", "name": "Frozen"}
+        }
+      },
+      "019": {
+        "code": "LUX",
+        "name": "Luxury",
+        "subcategories": {
+          "001": {"code": "YAC", "name": "Yacht"},
+          "002": {"code": "MAN", "name": "Mansion"},
+          "003": {"code": "PEN", "name": "Penthouse"},
+          "004": {"code": "VIL", "name": "Villa"},
+          "005": {"code": "RES", "name": "Resort"},
+          "006": {"code": "JET", "name": "Private_Jet"},
+          "007": {"code": "WIN", "name": "Wine_Cellar"},
+          "008": {"code": "SPA", "name": "Private_Spa"},
+          "009": {"code": "POO", "name": "Infinity_Pool"},
+          "010": {"code": "GAL", "name": "Art_Gallery"}
+        }
+      },
+      "020": {
+        "code": "MET",
+        "name": "Metaverse",
+        "subcategories": {
+          "001": {"code": "VIR", "name": "Virtual_World"},
+          "002": {"code": "WEB", "name": "Web3_Space"},
+          "003": {"code": "NFT", "name": "NFT_Gallery"},
+          "004": {"code": "DEC", "name": "Decentraland"},
+          "005": {"code": "SAN", "name": "Sandbox"},
+          "006": {"code": "AXI", "name": "Axie_Land"},
+          "007": {"code": "CRY", "name": "Crypto_City"},
+          "008": {"code": "BLO", "name": "Blockchain"},
+          "009": {"code": "DAO", "name": "DAO_Space"},
+          "010": {"code": "MET", "name": "Meta_Mall"}
+        }
+      },
+      "021": {
+        "code": "MIN",
+        "name": "Minimalist",
+        "subcategories": {
+          "001": {"code": "CLE", "name": "Clean"},
+          "002": {"code": "SIM", "name": "Simple"},
+          "003": {"code": "WHI", "name": "White_Space"},
+          "004": {"code": "ZEN", "name": "Zen"},
+          "005": {"code": "MOD", "name": "Modern"},
+          "006": {"code": "GEO", "name": "Geometric"},
+          "007": {"code": "NEU", "name": "Neutral"},
+          "008": {"code": "SCA", "name": "Scandinavian"},
+          "009": {"code": "JAP", "name": "Japanese"},
+          "010": {"code": "VOI", "name": "Void"}
+        }
+      },
+      "022": {
+        "code": "MOU",
+        "name": "Mountain",
+        "subcategories": {
+          "001": {"code": "ALP", "name": "Alpine"},
+          "002": {"code": "PEA", "name": "Peaks"},
+          "003": {"code": "HIL", "name": "Hills"},
+          "004": {"code": "ROC", "name": "Rocky"},
+          "005": {"code": "SNO", "name": "Snow_Capped"},
+          "006": {"code": "VAL", "name": "Valley"},
+          "007": {"code": "CLI", "name": "Cliff"},
+          "008": {"code": "CAV", "name": "Cave"},
+          "009": {"code": "MEA", "name": "Meadow"},
+          "010": {"code": "SUM", "name": "Summit"}
+        }
+      },
+      "023": {
+        "code": "MYS",
+        "name": "Mystical",
+        "subcategories": {
+          "001": {"code": "ETH", "name": "Ethereal"},
+          "002": {"code": "SPI", "name": "Spiritual"},
+          "003": {"code": "AUR", "name": "Aura"},
+          "004": {"code": "CRY", "name": "Crystal"},
+          "005": {"code": "MAN", "name": "Mandala"},
+          "006": {"code": "CHA", "name": "Chakra"},
+          "007": {"code": "AST", "name": "Astral"},
+          "008": {"code": "DRE", "name": "Dream"},
+          "009": {"code": "VOI", "name": "Void"},
+          "010": {"code": "SOU", "name": "Soul"}
+        }
+      },
+      "024": {
+        "code": "NAT",
+        "name": "Nature",
+        "subcategories": {
+          "001": {"code": "FOR", "name": "Forest"},
+          "002": {"code": "MEA", "name": "Meadow"},
+          "003": {"code": "STR", "name": "Stream"},
+          "004": {"code": "WAT", "name": "Waterfall"},
+          "005": {"code": "VAL", "name": "Valley"},
+          "006": {"code": "HIL", "name": "Hills"},
+          "007": {"code": "GRO", "name": "Grove"},
+          "008": {"code": "GLN", "name": "Glen"},
+          "009": {"code": "PRA", "name": "Prairie"},
+          "010": {"code": "WET", "name": "Wetlands"}
+        }
+      },
+      "025": {
+        "code": "NIG",
+        "name": "Night",
+        "subcategories": {
+          "001": {"code": "DRK", "name": "Dark"},
+          "002": {"code": "MOO", "name": "Moonlit"},
+          "003": {"code": "STA", "name": "Starry"},
+          "004": {"code": "MID", "name": "Midnight"},
+          "005": {"code": "TWI", "name": "Twilight"},
+          "006": {"code": "AUR", "name": "Aurora"},
+          "007": {"code": "GLA", "name": "Glowing"},
+          "008": {"code": "SHD", "name": "Shadow"},
+          "009": {"code": "LAN", "name": "Lantern"},
+          "010": {"code": "FIR", "name": "Firefly"}
+        }
+      },
+      "026": {
+        "code": "OCE",
+        "name": "Ocean",
+        "subcategories": {
+          "001": {"code": "SEA", "name": "Sea"},
+          "002": {"code": "UND", "name": "Underwater"},
+          "003": {"code": "COR", "name": "Coral_Reef"},
+          "004": {"code": "DEE", "name": "Deep_Sea"},
+          "005": {"code": "WAV", "name": "Waves"},
+          "006": {"code": "BIO", "name": "Bioluminescent"},
+          "007": {"code": "SHI", "name": "Shipwreck"},
+          "008": {"code": "ATL", "name": "Atlantis"},
+          "009": {"code": "KEL", "name": "Kelp_Forest"},
+          "010": {"code": "TRE", "name": "Trench"}
+        }
+      },
+      "027": {
+        "code": "OFF",
+        "name": "Office",
+        "subcategories": {
+          "001": {"code": "WOR", "name": "Workplace"},
+          "002": {"code": "COR", "name": "Corporate"},
+          "003": {"code": "MOD", "name": "Modern"},
+          "004": {"code": "MEE", "name": "Meeting_Room"},
+          "005": {"code": "CUB", "name": "Cubicle"},
+          "006": {"code": "OPE", "name": "Open_Plan"},
+          "007": {"code": "EXE", "name": "Executive"},
+          "008": {"code": "LOB", "name": "Lobby"},
+          "009": {"code": "BRE", "name": "Break_Room"},
+          "010": {"code": "COW", "name": "Coworking"}
+        }
+      },
+      "028": {
+        "code": "RET",
+        "name": "Retro",
+        "subcategories": {
+          "001": {"code": "50S", "name": "1950s"},
+          "002": {"code": "60S", "name": "1960s"},
+          "003": {"code": "70S", "name": "1970s"},
+          "004": {"code": "80S", "name": "1980s"},
+          "005": {"code": "90S", "name": "1990s"},
+          "006": {"code": "DIN", "name": "Diner"},
+          "007": {"code": "ARC", "name": "Arcade"},
+          "008": {"code": "DIS", "name": "Disco"},
+          "009": {"code": "VIN", "name": "Vintage"},
+          "010": {"code": "NEO", "name": "Neon"}
+        }
+      },
+      "029": {
+        "code": "RUR",
+        "name": "Rural",
+        "subcategories": {
+          "001": {"code": "COU", "name": "Countryside"},
+          "002": {"code": "VIL", "name": "Village"},
+          "003": {"code": "FAR", "name": "Farmland"},
+          "004": {"code": "PAS", "name": "Pasture"},
+          "005": {"code": "BAR", "name": "Barn"},
+          "006": {"code": "MIL", "name": "Mill"},
+          "007": {"code": "BRI", "name": "Bridge"},
+          "008": {"code": "PON", "name": "Pond"},
+          "009": {"code": "RAN", "name": "Ranch"},
+          "010": {"code": "HOM", "name": "Homestead"}
+        }
+      },
+      "030": {
+        "code": "STU",
+        "name": "Studio",
+        "subcategories": {
+          "001": {"code": "PRO", "name": "Production"},
+          "002": {"code": "CRE", "name": "Creative"},
+          "003": {"code": "GRE", "name": "Green_Screen"},
+          "004": {"code": "WHI", "name": "White_Cyc"},
+          "005": {"code": "PHO", "name": "Photo"},
+          "006": {"code": "REC", "name": "Recording"},
+          "007": {"code": "ART", "name": "Art"},
+          "008": {"code": "DAN", "name": "Dance"},
+          "009": {"code": "MUS", "name": "Music"},
+          "010": {"code": "BRO", "name": "Broadcast"}
+        }
+      },
+      "031": {
+        "code": "SUR",
+        "name": "Surreal",
+        "subcategories": {
+          "001": {"code": "DRE", "name": "Dreamlike"},
+          "002": {"code": "ABS", "name": "Abstract"},
+          "003": {"code": "IMP", "name": "Impossible"},
+          "004": {"code": "FLO", "name": "Floating"},
+          "005": {"code": "MEL", "name": "Melting"},
+          "006": {"code": "ESC", "name": "Escher"},
+          "007": {"code": "DAL", "name": "Dali"},
+          "008": {"code": "MIR", "name": "Mirror"},
+          "009": {"code": "INF", "name": "Infinity"},
+          "010": {"code": "PSY", "name": "Psychedelic"}
+        }
+      },
+      "032": {
+        "code": "TEM",
+        "name": "Temple",
+        "subcategories": {
+          "001": {"code": "SAC", "name": "Sacred"},
+          "002": {"code": "REL", "name": "Religious"},
+          "003": {"code": "BUD", "name": "Buddhist"},
+          "004": {"code": "HIN", "name": "Hindu"},
+          "005": {"code": "CHR", "name": "Christian"},
+          "006": {"code": "ISL", "name": "Islamic"},
+          "007": {"code": "JEW", "name": "Jewish"},
+          "008": {"code": "ANC", "name": "Ancient"},
+          "009": {"code": "MOD", "name": "Modern"},
+          "010": {"code": "MED", "name": "Meditation"}
+        }
+      },
+      "033": {
+        "code": "VOL",
+        "name": "Volcanic",
+        "subcategories": {
+          "001": {"code": "LAV", "name": "Lava"},
+          "002": {"code": "CRA", "name": "Crater"},
+          "003": {"code": "ERU", "name": "Eruption"},
+          "004": {"code": "MAG", "name": "Magma"},
+          "005": {"code": "ASH", "name": "Ash"},
+          "006": {"code": "SMO", "name": "Smoke"},
+          "007": {"code": "ROC", "name": "Volcanic_Rock"},
+          "008": {"code": "GEY", "name": "Geyser"},
+          "009": {"code": "HOT", "name": "Hot_Springs"},
+          "010": {"code": "ISL", "name": "Volcanic_Island"}
+        }
+      }
+    }
+  }
+}

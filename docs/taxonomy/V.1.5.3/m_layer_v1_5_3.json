@@ -1,0 +1,408 @@
+{
+  "M": {
+    "name": "Moves",
+    "naming_convention": "M.[CategoryCode].[SubCategoryCode].[Sequential].mp4",
+    "categories": {
+      "001": {
+        "code": "AFR",
+        "name": "African",
+        "subcategories": {
+          "001": {"code": "AFB", "name": "Afrobeats"},
+          "002": {"code": "AZO", "name": "Azonto"},
+          "003": {"code": "GWA", "name": "Gwara_Gwara"},
+          "004": {"code": "SHA", "name": "Shaku_Shaku"},
+          "005": {"code": "ZAN", "name": "Zanku"},
+          "006": {"code": "AMA", "name": "Amapiano_Dance"},
+          "007": {"code": "KWA", "name": "Kwaito_Moves"},
+          "008": {"code": "NDO", "name": "Ndombolo"},
+          "009": {"code": "COU", "name": "Coupe_Decale"},
+          "010": {"code": "PAN", "name": "Pantsula"}
+        }
+      },
+      "002": {
+        "code": "BAL",
+        "name": "Ballet",
+        "subcategories": {
+          "001": {"code": "CLA", "name": "Classical"},
+          "002": {"code": "NEO", "name": "Neoclassical"},
+          "003": {"code": "CON", "name": "Contemporary_Ballet"},
+          "004": {"code": "ROM", "name": "Romantic"},
+          "005": {"code": "PAS", "name": "Pas_de_Deux"},
+          "006": {"code": "ADA", "name": "Adagio"},
+          "007": {"code": "ALL", "name": "Allegro"},
+          "008": {"code": "VAR", "name": "Variations"},
+          "009": {"code": "POI", "name": "Pointe_Work"},
+          "010": {"code": "BAR", "name": "Barre_Work"}
+        }
+      },
+      "003": {
+        "code": "BAT",
+        "name": "Battle",
+        "subcategories": {
+          "001": {"code": "BRK", "name": "Breaking"},
+          "002": {"code": "POP", "name": "Popping"},
+          "003": {"code": "LOC", "name": "Locking"},
+          "004": {"code": "KRU", "name": "Krump"},
+          "005": {"code": "HOU", "name": "House_Battle"},
+          "006": {"code": "ALL", "name": "All_Styles"},
+          "007": {"code": "WAA", "name": "Waacking"},
+          "008": {"code": "VOG", "name": "Vogue_Battle"},
+          "009": {"code": "FRE", "name": "Freestyle_Battle"},
+          "010": {"code": "CYP", "name": "Cypher"}
+        }
+      },
+      "004": {
+        "code": "BRE",
+        "name": "Breaking",
+        "subcategories": {
+          "001": {"code": "TOP", "name": "Top_Rock"},
+          "002": {"code": "FOO", "name": "Footwork"},
+          "003": {"code": "POW", "name": "Power_Moves"},
+          "004": {"code": "FRE", "name": "Freezes"},
+          "005": {"code": "DOW", "name": "Down_Rock"},
+          "006": {"code": "WIN", "name": "Windmill"},
+          "007": {"code": "FLA", "name": "Flare"},
+          "008": {"code": "HEA", "name": "Head_Spin"},
+          "009": {"code": "AIR", "name": "Air_Freeze"},
+          "010": {"code": "THR", "name": "Threads"}
+        }
+      },
+      "005": {
+        "code": "CLS",
+        "name": "Classical",
+        "subcategories": {
+          "001": {"code": "BAL", "name": "Ballet"},
+          "002": {"code": "WAL", "name": "Waltz"},
+          "003": {"code": "TAN", "name": "Tango"},
+          "004": {"code": "FOX", "name": "Foxtrot"},
+          "005": {"code": "QUI", "name": "Quickstep"},
+          "006": {"code": "VIE", "name": "Viennese_Waltz"},
+          "007": {"code": "PAS", "name": "Paso_Doble"},
+          "008": {"code": "RUM", "name": "Rumba"},
+          "009": {"code": "CHA", "name": "Cha_Cha"},
+          "010": {"code": "SAM", "name": "Samba"}
+        }
+      },
+      "006": {
+        "code": "CON",
+        "name": "Contemporary",
+        "subcategories": {
+          "001": {"code": "LYR", "name": "Lyrical"},
+          "002": {"code": "MOD", "name": "Modern"},
+          "003": {"code": "IMP", "name": "Improv"},
+          "004": {"code": "FLO", "name": "Floor_Work"},
+          "005": {"code": "CON", "name": "Contact"},
+          "006": {"code": "REL", "name": "Release"},
+          "007": {"code": "GRA", "name": "Graham"},
+          "008": {"code": "CUN", "name": "Cunningham"},
+          "009": {"code": "HOR", "name": "Horton"},
+          "010": {"code": "LIM", "name": "Limon"}
+        }
+      },
+      "007": {
+        "code": "CTY",
+        "name": "Country",
+        "subcategories": {
+          "001": {"code": "LIN", "name": "Line_Dance"},
+          "002": {"code": "TWO", "name": "Two_Step"},
+          "003": {"code": "SWI", "name": "Swing"},
+          "004": {"code": "HON", "name": "Honky_Tonk"},
+          "005": {"code": "COT", "name": "Cotton_Eyed_Joe"},
+          "006": {"code": "BOO", "name": "Boot_Scootin"},
+          "007": {"code": "WAL", "name": "Waltz"},
+          "008": {"code": "POL", "name": "Polka"},
+          "009": {"code": "CHA", "name": "Cha_Cha"},
+          "010": {"code": "WES", "name": "Western_Swing"}
+        }
+      },
+      "008": {
+        "code": "FES",
+        "name": "Festival",
+        "subcategories": {
+          "001": {"code": "EDM", "name": "EDM_Moves"},
+          "002": {"code": "RAV", "name": "Rave"},
+          "003": {"code": "SHU", "name": "Shuffle"},
+          "004": {"code": "TEC", "name": "Tectonic"},
+          "005": {"code": "CUT", "name": "Cutting_Shapes"},
+          "006": {"code": "GLO", "name": "Gloving"},
+          "007": {"code": "POI", "name": "Poi"},
+          "008": {"code": "FLO", "name": "Flow_Arts"},
+          "009": {"code": "HUL", "name": "Hula_Hoop"},
+          "010": {"code": "LED", "name": "LED_Dance"}
+        }
+      },
+      "009": {
+        "code": "HIP",
+        "name": "Hip_Hop",
+        "subcategories": {
+          "001": {"code": "NEW", "name": "New_School"},
+          "002": {"code": "OLD", "name": "Old_School"},
+          "003": {"code": "FRE", "name": "Freestyle"},
+          "004": {"code": "CHO", "name": "Choreography"},
+          "005": {"code": "SWA", "name": "Swag"},
+          "006": {"code": "LYR", "name": "Lyrical_Hip_Hop"},
+          "007": {"code": "GRO", "name": "Groove"},
+          "008": {"code": "POP", "name": "Pop_Lock"},
+          "009": {"code": "ISO", "name": "Isolation"},
+          "010": {"code": "TUT", "name": "Tutting"}
+        }
+      },
+      "010": {
+        "code": "HOU",
+        "name": "House",
+        "subcategories": {
+          "001": {"code": "JAC", "name": "Jacking"},
+          "002": {"code": "FOO", "name": "Footwork"},
+          "003": {"code": "LOF", "name": "Lofting"},
+          "004": {"code": "CAT", "name": "Catwalk"},
+          "005": {"code": "FAR", "name": "Farmer"},
+          "006": {"code": "SHU", "name": "Shuffle"},
+          "007": {"code": "PAS", "name": "Pas_de_Bourree"},
+          "008": {"code": "TRA", "name": "Train"},
+          "009": {"code": "SKA", "name": "Skating"},
+          "010": {"code": "CRO", "name": "Crossroads"}
+        }
+      },
+      "011": {
+        "code": "IND",
+        "name": "Indian",
+        "subcategories": {
+          "001": {"code": "BHA", "name": "Bharatanatyam"},
+          "002": {"code": "KAT", "name": "Kathak"},
+          "003": {"code": "BOL", "name": "Bollywood"},
+          "004": {"code": "BHA", "name": "Bhangra"},
+          "005": {"code": "GAR", "name": "Garba"},
+          "006": {"code": "ODI", "name": "Odissi"},
+          "007": {"code": "KUC", "name": "Kuchipudi"},
+          "008": {"code": "MAN", "name": "Manipuri"},
+          "009": {"code": "KAT", "name": "Kathakali"},
+          "010": {"code": "DAN", "name": "Dandiya"}
+        }
+      },
+      "012": {
+        "code": "JAZ",
+        "name": "Jazz",
+        "subcategories": {
+          "001": {"code": "CLA", "name": "Classic_Jazz"},
+          "002": {"code": "MOD", "name": "Modern_Jazz"},
+          "003": {"code": "LYR", "name": "Lyrical_Jazz"},
+          "004": {"code": "THE", "name": "Theater_Jazz"},
+          "005": {"code": "FUN", "name": "Jazz_Funk"},
+          "006": {"code": "STR", "name": "Street_Jazz"},
+          "007": {"code": "CON", "name": "Contemporary_Jazz"},
+          "008": {"code": "TAP", "name": "Jazz_Tap"},
+          "009": {"code": "SWI", "name": "Swing_Jazz"},
+          "010": {"code": "AFR", "name": "Afro_Jazz"}
+        }
+      },
+      "013": {
+        "code": "KPO",
+        "name": "K_Pop",
+        "subcategories": {
+          "001": {"code": "BTS", "name": "BTS_Style"},
+          "002": {"code": "BLP", "name": "Blackpink_Style"},
+          "003": {"code": "NCT", "name": "NCT_Style"},
+          "004": {"code": "SEV", "name": "Seventeen_Style"},
+          "005": {"code": "STR", "name": "Stray_Kids_Style"},
+          "006": {"code": "ATE", "name": "Ateez_Style"},
+          "007": {"code": "ENH", "name": "Enhypen_Style"},
+          "008": {"code": "AES", "name": "Aespa_Style"},
+          "009": {"code": "IVE", "name": "IVE_Style"},
+          "010": {"code": "NMI", "name": "NewJeans_Style"}
+        }
+      },
+      "014": {
+        "code": "LAT",
+        "name": "Latin",
+        "subcategories": {
+          "001": {"code": "SAL", "name": "Salsa"},
+          "002": {"code": "BAC", "name": "Bachata"},
+          "003": {"code": "MER", "name": "Merengue"},
+          "004": {"code": "REG", "name": "Reggaeton"},
+          "005": {"code": "CUM", "name": "Cumbia"},
+          "006": {"code": "SAM", "name": "Samba"},
+          "007": {"code": "CHA", "name": "Cha_Cha"},
+          "008": {"code": "RUM", "name": "Rumba"},
+          "009": {"code": "MAM", "name": "Mambo"},
+          "010": {"code": "TAN", "name": "Tango"}
+        }
+      },
+      "015": {
+        "code": "LYR",
+        "name": "Lyrical",
+        "subcategories": {
+          "001": {"code": "EMO", "name": "Emotional"},
+          "002": {"code": "STO", "name": "Storytelling"},
+          "003": {"code": "FLO", "name": "Flow"},
+          "004": {"code": "CON", "name": "Connection"},
+          "005": {"code": "EXP", "name": "Expression"},
+          "006": {"code": "SOF", "name": "Soft"},
+          "007": {"code": "DRA", "name": "Dramatic"},
+          "008": {"code": "GRA", "name": "Graceful"},
+          "009": {"code": "FLU", "name": "Fluid"},
+          "010": {"code": "TOU", "name": "Touching"}
+        }
+      },
+      "016": {
+        "code": "MOD",
+        "name": "Modern",
+        "subcategories": {
+          "001": {"code": "GRA", "name": "Graham"},
+          "002": {"code": "CUN", "name": "Cunningham"},
+          "003": {"code": "HOR", "name": "Horton"},
+          "004": {"code": "LIM", "name": "Limon"},
+          "005": {"code": "REL", "name": "Release"},
+          "006": {"code": "IMP", "name": "Improv"},
+          "007": {"code": "FLO", "name": "Floor_Work"},
+          "008": {"code": "CON", "name": "Contact"},
+          "009": {"code": "SOM", "name": "Somatic"},
+          "010": {"code": "BUT", "name": "Butoh"}
+        }
+      },
+      "017": {
+        "code": "POP",
+        "name": "Popping",
+        "subcategories": {
+          "001": {"code": "HIT", "name": "Hitting"},
+          "002": {"code": "WAV", "name": "Waving"},
+          "003": {"code": "TUT", "name": "Tutting"},
+          "004": {"code": "STR", "name": "Strutting"},
+          "005": {"code": "BOO", "name": "Boogaloo"},
+          "006": {"code": "ANI", "name": "Animation"},
+          "007": {"code": "ROB", "name": "Robot"},
+          "008": {"code": "ISO", "name": "Isolation"},
+          "009": {"code": "DIM", "name": "Dimestop"},
+          "010": {"code": "SLO", "name": "Slow_Motion"}
+        }
+      },
+      "018": {
+        "code": "RNB",
+        "name": "R_and_B",
+        "subcategories": {
+          "001": {"code": "GRO", "name": "Groove"},
+          "002": {"code": "SWA", "name": "Swag"},
+          "003": {"code": "SMO", "name": "Smooth"},
+          "004": {"code": "SEN", "name": "Sensual"},
+          "005": {"code": "OLD", "name": "Old_School"},
+          "006": {"code": "NEW", "name": "New_School"},
+          "007": {"code": "FRE", "name": "Freestyle"},
+          "008": {"code": "CHO", "name": "Choreography"},
+          "009": {"code": "SOU", "name": "Soul"},
+          "010": {"code": "FUN", "name": "Funk"}
+        }
+      },
+      "019": {
+        "code": "SHU",
+        "name": "Shuffle",
+        "subcategories": {
+          "001": {"code": "MEL", "name": "Melbourne"},
+          "002": {"code": "CUT", "name": "Cutting_Shapes"},
+          "003": {"code": "RUN", "name": "Running_Man"},
+          "004": {"code": "TST", "name": "T_Step"},
+          "005": {"code": "SPI", "name": "Spin"},
+          "006": {"code": "KIC", "name": "Kicks"},
+          "007": {"code": "SLI", "name": "Slides"},
+          "008": {"code": "CHA", "name": "Charleston"},
+          "009": {"code": "MAL", "name": "Malaysian"},
+          "010": {"code": "RUS", "name": "Russian"}
+        }
+      },
+      "020": {
+        "code": "STR",
+        "name": "Street",
+        "subcategories": {
+          "001": {"code": "BRE", "name": "Breaking"},
+          "002": {"code": "POP", "name": "Popping"},
+          "003": {"code": "LOC", "name": "Locking"},
+          "004": {"code": "HOU", "name": "House"},
+          "005": {"code": "KRU", "name": "Krump"},
+          "006": {"code": "DAN", "name": "Dancehall"},
+          "007": {"code": "WAA", "name": "Waacking"},
+          "008": {"code": "VOG", "name": "Vogue"},
+          "009": {"code": "FLE", "name": "Flexing"},
+          "010": {"code": "LIT", "name": "Litefeet"}
+        }
+      },
+      "021": {
+        "code": "TAP",
+        "name": "Tap",
+        "subcategories": {
+          "001": {"code": "RHY", "name": "Rhythm"},
+          "002": {"code": "BRO", "name": "Broadway"},
+          "003": {"code": "CLA", "name": "Classical"},
+          "004": {"code": "HOO", "name": "Hoofing"},
+          "005": {"code": "WIN", "name": "Wing"},
+          "006": {"code": "PAD", "name": "Paddle_Roll"},
+          "007": {"code": "PUL", "name": "Pull_Back"},
+          "008": {"code": "CRA", "name": "Cramp_Roll"},
+          "009": {"code": "SHU", "name": "Shuffle"},
+          "010": {"code": "TIM", "name": "Time_Step"}
+        }
+      },
+      "022": {
+        "code": "TIK",
+        "name": "TikTok",
+        "subcategories": {
+          "001": {"code": "VIR", "name": "Viral_Dance"},
+          "002": {"code": "CHA", "name": "Challenge"},
+          "003": {"code": "TRE", "name": "Trending"},
+          "004": {"code": "DUE", "name": "Duet"},
+          "005": {"code": "TRA", "name": "Transition"},
+          "006": {"code": "HAN", "name": "Hand_Dance"},
+          "007": {"code": "EMO", "name": "Emoji_Dance"},
+          "008": {"code": "COM", "name": "Comedy_Dance"},
+          "009": {"code": "SLO", "name": "Slow_Mo"},
+          "010": {"code": "REV", "name": "Reverse"}
+        }
+      },
+      "023": {
+        "code": "TRA",
+        "name": "Traditional",
+        "subcategories": {
+          "001": {"code": "FOL", "name": "Folk"},
+          "002": {"code": "ETH", "name": "Ethnic"},
+          "003": {"code": "CER", "name": "Ceremonial"},
+          "004": {"code": "RIT", "name": "Ritual"},
+          "005": {"code": "CUL", "name": "Cultural"},
+          "006": {"code": "HER", "name": "Heritage"},
+          "007": {"code": "TRI", "name": "Tribal"},
+          "008": {"code": "COU", "name": "Court"},
+          "009": {"code": "REL", "name": "Religious"},
+          "010": {"code": "FES", "name": "Festival"}
+        }
+      },
+      "024": {
+        "code": "VOG",
+        "name": "Vogue",
+        "subcategories": {
+          "001": {"code": "OLD", "name": "Old_Way"},
+          "002": {"code": "NEW", "name": "New_Way"},
+          "003": {"code": "FEM", "name": "Vogue_Fem"},
+          "004": {"code": "DRA", "name": "Dramatic"},
+          "005": {"code": "RUN", "name": "Runway"},
+          "006": {"code": "HAN", "name": "Hand_Performance"},
+          "007": {"code": "DUC", "name": "Duck_Walk"},
+          "008": {"code": "CAT", "name": "Catwalk"},
+          "009": {"code": "SPI", "name": "Spins_Dips"},
+          "010": {"code": "FLO", "name": "Floor_Performance"}
+        }
+      },
+      "025": {
+        "code": "WAA",
+        "name": "Waacking",
+        "subcategories": {
+          "001": {"code": "CLA", "name": "Classic"},
+          "002": {"code": "PUN", "name": "Punking"},
+          "003": {"code": "WHI", "name": "Whacking"},
+          "004": {"code": "POS", "name": "Posing"},
+          "005": {"code": "ARM", "name": "Arm_Control"},
+          "006": {"code": "DRA", "name": "Drama"},
+          "007": {"code": "MUS", "name": "Musicality"},
+          "008": {"code": "FRE", "name": "Freestyle"},
+          "009": {"code": "BAT", "name": "Battle"},
+          "010": {"code": "SOU", "name": "Soul"}
+        }
+      }
+    }
+  }
+}

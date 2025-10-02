@@ -1,0 +1,91 @@
+{
+  "timestamp": "2025-08-03T22:26:53.282Z",
+  "environment": "Development",
+  "database": "nna-registry-dev",
+  "collections": {
+    "taxonomy": [],
+    "users": [
+      {
+        "_id": "686fc6513b3817af004e6deb",
+        "email": "ajay@celerity.studio",
+        "username": "Ajay Madhok",
+        "role": "user",
+        "createdAt": "2025-07-10T13:55:29.494Z",
+        "updatedAt": "2025-07-10T13:55:29.494Z",
+        "__v": 0
+      },
+      {
+        "_id": "68796f6a588d212f50560e98",
+        "email": "test@example.com",
+        "password": "$2b$10$joVDqtEXzVQ57aEypOjDTe67hAN.fR7AcSZpyX9ENlGazDCqtnCMq",
+        "username": "testuser",
+        "role": "user",
+        "createdAt": "2025-07-17T21:47:22.733Z",
+        "updatedAt": "2025-07-17T21:47:22.733Z",
+        "__v": 0
+      },
+      {
+        "_id": "687abca216913f90396b5c02",
+        "email": "test@local.com",
+        "password": "$2b$10$gr1fH8KTxKIezTP/5v6ELOY5eP6qycoNzK4QAym4Ix25QKu.R6K6S",
+        "username": "testuser",
+        "role": "user",
+        "createdAt": "2025-07-18T21:29:06.221Z",
+        "updatedAt": "2025-07-18T21:29:06.221Z",
+        "__v": 0
+      },
+      {
+        "_id": "687abd9caae49366743a568e",
+        "email": "test2@local.com",
+        "password": "$2b$10$RBUVBsVogcFC3pFJrm4Hi.XEgwdoXGJ0F5CALVSt0czIHvfJmrH5e",
+        "username": "testuser2",
+        "role": "user",
+        "createdAt": "2025-07-18T21:33:16.403Z",
+        "updatedAt": "2025-07-18T21:33:16.403Z",
+        "__v": 0
+      },
+      {
+        "_id": "687abec2aae49366743a5697",
+        "email": "test3@local.com",
+        "password": "$2b$10$zvFX6OTeZcdLLTe.ndZeSe2avEb0Pj2nGu.iptIjOWwV2SegTLYDm",
+        "username": "testuser3",
+        "role": "user",
+        "createdAt": "2025-07-18T21:38:10.793Z",
+        "updatedAt": "2025-07-18T21:38:10.793Z",
+        "__v": 0
+      },
+      {
+        "_id": "6888d3f645b53d57f580ffb5",
+        "email": "testuser2@example.com",
+        "password": "$2b$10$QnBmey5Dy.hbXzMxFcLM7u9QBHH9Xf.dVJYijbI5vecNKJZ7kCviu",
+        "username": "testuser2",
+        "role": "user",
+        "createdAt": "2025-07-29T14:00:22.122Z",
+        "updatedAt": "2025-07-29T14:00:22.122Z",
+        "__v": 0
+      },
+      {
+        "_id": "6888e35d36cf1b87b1ebd489",
+        "email": "local-test@example.com",
+        "password": "$2b$10$Vg6L2yc3fnhXIJ0dzULwbOren.N2GkRQv8w2nsVUQ5Lz9ly5GwJEe",
+        "username": "local-test",
+        "role": "user",
+        "createdAt": "2025-07-29T15:06:05.786Z",
+        "updatedAt": "2025-07-29T15:06:05.786Z",
+        "__v": 0
+      },
+      {
+        "_id": "6888f6c21ddb42d00bfac006",
+        "email": "testuser4@example.com",
+        "password": "$2b$10$F2fHUeinnyZ0wQKpG2NjR.n259fEqYOZrcJMx2HqHuonqw4DdicZ.",
+        "username": "testuser4",
+        "role": "user",
+        "createdAt": "2025-07-29T16:28:50.892Z",
+        "updatedAt": "2025-07-29T16:28:50.892Z",
+        "__v": 0
+      }
+    ],
+    "assets": [],
+    "migrations": []
+  }
+}

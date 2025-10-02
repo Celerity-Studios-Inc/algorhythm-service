@@ -299,17 +299,64 @@ export class NnaRegistryService {
   }
 
   // Utility methods for address conversion
-  convertHfnToMfa(hfn: string): string {
-    // Convert Human-Friendly Name to Machine-Friendly Address
-    // This would implement the conversion logic based on NNA Registry patterns
-    // For now, return as-is since the conversion logic would be complex
-    return hfn;
+  async convertHfnToMfa(hfn: string): Promise<string> {
+    try {
+      // Use NNA Registry's taxonomy conversion API
+      const url = `${this.baseUrl}/api/taxonomy/convert/hfn-to-mfa`;
+      this.logger.debug(`Converting HFN to MFA: ${hfn}`);
+
+      const response: AxiosResponse = await firstValueFrom(
+        this.httpService.get(url, {
+          headers: this.getHeaders(),
+          params: { hfn },
+          timeout: 5000,
+        })
+      );
+
+      if (response.data?.success && response.data?.data?.mfa) {
+        this.logger.debug(`Converted ${hfn} to ${response.data.data.mfa}`);
+        return response.data.data.mfa;
+      } else {
+        this.logger.warn(`HFN conversion failed for: ${hfn}`);
+        return hfn; // Return original if conversion fails
+      }
+    } catch (error) {
+      this.logger.warn(`HFN conversion error for ${hfn}:`, error.message);
+      return hfn; // Return original if conversion fails
+    }
   }
 
-  convertMfaToHfn(mfa: string): string {
-    // Convert Machine-Friendly Address to Human-Friendly Name
-    // This would implement the reverse conversion logic
-    return mfa;
+  async convertMfaToHfn(mfa: string): Promise<string> {
+    try {
+      // Use NNA Registry's taxonomy conversion API
+      const url = `${this.baseUrl}/api/taxonomy/convert/mfa-to-hfn`;
+      this.logger.debug(`Converting MFA to HFN: ${mfa}`);
+
+      const response: AxiosResponse = await firstValueFrom(
+        this.httpService.get(url, {
+          headers: this.getHeaders(),
+          params: { mfa },
+          timeout: 5000,
+        })
+      );
+
+      if (response.data?.success && response.data?.data?.hfn) {
+        this.logger.debug(`Converted ${mfa} to ${response.data.data.hfn}`);
+        return response.data.data.hfn;
+      } else {
+        this.logger.warn(`MFA conversion failed for: ${mfa}`);
+        return mfa; // Return original if conversion fails
+      }
+    } catch (error) {
+      this.logger.warn(`MFA conversion error for ${mfa}:`, error.message);
+      return mfa; // Return original if conversion fails
+    }
+  }
+
+  // Helper method to detect if an ID is HFN format
+  isHfnFormat(id: string): boolean {
+    // HFN format: L.CAT.SUB.XXX (e.g., G.POP.CON.003)
+    return /^[GLMSWBPTC]\.\w+\.\w+\.\d+$/.test(id);
   }
 
   async getAllSongs(): Promise<any[]> {
