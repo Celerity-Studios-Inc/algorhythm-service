@@ -55,7 +55,7 @@ export class RecommendationsService {
         event_type: 'template_recommendation_served',
         user_id: request.user_context.user_id,
         song_id: request.song_id,
-        template_id: (cachedResult as any).recommendation.template_id,
+        template_id: (cachedResult as any).recommendation?.template_id || 'unknown',
         cache_hit: true,
         response_time_ms: Date.now() - startTime,
       });
