@@ -46,7 +46,7 @@ export class ScoringService {
         const finalScore = Math.min(compatibilityScore.base_score * freshnessBoost, 1.0);
 
         const templateRecommendation: TemplateRecommendation = {
-          template_id: template._id,
+          template_id: template._id || template.nna_address, // Fallback to nna_address if _id is missing
           template_name: template.name,
           nna_address: template.nna_address,
           compatibility_score: finalScore,
