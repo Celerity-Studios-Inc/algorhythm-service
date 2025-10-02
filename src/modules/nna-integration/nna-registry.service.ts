@@ -310,6 +310,48 @@ export class NnaRegistryService {
     return /^\d+\.\d+\.\d+\.\d+$/.test(id);
   }
 
+  // Convert HFN to MFA format
+  async convertHfnToMfa(hfn: string): Promise<string> {
+    try {
+      // First try to find the asset by searching all assets and matching the name
+      const url = `${this.baseUrl}/api/assets`;
+      this.logger.debug(`Searching for HFN: ${hfn}`);
+
+      const response: AxiosResponse = await firstValueFrom(
+        this.httpService.get(url, {
+          headers: this.getHeaders(),
+          params: {
+            limit: 1000,
+            sort: 'createdAt',
+            order: 'desc',
+          },
+          timeout: 10000,
+        })
+      );
+
+      if (response.data?.success && response.data?.data) {
+        const assets = response.data.data;
+        // Look for an asset with matching name/friendlyName
+        const matchingAsset = assets.find(asset => 
+          asset.name === hfn || 
+          asset.friendlyName === hfn ||
+          asset.nna_address === hfn
+        );
+
+        if (matchingAsset && matchingAsset.nna_address) {
+          this.logger.debug(`Found MFA for HFN ${hfn}: ${matchingAsset.nna_address}`);
+          return matchingAsset.nna_address;
+        }
+      }
+
+      this.logger.warn(`No MFA found for HFN: ${hfn}`);
+      return hfn; // Return original if no conversion found
+    } catch (error) {
+      this.logger.warn(`HFN conversion error for ${hfn}:`, error.message);
+      return hfn; // Return original if conversion fails
+    }
+  }
+
   async getAllSongs(): Promise<any[]> {
     try {
       const url = `${this.baseUrl}/api/assets`;

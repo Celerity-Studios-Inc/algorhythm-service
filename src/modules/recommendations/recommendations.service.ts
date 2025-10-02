@@ -71,17 +71,26 @@ export class RecommendationsService {
     const isMfa = this.nnaRegistryService.isMfaFormat(request.song_id);
     this.logger.debug(`Song ID format - HFN: ${isHfn}, MFA: ${isMfa}, ID: ${request.song_id}`);
 
-    // Get song metadata from NNA Registry (works with both HFN and MFA)
-    const song = await this.nnaRegistryService.getAssetByAddress(request.song_id);
+    // Convert HFN to MFA if needed
+    let songId = request.song_id;
+    if (isHfn) {
+      this.logger.debug(`Converting HFN to MFA: ${request.song_id}`);
+      songId = await this.nnaRegistryService.convertHfnToMfa(request.song_id);
+      this.logger.debug(`Converted to MFA: ${songId}`);
+    }
+
+    // Get song metadata from NNA Registry (now using MFA)
+    const song = await this.nnaRegistryService.getAssetByAddress(songId);
     if (!song) {
-      throw new NotFoundException(`Song not found: ${request.song_id}`);
+      throw new NotFoundException(`Song not found: ${songId}`);
     }
 
     // Get all available templates (composites) for this song
-    const availableTemplates = await this.nnaRegistryService.getCompositesBySong(request.song_id);
+    const availableTemplates = await this.nnaRegistryService.getCompositesBySong(songId);
     
     if (availableTemplates.length === 0) {
-      throw new NotFoundException(`No templates available for song: ${request.song_id}`);
+      const originalId = request.song_id !== songId ? `${request.song_id} (${songId})` : songId;
+      throw new NotFoundException(`No templates available for song: ${originalId}`);
     }
 
     // Score all templates
@@ -184,10 +193,18 @@ export class RecommendationsService {
     const isMfa = this.nnaRegistryService.isMfaFormat(request.song_id);
     this.logger.debug(`Song ID format - HFN: ${isHfn}, MFA: ${isMfa}, ID: ${request.song_id}`);
 
-    // Get song metadata (works with both HFN and MFA)
-    const song = await this.nnaRegistryService.getAssetByAddress(request.song_id);
+    // Convert HFN to MFA if needed
+    let songId = request.song_id;
+    if (isHfn) {
+      this.logger.debug(`Converting HFN to MFA: ${request.song_id}`);
+      songId = await this.nnaRegistryService.convertHfnToMfa(request.song_id);
+      this.logger.debug(`Converted to MFA: ${songId}`);
+    }
+
+    // Get song metadata (now using MFA)
+    const song = await this.nnaRegistryService.getAssetByAddress(songId);
     if (!song) {
-      throw new NotFoundException(`Song not found: ${request.song_id}`);
+      throw new NotFoundException(`Song not found: ${songId}`);
     }
 
     // Get all available assets for the specified layer
