@@ -298,65 +298,16 @@ export class NnaRegistryService {
     }
   }
 
-  // Utility methods for address conversion
-  async convertHfnToMfa(hfn: string): Promise<string> {
-    try {
-      // Use NNA Registry's taxonomy conversion API
-      const url = `${this.baseUrl}/api/taxonomy/convert/hfn-to-mfa`;
-      this.logger.debug(`Converting HFN to MFA: ${hfn}`);
-
-      const response: AxiosResponse = await firstValueFrom(
-        this.httpService.get(url, {
-          headers: this.getHeaders(),
-          params: { hfn },
-          timeout: 5000,
-        })
-      );
-
-      if (response.data?.success && response.data?.data?.mfa) {
-        this.logger.debug(`Converted ${hfn} to ${response.data.data.mfa}`);
-        return response.data.data.mfa;
-      } else {
-        this.logger.warn(`HFN conversion failed for: ${hfn}`);
-        return hfn; // Return original if conversion fails
-      }
-    } catch (error) {
-      this.logger.warn(`HFN conversion error for ${hfn}:`, error.message);
-      return hfn; // Return original if conversion fails
-    }
-  }
-
-  async convertMfaToHfn(mfa: string): Promise<string> {
-    try {
-      // Use NNA Registry's taxonomy conversion API
-      const url = `${this.baseUrl}/api/taxonomy/convert/mfa-to-hfn`;
-      this.logger.debug(`Converting MFA to HFN: ${mfa}`);
-
-      const response: AxiosResponse = await firstValueFrom(
-        this.httpService.get(url, {
-          headers: this.getHeaders(),
-          params: { mfa },
-          timeout: 5000,
-        })
-      );
-
-      if (response.data?.success && response.data?.data?.hfn) {
-        this.logger.debug(`Converted ${mfa} to ${response.data.data.hfn}`);
-        return response.data.data.hfn;
-      } else {
-        this.logger.warn(`MFA conversion failed for: ${mfa}`);
-        return mfa; // Return original if conversion fails
-      }
-    } catch (error) {
-      this.logger.warn(`MFA conversion error for ${mfa}:`, error.message);
-      return mfa; // Return original if conversion fails
-    }
-  }
-
   // Helper method to detect if an ID is HFN format
   isHfnFormat(id: string): boolean {
     // HFN format: L.CAT.SUB.XXX (e.g., G.POP.CON.003)
     return /^[GLMSWBPTC]\.\w+\.\w+\.\d+$/.test(id);
+  }
+
+  // Helper method to detect if an ID is MFA format  
+  isMfaFormat(id: string): boolean {
+    // MFA format: L.NUM.NUM.NUM (e.g., 1.018.002.003)
+    return /^\d+\.\d+\.\d+\.\d+$/.test(id);
   }
 
   async getAllSongs(): Promise<any[]> {
