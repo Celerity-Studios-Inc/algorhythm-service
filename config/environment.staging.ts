@@ -13,7 +13,7 @@ export const stagingConfig = {
   JWT_SECRET: 'algorhythm-stg-jwt-secret-key',
   
   // NNA Registry JWT Secret (for fallback verification)
-  NNA_REGISTRY_JWT_SECRET: 'nna-registry-stg-jwt-secret-key',
+  NNA_REGISTRY_JWT_SECRET: '6156d9df271a1fcc2f3f631112a8a7d8fafd710df5d99cab0bf865328c19c896',
 
   // NNA Registry Integration
   NNA_REGISTRY_BASE_URL: 'https://registry.stg.reviz.dev',

@@ -13,7 +13,7 @@ export const productionConfig = {
   JWT_SECRET: 'algorhythm-prod-jwt-secret-key',
   
   // NNA Registry JWT Secret (for fallback verification)
-  NNA_REGISTRY_JWT_SECRET: 'nna-registry-prod-jwt-secret-key',
+  NNA_REGISTRY_JWT_SECRET: 'a0cdf9eff0b7393cf499c2db888638f71362615fe63599ec78cf7095d1973f39',
 
   // NNA Registry Integration
   NNA_REGISTRY_BASE_URL: 'https://registry.reviz.dev',
