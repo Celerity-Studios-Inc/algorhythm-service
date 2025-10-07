@@ -7,6 +7,7 @@ import { ScoringService } from '../scoring/scoring.service';
 import { CacheService } from '../caching/cache.service';
 import { NnaRegistryService } from '../nna-integration/nna-registry.service';
 import { AnalyticsService } from '../analytics/analytics.service';
+import { InstantRecommendationsService } from './instant-recommendations.service';
 import { TemplateRecommendationDto } from './dto/template-recommendation.dto';
 import { LayerVariationDto } from './dto/layer-variation.dto';
 import { 
@@ -29,6 +30,7 @@ export class RecommendationsService {
     private readonly cacheService: CacheService,
     private readonly nnaRegistryService: NnaRegistryService,
     private readonly analyticsService: AnalyticsService,
+    private readonly instantRecommendationsService: InstantRecommendationsService,
   ) {}
 
   async getTemplateRecommendation(
@@ -42,6 +44,18 @@ export class RecommendationsService {
     templates_evaluated?: number;
   }> {
     const startTime = Date.now();
+    
+    // PERFORMANCE OPTIMIZATION: Try instant service first for known songs
+    try {
+      const instantResult = await this.instantRecommendationsService.getTemplateRecommendation(request);
+      if (instantResult.cache_hit) {
+        const responseTime = Date.now() - startTime;
+        this.logger.debug(`⚡ Instant service response: ${responseTime}ms`);
+        return instantResult;
+      }
+    } catch (error) {
+      this.logger.warn('Instant service failed, falling back to standard service:', error.message);
+    }
     
     // Check cache first
     const primaryCacheKey = `${CACHE_KEYS.TEMPLATE_RECOMMENDATION}:${request.song_id}:${JSON.stringify(request.user_context)}`;

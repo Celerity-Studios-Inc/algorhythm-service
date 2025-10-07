@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { RecommendationsController } from './recommendations.controller';
 import { RecommendationsService } from './recommendations.service';
+import { InstantRecommendationsService } from './instant-recommendations.service';
 import { ScoringModule } from '../scoring/scoring.module';
 import { CachingModule } from '../caching/caching.module';
 import { NnaIntegrationModule } from '../nna-integration/nna-integration.module';
@@ -27,7 +28,7 @@ import {
     AnalyticsModule,
   ],
   controllers: [RecommendationsController],
-  providers: [RecommendationsService],
-  exports: [RecommendationsService],
+  providers: [RecommendationsService, InstantRecommendationsService],
+  exports: [RecommendationsService, InstantRecommendationsService],
 })
 export class RecommendationsModule {}
