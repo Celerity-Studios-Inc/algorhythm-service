@@ -1,0 +1,38 @@
+{
+  "synonyms": {
+    "hip hop": "hip-hop",
+    "hiphop": "hip-hop",
+    "r&b": "rnb",
+    "r and b": "rnb",
+    "lofi": "lo-fi",
+    "lo fi": "lo-fi",
+    "all season": "season-all-season",
+    "all-season": "season-all-season",
+    "every day": "category-everyday",
+    "everyday": "category-everyday",
+    "casual wear": "style-casual",
+    "casual": "style-casual",
+    "minimal": "aesthetic-minimalist",
+    "minimalism": "aesthetic-minimalist",
+    "neutral palette": "color-palette-neutral",
+    "neutral colors": "color-palette-neutral",
+    "high energy": "energy-high",
+    "low energy": "energy-low"
+  },
+  "stopwords": [
+    "and",
+    "the",
+    "with",
+    "of",
+    "a"
+  ],
+  "prefixesToCollapse": [
+    "style-",
+    "category-",
+    "aesthetic-",
+    "color-",
+    "season-",
+    "energy-"
+  ]
+}
+

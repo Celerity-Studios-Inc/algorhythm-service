@@ -1,0 +1,2055 @@
+{
+  "generatedAt": "2025-10-07T16:16:01.194Z",
+  "environment": "development",
+  "database": "nna-registry-service-dev",
+  "scannedDocuments": 30,
+  "totals": {
+    "uniqueTags": 138
+  },
+  "issues": {
+    "nonArrayFields": 0,
+    "emptyStrings": 0,
+    "whitespaceOnly": 0,
+    "duplicateWithinAsset": 0,
+    "nullOrUndefined": 360
+  },
+  "topTags": [
+    {
+      "tag": "season-all-season",
+      "count": 13
+    },
+    {
+      "tag": "style-casual",
+      "count": 11
+    },
+    {
+      "tag": "aesthetic-minimalist",
+      "count": 11
+    },
+    {
+      "tag": "occasion-casual",
+      "count": 11
+    },
+    {
+      "tag": "color-palette-neutral",
+      "count": 11
+    },
+    {
+      "tag": "color-coordinated",
+      "count": 11
+    },
+    {
+      "tag": "visual-harmony",
+      "count": 11
+    },
+    {
+      "tag": "style-cohesive",
+      "count": 11
+    },
+    {
+      "tag": "fashion-forward",
+      "count": 11
+    },
+    {
+      "tag": "category-everyday",
+      "count": 10
+    },
+    {
+      "tag": "cultural-global",
+      "count": 7
+    },
+    {
+      "tag": "contemporary",
+      "count": 6
+    },
+    {
+      "tag": "energy-medium",
+      "count": 6
+    },
+    {
+      "tag": "complexity-intermediate",
+      "count": 6
+    },
+    {
+      "tag": "movement-analyzed",
+      "count": 6
+    },
+    {
+      "tag": "characteristic-controlled",
+      "count": 6
+    },
+    {
+      "tag": "characteristic-expressive",
+      "count": 6
+    },
+    {
+      "tag": "pattern-linear",
+      "count": 6
+    },
+    {
+      "tag": "pattern-circular",
+      "count": 6
+    },
+    {
+      "tag": "trendy",
+      "count": 5
+    },
+    {
+      "tag": "viral-potential",
+      "count": 5
+    },
+    {
+      "tag": "dance-style-contemporary",
+      "count": 5
+    },
+    {
+      "tag": "music-pop",
+      "count": 5
+    },
+    {
+      "tag": "high-energy",
+      "count": 4
+    },
+    {
+      "tag": "pop",
+      "count": 4
+    },
+    {
+      "tag": "catchy",
+      "count": 4
+    },
+    {
+      "tag": "danceable",
+      "count": 4
+    },
+    {
+      "tag": "uplifting",
+      "count": 3
+    },
+    {
+      "tag": "female-vocals",
+      "count": 3
+    },
+    {
+      "tag": "party",
+      "count": 3
+    },
+    {
+      "tag": "energetic",
+      "count": 3
+    },
+    {
+      "tag": "fast-paced",
+      "count": 3
+    },
+    {
+      "tag": "modern",
+      "count": 3
+    },
+    {
+      "tag": "2022",
+      "count": 3
+    },
+    {
+      "tag": "celebration",
+      "count": 2
+    },
+    {
+      "tag": "american",
+      "count": 2
+    },
+    {
+      "tag": "vibrant",
+      "count": 2
+    },
+    {
+      "tag": "2023",
+      "count": 2
+    },
+    {
+      "tag": "international",
+      "count": 2
+    },
+    {
+      "tag": "club",
+      "count": 2
+    },
+    {
+      "tag": "female-artist",
+      "count": 2
+    },
+    {
+      "tag": "medium-energy",
+      "count": 2
+    },
+    {
+      "tag": "moderate-tempo",
+      "count": 2
+    },
+    {
+      "tag": "electronic-beats",
+      "count": 2
+    },
+    {
+      "tag": "western",
+      "count": 2
+    },
+    {
+      "tag": "all-ages",
+      "count": 2
+    },
+    {
+      "tag": "accessible",
+      "count": 2
+    },
+    {
+      "tag": "140-bpm",
+      "count": 2
+    },
+    {
+      "tag": "hip-hop",
+      "count": 2
+    },
+    {
+      "tag": "trap",
+      "count": 2
+    },
+    {
+      "tag": "urban",
+      "count": 2
+    },
+    {
+      "tag": "explicit",
+      "count": 2
+    },
+    {
+      "tag": "hair-blonde",
+      "count": 2
+    },
+    {
+      "tag": "english",
+      "count": 2
+    },
+    {
+      "tag": "environment-modern",
+      "count": 2
+    },
+    {
+      "tag": "setting-mixed",
+      "count": 2
+    },
+    {
+      "tag": "atmosphere-bright",
+      "count": 2
+    },
+    {
+      "tag": "theme-modern",
+      "count": 2
+    },
+    {
+      "tag": "lighting-natural",
+      "count": 2
+    },
+    {
+      "tag": "weather-clear",
+      "count": 2
+    },
+    {
+      "tag": "architecture-modern",
+      "count": 2
+    },
+    {
+      "tag": "gender-female",
+      "count": 2
+    },
+    {
+      "tag": "female-talent",
+      "count": 2
+    },
+    {
+      "tag": "female-performer",
+      "count": 2
+    },
+    {
+      "tag": "party-in-the-usa",
+      "count": 1
+    },
+    {
+      "tag": "miley-cyrus",
+      "count": 1
+    },
+    {
+      "tag": "party-in-the-usa-single",
+      "count": 1
+    },
+    {
+      "tag": "96-bpm",
+      "count": 1
+    },
+    {
+      "tag": "2009",
+      "count": 1
+    },
+    {
+      "tag": "teen-pop",
+      "count": 1
+    },
+    {
+      "tag": "medium-tempo",
+      "count": 1
+    },
+    {
+      "tag": "guitar-driven",
+      "count": 1
+    },
+    {
+      "tag": "youthful",
+      "count": 1
+    },
+    {
+      "tag": "anthemic",
+      "count": 1
+    },
+    {
+      "tag": "non-explicit",
+      "count": 1
+    },
+    {
+      "tag": "4/4-time",
+      "count": 1
+    },
+    {
+      "tag": "f#-major",
+      "count": 1
+    },
+    {
+      "tag": "push-2-start",
+      "count": 1
+    },
+    {
+      "tag": "tyla",
+      "count": 1
+    },
+    {
+      "tag": "tyla-album",
+      "count": 1
+    },
+    {
+      "tag": "128-bpm",
+      "count": 1
+    },
+    {
+      "tag": "dance-pop",
+      "count": 1
+    },
+    {
+      "tag": "teen-friendly",
+      "count": 1
+    },
+    {
+      "tag": "south-african",
+      "count": 1
+    },
+    {
+      "tag": "gender-male",
+      "count": 1
+    },
+    {
+      "tag": "male-talent",
+      "count": 1
+    },
+    {
+      "tag": "male-performer",
+      "count": 1
+    },
+    {
+      "tag": "age-teen",
+      "count": 1
+    },
+    {
+      "tag": "like-i-do",
+      "count": 1
+    },
+    {
+      "tag": "jtajor",
+      "count": 1
+    },
+    {
+      "tag": "like-i-do-album-composed-in-year-2022",
+      "count": 1
+    },
+    {
+      "tag": "110-bpm",
+      "count": 1
+    },
+    {
+      "tag": "romantic",
+      "count": 1
+    },
+    {
+      "tag": "acoustic",
+      "count": 1
+    },
+    {
+      "tag": "love",
+      "count": 1
+    },
+    {
+      "tag": "smooth-vocals",
+      "count": 1
+    },
+    {
+      "tag": "g major",
+      "count": 1
+    },
+    {
+      "tag": "4/4",
+      "count": 1
+    },
+    {
+      "tag": "medium-danceability",
+      "count": 1
+    },
+    {
+      "tag": "j.tajor",
+      "count": 1
+    }
+  ],
+  "topPairs": [
+    {
+      "tagA": "aesthetic-minimalist",
+      "tagB": "style-casual",
+      "count": 11
+    },
+    {
+      "tagA": "occasion-casual",
+      "tagB": "style-casual",
+      "count": 11
+    },
+    {
+      "tagA": "season-all-season",
+      "tagB": "style-casual",
+      "count": 11
+    },
+    {
+      "tagA": "color-palette-neutral",
+      "tagB": "style-casual",
+      "count": 11
+    },
+    {
+      "tagA": "color-coordinated",
+      "tagB": "style-casual",
+      "count": 11
+    },
+    {
+      "tagA": "style-casual",
+      "tagB": "visual-harmony",
+      "count": 11
+    },
+    {
+      "tagA": "style-casual",
+      "tagB": "style-cohesive",
+      "count": 11
+    },
+    {
+      "tagA": "fashion-forward",
+      "tagB": "style-casual",
+      "count": 11
+    },
+    {
+      "tagA": "aesthetic-minimalist",
+      "tagB": "occasion-casual",
+      "count": 11
+    },
+    {
+      "tagA": "aesthetic-minimalist",
+      "tagB": "season-all-season",
+      "count": 11
+    },
+    {
+      "tagA": "aesthetic-minimalist",
+      "tagB": "color-palette-neutral",
+      "count": 11
+    },
+    {
+      "tagA": "aesthetic-minimalist",
+      "tagB": "color-coordinated",
+      "count": 11
+    },
+    {
+      "tagA": "aesthetic-minimalist",
+      "tagB": "visual-harmony",
+      "count": 11
+    },
+    {
+      "tagA": "aesthetic-minimalist",
+      "tagB": "style-cohesive",
+      "count": 11
+    },
+    {
+      "tagA": "aesthetic-minimalist",
+      "tagB": "fashion-forward",
+      "count": 11
+    },
+    {
+      "tagA": "occasion-casual",
+      "tagB": "season-all-season",
+      "count": 11
+    },
+    {
+      "tagA": "color-palette-neutral",
+      "tagB": "occasion-casual",
+      "count": 11
+    },
+    {
+      "tagA": "color-coordinated",
+      "tagB": "occasion-casual",
+      "count": 11
+    },
+    {
+      "tagA": "occasion-casual",
+      "tagB": "visual-harmony",
+      "count": 11
+    },
+    {
+      "tagA": "occasion-casual",
+      "tagB": "style-cohesive",
+      "count": 11
+    },
+    {
+      "tagA": "fashion-forward",
+      "tagB": "occasion-casual",
+      "count": 11
+    },
+    {
+      "tagA": "color-palette-neutral",
+      "tagB": "season-all-season",
+      "count": 11
+    },
+    {
+      "tagA": "color-coordinated",
+      "tagB": "season-all-season",
+      "count": 11
+    },
+    {
+      "tagA": "season-all-season",
+      "tagB": "visual-harmony",
+      "count": 11
+    },
+    {
+      "tagA": "season-all-season",
+      "tagB": "style-cohesive",
+      "count": 11
+    },
+    {
+      "tagA": "fashion-forward",
+      "tagB": "season-all-season",
+      "count": 11
+    },
+    {
+      "tagA": "color-coordinated",
+      "tagB": "color-palette-neutral",
+      "count": 11
+    },
+    {
+      "tagA": "color-palette-neutral",
+      "tagB": "visual-harmony",
+      "count": 11
+    },
+    {
+      "tagA": "color-palette-neutral",
+      "tagB": "style-cohesive",
+      "count": 11
+    },
+    {
+      "tagA": "color-palette-neutral",
+      "tagB": "fashion-forward",
+      "count": 11
+    },
+    {
+      "tagA": "color-coordinated",
+      "tagB": "visual-harmony",
+      "count": 11
+    },
+    {
+      "tagA": "color-coordinated",
+      "tagB": "style-cohesive",
+      "count": 11
+    },
+    {
+      "tagA": "color-coordinated",
+      "tagB": "fashion-forward",
+      "count": 11
+    },
+    {
+      "tagA": "style-cohesive",
+      "tagB": "visual-harmony",
+      "count": 11
+    },
+    {
+      "tagA": "fashion-forward",
+      "tagB": "visual-harmony",
+      "count": 11
+    },
+    {
+      "tagA": "fashion-forward",
+      "tagB": "style-cohesive",
+      "count": 11
+    },
+    {
+      "tagA": "category-everyday",
+      "tagB": "style-casual",
+      "count": 10
+    },
+    {
+      "tagA": "aesthetic-minimalist",
+      "tagB": "category-everyday",
+      "count": 10
+    },
+    {
+      "tagA": "category-everyday",
+      "tagB": "occasion-casual",
+      "count": 10
+    },
+    {
+      "tagA": "category-everyday",
+      "tagB": "season-all-season",
+      "count": 10
+    },
+    {
+      "tagA": "category-everyday",
+      "tagB": "color-palette-neutral",
+      "count": 10
+    },
+    {
+      "tagA": "category-everyday",
+      "tagB": "color-coordinated",
+      "count": 10
+    },
+    {
+      "tagA": "category-everyday",
+      "tagB": "visual-harmony",
+      "count": 10
+    },
+    {
+      "tagA": "category-everyday",
+      "tagB": "style-cohesive",
+      "count": 10
+    },
+    {
+      "tagA": "category-everyday",
+      "tagB": "fashion-forward",
+      "count": 10
+    },
+    {
+      "tagA": "complexity-intermediate",
+      "tagB": "energy-medium",
+      "count": 6
+    },
+    {
+      "tagA": "energy-medium",
+      "tagB": "movement-analyzed",
+      "count": 6
+    },
+    {
+      "tagA": "characteristic-controlled",
+      "tagB": "energy-medium",
+      "count": 6
+    },
+    {
+      "tagA": "characteristic-expressive",
+      "tagB": "energy-medium",
+      "count": 6
+    },
+    {
+      "tagA": "energy-medium",
+      "tagB": "pattern-linear",
+      "count": 6
+    },
+    {
+      "tagA": "energy-medium",
+      "tagB": "pattern-circular",
+      "count": 6
+    },
+    {
+      "tagA": "complexity-intermediate",
+      "tagB": "movement-analyzed",
+      "count": 6
+    },
+    {
+      "tagA": "characteristic-controlled",
+      "tagB": "complexity-intermediate",
+      "count": 6
+    },
+    {
+      "tagA": "characteristic-expressive",
+      "tagB": "complexity-intermediate",
+      "count": 6
+    },
+    {
+      "tagA": "complexity-intermediate",
+      "tagB": "pattern-linear",
+      "count": 6
+    },
+    {
+      "tagA": "complexity-intermediate",
+      "tagB": "pattern-circular",
+      "count": 6
+    },
+    {
+      "tagA": "characteristic-controlled",
+      "tagB": "movement-analyzed",
+      "count": 6
+    },
+    {
+      "tagA": "characteristic-expressive",
+      "tagB": "movement-analyzed",
+      "count": 6
+    },
+    {
+      "tagA": "movement-analyzed",
+      "tagB": "pattern-linear",
+      "count": 6
+    },
+    {
+      "tagA": "movement-analyzed",
+      "tagB": "pattern-circular",
+      "count": 6
+    },
+    {
+      "tagA": "characteristic-controlled",
+      "tagB": "characteristic-expressive",
+      "count": 6
+    },
+    {
+      "tagA": "characteristic-controlled",
+      "tagB": "pattern-linear",
+      "count": 6
+    },
+    {
+      "tagA": "characteristic-controlled",
+      "tagB": "pattern-circular",
+      "count": 6
+    },
+    {
+      "tagA": "characteristic-expressive",
+      "tagB": "pattern-linear",
+      "count": 6
+    },
+    {
+      "tagA": "characteristic-expressive",
+      "tagB": "pattern-circular",
+      "count": 6
+    },
+    {
+      "tagA": "pattern-circular",
+      "tagB": "pattern-linear",
+      "count": 6
+    },
+    {
+      "tagA": "trendy",
+      "tagB": "viral-potential",
+      "count": 5
+    },
+    {
+      "tagA": "dance-style-contemporary",
+      "tagB": "energy-medium",
+      "count": 5
+    },
+    {
+      "tagA": "complexity-intermediate",
+      "tagB": "dance-style-contemporary",
+      "count": 5
+    },
+    {
+      "tagA": "dance-style-contemporary",
+      "tagB": "movement-analyzed",
+      "count": 5
+    },
+    {
+      "tagA": "characteristic-controlled",
+      "tagB": "dance-style-contemporary",
+      "count": 5
+    },
+    {
+      "tagA": "characteristic-expressive",
+      "tagB": "dance-style-contemporary",
+      "count": 5
+    },
+    {
+      "tagA": "dance-style-contemporary",
+      "tagB": "pattern-linear",
+      "count": 5
+    },
+    {
+      "tagA": "dance-style-contemporary",
+      "tagB": "pattern-circular",
+      "count": 5
+    },
+    {
+      "tagA": "dance-style-contemporary",
+      "tagB": "music-pop",
+      "count": 5
+    },
+    {
+      "tagA": "cultural-global",
+      "tagB": "energy-medium",
+      "count": 5
+    },
+    {
+      "tagA": "energy-medium",
+      "tagB": "music-pop",
+      "count": 5
+    },
+    {
+      "tagA": "complexity-intermediate",
+      "tagB": "cultural-global",
+      "count": 5
+    },
+    {
+      "tagA": "complexity-intermediate",
+      "tagB": "music-pop",
+      "count": 5
+    },
+    {
+      "tagA": "cultural-global",
+      "tagB": "movement-analyzed",
+      "count": 5
+    },
+    {
+      "tagA": "characteristic-controlled",
+      "tagB": "cultural-global",
+      "count": 5
+    },
+    {
+      "tagA": "characteristic-expressive",
+      "tagB": "cultural-global",
+      "count": 5
+    },
+    {
+      "tagA": "cultural-global",
+      "tagB": "pattern-linear",
+      "count": 5
+    },
+    {
+      "tagA": "cultural-global",
+      "tagB": "pattern-circular",
+      "count": 5
+    },
+    {
+      "tagA": "movement-analyzed",
+      "tagB": "music-pop",
+      "count": 5
+    },
+    {
+      "tagA": "characteristic-controlled",
+      "tagB": "music-pop",
+      "count": 5
+    },
+    {
+      "tagA": "characteristic-expressive",
+      "tagB": "music-pop",
+      "count": 5
+    },
+    {
+      "tagA": "music-pop",
+      "tagB": "pattern-linear",
+      "count": 5
+    },
+    {
+      "tagA": "music-pop",
+      "tagB": "pattern-circular",
+      "count": 5
+    },
+    {
+      "tagA": "contemporary",
+      "tagB": "high-energy",
+      "count": 4
+    },
+    {
+      "tagA": "contemporary",
+      "tagB": "pop",
+      "count": 4
+    },
+    {
+      "tagA": "catchy",
+      "tagB": "pop",
+      "count": 4
+    },
+    {
+      "tagA": "catchy",
+      "tagB": "contemporary",
+      "count": 4
+    },
+    {
+      "tagA": "contemporary",
+      "tagB": "danceable",
+      "count": 4
+    },
+    {
+      "tagA": "cultural-global",
+      "tagB": "dance-style-contemporary",
+      "count": 4
+    },
+    {
+      "tagA": "cultural-global",
+      "tagB": "music-pop",
+      "count": 4
+    },
+    {
+      "tagA": "female-vocals",
+      "tagB": "high-energy",
+      "count": 3
+    },
+    {
+      "tagA": "high-energy",
+      "tagB": "party",
+      "count": 3
+    },
+    {
+      "tagA": "danceable",
+      "tagB": "high-energy",
+      "count": 3
+    },
+    {
+      "tagA": "pop",
+      "tagB": "uplifting",
+      "count": 3
+    }
+  ],
+  "topTagSamples": [
+    {
+      "tag": "season-all-season",
+      "count": 13,
+      "sampleAssets": [
+        "L.CAS.COM.001",
+        "L.CAS.REL.001",
+        "L.CAS.COM.002",
+        "L.CAS.REL.002",
+        "L.CAS.COM.003"
+      ]
+    },
+    {
+      "tag": "style-casual",
+      "count": 11,
+      "sampleAssets": [
+        "L.CAS.COM.001",
+        "L.CAS.REL.001",
+        "L.CAS.COM.002",
+        "L.CAS.REL.002",
+        "L.CAS.COM.003"
+      ]
+    },
+    {
+      "tag": "aesthetic-minimalist",
+      "count": 11,
+      "sampleAssets": [
+        "L.CAS.COM.001",
+        "L.CAS.REL.001",
+        "L.CAS.COM.002",
+        "L.CAS.REL.002",
+        "L.CAS.COM.003"
+      ]
+    },
+    {
+      "tag": "occasion-casual",
+      "count": 11,
+      "sampleAssets": [
+        "L.CAS.COM.001",
+        "L.CAS.REL.001",
+        "L.CAS.COM.002",
+        "L.CAS.REL.002",
+        "L.CAS.COM.003"
+      ]
+    },
+    {
+      "tag": "color-palette-neutral",
+      "count": 11,
+      "sampleAssets": [
+        "L.CAS.COM.001",
+        "L.CAS.REL.001",
+        "L.CAS.COM.002",
+        "L.CAS.REL.002",
+        "L.CAS.COM.003"
+      ]
+    },
+    {
+      "tag": "color-coordinated",
+      "count": 11,
+      "sampleAssets": [
+        "L.CAS.COM.001",
+        "L.CAS.REL.001",
+        "L.CAS.COM.002",
+        "L.CAS.REL.002",
+        "L.CAS.COM.003"
+      ]
+    },
+    {
+      "tag": "visual-harmony",
+      "count": 11,
+      "sampleAssets": [
+        "L.CAS.COM.001",
+        "L.CAS.REL.001",
+        "L.CAS.COM.002",
+        "L.CAS.REL.002",
+        "L.CAS.COM.003"
+      ]
+    },
+    {
+      "tag": "style-cohesive",
+      "count": 11,
+      "sampleAssets": [
+        "L.CAS.COM.001",
+        "L.CAS.REL.001",
+        "L.CAS.COM.002",
+        "L.CAS.REL.002",
+        "L.CAS.COM.003"
+      ]
+    },
+    {
+      "tag": "fashion-forward",
+      "count": 11,
+      "sampleAssets": [
+        "L.CAS.COM.001",
+        "L.CAS.REL.001",
+        "L.CAS.COM.002",
+        "L.CAS.REL.002",
+        "L.CAS.COM.003"
+      ]
+    },
+    {
+      "tag": "category-everyday",
+      "count": 10,
+      "sampleAssets": [
+        "L.CAS.COM.001",
+        "L.CAS.REL.001",
+        "L.CAS.COM.002",
+        "L.CAS.REL.002",
+        "L.CAS.COM.003"
+      ]
+    },
+    {
+      "tag": "cultural-global",
+      "count": 7,
+      "sampleAssets": [
+        "M.CON.MOD.001",
+        "M.HIP.NEW.001",
+        "M.TIK.CHA.002",
+        "W.BCH.COA.001",
+        "M.TIK.VIR.001"
+      ]
+    },
+    {
+      "tag": "contemporary",
+      "count": 6,
+      "sampleAssets": [
+        "G.POP.TEE.001",
+        "G.AFR.AMA.001",
+        "G.RNB.MOD.001",
+        "G.RNB.MOD.002",
+        "G.HIP.TRP.001"
+      ]
+    },
+    {
+      "tag": "energy-medium",
+      "count": 6,
+      "sampleAssets": [
+        "M.CON.MOD.001",
+        "M.HIP.NEW.001",
+        "M.TIK.CHA.001",
+        "M.TIK.CHA.002",
+        "M.TIK.VIR.001"
+      ]
+    },
+    {
+      "tag": "complexity-intermediate",
+      "count": 6,
+      "sampleAssets": [
+        "M.CON.MOD.001",
+        "M.HIP.NEW.001",
+        "M.TIK.CHA.001",
+        "M.TIK.CHA.002",
+        "M.TIK.VIR.001"
+      ]
+    },
+    {
+      "tag": "movement-analyzed",
+      "count": 6,
+      "sampleAssets": [
+        "M.CON.MOD.001",
+        "M.HIP.NEW.001",
+        "M.TIK.CHA.001",
+        "M.TIK.CHA.002",
+        "M.TIK.VIR.001"
+      ]
+    },
+    {
+      "tag": "characteristic-controlled",
+      "count": 6,
+      "sampleAssets": [
+        "M.CON.MOD.001",
+        "M.HIP.NEW.001",
+        "M.TIK.CHA.001",
+        "M.TIK.CHA.002",
+        "M.TIK.VIR.001"
+      ]
+    },
+    {
+      "tag": "characteristic-expressive",
+      "count": 6,
+      "sampleAssets": [
+        "M.CON.MOD.001",
+        "M.HIP.NEW.001",
+        "M.TIK.CHA.001",
+        "M.TIK.CHA.002",
+        "M.TIK.VIR.001"
+      ]
+    },
+    {
+      "tag": "pattern-linear",
+      "count": 6,
+      "sampleAssets": [
+        "M.CON.MOD.001",
+        "M.HIP.NEW.001",
+        "M.TIK.CHA.001",
+        "M.TIK.CHA.002",
+        "M.TIK.VIR.001"
+      ]
+    },
+    {
+      "tag": "pattern-circular",
+      "count": 6,
+      "sampleAssets": [
+        "M.CON.MOD.001",
+        "M.HIP.NEW.001",
+        "M.TIK.CHA.001",
+        "M.TIK.CHA.002",
+        "M.TIK.VIR.001"
+      ]
+    },
+    {
+      "tag": "trendy",
+      "count": 5,
+      "sampleAssets": [
+        "S.TEN.YOU.001",
+        "S.TEN.YOU.002",
+        "S.TEN.YOU.003",
+        "S.TEN.YOU.004",
+        "S.TEN.YOU.005"
+      ]
+    }
+  ],
+  "topPairSamples": [
+    {
+      "tagA": "aesthetic-minimalist",
+      "tagB": "style-casual",
+      "count": 11
+    },
+    {
+      "tagA": "occasion-casual",
+      "tagB": "style-casual",
+      "count": 11
+    },
+    {
+      "tagA": "season-all-season",
+      "tagB": "style-casual",
+      "count": 11
+    },
+    {
+      "tagA": "color-palette-neutral",
+      "tagB": "style-casual",
+      "count": 11
+    },
+    {
+      "tagA": "color-coordinated",
+      "tagB": "style-casual",
+      "count": 11
+    },
+    {
+      "tagA": "style-casual",
+      "tagB": "visual-harmony",
+      "count": 11
+    },
+    {
+      "tagA": "style-casual",
+      "tagB": "style-cohesive",
+      "count": 11
+    },
+    {
+      "tagA": "fashion-forward",
+      "tagB": "style-casual",
+      "count": 11
+    },
+    {
+      "tagA": "aesthetic-minimalist",
+      "tagB": "occasion-casual",
+      "count": 11
+    },
+    {
+      "tagA": "aesthetic-minimalist",
+      "tagB": "season-all-season",
+      "count": 11
+    },
+    {
+      "tagA": "aesthetic-minimalist",
+      "tagB": "color-palette-neutral",
+      "count": 11
+    },
+    {
+      "tagA": "aesthetic-minimalist",
+      "tagB": "color-coordinated",
+      "count": 11
+    },
+    {
+      "tagA": "aesthetic-minimalist",
+      "tagB": "visual-harmony",
+      "count": 11
+    },
+    {
+      "tagA": "aesthetic-minimalist",
+      "tagB": "style-cohesive",
+      "count": 11
+    },
+    {
+      "tagA": "aesthetic-minimalist",
+      "tagB": "fashion-forward",
+      "count": 11
+    },
+    {
+      "tagA": "occasion-casual",
+      "tagB": "season-all-season",
+      "count": 11
+    },
+    {
+      "tagA": "color-palette-neutral",
+      "tagB": "occasion-casual",
+      "count": 11
+    },
+    {
+      "tagA": "color-coordinated",
+      "tagB": "occasion-casual",
+      "count": 11
+    },
+    {
+      "tagA": "occasion-casual",
+      "tagB": "visual-harmony",
+      "count": 11
+    },
+    {
+      "tagA": "occasion-casual",
+      "tagB": "style-cohesive",
+      "count": 11
+    }
+  ],
+  "normalizationCandidates": [],
+  "perLayerSummary": {
+    "G": [
+      {
+        "tag": "contemporary",
+        "count": 6
+      },
+      {
+        "tag": "high-energy",
+        "count": 4
+      },
+      {
+        "tag": "pop",
+        "count": 4
+      },
+      {
+        "tag": "catchy",
+        "count": 4
+      },
+      {
+        "tag": "danceable",
+        "count": 4
+      },
+      {
+        "tag": "uplifting",
+        "count": 3
+      },
+      {
+        "tag": "female-vocals",
+        "count": 3
+      },
+      {
+        "tag": "party",
+        "count": 3
+      },
+      {
+        "tag": "energetic",
+        "count": 3
+      },
+      {
+        "tag": "fast-paced",
+        "count": 3
+      },
+      {
+        "tag": "modern",
+        "count": 3
+      },
+      {
+        "tag": "2022",
+        "count": 3
+      },
+      {
+        "tag": "celebration",
+        "count": 2
+      },
+      {
+        "tag": "american",
+        "count": 2
+      },
+      {
+        "tag": "vibrant",
+        "count": 2
+      },
+      {
+        "tag": "2023",
+        "count": 2
+      },
+      {
+        "tag": "international",
+        "count": 2
+      },
+      {
+        "tag": "club",
+        "count": 2
+      },
+      {
+        "tag": "female-artist",
+        "count": 2
+      },
+      {
+        "tag": "medium-energy",
+        "count": 2
+      }
+    ],
+    "S": [
+      {
+        "tag": "trendy",
+        "count": 5
+      },
+      {
+        "tag": "viral-potential",
+        "count": 5
+      },
+      {
+        "tag": "hair-blonde",
+        "count": 2
+      },
+      {
+        "tag": "gender-female",
+        "count": 2
+      },
+      {
+        "tag": "female-talent",
+        "count": 2
+      },
+      {
+        "tag": "female-performer",
+        "count": 2
+      },
+      {
+        "tag": "gender-male",
+        "count": 1
+      },
+      {
+        "tag": "male-talent",
+        "count": 1
+      },
+      {
+        "tag": "male-performer",
+        "count": 1
+      },
+      {
+        "tag": "age-teen",
+        "count": 1
+      },
+      {
+        "tag": "hair-black",
+        "count": 1
+      },
+      {
+        "tag": "hair-red",
+        "count": 1
+      },
+      {
+        "tag": "eye-color-blue",
+        "count": 1
+      }
+    ],
+    "M": [
+      {
+        "tag": "energy-medium",
+        "count": 6
+      },
+      {
+        "tag": "complexity-intermediate",
+        "count": 6
+      },
+      {
+        "tag": "movement-analyzed",
+        "count": 6
+      },
+      {
+        "tag": "characteristic-controlled",
+        "count": 6
+      },
+      {
+        "tag": "characteristic-expressive",
+        "count": 6
+      },
+      {
+        "tag": "pattern-linear",
+        "count": 6
+      },
+      {
+        "tag": "pattern-circular",
+        "count": 6
+      },
+      {
+        "tag": "dance-style-contemporary",
+        "count": 5
+      },
+      {
+        "tag": "cultural-global",
+        "count": 5
+      },
+      {
+        "tag": "music-pop",
+        "count": 5
+      },
+      {
+        "tag": "dance-style-hip-hop",
+        "count": 1
+      },
+      {
+        "tag": "music-hip-hop",
+        "count": 1
+      },
+      {
+        "tag": "cultural-american",
+        "count": 1
+      }
+    ],
+    "L": [
+      {
+        "tag": "style-casual",
+        "count": 11
+      },
+      {
+        "tag": "aesthetic-minimalist",
+        "count": 11
+      },
+      {
+        "tag": "occasion-casual",
+        "count": 11
+      },
+      {
+        "tag": "season-all-season",
+        "count": 11
+      },
+      {
+        "tag": "color-palette-neutral",
+        "count": 11
+      },
+      {
+        "tag": "color-coordinated",
+        "count": 11
+      },
+      {
+        "tag": "visual-harmony",
+        "count": 11
+      },
+      {
+        "tag": "style-cohesive",
+        "count": 11
+      },
+      {
+        "tag": "fashion-forward",
+        "count": 11
+      },
+      {
+        "tag": "category-everyday",
+        "count": 10
+      },
+      {
+        "tag": "category-athletic",
+        "count": 1
+      }
+    ],
+    "W": [
+      {
+        "tag": "environment-modern",
+        "count": 2
+      },
+      {
+        "tag": "setting-mixed",
+        "count": 2
+      },
+      {
+        "tag": "atmosphere-bright",
+        "count": 2
+      },
+      {
+        "tag": "theme-modern",
+        "count": 2
+      },
+      {
+        "tag": "lighting-natural",
+        "count": 2
+      },
+      {
+        "tag": "season-all-season",
+        "count": 2
+      },
+      {
+        "tag": "weather-clear",
+        "count": 2
+      },
+      {
+        "tag": "cultural-global",
+        "count": 2
+      },
+      {
+        "tag": "architecture-modern",
+        "count": 2
+      },
+      {
+        "tag": "time-dusk",
+        "count": 1
+      },
+      {
+        "tag": "time-day",
+        "count": 1
+      }
+    ]
+  },
+  "perCategorySummary": {
+    "G.POP": [
+      {
+        "tag": "pop",
+        "count": 2
+      },
+      {
+        "tag": "contemporary",
+        "count": 2
+      },
+      {
+        "tag": "catchy",
+        "count": 2
+      },
+      {
+        "tag": "danceable",
+        "count": 2
+      },
+      {
+        "tag": "party-in-the-usa",
+        "count": 1
+      },
+      {
+        "tag": "miley-cyrus",
+        "count": 1
+      },
+      {
+        "tag": "party-in-the-usa-single",
+        "count": 1
+      },
+      {
+        "tag": "96-bpm",
+        "count": 1
+      },
+      {
+        "tag": "2009",
+        "count": 1
+      },
+      {
+        "tag": "high-energy",
+        "count": 1
+      },
+      {
+        "tag": "teen-pop",
+        "count": 1
+      },
+      {
+        "tag": "uplifting",
+        "count": 1
+      },
+      {
+        "tag": "medium-tempo",
+        "count": 1
+      },
+      {
+        "tag": "guitar-driven",
+        "count": 1
+      },
+      {
+        "tag": "celebration",
+        "count": 1
+      }
+    ],
+    "G.AFR": [
+      {
+        "tag": "push-2-start",
+        "count": 1
+      },
+      {
+        "tag": "tyla",
+        "count": 1
+      },
+      {
+        "tag": "tyla-album",
+        "count": 1
+      },
+      {
+        "tag": "128-bpm",
+        "count": 1
+      },
+      {
+        "tag": "2023",
+        "count": 1
+      },
+      {
+        "tag": "high-energy",
+        "count": 1
+      },
+      {
+        "tag": "dance-pop",
+        "count": 1
+      },
+      {
+        "tag": "energetic",
+        "count": 1
+      },
+      {
+        "tag": "fast-paced",
+        "count": 1
+      },
+      {
+        "tag": "female-vocals",
+        "count": 1
+      },
+      {
+        "tag": "party",
+        "count": 1
+      },
+      {
+        "tag": "contemporary",
+        "count": 1
+      },
+      {
+        "tag": "pop",
+        "count": 1
+      },
+      {
+        "tag": "danceable",
+        "count": 1
+      },
+      {
+        "tag": "uplifting",
+        "count": 1
+      }
+    ],
+    "S.TEN": [
+      {
+        "tag": "trendy",
+        "count": 5
+      },
+      {
+        "tag": "viral-potential",
+        "count": 5
+      },
+      {
+        "tag": "hair-blonde",
+        "count": 2
+      },
+      {
+        "tag": "gender-female",
+        "count": 2
+      },
+      {
+        "tag": "female-talent",
+        "count": 2
+      },
+      {
+        "tag": "female-performer",
+        "count": 2
+      },
+      {
+        "tag": "gender-male",
+        "count": 1
+      },
+      {
+        "tag": "male-talent",
+        "count": 1
+      },
+      {
+        "tag": "male-performer",
+        "count": 1
+      },
+      {
+        "tag": "age-teen",
+        "count": 1
+      },
+      {
+        "tag": "hair-black",
+        "count": 1
+      },
+      {
+        "tag": "hair-red",
+        "count": 1
+      },
+      {
+        "tag": "eye-color-blue",
+        "count": 1
+      }
+    ],
+    "G.RNB": [
+      {
+        "tag": "2022",
+        "count": 2
+      },
+      {
+        "tag": "contemporary",
+        "count": 2
+      },
+      {
+        "tag": "like-i-do",
+        "count": 1
+      },
+      {
+        "tag": "jtajor",
+        "count": 1
+      },
+      {
+        "tag": "like-i-do-album-composed-in-year-2022",
+        "count": 1
+      },
+      {
+        "tag": "110-bpm",
+        "count": 1
+      },
+      {
+        "tag": "medium-energy",
+        "count": 1
+      },
+      {
+        "tag": "pop",
+        "count": 1
+      },
+      {
+        "tag": "romantic",
+        "count": 1
+      },
+      {
+        "tag": "moderate-tempo",
+        "count": 1
+      },
+      {
+        "tag": "electronic-beats",
+        "count": 1
+      },
+      {
+        "tag": "acoustic",
+        "count": 1
+      },
+      {
+        "tag": "love",
+        "count": 1
+      },
+      {
+        "tag": "western",
+        "count": 1
+      },
+      {
+        "tag": "all-ages",
+        "count": 1
+      }
+    ],
+    "M.CON": [
+      {
+        "tag": "dance-style-contemporary",
+        "count": 1
+      },
+      {
+        "tag": "energy-medium",
+        "count": 1
+      },
+      {
+        "tag": "complexity-intermediate",
+        "count": 1
+      },
+      {
+        "tag": "cultural-global",
+        "count": 1
+      },
+      {
+        "tag": "movement-analyzed",
+        "count": 1
+      },
+      {
+        "tag": "characteristic-controlled",
+        "count": 1
+      },
+      {
+        "tag": "characteristic-expressive",
+        "count": 1
+      },
+      {
+        "tag": "pattern-linear",
+        "count": 1
+      },
+      {
+        "tag": "pattern-circular",
+        "count": 1
+      },
+      {
+        "tag": "music-pop",
+        "count": 1
+      }
+    ],
+    "G.HIP": [
+      {
+        "tag": "nokia",
+        "count": 1
+      },
+      {
+        "tag": "drake",
+        "count": 1
+      },
+      {
+        "tag": "140-bpm",
+        "count": 1
+      },
+      {
+        "tag": "2023",
+        "count": 1
+      },
+      {
+        "tag": "high-energy",
+        "count": 1
+      },
+      {
+        "tag": "hip-hop",
+        "count": 1
+      },
+      {
+        "tag": "trap",
+        "count": 1
+      },
+      {
+        "tag": "energetic",
+        "count": 1
+      },
+      {
+        "tag": "fast-paced",
+        "count": 1
+      },
+      {
+        "tag": "male-vocal",
+        "count": 1
+      },
+      {
+        "tag": "explicit",
+        "count": 1
+      },
+      {
+        "tag": "club",
+        "count": 1
+      },
+      {
+        "tag": "party",
+        "count": 1
+      },
+      {
+        "tag": "contemporary",
+        "count": 1
+      },
+      {
+        "tag": "canadian",
+        "count": 1
+      }
+    ],
+    "L.CAS": [
+      {
+        "tag": "style-casual",
+        "count": 11
+      },
+      {
+        "tag": "aesthetic-minimalist",
+        "count": 11
+      },
+      {
+        "tag": "occasion-casual",
+        "count": 11
+      },
+      {
+        "tag": "season-all-season",
+        "count": 11
+      },
+      {
+        "tag": "color-palette-neutral",
+        "count": 11
+      },
+      {
+        "tag": "color-coordinated",
+        "count": 11
+      },
+      {
+        "tag": "visual-harmony",
+        "count": 11
+      },
+      {
+        "tag": "style-cohesive",
+        "count": 11
+      },
+      {
+        "tag": "fashion-forward",
+        "count": 11
+      },
+      {
+        "tag": "category-everyday",
+        "count": 10
+      },
+      {
+        "tag": "category-athletic",
+        "count": 1
+      }
+    ],
+    "M.HIP": [
+      {
+        "tag": "dance-style-hip-hop",
+        "count": 1
+      },
+      {
+        "tag": "energy-medium",
+        "count": 1
+      },
+      {
+        "tag": "complexity-intermediate",
+        "count": 1
+      },
+      {
+        "tag": "cultural-global",
+        "count": 1
+      },
+      {
+        "tag": "movement-analyzed",
+        "count": 1
+      },
+      {
+        "tag": "characteristic-controlled",
+        "count": 1
+      },
+      {
+        "tag": "characteristic-expressive",
+        "count": 1
+      },
+      {
+        "tag": "pattern-linear",
+        "count": 1
+      },
+      {
+        "tag": "pattern-circular",
+        "count": 1
+      },
+      {
+        "tag": "music-hip-hop",
+        "count": 1
+      }
+    ],
+    "M.TIK": [
+      {
+        "tag": "dance-style-contemporary",
+        "count": 4
+      },
+      {
+        "tag": "energy-medium",
+        "count": 4
+      },
+      {
+        "tag": "complexity-intermediate",
+        "count": 4
+      },
+      {
+        "tag": "movement-analyzed",
+        "count": 4
+      },
+      {
+        "tag": "characteristic-controlled",
+        "count": 4
+      },
+      {
+        "tag": "characteristic-expressive",
+        "count": 4
+      },
+      {
+        "tag": "pattern-linear",
+        "count": 4
+      },
+      {
+        "tag": "pattern-circular",
+        "count": 4
+      },
+      {
+        "tag": "music-pop",
+        "count": 4
+      },
+      {
+        "tag": "cultural-global",
+        "count": 3
+      },
+      {
+        "tag": "cultural-american",
+        "count": 1
+      }
+    ],
+    "W.BCH": [
+      {
+        "tag": "environment-modern",
+        "count": 2
+      },
+      {
+        "tag": "setting-mixed",
+        "count": 2
+      },
+      {
+        "tag": "atmosphere-bright",
+        "count": 2
+      },
+      {
+        "tag": "theme-modern",
+        "count": 2
+      },
+      {
+        "tag": "lighting-natural",
+        "count": 2
+      },
+      {
+        "tag": "season-all-season",
+        "count": 2
+      },
+      {
+        "tag": "weather-clear",
+        "count": 2
+      },
+      {
+        "tag": "cultural-global",
+        "count": 2
+      },
+      {
+        "tag": "architecture-modern",
+        "count": 2
+      },
+      {
+        "tag": "time-dusk",
+        "count": 1
+      },
+      {
+        "tag": "time-day",
+        "count": 1
+      }
+    ]
+  }
+}
