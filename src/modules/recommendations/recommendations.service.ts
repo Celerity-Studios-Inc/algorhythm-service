@@ -15,7 +15,6 @@ import {
 } from './interfaces/recommendation.interface';
 import { CACHE_KEYS, CACHE_TTL } from '../../common/constants/cache-keys';
 import { SCORING_THRESHOLDS } from '../../common/constants/compatibility-weights';
-import { SCORING_THRESHOLDS } from '../../common/constants/compatibility-weights';
 
 @Injectable()
 export class RecommendationsService {
@@ -103,10 +102,8 @@ export class RecommendationsService {
     );
     const scoringTime = Date.now() - scoringStartTime;
 
-    // Filter templates that meet minimum score threshold
-    const eligibleTemplates = scoredTemplates.filter(
-      template => template.compatibility_score >= SCORING_THRESHOLDS.MIN_RECOMMENDATION_SCORE
-    );
+    // TEMPORARY FIX: Accept all templates regardless of score to unblock ReViz developers
+    const eligibleTemplates = scoredTemplates; // Remove threshold filter temporarily
 
     if (eligibleTemplates.length === 0) {
       // Fallback: return most popular template for this song
