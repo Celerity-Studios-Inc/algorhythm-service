@@ -93,6 +93,20 @@ export class RecommendationsService {
       throw new NotFoundException(`No templates available for song: ${originalId}`);
     }
 
+    // PERFORMANCE OPTIMIZATION: Check cache first for instant responses
+    const cacheKey = `recommendations:${songId}:${JSON.stringify(request.user_context.preferences)}`;
+    const cachedResult = await this.cacheService.get(cacheKey);
+    
+    if (cachedResult) {
+      this.logger.debug(`Cache hit for song: ${songId}`);
+      return {
+        ...cachedResult,
+        cache_hit: true,
+        score_computation_time_ms: 0,
+        templates_evaluated: cachedResult.alternatives.length + 1,
+      };
+    }
+
     // EMERGENCY FIX: Bypass scoring entirely to unblock ReViz developers
     const scoringStartTime = Date.now();
     
@@ -144,11 +158,19 @@ export class RecommendationsService {
       templates_evaluated: scoredTemplates.length,
     };
 
-    // Cache the result
+    // Cache the result for faster future requests
     await this.cacheService.set(
       cacheKey,
       result,
       CACHE_TTL.TEMPLATE_RECOMMENDATION,
+    );
+    
+    // Also cache with a more specific key for instant responses
+    const instantCacheKey = `instant:${songId}`;
+    await this.cacheService.set(
+      instantCacheKey,
+      result,
+      3600, // 1 hour cache for instant responses
     );
 
     // Store in recommendation cache for analytics
