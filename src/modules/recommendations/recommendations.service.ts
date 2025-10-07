@@ -129,14 +129,6 @@ export class RecommendationsService {
     const scoringTime = Date.now() - scoringStartTime;
     const eligibleTemplates = scoredTemplates; // All templates are eligible
 
-    if (eligibleTemplates.length === 0) {
-      // Fallback: return most popular template for this song
-      const popularTemplate = await this.getFallbackTemplate(request.song_id);
-      if (popularTemplate) {
-        eligibleTemplates.push(popularTemplate);
-      }
-    }
-
     // Sort by compatibility score (with freshness boost and diversity applied)
     const sortedTemplates = this.applyDiversityAndSort(eligibleTemplates);
 
