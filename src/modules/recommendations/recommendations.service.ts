@@ -44,10 +44,10 @@ export class RecommendationsService {
     const startTime = Date.now();
     
     // Check cache first
-    const cacheKey = `${CACHE_KEYS.TEMPLATE_RECOMMENDATION}:${request.song_id}:${JSON.stringify(request.user_context)}`;
-    const cachedResult = await this.cacheService.get(cacheKey);
+    const primaryCacheKey = `${CACHE_KEYS.TEMPLATE_RECOMMENDATION}:${request.song_id}:${JSON.stringify(request.user_context)}`;
+    const primaryCachedResult = await this.cacheService.get(primaryCacheKey);
     
-    if (cachedResult) {
+    if (primaryCachedResult) {
       this.logger.debug(`Cache hit for template recommendation: ${request.song_id}`);
       
       // Track analytics for cached result
@@ -55,13 +55,13 @@ export class RecommendationsService {
         event_type: 'template_recommendation_served',
         user_id: request.user_context.user_id,
         song_id: request.song_id,
-        template_id: (cachedResult as any).recommendation?.template_id || 'unknown',
+        template_id: (primaryCachedResult as any).recommendation?.template_id || 'unknown',
         cache_hit: true,
         response_time_ms: Date.now() - startTime,
       });
 
       return {
-        ...(cachedResult as any),
+        ...(primaryCachedResult as any),
         cache_hit: true,
       };
     }
@@ -94,16 +94,16 @@ export class RecommendationsService {
     }
 
     // PERFORMANCE OPTIMIZATION: Check cache first for instant responses
-    const cacheKey = `recommendations:${songId}:${JSON.stringify(request.user_context.preferences)}`;
-    const cachedResult = await this.cacheService.get(cacheKey);
+    const secondaryCacheKey = `recommendations:${songId}:${JSON.stringify(request.user_context.preferences)}`;
+    const secondaryCachedResult = await this.cacheService.get(secondaryCacheKey);
     
-    if (cachedResult) {
+    if (secondaryCachedResult) {
       this.logger.debug(`Cache hit for song: ${songId}`);
       return {
-        ...cachedResult,
+        ...(secondaryCachedResult as any),
         cache_hit: true,
         score_computation_time_ms: 0,
-        templates_evaluated: cachedResult.alternatives.length + 1,
+        templates_evaluated: (secondaryCachedResult as any).alternatives?.length + 1 || 1,
       };
     }
 
@@ -160,7 +160,7 @@ export class RecommendationsService {
 
     // Cache the result for faster future requests
     await this.cacheService.set(
-      cacheKey,
+      secondaryCacheKey,
       result,
       CACHE_TTL.TEMPLATE_RECOMMENDATION,
     );
@@ -205,15 +205,15 @@ export class RecommendationsService {
     const startTime = Date.now();
 
     // Check cache first
-    const cacheKey = `${CACHE_KEYS.LAYER_VARIATIONS}:${request.current_template_id}:${request.vary_layer}`;
-    const cachedResult = await this.cacheService.get(cacheKey);
+    const layerCacheKey = `${CACHE_KEYS.LAYER_VARIATIONS}:${request.current_template_id}:${request.vary_layer}`;
+    const layerCachedResult = await this.cacheService.get(layerCacheKey);
     
-    if (cachedResult) {
+    if (layerCachedResult) {
       this.logger.debug(
         `Cache hit for layer variations: ${request.current_template_id}, ${request.vary_layer}`
       );
       return {
-        ...(cachedResult as any),
+        ...(layerCachedResult as any),
         cache_hit: true,
       };
     }
@@ -274,7 +274,7 @@ export class RecommendationsService {
 
     // Cache the result
     await this.cacheService.set(
-      cacheKey,
+      layerCacheKey,
       result,
       CACHE_TTL.LAYER_VARIATIONS,
     );

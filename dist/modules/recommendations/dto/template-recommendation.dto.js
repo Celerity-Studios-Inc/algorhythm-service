@@ -105,8 +105,20 @@ class TemplateRecommendationDto {
 exports.TemplateRecommendationDto = TemplateRecommendationDto;
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Song ID in NNA format',
-        example: 'G.POP.TEN.001'
+        description: 'Song ID in NNA format (supports both HFN and MFA formats)',
+        example: 'G.POP.TEN.001',
+        examples: {
+            hfn: {
+                summary: 'HFN Format (Human-Friendly Name)',
+                description: 'Human-readable format like G.POP.TEN.001',
+                value: 'G.HIP.WCO.001'
+            },
+            mfa: {
+                summary: 'MFA Format (Machine-Friendly Address)',
+                description: 'Numeric format like 1.018.002.003',
+                value: '1.013.017.001'
+            }
+        }
     }),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)

@@ -11,7 +11,7 @@ export declare const FRESHNESS_BOOST: {
     readonly FIRST_QUARTER: 1.05;
 };
 export declare const SCORING_THRESHOLDS: {
-    readonly MIN_RECOMMENDATION_SCORE: 0.6;
+    readonly MIN_RECOMMENDATION_SCORE: 0.01;
     readonly DIVERSITY_FACTOR: 0.01;
     readonly MAX_ALTERNATIVES: 10;
     readonly MAX_LAYER_VARIATIONS: 8;

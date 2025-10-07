@@ -246,11 +246,50 @@ let NnaRegistryService = NnaRegistryService_1 = class NnaRegistryService {
             throw new common_1.HttpException('NNA Registry integration error', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    convertHfnToMfa(hfn) {
-        return hfn;
+    isHfnFormat(id) {
+        return /^[GLMSWBPTC]\.\w+\.\w+\.\d+$/.test(id);
     }
-    convertMfaToHfn(mfa) {
-        return mfa;
+    isMfaFormat(id) {
+        return /^\d+\.\d+\.\d+\.\d+$/.test(id);
+    }
+    async convertHfnToMfa(hfn) {
+        try {
+            const hfnParts = hfn.split('.');
+            if (hfnParts.length !== 4) {
+                this.logger.warn(`Invalid HFN format: ${hfn}`);
+                return hfn;
+            }
+            const [layer, category, subcategory, sequential] = hfnParts;
+            const url = `${this.baseUrl}/api/assets`;
+            this.logger.debug(`Converting HFN: ${hfn} (Layer: ${layer}, Category: ${category}, Subcategory: ${subcategory})`);
+            const response = await (0, rxjs_1.firstValueFrom)(this.httpService.get(url, {
+                headers: this.getHeaders(),
+                params: {
+                    layer,
+                    category,
+                    subcategory,
+                    limit: 100,
+                    sort: 'createdAt',
+                    order: 'desc',
+                },
+                timeout: 5000,
+            }));
+            if (response.data?.success && response.data?.data) {
+                const assets = response.data.data;
+                const matchingAsset = assets.find(asset => asset.name === hfn ||
+                    asset.friendlyName === hfn);
+                if (matchingAsset && matchingAsset.nna_address) {
+                    this.logger.debug(`Found MFA for HFN ${hfn}: ${matchingAsset.nna_address}`);
+                    return matchingAsset.nna_address;
+                }
+            }
+            this.logger.warn(`No MFA found for HFN: ${hfn}`);
+            return hfn;
+        }
+        catch (error) {
+            this.logger.warn(`HFN conversion error for ${hfn}:`, error.message);
+            return hfn;
+        }
     }
     async getAllSongs() {
         try {

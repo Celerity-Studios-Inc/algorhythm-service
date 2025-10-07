@@ -42,7 +42,7 @@ let ScoringService = ScoringService_1 = class ScoringService {
                 const freshnessBoost = this.freshnessBoostService.calculateBoost(template.createdAt);
                 const finalScore = Math.min(compatibilityScore.base_score * freshnessBoost, 1.0);
                 const templateRecommendation = {
-                    template_id: template._id,
+                    template_id: template._id || template.nna_address,
                     template_name: template.name,
                     nna_address: template.nna_address,
                     compatibility_score: finalScore,

@@ -25,8 +25,9 @@ export declare class NnaRegistryService {
     }>;
     private getHeaders;
     private handleHttpError;
-    convertHfnToMfa(hfn: string): string;
-    convertMfaToHfn(mfa: string): string;
+    isHfnFormat(id: string): boolean;
+    isMfaFormat(id: string): boolean;
+    convertHfnToMfa(hfn: string): Promise<string>;
     getAllSongs(): Promise<any[]>;
     getAllTemplates(): Promise<any[]>;
 }
