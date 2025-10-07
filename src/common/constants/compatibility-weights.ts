@@ -13,7 +13,7 @@ export const FRESHNESS_BOOST = {
 } as const;
 
 export const SCORING_THRESHOLDS = {
-  MIN_RECOMMENDATION_SCORE: 0.05,  // Minimum score to recommend (lowered from 0.6)
+  MIN_RECOMMENDATION_SCORE: 0.01,  // Minimum score to recommend (emergency fix for ReViz)
   DIVERSITY_FACTOR: 0.01,          // Random factor for tie-breaking (0-1%)
   MAX_ALTERNATIVES: 10,            // Maximum alternative templates
   MAX_LAYER_VARIATIONS: 8,         // Maximum layer variations

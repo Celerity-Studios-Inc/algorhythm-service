@@ -15,6 +15,7 @@ import {
 } from './interfaces/recommendation.interface';
 import { CACHE_KEYS, CACHE_TTL } from '../../common/constants/cache-keys';
 import { SCORING_THRESHOLDS } from '../../common/constants/compatibility-weights';
+import { SCORING_THRESHOLDS } from '../../common/constants/compatibility-weights';
 
 @Injectable()
 export class RecommendationsService {
