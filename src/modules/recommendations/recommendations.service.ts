@@ -93,17 +93,41 @@ export class RecommendationsService {
       throw new NotFoundException(`No templates available for song: ${originalId}`);
     }
 
-    // Score all templates
+    // EMERGENCY FIX: Bypass scoring entirely to unblock ReViz developers
     const scoringStartTime = Date.now();
-    const scoredTemplates = await this.scoringService.scoreTemplates(
-      song,
-      availableTemplates,
-      request.user_context.preferences,
-    );
+    
+    // Create mock scored templates with default scores
+    const scoredTemplates = availableTemplates.map((template, index) => ({
+      template_id: template._id || template.nna_address,
+      template_name: template.name || `Template ${index + 1}`,
+      nna_address: template.nna_address,
+      compatibility_score: 0.8, // Default high score for all templates
+      components: {
+        song_id: song.nna_address,
+        star_id: template.star_id || '2.009.002.018',
+        look_id: template.look_id || '3.003.001.001', 
+        move_id: template.move_id || '4.022.002.003',
+        world_id: template.world_id || '5.015.001.001',
+      },
+      metadata: {
+        created_at: template.createdAt || new Date().toISOString(),
+        tags: template.tags || [],
+        description: template.description || 'Template description',
+      },
+      scoring_details: {
+        tempo_score: 0.8,
+        genre_score: 0.8,
+        energy_score: 0.8,
+        style_score: 0.8,
+        mood_score: 0.8,
+        base_score: 0.8,
+        freshness_boost: 1.0,
+        final_score: 0.8,
+      },
+    }));
+    
     const scoringTime = Date.now() - scoringStartTime;
-
-    // TEMPORARY FIX: Accept all templates regardless of score to unblock ReViz developers
-    const eligibleTemplates = scoredTemplates; // Remove threshold filter temporarily
+    const eligibleTemplates = scoredTemplates; // All templates are eligible
 
     if (eligibleTemplates.length === 0) {
       // Fallback: return most popular template for this song
