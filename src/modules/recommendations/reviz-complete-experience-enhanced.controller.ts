@@ -38,7 +38,6 @@ export class ReVizCompleteExperienceEnhancedController {
     `
   })
   @ApiBody({
-    type: ReVizCompleteRequest,
     examples: {
       mobile: {
         summary: 'Mobile configuration (cellular)',
@@ -86,8 +85,7 @@ export class ReVizCompleteExperienceEnhancedController {
   })
   @ApiResponse({
     status: 200,
-    description: 'Successful response with complete experience data',
-    type: ReVizCompleteResponse
+    description: 'Successful response with complete experience data'
   })
   @ApiResponse({
     status: 400,
