@@ -1,0 +1,59 @@
+{
+  "timestamp": "2025-10-08T04:26:31.639Z",
+  "baseUrl": "https://dev.algorhythm.media",
+  "tests": {
+    "swagger": {
+      "averageResponseTime": 113,
+      "responseTimes": [
+        241,
+        74,
+        87,
+        77,
+        86
+      ],
+      "contentLength": 12988,
+      "successRate": 100,
+      "status": "PASS"
+    },
+    "mobile": {
+      "averageResponseTime": 66.6,
+      "responseTimes": [
+        67,
+        74,
+        55,
+        54,
+        83
+      ],
+      "contentLength": 202,
+      "successRate": 100,
+      "status": "PASS"
+    },
+    "desktop": {
+      "averageResponseTime": 96,
+      "responseTimes": [
+        91,
+        125,
+        64,
+        129,
+        71
+      ],
+      "contentLength": 202,
+      "successRate": 100,
+      "status": "PASS"
+    },
+    "concurrent": {
+      "totalTime": 207,
+      "averageResponseTime": 172.2,
+      "successRate": 100,
+      "requestCount": 5,
+      "status": "PASS"
+    }
+  },
+  "summary": {
+    "overallAverageResponseTime": 111.95,
+    "minResponseTime": 54,
+    "maxResponseTime": 241,
+    "totalTests": 4,
+    "performanceRating": "GOOD"
+  }
+}
