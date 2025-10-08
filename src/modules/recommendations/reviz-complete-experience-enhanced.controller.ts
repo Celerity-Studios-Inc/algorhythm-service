@@ -38,35 +38,7 @@ export class ReVizCompleteExperienceEnhancedController {
     `
   })
   @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        song_id: { type: 'string', example: 'G.POP.TEN.003' },
-        user_context: {
-          type: 'object',
-          properties: {
-            user_id: { type: 'string', example: 'user_123' },
-            device_info: {
-              type: 'object',
-              properties: {
-                type: { type: 'string', enum: ['mobile', 'desktop'] },
-                connection_speed: { type: 'string', enum: ['slow', 'medium', 'fast'] }
-              }
-            }
-          }
-        },
-        experience_config: {
-          type: 'object',
-          properties: {
-            max_composites: { type: 'number', example: 5 },
-            max_assets_per_layer: { type: 'number', example: 6 },
-            include_variants: { type: 'boolean', example: true },
-            variant_depth: { type: 'number', example: 4 }
-          }
-        }
-      },
-      required: ['song_id']
-    },
+    description: 'ReViz Complete Experience Request',
     examples: {
       mobile: {
         summary: 'Mobile configuration (cellular)',
