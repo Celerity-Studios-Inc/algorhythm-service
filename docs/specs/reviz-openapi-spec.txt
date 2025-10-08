@@ -1,0 +1,916 @@
+openapi: 3.0.3
+info:
+  title: ReViz Complete Experience API
+  description: |
+    Single-call API for complete video remixing experience with GCP URL-based architecture.
+    
+    **Key Features:**
+    - ✅ Complete experience in one API call
+    - ✅ GCP URLs for all media assets (not embedded data)
+    - ✅ 95% smaller responses (5MB vs 100MB)
+    - ✅ Parallel CDN loading support
+    - ✅ Mobile-optimized performance
+    
+    **Architecture:**
+    - API returns asset metadata + GCP Storage URLs
+    - Clients load actual assets from GCP CDN in parallel
+    - Global edge caching for sub-50ms asset delivery
+  version: 2.0.0
+  contact:
+    name: ReViz API Support
+    email: support@celerity.studio
+    url: https://docs.reviz.dev
+  license:
+    name: Proprietary
+    url: https://reviz.dev/license
+
+servers:
+  - url: https://registry.dev.reviz.dev
+    description: Development server
+  - url: https://registry.stg.reviz.dev
+    description: Staging server
+  - url: https://registry.reviz.dev
+    description: Production server
+
+tags:
+  - name: ReViz Experience
+    description: Complete video remixing experience API
+  - name: Health
+    description: Service health and monitoring
+
+paths:
+  /api/v1/reviz/complete-experience:
+    post:
+      tags:
+        - ReViz Experience
+      summary: Get complete ReViz experience
+      description: |
+        Returns everything needed for a complete video remixing experience in a single API call:
+        - Song metadata with GCP URLs
+        - 5-10 recommended composite videos with GCP URLs
+        - Layer assets (Stars, Looks, Moves, Worlds) with GCP URLs
+        - Base + variant assets (up to 149 assets)
+        - Asset relationships and compatibility scores
+        - Performance metrics
+        
+        **Response Size:** Typically 2-5MB (with GCP URLs)  
+        **Response Time:** <200ms (cached), <500ms (uncached)
+      operationId: getCompleteExperience
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReVizCompleteRequest'
+            examples:
+              mobile:
+                summary: Mobile configuration (cellular)
+                value:
+                  song_id: "G.POP.TEN.003"
+                  user_context:
+                    user_id: "user_123"
+                    device_info:
+                      type: "mobile"
+                      connection_speed: "medium"
+                  experience_config:
+                    max_composites: 3
+                    max_assets_per_layer: 4
+                    include_variants: true
+                    variant_depth: 4
+              
+              desktop:
+                summary: Desktop configuration (WiFi)
+                value:
+                  song_id: "G.POP.TEN.003"
+                  user_context:
+                    user_id: "user_123"
+                    preferences:
+                      energy_preference: "high"
+                      style_preference: "modern"
+                    device_info:
+                      type: "desktop"
+                      connection_speed: "fast"
+                  experience_config:
+                    max_composites: 10
+                    max_assets_per_layer: 8
+                    include_variants: true
+                    variant_depth: 6
+      
+      responses:
+        '200':
+          description: Successful response with complete experience data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReVizCompleteResponse'
+              examples:
+                success:
+                  $ref: '#/components/examples/SuccessResponse'
+        
+        '400':
+          description: Bad request - invalid configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                error:
+                  code: "INVALID_CONFIG"
+                  message: "max_composites must be between 1 and 20"
+                metadata:
+                  timestamp: "2025-10-08T10:30:00Z"
+                  request_id: "req_abc123"
+        
+        '401':
+          description: Unauthorized - invalid or missing JWT token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        
+        '404':
+          description: Song not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                error:
+                  code: "SONG_NOT_FOUND"
+                  message: "Song G.POP.XXX.999 not found"
+                metadata:
+                  timestamp: "2025-10-08T10:30:00Z"
+                  request_id: "req_abc123"
+        
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/reviz/health:
+    get:
+      tags:
+        - Health
+      summary: Health check endpoint
+      description: Check if the ReViz API service is healthy
+      operationId: healthCheck
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "ok"
+                  timestamp:
+                    type: string
+                    format: date-time
+                    example: "2025-10-08T10:30:00Z"
+                  version:
+                    type: string
+                    example: "2.0.0"
+                  services:
+                    type: object
+                    properties:
+                      database:
+                        type: string
+                        example: "healthy"
+                      cache:
+                        type: string
+                        example: "healthy"
+                      cdn:
+                        type: string
+                        example: "healthy"
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for authentication
+
+  schemas:
+    ReVizCompleteRequest:
+      type: object
+      required:
+        - song_id
+        - experience_config
+      properties:
+        song_id:
+          type: string
+          description: Song identifier (NNA address or ID)
+          example: "G.POP.TEN.003"
+        
+        request_id:
+          type: string
+          description: Optional request tracking ID
+          example: "req_abc123"
+        
+        user_context:
+          type: object
+          properties:
+            user_id:
+              type: string
+              description: User identifier
+              example: "user_123"
+            
+            preferences:
+              type: object
+              properties:
+                preferred_genres:
+                  type: array
+                  items:
+                    type: string
+                  example: ["pop", "hip-hop"]
+                
+                excluded_assets:
+                  type: array
+                  items:
+                    type: string
+                  description: Asset IDs to exclude
+                  example: ["S.001.001.001"]
+                
+                favorite_styles:
+                  type: array
+                  items:
+                    type: string
+                  example: ["modern", "trendy"]
+                
+                energy_preference:
+                  type: string
+                  enum: [low, medium, high]
+                  example: "high"
+                
+                style_preference:
+                  type: string
+                  enum: [classic, modern, trendy]
+                  example: "modern"
+            
+            device_info:
+              type: object
+              properties:
+                type:
+                  type: string
+                  enum: [mobile, tablet, desktop, tv]
+                  example: "mobile"
+                
+                connection_speed:
+                  type: string
+                  enum: [slow, medium, fast]
+                  example: "medium"
+                
+                screen_resolution:
+                  type: string
+                  example: "1920x1080"
+                
+                platform:
+                  type: string
+                  example: "ios"
+        
+        experience_config:
+          type: object
+          required: []
+          properties:
+            max_composites:
+              type: integer
+              minimum: 1
+              maximum: 20
+              default: 5
+              description: Number of composite videos to return
+              example: 5
+            
+            max_assets_per_layer:
+              type: integer
+              minimum: 1
+              maximum: 20
+              default: 6
+              description: Base assets per layer
+              example: 6
+            
+            include_variants:
+              type: boolean
+              default: true
+              description: Include variant assets
+              example: true
+            
+            variant_depth:
+              type: integer
+              minimum: 1
+              maximum: 20
+              default: 6
+              description: Number of variants per base asset
+              example: 6
+            
+            layers:
+              type: array
+              items:
+                type: string
+                enum: [stars, looks, moves, worlds]
+              default: ["stars", "looks", "moves", "worlds"]
+              description: Which layers to include
+              example: ["stars", "looks", "moves", "worlds"]
+    
+    ReVizCompleteResponse:
+      type: object
+      required:
+        - success
+        - data
+        - metadata
+      properties:
+        success:
+          type: boolean
+          example: true
+        
+        data:
+          type: object
+          properties:
+            song_metadata:
+              $ref: '#/components/schemas/SongMetadata'
+            
+            composite_videos:
+              type: array
+              items:
+                $ref: '#/components/schemas/CompositeVideo'
+            
+            layer_assets:
+              type: object
+              properties:
+                stars:
+                  $ref: '#/components/schemas/LayerData'
+                looks:
+                  $ref: '#/components/schemas/LayerData'
+                moves:
+                  $ref: '#/components/schemas/LayerData'
+                worlds:
+                  $ref: '#/components/schemas/LayerData'
+            
+            asset_relationships:
+              $ref: '#/components/schemas/AssetRelationships'
+            
+            performance_metrics:
+              $ref: '#/components/schemas/PerformanceMetrics'
+        
+        metadata:
+          type: object
+          properties:
+            timestamp:
+              type: string
+              format: date-time
+              example: "2025-10-08T10:30:00Z"
+            
+            request_id:
+              type: string
+              example: "req_abc123"
+            
+            version:
+              type: string
+              example: "2.0"
+            
+            partial_response:
+              type: boolean
+              description: True if some data failed to load
+              example: false
+    
+    SongMetadata:
+      type: object
+      properties:
+        song_id:
+          type: string
+          example: "G.POP.TEN.003"
+        
+        title:
+          type: string
+          example: "Pretty Little Baby"
+        
+        artist:
+          type: string
+          example: "Connie Francis"
+        
+        album:
+          type: string
+          example: "Second Hand Love & Other Hits"
+        
+        duration_seconds:
+          type: number
+          example: 180
+        
+        bpm:
+          type: number
+          example: 120
+        
+        genre:
+          type: string
+          example: "pop"
+        
+        cover_art_url:
+          type: string
+          format: uri
+          description: GCP Storage URL for cover art
+          example: "https://storage.googleapis.com/reviz-assets/songs/G.POP.TEN.003/cover.jpg"
+        
+        preview_url:
+          type: string
+          format: uri
+          description: GCP Storage URL for audio preview
+          example: "https://storage.googleapis.com/reviz-assets/songs/G.POP.TEN.003/preview.mp3"
+        
+        full_audio_url:
+          type: string
+          format: uri
+          description: GCP Storage URL for full audio
+          example: "https://storage.googleapis.com/reviz-assets/songs/G.POP.TEN.003/full.mp3"
+        
+        audio_features:
+          type: object
+          properties:
+            tempo:
+              type: number
+              example: 120
+            key:
+              type: string
+              example: "C"
+            energy_level:
+              type: number
+              format: float
+              minimum: 0
+              maximum: 1
+              example: 0.85
+            danceability:
+              type: number
+              format: float
+              minimum: 0
+              maximum: 1
+              example: 0.75
+    
+    CompositeVideo:
+      type: object
+      properties:
+        composite_id:
+          type: string
+          example: "C.001.001.004"
+        
+        composite_name:
+          type: string
+          example: "Kimmy's Pop Star Energy"
+        
+        compatibility_score:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          example: 0.95
+        
+        components:
+          type: object
+          description: Component asset IDs (not full data)
+          properties:
+            star:
+              type: string
+              example: "S.POP.IDF.002"
+            look:
+              type: string
+              example: "L.MOD.POP.001"
+            moves:
+              type: string
+              example: "M.POP.CON.001"
+            world:
+              type: string
+              example: "W.STG.CON.001"
+            song:
+              type: string
+              example: "G.POP.TEN.003"
+        
+        media:
+          type: object
+          description: GCP Storage URLs for composite preview
+          properties:
+            thumbnail_url:
+              type: string
+              format: uri
+              example: "https://storage.googleapis.com/reviz-composites/C.001.001.004/thumb.jpg"
+            
+            preview_url:
+              type: string
+              format: uri
+              example: "https://storage.googleapis.com/reviz-composites/C.001.001.004/preview.mp4"
+            
+            full_video_url:
+              type: string
+              format: uri
+              example: "https://storage.googleapis.com/reviz-composites/C.001.001.004/full.mp4"
+        
+        metadata:
+          type: object
+          properties:
+            name:
+              type: string
+              example: "Kimmy's Pop Star Energy"
+            description:
+              type: string
+              example: "High-energy pop performance"
+            tags:
+              type: array
+              items:
+                type: string
+              example: ["pop", "energetic", "modern"]
+            created_by:
+              type: string
+              example: "user_123"
+            created_at:
+              type: string
+              format: date-time
+              example: "2025-10-01T10:00:00Z"
+        
+        analytics:
+          type: object
+          properties:
+            view_count:
+              type: integer
+              example: 1523
+            like_count:
+              type: integer
+              example: 342
+            remix_count:
+              type: integer
+              example: 89
+            trending_score:
+              type: number
+              format: float
+              example: 0.92
+    
+    AssetDetail:
+      type: object
+      properties:
+        asset_id:
+          type: string
+          example: "S.POP.IDF.002"
+        
+        name:
+          type: string
+          example: "S.POP.IDF.002"
+        
+        nna_address:
+          type: string
+          example: "S.001.002.002"
+        
+        layer:
+          type: string
+          example: "S"
+        
+        asset_type:
+          type: string
+          enum: [base, variant]
+          example: "base"
+        
+        media:
+          type: object
+          description: GCP Storage URLs (core of v2.0)
+          required:
+            - thumbnail_url
+            - preview_url
+            - full_asset_url
+          properties:
+            thumbnail_url:
+              type: string
+              format: uri
+              description: Thumbnail (optimized, small)
+              example: "https://storage.googleapis.com/reviz-assets/stars/S.POP.IDF.002/thumb.jpg"
+            
+            preview_url:
+              type: string
+              format: uri
+              description: Preview (medium quality, web optimized)
+              example: "https://storage.googleapis.com/reviz-assets/stars/S.POP.IDF.002/preview.mp4"
+            
+            full_asset_url:
+              type: string
+              format: uri
+              description: Full asset (high quality, original)
+              example: "https://storage.googleapis.com/reviz-assets/stars/S.POP.IDF.002/full.mp4"
+            
+            qualities:
+              type: object
+              description: Multiple quality levels (optional)
+              properties:
+                '720p':
+                  type: string
+                  format: uri
+                '1080p':
+                  type: string
+                  format: uri
+                '4k':
+                  type: string
+                  format: uri
+            
+            file_size_mb:
+              type: number
+              format: float
+              example: 25.5
+            
+            duration_seconds:
+              type: number
+              example: 30
+            
+            format:
+              type: string
+              example: "mp4"
+            
+            resolution:
+              type: string
+              example: "1920x1080"
+        
+        metadata:
+          type: object
+          properties:
+            tags:
+              type: array
+              items:
+                type: string
+              example: ["pop", "female", "energetic"]
+            description:
+              type: string
+              example: "Energetic pop performer"
+            attributes:
+              type: object
+              additionalProperties: true
+        
+        compatibility_score:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          example: 0.95
+        
+        trending_score:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          example: 0.88
+        
+        base_asset_id:
+          type: string
+          description: For variants only
+          example: "S.POP.IDF.001"
+        
+        variant_name:
+          type: string
+          description: For variants only
+          example: "Blue Hair Variant"
+        
+        has_variants:
+          type: boolean
+          example: true
+        
+        variant_count:
+          type: integer
+          example: 6
+        
+        variants:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssetDetail'
+          description: Variant assets (for base assets only)
+    
+    LayerData:
+      type: object
+      properties:
+        layer_type:
+          type: string
+          enum: [stars, looks, moves, worlds]
+          example: "stars"
+        
+        total_assets:
+          type: integer
+          description: Total count including variants
+          example: 36
+        
+        assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssetDetail'
+    
+    AssetRelationships:
+      type: object
+      properties:
+        compatibility_matrix:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties:
+              type: number
+              format: float
+          example:
+            "S.POP.IDF.002":
+              "L.MOD.POP.001": 0.95
+              "L.MOD.URB.002": 0.88
+        
+        base_to_variants:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            "S.POP.IDF.002": ["S.POP.IDF.002.V1", "S.POP.IDF.002.V2"]
+        
+        layer_dependencies:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            "S.POP.IDF.002": ["L.MOD.POP.001", "M.POP.CON.001"]
+    
+    PerformanceMetrics:
+      type: object
+      properties:
+        total_assets_loaded:
+          type: integer
+          description: Total number of assets in response
+          example: 149
+        
+        response_time_ms:
+          type: number
+          description: API response time in milliseconds
+          example: 185
+        
+        response_size_bytes:
+          type: integer
+          description: Total response size in bytes
+          example: 2458624
+        
+        cache_hit_rate:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Percentage of data served from cache
+          example: 0.92
+        
+        assets_from_cdn:
+          type: integer
+          description: Number of assets available from CDN
+          example: 149
+    
+    ErrorResponse:
+      type: object
+      required:
+        - success
+        - error
+        - metadata
+      properties:
+        success:
+          type: boolean
+          example: false
+        
+        error:
+          type: object
+          required:
+            - code
+            - message
+          properties:
+            code:
+              type: string
+              enum:
+                - SONG_NOT_FOUND
+                - INVALID_CONFIG
+                - RATE_LIMIT_EXCEEDED
+                - TIMEOUT
+                - INTERNAL_ERROR
+                - PARTIAL_FAILURE
+              example: "SONG_NOT_FOUND"
+            
+            message:
+              type: string
+              example: "Song G.POP.XXX.999 not found"
+            
+            details:
+              type: object
+              additionalProperties: true
+            
+            recovery_suggestions:
+              type: array
+              items:
+                type: string
+              example: ["Verify song ID format", "Check available songs endpoint"]
+        
+        metadata:
+          type: object
+          properties:
+            timestamp:
+              type: string
+              format: date-time
+              example: "2025-10-08T10:30:00Z"
+            
+            request_id:
+              type: string
+              example: "req_abc123"
+
+  examples:
+    SuccessResponse:
+      summary: Complete successful response
+      value:
+        success: true
+        data:
+          song_metadata:
+            song_id: "G.POP.TEN.003"
+            title: "Pretty Little Baby"
+            artist: "Connie Francis"
+            album: "Second Hand Love & Other Hits"
+            duration_seconds: 180
+            bpm: 120
+            genre: "pop"
+            cover_art_url: "https://storage.googleapis.com/reviz-assets/songs/G.POP.TEN.003/cover.jpg"
+            preview_url: "https://storage.googleapis.com/reviz-assets/songs/G.POP.TEN.003/preview.mp3"
+            full_audio_url: "https://storage.googleapis.com/reviz-assets/songs/G.POP.TEN.003/full.mp3"
+            audio_features:
+              tempo: 120
+              key: "C"
+              energy_level: 0.85
+              danceability: 0.75
+          
+          composite_videos:
+            - composite_id: "C.001.001.004"
+              composite_name: "Kimmy's Pop Star Energy"
+              compatibility_score: 0.95
+              components:
+                star: "S.POP.IDF.002"
+                look: "L.MOD.POP.001"
+                moves: "M.POP.CON.001"
+                world: "W.STG.CON.001"
+                song: "G.POP.TEN.003"
+              media:
+                thumbnail_url: "https://storage.googleapis.com/reviz-composites/C.001.001.004/thumb.jpg"
+                preview_url: "https://storage.googleapis.com/reviz-composites/C.001.001.004/preview.mp4"
+                full_video_url: "https://storage.googleapis.com/reviz-composites/C.001.001.004/full.mp4"
+              metadata:
+                name: "Kimmy's Pop Star Energy"
+                description: "High-energy pop performance"
+                tags: ["pop", "energetic", "modern"]
+                created_by: "user_123"
+                created_at: "2025-10-01T10:00:00Z"
+              analytics:
+                view_count: 1523
+                like_count: 342
+                remix_count: 89
+                trending_score: 0.92
+          
+          layer_assets:
+            stars:
+              layer_type: "stars"
+              total_assets: 36
+              assets:
+                - asset_id: "S.POP.IDF.002"
+                  name: "S.POP.IDF.002"
+                  nna_address: "S.001.002.002"
+                  layer: "S"
+                  asset_type: "base"
+                  media:
+                    thumbnail_url: "https://storage.googleapis.com/reviz-assets/stars/S.POP.IDF.002/thumb.jpg"
+                    preview_url: "https://storage.googleapis.com/reviz-assets/stars/S.POP.IDF.002/preview.mp4"
+                    full_asset_url: "https://storage.googleapis.com/reviz-assets/stars/S.POP.IDF.002/full.mp4"
+                    file_size_mb: 25.5
+                    duration_seconds: 30
+                  metadata:
+                    tags: ["pop", "female", "energetic"]
+                    description: "Energetic pop performer"
+                  compatibility_score: 0.95
+                  trending_score: 0.88
+                  has_variants: true
+                  variant_count: 6
+                  variants: []
+          
+          asset_relationships:
+            compatibility_matrix:
+              "S.POP.IDF.002":
+                "L.MOD.POP.001": 0.95
+                "L.MOD.URB.002": 0.88
+            base_to_variants:
+              "S.POP.IDF.002": ["S.POP.IDF.002.V1", "S.POP.IDF.002.V2"]
+            layer_dependencies:
+              "S.POP.IDF.002": ["L.MOD.POP.001", "M.POP.CON.001"]
+          
+          performance_metrics:
+            total_assets_loaded: 149
+            response_time_ms: 185
+            response_size_bytes: 2458624
+            cache_hit_rate: 0.92
+            assets_from_cdn: 149
+        
+        metadata:
+          timestamp: "2025-10-08T10:30:00Z"
+          request_id: "req_abc123"
+          version: "2.0"
+          partial_response: false

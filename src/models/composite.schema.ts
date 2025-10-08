@@ -32,6 +32,13 @@ export class Composite {
   @Prop()
   thumbnailUrl?: string;
 
+  // 🔧 V2.0: GCP URL fields for composite videos
+  @Prop()
+  gcpStorageUrl?: string;
+
+  @Prop()
+  fullVideoUrl?: string;
+
   @Prop()
   durationSeconds?: number;
 

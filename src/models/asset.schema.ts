@@ -18,13 +18,17 @@ export class Asset {
   baseAssetId?: string;
 
   @Prop()
+  fileUrl?: string;
+
+  // 🔧 V2.0: GCP URL fields (core of new architecture)
+  @Prop()
+  gcpStorageUrl?: string;
+
+  @Prop()
   thumbnailUrl?: string;
 
   @Prop()
   previewUrl?: string;
-
-  @Prop()
-  fileUrl?: string;
 
   @Prop()
   fileSizeMb?: number;
@@ -34,6 +38,9 @@ export class Asset {
 
   @Prop()
   format?: string;
+
+  @Prop()
+  resolution?: string;
 
   @Prop({ type: Object })
   metadata?: any;

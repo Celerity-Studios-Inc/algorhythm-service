@@ -16,6 +16,8 @@ const reviz_complete_experience_service_1 = require("./reviz-complete-experience
 const reviz_complete_experience_controller_1 = require("./reviz-complete-experience.controller");
 const reviz_complete_experience_production_service_1 = require("./reviz-complete-experience-production.service");
 const reviz_complete_experience_production_controller_1 = require("./reviz-complete-experience-production.controller");
+const reviz_complete_experience_enhanced_service_1 = require("./reviz-complete-experience-enhanced.service");
+const reviz_complete_experience_enhanced_controller_1 = require("./reviz-complete-experience-enhanced.controller");
 const cache_warming_service_1 = require("./cache-warming.service");
 const scoring_module_1 = require("../scoring/scoring.module");
 const caching_module_1 = require("../caching/caching.module");
@@ -45,13 +47,15 @@ exports.RecommendationsModule = RecommendationsModule = __decorate([
         controllers: [
             recommendations_controller_1.RecommendationsController,
             reviz_complete_experience_controller_1.ReVizCompleteExperienceController,
-            reviz_complete_experience_production_controller_1.ReVizCompleteExperienceProductionController
+            reviz_complete_experience_production_controller_1.ReVizCompleteExperienceProductionController,
+            reviz_complete_experience_enhanced_controller_1.ReVizCompleteExperienceEnhancedController
         ],
         providers: [
             recommendations_service_1.RecommendationsService,
             instant_recommendations_service_1.InstantRecommendationsService,
             reviz_complete_experience_service_1.ReVizCompleteExperienceService,
             reviz_complete_experience_production_service_1.ReVizCompleteExperienceProductionService,
+            reviz_complete_experience_enhanced_service_1.ReVizCompleteExperienceEnhancedService,
             cache_warming_service_1.CacheWarmingService
         ],
         exports: [
@@ -59,6 +63,7 @@ exports.RecommendationsModule = RecommendationsModule = __decorate([
             instant_recommendations_service_1.InstantRecommendationsService,
             reviz_complete_experience_service_1.ReVizCompleteExperienceService,
             reviz_complete_experience_production_service_1.ReVizCompleteExperienceProductionService,
+            reviz_complete_experience_enhanced_service_1.ReVizCompleteExperienceEnhancedService,
             cache_warming_service_1.CacheWarmingService
         ],
     })
