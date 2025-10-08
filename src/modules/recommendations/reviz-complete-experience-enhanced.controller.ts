@@ -8,7 +8,7 @@ import { ReVizCompleteExperienceEnhancedService, ReVizCompleteRequest, ReVizComp
  * GCP URL-based architecture - no streaming needed (responses always small)
  */
 @ApiTags('reviz')
-@Controller('api/v1/reviz')
+@Controller('reviz')
 @UseGuards(JwtAuthGuard)
 @ApiBearerAuth()
 export class ReVizCompleteExperienceEnhancedController {
