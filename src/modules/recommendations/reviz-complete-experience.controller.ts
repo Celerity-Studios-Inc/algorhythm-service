@@ -1,7 +1,7 @@
 import { Controller, Post, Body, Logger } from '@nestjs/common';
 import { ReVizCompleteExperienceService, ReVizCompleteRequest, ReVizCompleteResponse } from './reviz-complete-experience.service';
 
-@Controller('api/v1/reviz')
+@Controller('reviz')
 export class ReVizCompleteExperienceController {
   private readonly logger = new Logger(ReVizCompleteExperienceController.name);
 

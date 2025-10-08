@@ -129,7 +129,7 @@ export class HealthCheckResult {
  * Production-ready ReViz Complete Experience Controller
  * Includes rate limiting, validation, monitoring, and health checks
  */
-@Controller('api/v1/reviz')
+@Controller('reviz')
 @UseGuards(JwtAuthGuard, ThrottlerGuard)
 @UseInterceptors(ClassSerializerInterceptor)
 export class ReVizCompleteExperienceProductionController {
