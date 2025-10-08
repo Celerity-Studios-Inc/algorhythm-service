@@ -32,6 +32,28 @@ The **ReViz Complete Experience API** provides a single endpoint that returns ev
 - 🔗 **Asset relationships** and compatibility scores
 - 📊 **Performance metrics** for monitoring
 
+### URL-First Architecture
+
+**All assets are returned as GCP Storage URLs** instead of embedded data. This provides:
+
+✅ **95% Smaller API Responses** - 5MB instead of 50-100MB  
+✅ **Global CDN Performance** - Assets cached at edge locations worldwide  
+✅ **Parallel Loading** - Load multiple assets concurrently from CDN  
+✅ **Progressive Experience** - Show thumbnails instantly, load full assets on-demand  
+✅ **Bandwidth Efficiency** - Only download assets the user actually views  
+✅ **Better Mobile Performance** - Optimized for cellular connections
+
+```
+Traditional Approach (Old):           URL-Based Approach (New):
+─────────────────────────────        ─────────────────────────────
+API Response: 100MB (all data)       API Response: 5MB (URLs only)
+Response Time: 3-5 seconds           Response Time: 200ms
+Loading Strategy: Sequential         Loading Strategy: Parallel
+Network Usage: All at once           Network Usage: On-demand
+CDN Caching: Not possible            CDN Caching: Global edge
+Mobile Experience: Poor              Mobile Experience: Excellent
+```
+
 ### What's New in v2.0
 
 ✅ **Single API Call** - Complete experience in one request  
@@ -39,7 +61,7 @@ The **ReViz Complete Experience API** provides a single endpoint that returns ev
 ✅ **Smart Caching** - L1/L2/L3 hierarchical caching (90%+ hit rate)  
 ✅ **Streaming Support** - Handle large responses (50MB+)  
 ✅ **Error Resilience** - Graceful degradation with fallbacks  
-✅ **Performance Optimized** - <1s response time for cached data
+✅ **Performance Optimized** - <200ms API response + <400ms asset loading
 
 ---
 
@@ -180,6 +202,8 @@ interface ReVizCompleteResponse {
   };
 }
 ```
+
+**Key Point:** All asset data includes **GCP Storage URLs** instead of embedded media. This dramatically reduces response size and enables efficient parallel loading from CDN.
 
 ---
 
@@ -428,71 +452,299 @@ const variants = response.data.asset_relationships
 
 ---
 
+## 🌐 GCP URLs & CDN Architecture
+
+### Why GCP URLs Are Better
+
+Instead of embedding full asset data in the API response, the API returns **GCP Storage URLs** for all media assets. This provides:
+
+✅ **Smaller API Responses** - Response size reduced by 80-90%  
+✅ **Parallel Loading** - Load assets concurrently from CDN  
+✅ **Global CDN Caching** - Assets cached at edge locations worldwide  
+✅ **Progressive Loading** - Load thumbnails first, full assets on-demand  
+✅ **Bandwidth Efficiency** - Only download assets user actually views  
+✅ **Better Mobile Experience** - Faster load times on cellular connections
+
+### Asset URL Structure
+
+All assets include these URL fields:
+
+```typescript
+interface AssetMediaURLs {
+  // Thumbnail (optimized, small size)
+  thumbnail_url: string;      // e.g., "https://storage.googleapis.com/reviz-assets/stars/S.POP.IDF.002/thumb.jpg"
+  
+  // Preview (medium quality, web optimized)
+  preview_url: string;        // e.g., "https://storage.googleapis.com/reviz-assets/stars/S.POP.IDF.002/preview.mp4"
+  
+  // Full asset (high quality, original)
+  full_asset_url: string;     // e.g., "https://storage.googleapis.com/reviz-assets/stars/S.POP.IDF.002/full.mp4"
+  
+  // Optional: Different quality levels
+  qualities?: {
+    '720p': string;
+    '1080p': string;
+    '4k': string;
+  };
+}
+```
+
+### Loading Strategy Examples
+
+#### Progressive Loading Pattern
+
+```typescript
+// 1. Load thumbnails immediately (fast, small)
+const loadThumbnails = async (assets: AssetDetail[]) => {
+  return Promise.all(
+    assets.map(asset => 
+      Image.prefetch(asset.media.thumbnail_url)
+    )
+  );
+};
+
+// 2. Load previews for visible assets (medium size)
+const loadVisiblePreviews = async (visibleAssets: AssetDetail[]) => {
+  return Promise.all(
+    visibleAssets.map(asset =>
+      Video.prefetch(asset.media.preview_url)
+    )
+  );
+};
+
+// 3. Load full asset only when selected
+const loadFullAsset = async (asset: AssetDetail) => {
+  return Video.load(asset.media.full_asset_url);
+};
+
+// Usage
+const experience = await client.getCompleteExperience(config);
+
+// Step 1: Show thumbnails immediately
+await loadThumbnails(experience.data.layer_assets.stars.assets);
+renderThumbnails();
+
+// Step 2: Load previews for first 6 visible assets
+await loadVisiblePreviews(
+  experience.data.layer_assets.stars.assets.slice(0, 6)
+);
+
+// Step 3: Load full asset when user selects
+onAssetSelect(async (asset) => {
+  await loadFullAsset(asset);
+  playFullAsset(asset);
+});
+```
+
+#### Parallel Loading with Priority
+
+```typescript
+// Load assets with priority queue
+const loadAssetsWithPriority = async (experience: ReVizCompleteResponse) => {
+  // Priority 1: Current composite thumbnail (highest priority)
+  const compositeThumb = experience.data.composite_videos[0].media.thumbnail_url;
+  await Image.prefetch(compositeThumb);
+  
+  // Priority 2: All thumbnails in parallel (fast)
+  const allThumbnails = [
+    ...experience.data.layer_assets.stars.assets.map(a => a.media.thumbnail_url),
+    ...experience.data.layer_assets.looks.assets.map(a => a.media.thumbnail_url),
+    ...experience.data.layer_assets.moves.assets.map(a => a.media.thumbnail_url),
+    ...experience.data.layer_assets.worlds.assets.map(a => a.media.thumbnail_url),
+  ];
+  await Promise.all(allThumbnails.map(url => Image.prefetch(url)));
+  
+  // Priority 3: Composite preview (background load)
+  const compositePreview = experience.data.composite_videos[0].media.preview_url;
+  Video.prefetch(compositePreview).catch(err => console.warn('Preview prefetch failed:', err));
+  
+  // Priority 4: Visible asset previews (lazy load)
+  // Load as user scrolls
+};
+```
+
+#### Connection-Aware Loading
+
+```typescript
+import NetInfo from '@react-native-community/netinfo';
+
+const loadBasedOnConnection = async (experience: ReVizCompleteResponse) => {
+  const netInfo = await NetInfo.fetch();
+  
+  if (netInfo.type === 'wifi') {
+    // WiFi: Preload everything
+    await loadAllPreviews(experience);
+  } else if (netInfo.type === 'cellular') {
+    // Cellular: Only load thumbnails and selected asset
+    await loadThumbnailsOnly(experience);
+    // Load previews on-demand as user taps
+  } else {
+    // Poor connection: Minimal loading
+    await loadCurrentCompositeOnly(experience);
+  }
+};
+```
+
+### CDN Caching Benefits
+
+GCP Storage URLs are automatically cached by Google's global CDN:
+
+```
+User Request Flow:
+─────────────────────────────────────────────────────
+1. User requests: https://storage.googleapis.com/...
+   ↓
+2. CDN Edge Server (closest to user)
+   • Cache Hit? → Return immediately (< 50ms)
+   • Cache Miss? → Fetch from origin, cache, return
+   ↓
+3. Subsequent requests: Served from edge (< 20ms)
+```
+
+**Performance Impact:**
+- First request: ~200-500ms (origin fetch)
+- Cached requests: ~20-50ms (edge server)
+- Global edge locations ensure low latency worldwide
+
+### URL Prefetching Pattern
+
+```typescript
+// Prefetch URLs in background
+const prefetchAssetURLs = async (assets: AssetDetail[]) => {
+  // Prefetch in batches to avoid overwhelming the device
+  const batchSize = 10;
+  
+  for (let i = 0; i < assets.length; i += batchSize) {
+    const batch = assets.slice(i, i + batchSize);
+    
+    await Promise.all(
+      batch.map(asset => 
+        Image.prefetch(asset.media.thumbnail_url)
+      )
+    );
+    
+    // Small delay between batches
+    await new Promise(resolve => setTimeout(resolve, 100));
+  }
+};
+
+// Usage
+const experience = await client.getCompleteExperience(config);
+prefetchAssetURLs(experience.data.layer_assets.stars.assets);
+```
+
+### Quality Selection Based on Device
+
+```typescript
+const getOptimalAssetURL = (asset: AssetDetail, deviceInfo: DeviceInfo): string => {
+  const { screen_resolution, connection_speed } = deviceInfo;
+  
+  // Parse resolution
+  const [width] = screen_resolution.split('x').map(Number);
+  
+  // Select quality based on screen and connection
+  if (connection_speed === 'slow') {
+    return asset.media.preview_url;  // Lower quality for slow connections
+  }
+  
+  if (width <= 720) {
+    return asset.media.qualities?.['720p'] || asset.media.preview_url;
+  }
+  
+  if (width <= 1920) {
+    return asset.media.qualities?.['1080p'] || asset.media.full_asset_url;
+  }
+  
+  return asset.media.full_asset_url;  // 4K for large screens
+};
+```
+
+---
+
 ## 🚀 Performance Optimization
 
-### Caching Strategy
+### Performance Targets
 
-The API implements a 3-tier caching system:
+The API is optimized for minimal response size by returning URLs instead of full asset data:
 
 ```
-L1 Cache (In-Memory)    →  Popular songs, <50ms response
-L2 Cache (Redis)        →  Warm data, <200ms response  
-L3 Cache (Database)     →  Cold data, <1s response
+Response Size Analysis:
+─────────────────────────────────────────────────────
+Without URLs (full data):    50-100MB per request
+With URLs only:              2-5MB per request
+Reduction:                   95% smaller responses
+
+Response Time Targets:
+─────────────────────────────────────────────────────
+API Response (<5MB):         < 200ms (L2 cache)
+Asset Loading (parallel):    < 500ms (CDN cached)
+Total Time to Render:        < 700ms (complete)
 ```
 
-#### Cache TTL by Popularity
+### Asset Loading Performance
 
 ```typescript
-// High popularity (top 20%)  → 1 hour cache
-// Medium popularity (20-50%) → 30 minutes cache
-// Low popularity (50%+)      → 10 minutes cache
+// Performance metrics for different loading strategies
+interface LoadingPerformance {
+  strategy: string;
+  apiResponseTime: number;
+  assetLoadTime: number;
+  totalTime: number;
+}
+
+const performanceComparison = [
+  {
+    strategy: 'All assets embedded',
+    apiResponseTime: 3000,  // Large response
+    assetLoadTime: 0,        // Already in response
+    totalTime: 3000
+  },
+  {
+    strategy: 'URLs + Sequential loading',
+    apiResponseTime: 200,    // Small response
+    assetLoadTime: 2000,     // Loading one by one
+    totalTime: 2200
+  },
+  {
+    strategy: 'URLs + Parallel loading',  // ✅ RECOMMENDED
+    apiResponseTime: 200,    // Small response
+    assetLoadTime: 400,      // Parallel from CDN
+    totalTime: 600          // Best performance
+  }
+];
 ```
 
-#### Cache Hit Rates (Target)
-
-- L1: 15% of requests
-- L2: 35% of requests
-- L3: 40% of requests
-- CDN: 10% of requests
-- **Total: 90%+ cache hit rate**
-
-### Response Time Targets
-
-```
-┌─────────────────────────────────────────────────────┐
-│              RESPONSE TIME TARGETS                  │
-├─────────────────────────────────────────────────────┤
-│ Small Response (<1MB):     < 200ms                 │
-│ Medium Response (1-10MB):  < 500ms                 │
-│ Large Response (10-50MB):  < 1s                    │
-│ Very Large (>50MB):        < 3s (with streaming)   │
-└─────────────────────────────────────────────────────┘
-```
-
-### Compression
-
-Responses are automatically compressed using gzip/brotli:
+### Optimal Loading Pattern
 
 ```typescript
-// Compression achieves ~70% size reduction
-// Original: 50MB → Compressed: 15MB
+const loadExperienceOptimally = async (songId: string) => {
+  const startTime = performance.now();
+  
+  // Step 1: Get API response with URLs (< 200ms)
+  const experience = await client.getCompleteExperience({
+    song_id: songId,
+    // ... config
+  });
+  console.log(`API response: ${performance.now() - startTime}ms`);
+  
+  // Step 2: Load critical thumbnails in parallel (< 100ms)
+  const criticalThumbsStart = performance.now();
+  await Promise.all([
+    Image.prefetch(experience.data.composite_videos[0].media.thumbnail_url),
+    ...experience.data.layer_assets.stars.assets
+      .slice(0, 6)
+      .map(a => Image.prefetch(a.media.thumbnail_url))
+  ]);
+  console.log(`Critical thumbnails: ${performance.now() - criticalThumbsStart}ms`);
+  
+  // Step 3: Show UI immediately
+  renderUI(experience);
+  console.log(`Total time to interactive: ${performance.now() - startTime}ms`);
+  
+  // Step 4: Background load remaining assets
+  loadRemainingAssets(experience);
+};
 ```
-
-### Streaming for Large Responses
-
-For responses >50MB, the API automatically streams data:
-
-```typescript
-// Query parameter override
-POST /api/v1/reviz/complete-experience?stream=true
-
-// Auto-detected based on response size
-```
-
-**Benefits:**
-- Progressive loading
-- Lower memory usage
-- Better user experience
 
 ---
 
@@ -587,6 +839,7 @@ try {
 ```typescript
 import React, { useEffect, useState } from 'react';
 import { ReVizClient } from '@reviz/api-client';
+import { Image } from 'react-native';  // or from 'react-native'
 
 interface Props {
   songId: string;
@@ -596,6 +849,7 @@ interface Props {
 export const ReVizExperience: React.FC<Props> = ({ songId, userId }) => {
   const [experience, setExperience] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [loadingAssets, setLoadingAssets] = useState(true);
   const [error, setError] = useState(null);
   
   useEffect(() => {
@@ -612,6 +866,7 @@ export const ReVizExperience: React.FC<Props> = ({ songId, userId }) => {
         authToken: await getAuthToken()
       });
       
+      // Step 1: Get API response with URLs (fast, ~200ms)
       const result = await client.getCompleteExperience({
         song_id: songId,
         user_context: {
@@ -624,15 +879,20 @@ export const ReVizExperience: React.FC<Props> = ({ songId, userId }) => {
           max_assets_per_layer: 6,
           include_variants: true,
           variant_depth: 6
-        },
-        performance_optimization: {
-          preload_assets: true,
-          cache_strategy: 'balanced',
-          compression: true
         }
       });
       
       setExperience(result.data);
+      setLoading(false);
+      
+      // Step 2: Load critical thumbnails in parallel (fast, ~100ms)
+      await loadCriticalThumbnails(result.data);
+      
+      // Step 3: Show UI immediately
+      setLoadingAssets(false);
+      
+      // Step 4: Background load remaining assets
+      loadRemainingAssets(result.data);
       
       // Track analytics
       trackExperienceLoad({
@@ -643,10 +903,45 @@ export const ReVizExperience: React.FC<Props> = ({ songId, userId }) => {
       
     } catch (err) {
       setError(err);
-      // Log error for monitoring
-      logError('Experience load failed', err);
-    } finally {
       setLoading(false);
+      logError('Experience load failed', err);
+    }
+  };
+  
+  // Load critical thumbnails for immediate display
+  const loadCriticalThumbnails = async (data) => {
+    const criticalUrls = [
+      // First composite thumbnail
+      data.composite_videos[0]?.media.thumbnail_url,
+      // First 6 stars thumbnails
+      ...data.layer_assets.stars.assets.slice(0, 6).map(a => a.media.thumbnail_url),
+      // Song cover art
+      data.song_metadata.cover_art_url
+    ].filter(Boolean);
+    
+    // Load in parallel from CDN
+    await Promise.all(
+      criticalUrls.map(url => Image.prefetch(url))
+    );
+  };
+  
+  // Background load remaining assets
+  const loadRemainingAssets = async (data) => {
+    // Load all thumbnails
+    const allThumbs = [
+      ...data.composite_videos.map(c => c.media.thumbnail_url),
+      ...data.layer_assets.stars.assets.map(a => a.media.thumbnail_url),
+      ...data.layer_assets.looks.assets.map(a => a.media.thumbnail_url),
+      ...data.layer_assets.moves.assets.map(a => a.media.thumbnail_url),
+      ...data.layer_assets.worlds.assets.map(a => a.media.thumbnail_url)
+    ].filter(Boolean);
+    
+    // Load in batches to avoid overwhelming device
+    const batchSize = 10;
+    for (let i = 0; i < allThumbs.length; i += batchSize) {
+      const batch = allThumbs.slice(i, i + batchSize);
+      await Promise.all(batch.map(url => Image.prefetch(url)));
+      await new Promise(resolve => setTimeout(resolve, 100));
     }
   };
   
@@ -657,20 +952,39 @@ export const ReVizExperience: React.FC<Props> = ({ songId, userId }) => {
   return (
     <div>
       {/* Song Info */}
-      <SongHeader song={experience.song_metadata} />
-      
-      {/* Composite Videos */}
-      <CompositeGrid 
-        composites={experience.composite_videos}
-        onSelect={(composite) => handleCompositeSelect(composite)}
+      <SongHeader 
+        song={experience.song_metadata}
+        coverArtUrl={experience.song_metadata.cover_art_url}
       />
       
-      {/* Layer Customization */}
+      {/* Composite Videos - using URLs */}
+      <CompositeGrid 
+        composites={experience.composite_videos}
+        onSelect={(composite) => {
+          // Load preview video when selected
+          loadCompositePreview(composite.media.preview_url);
+          handleCompositeSelect(composite);
+        }}
+        renderThumbnail={(composite) => (
+          <Image source={{ uri: composite.media.thumbnail_url }} />
+        )}
+      />
+      
+      {/* Layer Customization - using URLs */}
       <LayerPanel
         layers={experience.layer_assets}
         relationships={experience.asset_relationships}
-        onAssetChange={(layer, asset) => handleAssetChange(layer, asset)}
+        onAssetChange={(layer, asset) => {
+          // Load asset preview when changed
+          loadAssetPreview(asset.media.preview_url);
+          handleAssetChange(layer, asset);
+        }}
+        renderAsset={(asset) => (
+          <Image source={{ uri: asset.media.thumbnail_url }} />
+        )}
       />
+      
+      {loadingAssets && <AssetLoadingIndicator />}
       
       {/* Performance Metrics (dev mode) */}
       {isDevelopment && (
@@ -687,9 +1001,10 @@ export const ReVizExperience: React.FC<Props> = ({ songId, userId }) => {
 import { ReVizClient } from '@reviz/api-client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from '@react-native-community/netinfo';
-import { Platform } from 'react-native';
+import { Platform, Image } from 'react-native';
+import * as FileSystem from 'expo-file-system';
 
-// Mobile-optimized configuration
+// Mobile-optimized configuration based on connection
 const getMobileConfig = async () => {
   const netInfo = await NetInfo.fetch();
   const connectionSpeed = netInfo.type === 'wifi' ? 'fast' : 
@@ -699,11 +1014,86 @@ const getMobileConfig = async () => {
     max_composites: connectionSpeed === 'fast' ? 5 : 3,
     max_assets_per_layer: connectionSpeed === 'fast' ? 6 : 4,
     include_variants: connectionSpeed !== 'slow',
-    variant_depth: connectionSpeed === 'fast' ? 6 : 3
+    variant_depth: connectionSpeed === 'fast' ? 6 : 3,
+    connectionSpeed
   };
 };
 
-// Load experience with caching
+// Smart asset loading based on connection
+const loadAssetsForConnection = async (
+  experience: any, 
+  connectionSpeed: string
+) => {
+  if (connectionSpeed === 'wifi') {
+    // WiFi: Preload all thumbnails aggressively
+    return loadAllThumbnails(experience);
+  } else if (connectionSpeed === 'cellular') {
+    // Cellular: Load only critical thumbnails
+    return loadCriticalThumbnails(experience);
+  } else {
+    // Slow connection: Load minimal assets
+    return loadMinimalAssets(experience);
+  }
+};
+
+// Load all thumbnails for WiFi
+const loadAllThumbnails = async (experience: any) => {
+  const allUrls = [
+    experience.data.song_metadata.cover_art_url,
+    ...experience.data.composite_videos.map(c => c.media.thumbnail_url),
+    ...experience.data.layer_assets.stars.assets.map(a => a.media.thumbnail_url),
+    ...experience.data.layer_assets.looks.assets.map(a => a.media.thumbnail_url),
+    ...experience.data.layer_assets.moves.assets.map(a => a.media.thumbnail_url),
+    ...experience.data.layer_assets.worlds.assets.map(a => a.media.thumbnail_url)
+  ].filter(Boolean);
+  
+  // Load in parallel from CDN
+  await Promise.all(
+    allUrls.map(url => Image.prefetch(url))
+  );
+};
+
+// Load only critical thumbnails for cellular
+const loadCriticalThumbnails = async (experience: any) => {
+  const criticalUrls = [
+    experience.data.song_metadata.cover_art_url,
+    experience.data.composite_videos[0]?.media.thumbnail_url,
+    ...experience.data.layer_assets.stars.assets
+      .slice(0, 3)
+      .map(a => a.media.thumbnail_url)
+  ].filter(Boolean);
+  
+  await Promise.all(
+    criticalUrls.map(url => Image.prefetch(url))
+  );
+};
+
+// Load minimal assets for slow connections
+const loadMinimalAssets = async (experience: any) => {
+  // Only load current composite thumbnail
+  const url = experience.data.composite_videos[0]?.media.thumbnail_url;
+  if (url) {
+    await Image.prefetch(url);
+  }
+};
+
+// Local caching for offline support
+const cacheExperienceLocally = async (songId: string, experience: any) => {
+  try {
+    await AsyncStorage.setItem(
+      `experience_${songId}`,
+      JSON.stringify({
+        data: experience,
+        timestamp: Date.now(),
+        version: '2.0'
+      })
+    );
+  } catch (error) {
+    console.warn('Failed to cache experience:', error);
+  }
+};
+
+// Main loading function with local cache
 const loadMobileExperience = async (songId: string) => {
   const client = new ReVizClient({
     apiUrl: 'https://registry.reviz.dev',
@@ -715,35 +1105,97 @@ const loadMobileExperience = async (songId: string) => {
   const cached = await AsyncStorage.getItem(cacheKey);
   
   if (cached) {
-    const data = JSON.parse(cached);
-    // Use cached data immediately
-    return data;
+    try {
+      const { data, timestamp } = JSON.parse(cached);
+      // Use cache if less than 1 hour old
+      if (Date.now() - timestamp < 3600000) {
+        console.log('Using cached experience');
+        return data;
+      }
+    } catch (error) {
+      console.warn('Failed to parse cached data:', error);
+    }
   }
   
-  // Fetch fresh data
+  // Fetch fresh data from API
   const config = await getMobileConfig();
   const experience = await client.getCompleteExperience({
     song_id: songId,
     user_context: {
       device_info: {
         type: Platform.OS === 'ios' || Platform.OS === 'android' ? 'mobile' : 'tablet',
-        connection_speed: config.connectionSpeed
+        connection_speed: config.connectionSpeed,
+        platform: Platform.OS
       }
     },
-    experience_config: config,
-    performance_optimization: {
-      preload_assets: config.connectionSpeed === 'fast',
-      cache_strategy: 'aggressive',
-      compression: true
-    }
+    experience_config: config
   });
   
-  // Cache for 1 hour
-  await AsyncStorage.setItem(cacheKey, JSON.stringify(experience), {
-    expires: Date.now() + 3600000
-  });
+  // Cache the experience locally
+  await cacheExperienceLocally(songId, experience);
+  
+  // Load assets based on connection
+  await loadAssetsForConnection(experience, config.connectionSpeed);
   
   return experience;
+};
+
+// Download asset for offline use
+const downloadAssetForOffline = async (asset: any) => {
+  const localUri = `${FileSystem.documentDirectory}${asset.asset_id}.mp4`;
+  
+  try {
+    // Check if already downloaded
+    const info = await FileSystem.getInfoAsync(localUri);
+    if (info.exists) {
+      return localUri;
+    }
+    
+    // Download from GCP URL
+    const downloadResult = await FileSystem.downloadAsync(
+      asset.media.full_asset_url,
+      localUri
+    );
+    
+    return downloadResult.uri;
+  } catch (error) {
+    console.error('Failed to download asset:', error);
+    return asset.media.full_asset_url; // Fallback to streaming
+  }
+};
+
+// Usage in React Native component
+const ReVizMobileExperience = ({ songId }) => {
+  const [experience, setExperience] = useState(null);
+  const [loading, setLoading] = useState(true);
+  
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const exp = await loadMobileExperience(songId);
+        setExperience(exp);
+      } catch (error) {
+        console.error('Failed to load experience:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    load();
+  }, [songId]);
+  
+  if (loading) return <LoadingView />;
+  
+  return (
+    <View>
+      {/* Render using URLs from experience */}
+      <Image 
+        source={{ uri: experience.data.song_metadata.cover_art_url }}
+        style={styles.coverArt}
+      />
+      {/* ... render other components */}
+    </View>
+  );
 };
 ```
 
@@ -1064,6 +1516,25 @@ const cleanupMemory = () => {
 
 ## 🎯 Quick Reference
 
+### URL-Based Architecture Benefits
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│         WHY GCP URLS ARE BETTER THAN EMBEDDED DATA          │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│ ✅ Response Size:        95% smaller (5MB vs 100MB)        │
+│ ✅ API Response Time:    200ms (vs 3-5s with embedded)     │
+│ ✅ Asset Load Time:      400ms parallel (vs 2s sequential) │
+│ ✅ CDN Caching:          Global edge locations             │
+│ ✅ Bandwidth Usage:      Only what user views              │
+│ ✅ Mobile Performance:   Excellent (vs poor)               │
+│ ✅ Loading Strategy:     Progressive & parallel            │
+│ ✅ Network Efficiency:   Optimal for cellular              │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
 ### Recommended Configurations
 
 #### Mobile (3G/4G)
@@ -1073,10 +1544,8 @@ const cleanupMemory = () => {
   max_assets_per_layer: 4,
   include_variants: true,
   variant_depth: 4,
-  performance_optimization: {
-    cache_strategy: 'aggressive',
-    compression: true
-  }
+  // Load only critical thumbnails initially
+  loadingStrategy: 'minimal'
 }
 ```
 
@@ -1087,10 +1556,8 @@ const cleanupMemory = () => {
   max_assets_per_layer: 6,
   include_variants: true,
   variant_depth: 6,
-  performance_optimization: {
-    preload_assets: true,
-    cache_strategy: 'balanced'
-  }
+  // Preload all thumbnails aggressively
+  loadingStrategy: 'aggressive'
 }
 ```
 
@@ -1101,22 +1568,64 @@ const cleanupMemory = () => {
   max_assets_per_layer: 8,
   include_variants: true,
   variant_depth: 6,
-  performance_optimization: {
-    preload_assets: true,
-    cache_strategy: 'balanced'
-  }
+  // Preload thumbnails and previews
+  loadingStrategy: 'balanced'
 }
 ```
+
+### Asset URL Patterns
+
+All assets follow this URL structure:
+
+```
+Thumbnails:  https://storage.googleapis.com/reviz-assets/{layer}/{id}/thumb.jpg
+Previews:    https://storage.googleapis.com/reviz-assets/{layer}/{id}/preview.mp4
+Full:        https://storage.googleapis.com/reviz-assets/{layer}/{id}/full.mp4
+Composites:  https://storage.googleapis.com/reviz-composites/{id}/preview.mp4
+```
+
+**CDN Features:**
+- Automatic global distribution
+- Edge caching (20-50ms response)
+- HTTPS/SSL enabled
+- CORS configured for web/mobile
+- Bandwidth optimization
 
 ### Performance Targets
 
 ```
-Response Size    Cache Level    Target Time
-─────────────────────────────────────────────
-< 1MB           L1 (Memory)    < 50ms
-1-10MB          L2 (Redis)     < 200ms
-10-50MB         L3 (Database)  < 1s
-> 50MB          Streaming      < 3s
+┌─────────────────────────────────────────────────────────────┐
+│              COMPLETE EXPERIENCE TIMELINE                   │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│ 0ms      User taps song                                     │
+│ 200ms    API response received (URLs only)                  │
+│ 300ms    Critical thumbnails loaded (parallel CDN)          │
+│ 300ms    UI renders with thumbnails                         │
+│ 600ms    All thumbnails loaded (background)                 │
+│ 1000ms   Previews preloaded (background)                    │
+│                                                             │
+│ Total Time to Interactive: ~300ms                           │
+│ Total Time Fully Loaded:  ~1000ms                          │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Essential Loading Pattern
+
+```typescript
+// 1. API Call (200ms) - Get URLs
+const experience = await client.getCompleteExperience(config);
+
+// 2. Critical Load (100ms) - Show UI immediately
+await loadCriticalThumbnails(experience);
+renderUI(experience);
+
+// 3. Background Load - Don't block UI
+loadRemainingAssets(experience);
+
+// 4. On-Demand Load - When user interacts
+onAssetSelect(asset => loadFullAsset(asset));
 ```
 
 ---

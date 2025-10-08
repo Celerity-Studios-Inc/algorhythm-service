@@ -47,8 +47,8 @@ export class ReVizCompleteExperienceProductionService {
     private readonly nnaRegistryService: NnaRegistryService,
     private readonly scoringService: ScoringService,
     private readonly analyticsService: AnalyticsService,
-    @InjectModel(Asset.name) private assetModel: Model<Asset>,
-    @InjectModel(Composite.name) private compositeModel: Model<Composite>,
+    @InjectModel('Asset') private assetModel: Model<Asset>,
+    @InjectModel('Composite') private compositeModel: Model<Composite>,
   ) {}
 
   async getCompleteExperience(request: ReVizCompleteRequest): Promise<ReVizCompleteResponse> {

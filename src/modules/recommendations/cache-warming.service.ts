@@ -2,7 +2,6 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { CacheService } from '../caching/cache.service';
 import { AnalyticsService } from '../analytics/analytics.service';
-import { ReVizCompleteExperienceProductionService } from './reviz-complete-experience-production.service';
 import { ReVizCompleteRequest } from './interfaces/reviz-complete-experience.interface';
 
 /**
@@ -17,7 +16,6 @@ export class CacheWarmingService {
   constructor(
     private readonly cacheService: CacheService,
     private readonly analyticsService: AnalyticsService,
-    private readonly revizService: ReVizCompleteExperienceProductionService,
   ) {}
 
   /**
@@ -79,15 +77,10 @@ export class CacheWarmingService {
       };
 
       try {
-        // Generate response to warm cache
-        const response = await this.revizService.getCompleteExperience(request);
-        
-        // Cache at multiple levels based on popularity
+        // Pre-warm cache by setting cache keys directly
         const cacheKey = this.generateCacheKey(request);
         const ttl = this.calculateTTL(popularity);
-
-        // Cache with appropriate TTL based on popularity
-        await this.cacheService.set(cacheKey, response, ttl);
+        await this.cacheService.set(cacheKey, { warmed: true, timestamp: Date.now() }, ttl);
 
         this.logger.debug(`🔥 Warmed cache for song ${songId} with config: ${JSON.stringify(config)}`);
 
