@@ -23,20 +23,33 @@ const scoring_service_1 = require("../scoring/scoring.service");
 const cache_service_1 = require("../caching/cache.service");
 const nna_registry_service_1 = require("../nna-integration/nna-registry.service");
 const analytics_service_1 = require("../analytics/analytics.service");
+const instant_recommendations_service_1 = require("./instant-recommendations.service");
 const cache_keys_1 = require("../../common/constants/cache-keys");
 const compatibility_weights_1 = require("../../common/constants/compatibility-weights");
 let RecommendationsService = RecommendationsService_1 = class RecommendationsService {
-    constructor(compatibilityScoreModel, recommendationCacheModel, scoringService, cacheService, nnaRegistryService, analyticsService) {
+    constructor(compatibilityScoreModel, recommendationCacheModel, scoringService, cacheService, nnaRegistryService, analyticsService, instantRecommendationsService) {
         this.compatibilityScoreModel = compatibilityScoreModel;
         this.recommendationCacheModel = recommendationCacheModel;
         this.scoringService = scoringService;
         this.cacheService = cacheService;
         this.nnaRegistryService = nnaRegistryService;
         this.analyticsService = analyticsService;
+        this.instantRecommendationsService = instantRecommendationsService;
         this.logger = new common_1.Logger(RecommendationsService_1.name);
     }
     async getTemplateRecommendation(request) {
         const startTime = Date.now();
+        try {
+            const instantResult = await this.instantRecommendationsService.getTemplateRecommendation(request);
+            if (instantResult.cache_hit) {
+                const responseTime = Date.now() - startTime;
+                this.logger.debug(`⚡ Instant service response: ${responseTime}ms`);
+                return instantResult;
+            }
+        }
+        catch (error) {
+            this.logger.warn('Instant service failed, falling back to standard service:', error.message);
+        }
         const primaryCacheKey = `${cache_keys_1.CACHE_KEYS.TEMPLATE_RECOMMENDATION}:${request.song_id}:${JSON.stringify(request.user_context)}`;
         const primaryCachedResult = await this.cacheService.get(primaryCacheKey);
         if (primaryCachedResult) {
@@ -261,6 +274,7 @@ exports.RecommendationsService = RecommendationsService = RecommendationsService
         scoring_service_1.ScoringService,
         cache_service_1.CacheService,
         nna_registry_service_1.NnaRegistryService,
-        analytics_service_1.AnalyticsService])
+        analytics_service_1.AnalyticsService,
+        instant_recommendations_service_1.InstantRecommendationsService])
 ], RecommendationsService);
 //# sourceMappingURL=recommendations.service.js.map

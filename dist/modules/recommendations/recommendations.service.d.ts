@@ -5,6 +5,7 @@ import { ScoringService } from '../scoring/scoring.service';
 import { CacheService } from '../caching/cache.service';
 import { NnaRegistryService } from '../nna-integration/nna-registry.service';
 import { AnalyticsService } from '../analytics/analytics.service';
+import { InstantRecommendationsService } from './instant-recommendations.service';
 import { TemplateRecommendationDto } from './dto/template-recommendation.dto';
 import { LayerVariationDto } from './dto/layer-variation.dto';
 import { TemplateRecommendation, LayerVariation } from './interfaces/recommendation.interface';
@@ -15,8 +16,9 @@ export declare class RecommendationsService {
     private readonly cacheService;
     private readonly nnaRegistryService;
     private readonly analyticsService;
+    private readonly instantRecommendationsService;
     private readonly logger;
-    constructor(compatibilityScoreModel: Model<CompatibilityScore>, recommendationCacheModel: Model<RecommendationCache>, scoringService: ScoringService, cacheService: CacheService, nnaRegistryService: NnaRegistryService, analyticsService: AnalyticsService);
+    constructor(compatibilityScoreModel: Model<CompatibilityScore>, recommendationCacheModel: Model<RecommendationCache>, scoringService: ScoringService, cacheService: CacheService, nnaRegistryService: NnaRegistryService, analyticsService: AnalyticsService, instantRecommendationsService: InstantRecommendationsService);
     getTemplateRecommendation(request: TemplateRecommendationDto): Promise<{
         recommendation: TemplateRecommendation;
         alternatives: TemplateRecommendation[];
