@@ -12,8 +12,6 @@ const mongoose_1 = require("@nestjs/mongoose");
 const recommendations_controller_1 = require("./recommendations.controller");
 const recommendations_service_1 = require("./recommendations.service");
 const instant_recommendations_service_1 = require("./instant-recommendations.service");
-const reviz_complete_experience_service_1 = require("./reviz-complete-experience.service");
-const reviz_complete_experience_controller_1 = require("./reviz-complete-experience.controller");
 const reviz_complete_experience_production_service_1 = require("./reviz-complete-experience-production.service");
 const reviz_complete_experience_production_controller_1 = require("./reviz-complete-experience-production.controller");
 const reviz_complete_experience_enhanced_service_1 = require("./reviz-complete-experience-enhanced.service");
@@ -46,14 +44,12 @@ exports.RecommendationsModule = RecommendationsModule = __decorate([
         ],
         controllers: [
             recommendations_controller_1.RecommendationsController,
-            reviz_complete_experience_controller_1.ReVizCompleteExperienceController,
             reviz_complete_experience_production_controller_1.ReVizCompleteExperienceProductionController,
             reviz_complete_experience_enhanced_controller_1.ReVizCompleteExperienceEnhancedController
         ],
         providers: [
             recommendations_service_1.RecommendationsService,
             instant_recommendations_service_1.InstantRecommendationsService,
-            reviz_complete_experience_service_1.ReVizCompleteExperienceService,
             reviz_complete_experience_production_service_1.ReVizCompleteExperienceProductionService,
             reviz_complete_experience_enhanced_service_1.ReVizCompleteExperienceEnhancedService,
             cache_warming_service_1.CacheWarmingService
@@ -61,7 +57,6 @@ exports.RecommendationsModule = RecommendationsModule = __decorate([
         exports: [
             recommendations_service_1.RecommendationsService,
             instant_recommendations_service_1.InstantRecommendationsService,
-            reviz_complete_experience_service_1.ReVizCompleteExperienceService,
             reviz_complete_experience_production_service_1.ReVizCompleteExperienceProductionService,
             reviz_complete_experience_enhanced_service_1.ReVizCompleteExperienceEnhancedService,
             cache_warming_service_1.CacheWarmingService

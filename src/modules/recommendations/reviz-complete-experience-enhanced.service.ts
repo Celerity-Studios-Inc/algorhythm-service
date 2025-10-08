@@ -199,7 +199,9 @@ export class ReVizCompleteExperienceEnhancedService {
       try {
         const instantResult = await this.instantRecommendationsService.getTemplateRecommendation({
           song_id: request.song_id,
-          user_context: request.user_context || {}
+          user_context: {
+            user_id: request.user_context?.user_id || 'anonymous'
+          }
         });
         
         if (instantResult.cache_hit) {
@@ -616,14 +618,21 @@ export class ReVizCompleteExperienceEnhancedService {
       data: {
         song_metadata: {
           song_id: request.song_id,
-          song_name: `Song ${request.song_id}`,
-          artist_name: 'Artist',
-          album_name: 'Album',
+          title: `Song ${request.song_id}`,
+          artist: 'Artist',
+          album: 'Album',
           duration_seconds: 180,
+          bpm: 120,
           genre: 'Pop',
-          tempo: 120,
-          energy_level: 0.8,
-          mood: 'upbeat'
+          cover_art_url: 'https://storage.googleapis.com/algorhythm-assets/covers/default.jpg',
+          preview_url: 'https://storage.googleapis.com/algorhythm-assets/previews/default.mp3',
+          full_audio_url: 'https://storage.googleapis.com/algorhythm-assets/audio/default.mp3',
+          audio_features: {
+            tempo: 120,
+            key: 'C',
+            energy_level: 0.8,
+            danceability: 0.7
+          }
         },
         composite_videos: composites.map((comp: any, index: number) => ({
           composite_id: comp.template_id,
@@ -643,16 +652,21 @@ export class ReVizCompleteExperienceEnhancedService {
           }
         })),
         layer_assets: {
-          stars: { base_assets: [], total_assets: 0 },
-          looks: { base_assets: [], total_assets: 0 },
-          moves: { base_assets: [], total_assets: 0 },
-          worlds: { base_assets: [], total_assets: 0 }
+          stars: { layer_type: 'stars', total_assets: 0, assets: [] },
+          looks: { layer_type: 'looks', total_assets: 0, assets: [] },
+          moves: { layer_type: 'moves', total_assets: 0, assets: [] },
+          worlds: { layer_type: 'worlds', total_assets: 0, assets: [] }
+        },
+        asset_relationships: {
+          compatibility_matrix: {},
+          base_to_variants: {},
+          layer_dependencies: {}
         },
         performance_metrics: {
+          total_assets_loaded: 0,
           response_time_ms: responseTime,
           response_size_bytes: 1024,
           cache_hit_rate: 1.0,
-          database_queries: 0,
           assets_from_cdn: 0
         }
       },
@@ -660,7 +674,7 @@ export class ReVizCompleteExperienceEnhancedService {
         request_id: request.request_id || this.generateRequestId(),
         timestamp: new Date().toISOString(),
         version: '2.0',
-        architecture: 'GCP URL-based with instant optimization'
+        partial_response: false
       }
     };
   }
@@ -676,7 +690,7 @@ export class ReVizCompleteExperienceEnhancedService {
       const l1Result = await this.cacheService.get(`l1:${cacheKey}`);
       if (l1Result) {
         this.logger.debug('✅ L1 cache hit');
-        return l1Result;
+        return l1Result as ReVizCompleteResponse;
       }
     } catch (error) {
       this.logger.warn('L1 cache check failed:', error.message);
@@ -689,7 +703,7 @@ export class ReVizCompleteExperienceEnhancedService {
         this.logger.debug('✅ L2 cache hit');
         // Promote to L1 cache
         await this.cacheService.set(`l1:${cacheKey}`, l2Result, 300); // 5 minutes
-        return l2Result;
+        return l2Result as ReVizCompleteResponse;
       }
     } catch (error) {
       this.logger.warn('L2 cache check failed:', error.message);
@@ -703,7 +717,7 @@ export class ReVizCompleteExperienceEnhancedService {
         // Promote to L1 and L2 caches
         await this.cacheService.set(`l1:${cacheKey}`, l3Result, 300); // 5 minutes
         await this.cacheService.set(`l2:${cacheKey}`, l3Result, 1800); // 30 minutes
-        return l3Result;
+        return l3Result as ReVizCompleteResponse;
       }
     } catch (error) {
       this.logger.warn('L3 cache check failed:', error.message);
@@ -742,7 +756,7 @@ export class ReVizCompleteExperienceEnhancedService {
   private addPerformanceMetrics(response: ReVizCompleteResponse, responseTime: number): ReVizCompleteResponse {
     response.data.performance_metrics.response_time_ms = responseTime;
     response.data.performance_metrics.cache_hit_rate = 1.0;
-    response.data.performance_metrics.database_queries = 0;
+    response.data.performance_metrics.assets_from_cdn = 0;
     return response;
   }
 }
