@@ -80,7 +80,7 @@ let RecommendationsService = RecommendationsService_1 = class RecommendationsSer
         if (!song) {
             throw new common_1.NotFoundException(`Song not found: ${songId}`);
         }
-        const availableTemplates = await this.nnaRegistryService.getCompositesBySong(songId);
+        const availableTemplates = await this.nnaRegistryService.getFullCompositesBySong(songId);
         if (availableTemplates.length === 0) {
             const originalId = request.song_id !== songId ? `${request.song_id} (${songId})` : songId;
             throw new common_1.NotFoundException(`No templates available for song: ${originalId}`);
@@ -102,6 +102,9 @@ let RecommendationsService = RecommendationsService_1 = class RecommendationsSer
             template_name: template.name || `Template ${index + 1}`,
             nna_address: template.nna_address,
             compatibility_score: 0.8,
+            gcp_storage_url: template.gcpStorageUrl || `https://storage.googleapis.com/nna_registry_assets_dev/composites/${template.nna_address}/full.mp4`,
+            thumbnail_url: template.thumbnailUrl || `https://storage.googleapis.com/nna_registry_assets_dev/composites/${template.nna_address}/thumb.jpg`,
+            preview_url: template.previewUrl || `https://storage.googleapis.com/nna_registry_assets_dev/composites/${template.nna_address}/preview.mp4`,
             components: {
                 song_id: song.nna_address,
                 star_id: template.star_id || '2.009.002.018',
@@ -113,6 +116,13 @@ let RecommendationsService = RecommendationsService_1 = class RecommendationsSer
                 created_at: template.createdAt || new Date().toISOString(),
                 tags: template.tags || [],
                 description: template.description || 'Template description',
+                media: {
+                    duration_seconds: template.duration || 30,
+                    file_size_mb: template.fileSize || 15.2,
+                    resolution: template.resolution || '1080p',
+                    format: template.format || 'mp4',
+                    quality_score: template.qualityScore || 0.9
+                }
             },
             scoring_details: {
                 tempo_score: 0.8,

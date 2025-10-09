@@ -1,0 +1,346 @@
+{
+  "creator": {
+    "layer": "looks",
+    "totalAssets": 6,
+    "descriptionLengths": [
+      17,
+      16,
+      23,
+      29,
+      32,
+      30
+    ],
+    "commonWords": {
+      "white": 1,
+      "cropped": 2,
+      "olive": 1,
+      "hoodie": 1,
+      "coral": 1,
+      "front": 1,
+      "shirt": 1,
+      "black": 1,
+      "iron": 1,
+      "maiden": 1,
+      "graphic": 1,
+      "brown": 1,
+      "balenciaga": 1,
+      "logo": 1,
+      "turtleneck": 1,
+      "charcoal": 1,
+      "print": 1
+    },
+    "descriptionPatterns": [],
+    "examples": [
+      {
+        "name": "L.CAS.BAS.001",
+        "friendlyName": "L.CAS.BAS.001",
+        "creatorDescription": "White Cropped Tee",
+        "description": "A timeless white cropped t-shirt that blends minimalist style with everyday versatility. Crafted from soft, breathable cotton, this wardrobe essential offers a flattering slim fit and a modern cropped silhouette perfect for layering or wearing solo. Its clean design makes it easy to pair with denim, joggers, skirts, or high-waisted pants, creating effortless looks that transition from casual streetwear to laid-back chic. Ideal for anyone who loves classic basics with a modern twist.",
+        "tags": [
+          "medium-energy",
+          "contemporary",
+          "looks",
+          "fashion",
+          "style",
+          "outfit"
+        ],
+        "accessories": [],
+        "primaryColors": [],
+        "fashionStyle": [],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "L.CAS.REL.002",
+        "friendlyName": "L.CAS.REL.002",
+        "creatorDescription": "Olive Zip Hoodie",
+        "description": "A versatile olive green zip-up hoodie designed for comfort, warmth, and effortless style. Made from a soft fleece or cotton-blend fabric, it features a full front zipper, adjustable drawstring hood, and ribbed cuffs and hem for a secure fit. The neutral olive tone adds a modern, earthy vibe that pairs seamlessly with jeans, joggers, or activewear. Perfect for everyday wear, travel, or layering, this hoodie combines streetwear edge with classic casual appeal.",
+        "tags": [
+          "medium-energy",
+          "contemporary",
+          "looks",
+          "fashion",
+          "style",
+          "outfit"
+        ],
+        "accessories": [],
+        "primaryColors": [],
+        "fashionStyle": [],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "L.CAS.WEE.001",
+        "friendlyName": "L.CAS.WEE.001",
+        "creatorDescription": "Coral Tie-Front T-Shirt",
+        "description": "A vibrant coral tie-front t-shirt that brings a pop of color and effortless charm to any outfit. Crafted from lightweight, breathable fabric, it features a flattering front knot detail that accentuates the waist and adds a touch of feminine playfulness. The soft coral hue complements a variety of skin tones, while the relaxed fit and short sleeves make it perfect for warm-weather days, casual outings, or layering under jackets. A stylish essential that blends comfort, versatility, and modern flair.",
+        "tags": [
+          "medium-energy",
+          "contemporary",
+          "looks",
+          "fashion",
+          "style",
+          "outfit"
+        ],
+        "accessories": [],
+        "primaryColors": [],
+        "fashionStyle": [],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "L.CAS.CHI.001",
+        "friendlyName": "L.CAS.CHI.001",
+        "creatorDescription": "Black Iron Maiden Graphic Tee",
+        "description": "A classic black band t-shirt celebrating the legendary heavy metal icons, Iron Maiden. Featuring a bold vintage-inspired graphic print on soft, breathable cotton, this tee delivers the perfect mix of retro rock energy and modern streetwear appeal. Designed with a relaxed unisex fit, it’s ideal for pairing with ripped jeans, leather jackets, or cargo pants. Whether you’re a die-hard fan or love the grunge and metal aesthetic, this Iron Maiden graphic tee makes a timeless statement of rebellion and style.",
+        "tags": [
+          "medium-energy",
+          "contemporary",
+          "looks",
+          "fashion",
+          "style",
+          "outfit"
+        ],
+        "accessories": [],
+        "primaryColors": [],
+        "fashionStyle": [],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "L.CAS.COZ.001",
+        "friendlyName": "L.CAS.COZ.001",
+        "creatorDescription": "Brown Balenciaga Logo Turtleneck",
+        "description": "A luxurious designer turtleneck that embodies Balenciaga’s signature minimalist sophistication. This brown knit turtleneck sweater features the iconic Balenciaga logo prominently displayed across the fabric, blending high-fashion streetwear aesthetics with timeless European tailoring. Crafted from premium materials for warmth and comfort, it’s ideal for fall and winter layering, pairing effortlessly with tailored trousers, denim, or statement outerwear. A must-have for those who appreciate modern luxury fashion, logomania trends, and elevated casual wear.",
+        "tags": [
+          "medium-energy",
+          "contemporary",
+          "looks",
+          "fashion",
+          "style",
+          "outfit"
+        ],
+        "accessories": [],
+        "primaryColors": [],
+        "fashionStyle": [],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "L.CAS.REL.001",
+        "friendlyName": "L.CAS.REL.001",
+        "creatorDescription": "Charcoal Cat Print Cropped Top",
+        "description": "A playful yet edgy charcoal gray cropped top featuring a bold cat graphic print that blends streetwear charm with youthful attitude. Designed for a modern, form-fitting silhouette, this top pairs effortlessly with high-waisted jeans, skirts, or cargo pants. The soft cotton-blend fabric offers comfort and breathability, while the cropped cut adds a touch of confidence and versatility — perfect for casual outings, concerts, or laid-back layering. Ideal for those who love graphic tees with personality and cat-inspired fashion.",
+        "tags": [
+          "medium-energy",
+          "contemporary",
+          "looks",
+          "fashion",
+          "style",
+          "outfit"
+        ],
+        "accessories": [],
+        "primaryColors": [],
+        "fashionStyle": [],
+        "performanceContext": [],
+        "musicalStyle": []
+      }
+    ],
+    "avgDescriptionLength": 25,
+    "topWords": [
+      {
+        "word": "cropped",
+        "count": 2
+      },
+      {
+        "word": "white",
+        "count": 1
+      },
+      {
+        "word": "olive",
+        "count": 1
+      },
+      {
+        "word": "hoodie",
+        "count": 1
+      },
+      {
+        "word": "coral",
+        "count": 1
+      },
+      {
+        "word": "front",
+        "count": 1
+      },
+      {
+        "word": "shirt",
+        "count": 1
+      },
+      {
+        "word": "black",
+        "count": 1
+      },
+      {
+        "word": "iron",
+        "count": 1
+      },
+      {
+        "word": "maiden",
+        "count": 1
+      },
+      {
+        "word": "graphic",
+        "count": 1
+      },
+      {
+        "word": "brown",
+        "count": 1
+      },
+      {
+        "word": "balenciaga",
+        "count": 1
+      },
+      {
+        "word": "logo",
+        "count": 1
+      },
+      {
+        "word": "turtleneck",
+        "count": 1
+      },
+      {
+        "word": "charcoal",
+        "count": 1
+      },
+      {
+        "word": "print",
+        "count": 1
+      }
+    ]
+  },
+  "metadata": {
+    "layer": "looks",
+    "totalAssets": 6,
+    "fieldAnalysis": {
+      "accessories": {
+        "total": 6,
+        "filled": 0,
+        "empty": 6,
+        "examples": [],
+        "percentage": 0
+      },
+      "primaryColors": {
+        "total": 6,
+        "filled": 0,
+        "empty": 6,
+        "examples": [],
+        "percentage": 0
+      },
+      "patterns": {
+        "total": 6,
+        "filled": 0,
+        "empty": 6,
+        "examples": [],
+        "percentage": 0
+      },
+      "materials": {
+        "total": 6,
+        "filled": 0,
+        "empty": 6,
+        "examples": [],
+        "percentage": 0
+      },
+      "fashionStyle": {
+        "total": 6,
+        "filled": 0,
+        "empty": 6,
+        "examples": [],
+        "percentage": 0
+      },
+      "performanceContext": {
+        "total": 6,
+        "filled": 0,
+        "empty": 6,
+        "examples": [],
+        "percentage": 0
+      }
+    },
+    "arrayFieldAnalysis": {},
+    "tagAnalysis": {
+      "totalTags": 36,
+      "avgTagCount": 6,
+      "richTags": 6,
+      "poorTags": 0
+    },
+    "examples": {
+      "rich": [],
+      "poor": [
+        {
+          "name": "L.CAS.BAS.001",
+          "completionRate": 0,
+          "creatorDescription": "White Cropped Tee",
+          "tags": [
+            "medium-energy",
+            "contemporary",
+            "looks",
+            "fashion",
+            "style",
+            "outfit"
+          ]
+        },
+        {
+          "name": "L.CAS.REL.002",
+          "completionRate": 0,
+          "creatorDescription": "Olive Zip Hoodie",
+          "tags": [
+            "medium-energy",
+            "contemporary",
+            "looks",
+            "fashion",
+            "style",
+            "outfit"
+          ]
+        },
+        {
+          "name": "L.CAS.WEE.001",
+          "completionRate": 0,
+          "creatorDescription": "Coral Tie-Front T-Shirt",
+          "tags": [
+            "medium-energy",
+            "contemporary",
+            "looks",
+            "fashion",
+            "style",
+            "outfit"
+          ]
+        },
+        {
+          "name": "L.CAS.CHI.001",
+          "completionRate": 0,
+          "creatorDescription": "Black Iron Maiden Graphic Tee",
+          "tags": [
+            "medium-energy",
+            "contemporary",
+            "looks",
+            "fashion",
+            "style",
+            "outfit"
+          ]
+        },
+        {
+          "name": "L.CAS.COZ.001",
+          "completionRate": 0,
+          "creatorDescription": "Brown Balenciaga Logo Turtleneck",
+          "tags": [
+            "medium-energy",
+            "contemporary",
+            "looks",
+            "fashion",
+            "style",
+            "outfit"
+          ]
+        }
+      ]
+    }
+  }
+}

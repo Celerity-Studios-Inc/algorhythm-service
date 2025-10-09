@@ -1,0 +1,2435 @@
+{
+  "creator": {
+    "layer": "stars",
+    "totalAssets": 31,
+    "descriptionLengths": [
+      74,
+      66,
+      66,
+      33,
+      33,
+      41,
+      41,
+      15,
+      56,
+      58,
+      50,
+      55,
+      57,
+      55,
+      46,
+      51,
+      47,
+      54,
+      54,
+      46,
+      56,
+      60,
+      61,
+      53,
+      53,
+      52,
+      52,
+      27,
+      28,
+      30,
+      31
+    ],
+    "commonWords": {
+      "whole": 8,
+      "body": 8,
+      "shot": 4,
+      "short": 7,
+      "blonde": 7,
+      "haired": 16,
+      "variant": 19,
+      "young": 27,
+      "girl": 18,
+      "star": 27,
+      "gigi": 10,
+      "blue": 8,
+      "pink": 6,
+      "hair": 4,
+      "teen": 9,
+      "named": 17,
+      "justin": 4,
+      "multicolor": 2,
+      "hairstyle": 5,
+      "high": 2,
+      "michael": 5,
+      "style": 1
+    },
+    "descriptionPatterns": [],
+    "examples": [
+      {
+        "name": "S.GRL.YOU.022",
+        "friendlyName": "S.GRL.YOU.022",
+        "creatorDescription": "Whole body shot of the Short Blonde Haired Variant of Young Girl Star Gigi",
+        "description": "Whole body shot of the Short Blonde Haired Variant of Young Girl Star Gigi",
+        "tags": [
+          "gender-female",
+          "female-talent",
+          "female-performer",
+          "age-young_adult",
+          "hair-blonde",
+          "hair-style-short",
+          "hair-length-short",
+          "height-short",
+          "trendy",
+          "viral-potential"
+        ],
+        "starMetadata": {
+          "layerType": "stars",
+          "starName": "Gigi",
+          "gender": "Female",
+          "ageGroup": "young_adult",
+          "archetype": "",
+          "energy": "Medium",
+          "hairColor": "Blonde",
+          "hairStyle": "Short",
+          "hairLength": "Short",
+          "hairTexture": "1A (Straight, Fine)",
+          "hairTreatment": "",
+          "hairAccessories": "",
+          "eyeColor": "Brown",
+          "skinTone": "Medium",
+          "bodyType": "Curvy",
+          "ethnicity": "Other",
+          "makeupType": "",
+          "eyeMakeup": "",
+          "lipMakeup": "",
+          "faceMakeup": "",
+          "makeupEffects": "",
+          "colorPalette": "Neutral",
+          "personalityTraits": [],
+          "stylePreferences": [],
+          "careerStage": "Unknown",
+          "vibe": "",
+          "musicalStyle": [
+            "Pop"
+          ],
+          "_normalized": true,
+          "assetType": "base",
+          "energyLevel": "Medium",
+          "height": "Average",
+          "performanceContext": null,
+          "targetAudience": null,
+          "culturalContext": null,
+          "era": null,
+          "mood": null,
+          "variantName": "",
+          "richDescription": "Gigi is a young_adult Female with Blonde Short hair. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "comprehensiveTags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-young_adult",
+            "hair-blonde",
+            "hair-style-short",
+            "hair-length-short",
+            "height-short",
+            "trendy",
+            "viral-potential"
+          ],
+          "language": "English",
+          "realName": "",
+          "baseStarId": "",
+          "variantType": ""
+        },
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "S.GRL.YOU.021",
+        "friendlyName": "S.GRL.YOU.021",
+        "creatorDescription": "Whole body shot of the Blue Haired Variant of Young Girl Star Gigi",
+        "description": "Whole body shot of the Blue Haired Variant of Young Girl Star Gigi",
+        "tags": [
+          "gender-female",
+          "female-talent",
+          "female-performer",
+          "age-young_adult",
+          "hair-red",
+          "eye-color-blue",
+          "trendy",
+          "viral-potential"
+        ],
+        "starMetadata": {
+          "layerType": "stars",
+          "starName": "Gigi",
+          "gender": "Female",
+          "ageGroup": "young_adult",
+          "archetype": "",
+          "energy": "Medium",
+          "hairColor": "Blue",
+          "hairStyle": "Natural",
+          "hairLength": "Long",
+          "hairTexture": "1B (Straight, Medium)",
+          "hairTreatment": "",
+          "hairAccessories": "",
+          "eyeColor": "Blue",
+          "skinTone": "",
+          "bodyType": "Curvy",
+          "ethnicity": "Other",
+          "makeupType": "",
+          "eyeMakeup": "",
+          "lipMakeup": "",
+          "faceMakeup": "",
+          "makeupEffects": "",
+          "colorPalette": "Neutral",
+          "personalityTraits": [],
+          "stylePreferences": [],
+          "careerStage": "Unknown",
+          "vibe": "",
+          "musicalStyle": [
+            "Pop"
+          ],
+          "_normalized": true,
+          "assetType": "base",
+          "energyLevel": "Medium",
+          "height": "",
+          "performanceContext": null,
+          "targetAudience": null,
+          "culturalContext": null,
+          "era": null,
+          "mood": null,
+          "variantName": "",
+          "richDescription": "Gigi is a young_adult Female with Red hair and Blue eyes. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "comprehensiveTags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-young_adult",
+            "hair-red",
+            "eye-color-blue",
+            "trendy",
+            "viral-potential"
+          ],
+          "language": "English",
+          "realName": "",
+          "baseStarId": "",
+          "variantType": ""
+        },
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "S.GRL.YOU.020",
+        "friendlyName": "S.GRL.YOU.020",
+        "creatorDescription": "Whole body shot of the Pink Haired Variant of Young Girl Star Gigi",
+        "description": "Whole body shot of the Pink Haired Variant of Young Girl Star Gigi",
+        "tags": [
+          "gender-female",
+          "female-talent",
+          "female-performer",
+          "age-young_adult",
+          "hair-red",
+          "trendy",
+          "viral-potential"
+        ],
+        "starMetadata": {
+          "layerType": "stars",
+          "starName": "Gigi",
+          "gender": "Female",
+          "ageGroup": "young_adult",
+          "archetype": "",
+          "energy": "Medium",
+          "hairColor": "Pink",
+          "hairStyle": "Straight",
+          "hairLength": "Long",
+          "hairTexture": "1A (Straight, Fine)",
+          "hairTreatment": "",
+          "hairAccessories": "",
+          "eyeColor": "Brown",
+          "skinTone": "Medium",
+          "bodyType": "Curvy",
+          "ethnicity": "Other",
+          "makeupType": "",
+          "eyeMakeup": "",
+          "lipMakeup": "",
+          "faceMakeup": "",
+          "makeupEffects": "",
+          "colorPalette": "Neutral",
+          "personalityTraits": [],
+          "stylePreferences": [],
+          "careerStage": "Unknown",
+          "vibe": "",
+          "musicalStyle": [
+            "Pop"
+          ],
+          "_normalized": true,
+          "assetType": "base",
+          "energyLevel": "Medium",
+          "height": "",
+          "performanceContext": null,
+          "targetAudience": null,
+          "culturalContext": null,
+          "era": null,
+          "mood": null,
+          "variantName": "",
+          "richDescription": "Gigi is a young_adult Female with Red hair. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "comprehensiveTags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-young_adult",
+            "hair-red",
+            "trendy",
+            "viral-potential"
+          ],
+          "language": "English",
+          "realName": "",
+          "baseStarId": "",
+          "variantType": ""
+        },
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "S.GRL.YOU.019",
+        "friendlyName": "S.GRL.YOU.019",
+        "creatorDescription": "Pia Whole Body, Pink Hair Variant",
+        "description": "Pia Whole Body, Pink Hair Variant",
+        "tags": [
+          "hair-pink",
+          "trendy",
+          "viral-potential"
+        ],
+        "starMetadata": {
+          "energy": "Medium",
+          "_normalized": true,
+          "assetType": "variant",
+          "baseStarId": "S.GRL.YOU.015",
+          "tags": [
+            "hair-pink",
+            "trendy",
+            "viral-potential"
+          ]
+        },
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "S.GRL.YOU.018",
+        "friendlyName": "S.GRL.YOU.018",
+        "creatorDescription": "Pia Whole Body, Blue Hair Variant",
+        "description": "Pia Whole Body, Blue Hair Variant",
+        "tags": [
+          "hair-blue",
+          "eye-color-blue",
+          "trendy",
+          "viral-potential"
+        ],
+        "starMetadata": {
+          "energy": "Medium",
+          "_normalized": true,
+          "assetType": "variant",
+          "baseStarId": "S.GRL.YOU.015",
+          "tags": [
+            "hair-blue",
+            "eye-color-blue",
+            "trendy",
+            "viral-potential"
+          ]
+        },
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "S.GRL.YOU.017",
+        "friendlyName": "S.GRL.YOU.017",
+        "creatorDescription": "Pia Whole Body, Short Blonde Hair Variant",
+        "description": "Pia Whole Body, Short Blonde Hair Variant",
+        "tags": [
+          "hair-blonde",
+          "hair-style-short",
+          "hair-length-short",
+          "height-short",
+          "trendy",
+          "viral-potential"
+        ],
+        "starMetadata": {
+          "energy": "Medium",
+          "_normalized": true,
+          "assetType": "variant",
+          "baseStarId": "S.GRL.YOU.015",
+          "tags": [
+            "hair-blonde",
+            "hair-style-short",
+            "hair-length-short",
+            "height-short",
+            "trendy",
+            "viral-potential"
+          ]
+        },
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "S.GRL.YOU.016",
+        "friendlyName": "S.GRL.YOU.016",
+        "creatorDescription": "Whole body shot of a Young Girl Star Gigi",
+        "description": "Whole body shot of a Young Girl Star Gigi",
+        "tags": [
+          "gender-female",
+          "female-talent",
+          "female-performer",
+          "age-young_adult",
+          "trendy",
+          "viral-potential"
+        ],
+        "starMetadata": {
+          "layerType": "stars",
+          "starName": "Gigi",
+          "gender": "Female",
+          "ageGroup": "young_adult",
+          "archetype": "",
+          "energy": "Medium",
+          "hairColor": "Medium Brown",
+          "hairStyle": "Natural",
+          "hairLength": "Long",
+          "hairTexture": "1B (Straight, Medium)",
+          "hairTreatment": "",
+          "hairAccessories": "",
+          "eyeColor": "Brown",
+          "skinTone": "Medium",
+          "bodyType": "Curvy",
+          "ethnicity": "Other",
+          "makeupType": "",
+          "eyeMakeup": "",
+          "lipMakeup": "",
+          "faceMakeup": "",
+          "makeupEffects": "",
+          "colorPalette": "Neutral",
+          "personalityTraits": [],
+          "stylePreferences": [],
+          "careerStage": "Unknown",
+          "vibe": "",
+          "musicalStyle": [
+            "Pop"
+          ],
+          "_normalized": true,
+          "assetType": "base",
+          "energyLevel": "Medium",
+          "height": "",
+          "performanceContext": null,
+          "targetAudience": null,
+          "culturalContext": null,
+          "era": null,
+          "mood": null,
+          "variantName": "",
+          "richDescription": "Gigi is a young_adult Female. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "comprehensiveTags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-young_adult",
+            "trendy",
+            "viral-potential"
+          ],
+          "language": "English",
+          "realName": "",
+          "baseStarId": "",
+          "variantType": ""
+        },
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "S.GRL.YOU.015",
+        "friendlyName": "S.GRL.YOU.015",
+        "creatorDescription": "Pia Whole Body ",
+        "description": "Pia Whole Body",
+        "tags": [
+          "trendy",
+          "viral-potential"
+        ],
+        "starMetadata": {
+          "energy": "Medium",
+          "_normalized": true,
+          "assetType": "base"
+        },
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "S.TEN.YOU.009",
+        "friendlyName": "S.TEN.YOU.009",
+        "creatorDescription": "A Young Teen Star named Justin in a Multicolor hairstyle",
+        "description": "A Young Teen Star named Justin in a Multicolor hairstyle",
+        "tags": [
+          "age-teen",
+          "hair-other",
+          "trendy",
+          "viral-potential"
+        ],
+        "starMetadata": {
+          "energy": "Medium",
+          "_normalized": true,
+          "assetType": "variant",
+          "baseStarId": "S.TEN.YOU.002",
+          "layerType": "stars",
+          "starName": "Justin",
+          "gender": "Male",
+          "ethnicity": "Other",
+          "careerStage": "Unknown",
+          "musicalStyle": [
+            "Pop"
+          ],
+          "energyLevel": "Medium",
+          "richDescription": "named is. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "comprehensiveTags": [
+            "age-teen",
+            "trendy",
+            "viral-potential"
+          ],
+          "language": "English",
+          "tags": [
+            "age-teen",
+            "hair-other",
+            "trendy",
+            "viral-potential"
+          ]
+        },
+        "performanceContext": [],
+        "musicalStyle": [
+          "Pop"
+        ]
+      },
+      {
+        "name": "S.TEN.YOU.008",
+        "friendlyName": "S.TEN.YOU.008",
+        "creatorDescription": "A Young Teen Star named Justin in a High Man Bun hairstyle",
+        "description": "A Young Teen Star named Justin in a High Man Bun hairstyle",
+        "tags": [
+          "gender-male",
+          "male-talent",
+          "male-performer",
+          "age-teen",
+          "hair-style-bun",
+          "trendy",
+          "viral-potential"
+        ],
+        "starMetadata": {
+          "energy": "Medium",
+          "_normalized": true,
+          "assetType": "variant",
+          "baseStarId": "S.TEN.YOU.002",
+          "layerType": "stars",
+          "starName": "Justin",
+          "gender": "Male",
+          "ethnicity": "Other",
+          "careerStage": "Unknown",
+          "musicalStyle": [
+            "Pop"
+          ],
+          "energyLevel": "Medium",
+          "richDescription": "named is. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "comprehensiveTags": [
+            "age-teen",
+            "trendy",
+            "viral-potential"
+          ],
+          "language": "English",
+          "tags": [
+            "gender-male",
+            "male-talent",
+            "male-performer",
+            "age-teen",
+            "hair-style-bun",
+            "trendy",
+            "viral-potential"
+          ]
+        },
+        "performanceContext": [],
+        "musicalStyle": [
+          "Pop"
+        ]
+      },
+      {
+        "name": "S.TEN.YOU.007",
+        "friendlyName": "S.TEN.YOU.007",
+        "creatorDescription": "A Young Teen Star named Justin in a Blue Hairstyle",
+        "description": "A Young Teen Star named Justin in a Blue Hairstyle",
+        "tags": [
+          "age-teen",
+          "hair-blue",
+          "eye-color-blue",
+          "trendy",
+          "viral-potential"
+        ],
+        "starMetadata": {
+          "energy": "Medium",
+          "_normalized": true,
+          "assetType": "variant",
+          "baseStarId": "S.TEN.YOU.002",
+          "layerType": "stars",
+          "starName": "Justin",
+          "gender": "Male",
+          "ethnicity": "Other",
+          "careerStage": "Unknown",
+          "musicalStyle": [
+            "Pop"
+          ],
+          "energyLevel": "Medium",
+          "richDescription": "named is. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "comprehensiveTags": [
+            "age-teen",
+            "trendy",
+            "viral-potential"
+          ],
+          "language": "English",
+          "tags": [
+            "age-teen",
+            "hair-blue",
+            "eye-color-blue",
+            "trendy",
+            "viral-potential"
+          ]
+        },
+        "performanceContext": [],
+        "musicalStyle": [
+          "Pop"
+        ]
+      },
+      {
+        "name": "S.GRL.YOU.014",
+        "friendlyName": "S.GRL.YOU.014",
+        "creatorDescription": "A Short Blonde Haired Variant of a Young Girl Star Gigi",
+        "description": "A Short Blonde Haired Variant of a Young Girl Star Gigi",
+        "tags": [
+          "gender-female",
+          "female-talent",
+          "female-performer",
+          "age-young_adult",
+          "hair-blonde",
+          "hair-style-short",
+          "hair-length-short",
+          "height-short",
+          "trendy",
+          "viral-potential"
+        ],
+        "starMetadata": {
+          "layerType": "stars",
+          "starName": "Gigi",
+          "gender": "Female",
+          "ageGroup": "young_adult",
+          "archetype": "",
+          "energy": "Medium",
+          "hairColor": "Blonde",
+          "hairStyle": "Short",
+          "hairLength": "Short",
+          "hairTexture": "1A (Straight, Fine)",
+          "hairTreatment": "",
+          "hairAccessories": "",
+          "eyeColor": "Brown",
+          "skinTone": "Medium",
+          "bodyType": "Curvy",
+          "ethnicity": "Other",
+          "makeupType": "",
+          "eyeMakeup": "",
+          "lipMakeup": "",
+          "faceMakeup": "",
+          "makeupEffects": "",
+          "colorPalette": "Neutral",
+          "personalityTraits": [],
+          "stylePreferences": [],
+          "careerStage": "Unknown",
+          "vibe": "",
+          "musicalStyle": [
+            "Pop",
+            "R&B"
+          ],
+          "_normalized": true,
+          "assetType": "variant",
+          "baseStarId": "S.GRL.YOU.001",
+          "energyLevel": "Medium",
+          "richDescription": "named is a young_adult Female. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "comprehensiveTags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-young_adult",
+            "trendy",
+            "viral-potential"
+          ],
+          "language": "English",
+          "tags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-young_adult",
+            "hair-blonde",
+            "hair-style-short",
+            "hair-length-short",
+            "height-short",
+            "trendy",
+            "viral-potential"
+          ],
+          "height": "Average",
+          "performanceContext": null,
+          "targetAudience": null,
+          "culturalContext": null,
+          "era": null,
+          "mood": null,
+          "variantName": "",
+          "realName": "",
+          "variantType": ""
+        },
+        "performanceContext": [],
+        "musicalStyle": [
+          "Pop"
+        ]
+      },
+      {
+        "name": "S.TEN.YOU.006",
+        "friendlyName": "S.TEN.YOU.006",
+        "creatorDescription": "A Young Teen Star named Michael in a Multicolor hairstyle",
+        "description": "A Young Teen Star named Michael in a Multicolor hairstyle",
+        "tags": [
+          "age-teen",
+          "hair-other",
+          "trendy",
+          "viral-potential"
+        ],
+        "starMetadata": {
+          "energy": "Medium",
+          "_normalized": true,
+          "assetType": "variant",
+          "baseStarId": "S.TEN.YOU.001",
+          "layerType": "stars",
+          "starName": "Michael",
+          "gender": "Male",
+          "archetype": "Emerging",
+          "ethnicity": "Caucasian",
+          "careerStage": "New",
+          "vibe": "Calm",
+          "musicalStyle": [
+            "Pop"
+          ],
+          "energyLevel": "Medium",
+          "richDescription": "named is. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "comprehensiveTags": [
+            "age-teen",
+            "trendy",
+            "viral-potential"
+          ],
+          "language": "English",
+          "tags": [
+            "age-teen",
+            "hair-other",
+            "trendy",
+            "viral-potential"
+          ]
+        },
+        "performanceContext": [],
+        "musicalStyle": [
+          "Pop"
+        ]
+      },
+      {
+        "name": "S.TEN.YOU.005",
+        "friendlyName": "S.TEN.YOU.005",
+        "creatorDescription": "A Young Teen Star named Michael in a High Bun hairstyle",
+        "description": "A Young Teen Star named Michael in a High Bun hairstyle",
+        "tags": [
+          "age-teen",
+          "hair-style-bun",
+          "trendy",
+          "viral-potential"
+        ],
+        "starMetadata": {
+          "energy": "Medium",
+          "_normalized": true,
+          "assetType": "variant",
+          "baseStarId": "S.TEN.YOU.001",
+          "layerType": "stars",
+          "starName": "Michael",
+          "gender": "Male",
+          "archetype": "Emerging",
+          "ethnicity": "Caucasian",
+          "careerStage": "New",
+          "vibe": "Calm",
+          "musicalStyle": [
+            "Pop"
+          ],
+          "energyLevel": "Medium",
+          "richDescription": "named is. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "comprehensiveTags": [
+            "age-teen",
+            "trendy",
+            "viral-potential"
+          ],
+          "language": "English",
+          "tags": [
+            "age-teen",
+            "hair-style-bun",
+            "trendy",
+            "viral-potential"
+          ]
+        },
+        "performanceContext": [],
+        "musicalStyle": [
+          "Pop"
+        ]
+      },
+      {
+        "name": "S.GRL.YOU.013",
+        "friendlyName": "S.GRL.YOU.013",
+        "creatorDescription": "A Pink Haired Variant of a Young Girl Star Pia",
+        "description": "A Pink Haired Variant of a Young Girl Star Pia",
+        "tags": [
+          "gender-female",
+          "female-talent",
+          "female-performer",
+          "age-young_adult",
+          "hair-red",
+          "trendy",
+          "viral-potential"
+        ],
+        "starMetadata": {
+          "layerType": "stars",
+          "starName": "Gigi",
+          "gender": "Female",
+          "ageGroup": "young_adult",
+          "archetype": "",
+          "energy": "Medium",
+          "hairColor": "Pink",
+          "hairStyle": "Straight",
+          "hairLength": "Long",
+          "hairTexture": "1B (Straight, Medium)",
+          "hairTreatment": "",
+          "hairAccessories": "",
+          "eyeColor": "Brown",
+          "skinTone": "Medium",
+          "bodyType": "Curvy",
+          "ethnicity": "Other",
+          "makeupType": "",
+          "eyeMakeup": "",
+          "lipMakeup": "",
+          "faceMakeup": "",
+          "makeupEffects": "",
+          "colorPalette": "Neutral",
+          "personalityTraits": [],
+          "stylePreferences": [],
+          "careerStage": "Unknown",
+          "vibe": "",
+          "musicalStyle": [
+            "Pop",
+            "Electronic"
+          ],
+          "_normalized": true,
+          "assetType": "variant",
+          "baseStarId": "S.GRL.YOU.001",
+          "energyLevel": "Medium",
+          "richDescription": "named is a young_adult Female. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "comprehensiveTags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-young_adult",
+            "trendy",
+            "viral-potential"
+          ],
+          "language": "English",
+          "tags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-young_adult",
+            "hair-red",
+            "trendy",
+            "viral-potential"
+          ],
+          "height": "",
+          "performanceContext": null,
+          "targetAudience": null,
+          "culturalContext": null,
+          "era": null,
+          "mood": null,
+          "variantName": "",
+          "realName": "",
+          "variantType": ""
+        },
+        "performanceContext": [],
+        "musicalStyle": [
+          "Pop"
+        ]
+      },
+      {
+        "name": "S.TEN.YOU.004",
+        "friendlyName": "S.TEN.YOU.004",
+        "creatorDescription": "A Young Teen Star named Michael in Blue Hair style.",
+        "description": "A Young Teen Star named Michael in Blue Hair style.",
+        "tags": [
+          "age-teen",
+          "hair-blue",
+          "eye-color-blue",
+          "trendy",
+          "viral-potential"
+        ],
+        "starMetadata": {
+          "energy": "Medium",
+          "_normalized": true,
+          "assetType": "variant",
+          "baseStarId": "S.TEN.YOU.001",
+          "layerType": "stars",
+          "starName": "Michael",
+          "gender": "Male",
+          "archetype": "Emerging",
+          "ethnicity": "Caucasian",
+          "careerStage": "New",
+          "vibe": "Calm",
+          "musicalStyle": [
+            "Pop"
+          ],
+          "energyLevel": "Medium",
+          "richDescription": "named is. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "comprehensiveTags": [
+            "age-teen",
+            "trendy",
+            "viral-potential"
+          ],
+          "language": "English",
+          "tags": [
+            "age-teen",
+            "hair-blue",
+            "eye-color-blue",
+            "trendy",
+            "viral-potential"
+          ]
+        },
+        "performanceContext": [],
+        "musicalStyle": [
+          "Pop"
+        ]
+      },
+      {
+        "name": "S.GRL.YOU.012",
+        "friendlyName": "S.GRL.YOU.012",
+        "creatorDescription": "A Blue Haired Variant of a Young Girl Star Gigi",
+        "description": "A Blue Haired Variant of a Young Girl Star Gigi",
+        "tags": [
+          "gender-female",
+          "female-talent",
+          "female-performer",
+          "age-young_adult",
+          "hair-red",
+          "eye-color-blue",
+          "trendy",
+          "viral-potential"
+        ],
+        "starMetadata": {
+          "layerType": "stars",
+          "starName": "Gigi",
+          "gender": "Female",
+          "ageGroup": "young_adult",
+          "archetype": "",
+          "energy": "Medium",
+          "hairColor": "Blue",
+          "hairStyle": "Natural",
+          "hairLength": "Long",
+          "hairTexture": "1B (Straight, Medium)",
+          "hairTreatment": "",
+          "hairAccessories": "",
+          "eyeColor": "Brown",
+          "skinTone": "Medium",
+          "bodyType": "Curvy",
+          "ethnicity": "Other",
+          "makeupType": "",
+          "eyeMakeup": "",
+          "lipMakeup": "",
+          "faceMakeup": "",
+          "makeupEffects": "",
+          "colorPalette": "Neutral",
+          "personalityTraits": [],
+          "stylePreferences": [],
+          "careerStage": "Unknown",
+          "vibe": "",
+          "musicalStyle": [
+            "Pop"
+          ],
+          "_normalized": true,
+          "assetType": "variant",
+          "baseStarId": "S.GRL.YOU.001",
+          "energyLevel": "Medium",
+          "richDescription": "named is a young_adult Female. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "comprehensiveTags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-young_adult",
+            "trendy",
+            "viral-potential"
+          ],
+          "language": "English",
+          "tags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-young_adult",
+            "hair-red",
+            "eye-color-blue",
+            "trendy",
+            "viral-potential"
+          ],
+          "height": "",
+          "performanceContext": null,
+          "targetAudience": null,
+          "culturalContext": null,
+          "era": null,
+          "mood": null,
+          "variantName": "",
+          "realName": "",
+          "variantType": ""
+        },
+        "performanceContext": [],
+        "musicalStyle": [
+          "Pop"
+        ]
+      },
+      {
+        "name": "S.GRL.YOU.011",
+        "friendlyName": "S.GRL.YOU.011",
+        "creatorDescription": "A Short Blonde Haired Variant of a Young Girl Star Pia",
+        "description": "A Short Blonde Haired Variant of a Young Girl Star Pia",
+        "tags": [
+          "gender-female",
+          "female-talent",
+          "female-performer",
+          "age-young_adult",
+          "hair-blonde",
+          "hair-style-short",
+          "hair-length-short",
+          "height-short",
+          "trendy",
+          "viral-potential"
+        ],
+        "starMetadata": {
+          "layerType": "stars",
+          "starName": "Pia",
+          "gender": "Female",
+          "ageGroup": "young_adult",
+          "archetype": "",
+          "energy": "Medium",
+          "hairColor": "Blonde",
+          "hairStyle": "Short",
+          "hairLength": "Short",
+          "hairTexture": "",
+          "hairTreatment": "",
+          "hairAccessories": "",
+          "eyeColor": "",
+          "skinTone": "",
+          "bodyType": "Curvy",
+          "ethnicity": "Other",
+          "makeupType": "",
+          "eyeMakeup": "",
+          "lipMakeup": "",
+          "faceMakeup": "",
+          "makeupEffects": "",
+          "colorPalette": "Neutral",
+          "personalityTraits": [],
+          "stylePreferences": [],
+          "careerStage": "Unknown",
+          "vibe": "",
+          "musicalStyle": [
+            "Pop",
+            "Hip-Hop"
+          ],
+          "_normalized": true,
+          "assetType": "variant",
+          "baseStarId": "S.GRL.YOU.002",
+          "energyLevel": "Medium",
+          "richDescription": "named is a young_adult Female. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "comprehensiveTags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-young_adult",
+            "trendy",
+            "viral-potential"
+          ],
+          "language": "English",
+          "tags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-young_adult",
+            "hair-blonde",
+            "hair-style-short",
+            "hair-length-short",
+            "height-short",
+            "trendy",
+            "viral-potential"
+          ],
+          "height": "Short",
+          "performanceContext": null,
+          "targetAudience": null,
+          "culturalContext": null,
+          "era": null,
+          "mood": null,
+          "variantName": "",
+          "realName": "",
+          "variantType": ""
+        },
+        "performanceContext": [],
+        "musicalStyle": [
+          "Pop",
+          "Hip-Hop"
+        ]
+      },
+      {
+        "name": "S.GRL.YOU.010",
+        "friendlyName": "S.GRL.YOU.010",
+        "creatorDescription": "A Short Blonde Haired Variant of a Young Girl Star Pia",
+        "description": "A Short Blonde Haired Variant of a Young Girl Star Pia",
+        "tags": [
+          "gender-female",
+          "female-talent",
+          "female-performer",
+          "age-young_adult",
+          "hair-blonde",
+          "hair-style-short",
+          "hair-length-short",
+          "height-short",
+          "trendy",
+          "viral-potential"
+        ],
+        "starMetadata": {
+          "energy": "Medium",
+          "_normalized": true,
+          "assetType": "base"
+        },
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "S.GRL.YOU.009",
+        "friendlyName": "S.GRL.YOU.009",
+        "creatorDescription": "A Pink Haired Variant of a Young Girl Star Pia",
+        "description": "A Pink Haired Variant of a Young Girl Star Pia",
+        "tags": [
+          "gender-female",
+          "female-talent",
+          "female-performer",
+          "age-young_adult",
+          "hair-red",
+          "trendy",
+          "viral-potential"
+        ],
+        "starMetadata": {
+          "energy": "Medium",
+          "_normalized": true,
+          "assetType": "variant",
+          "baseStarId": "S.GRL.YOU.002",
+          "layerType": "stars",
+          "starName": "Pia",
+          "gender": "Female",
+          "ethnicity": "Other",
+          "careerStage": "Unknown",
+          "musicalStyle": [
+            "Pop",
+            "Hip-Hop"
+          ],
+          "energyLevel": "Medium",
+          "richDescription": "named is a young_adult Female. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "comprehensiveTags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-young_adult",
+            "trendy",
+            "viral-potential"
+          ],
+          "language": "English",
+          "tags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-young_adult",
+            "hair-red",
+            "trendy",
+            "viral-potential"
+          ]
+        },
+        "performanceContext": [],
+        "musicalStyle": [
+          "Pop",
+          "Hip-Hop"
+        ]
+      },
+      {
+        "name": "S.TEN.YOU.003",
+        "friendlyName": "S.TEN.YOU.003",
+        "creatorDescription": "A Blue Haired Variant of a Young Teen Star named Michael",
+        "description": "A Blue Haired Variant of a Young Teen Star named Michael",
+        "tags": [
+          "age-teen",
+          "hair-red",
+          "eye-color-blue",
+          "trendy",
+          "viral-potential"
+        ],
+        "starMetadata": {
+          "layerType": "stars",
+          "starName": "Michael",
+          "gender": "Male",
+          "ageGroup": "teen",
+          "archetype": "",
+          "energy": "Medium",
+          "hairColor": "Blue",
+          "hairStyle": "Wavy",
+          "hairLength": "Short",
+          "hairTexture": "2B (Wavy, Medium)",
+          "hairTreatment": "",
+          "hairAccessories": "",
+          "eyeColor": "Brown",
+          "skinTone": "Light",
+          "bodyType": "",
+          "ethnicity": "Other",
+          "makeupType": "",
+          "eyeMakeup": "",
+          "lipMakeup": "",
+          "faceMakeup": "",
+          "makeupEffects": "",
+          "colorPalette": "Neutral",
+          "personalityTraits": [],
+          "stylePreferences": [],
+          "careerStage": "Unknown",
+          "vibe": "",
+          "musicalStyle": [
+            "Pop",
+            "Hip-Hop"
+          ],
+          "_normalized": true,
+          "assetType": "base",
+          "energyLevel": "Medium",
+          "height": "",
+          "performanceContext": null,
+          "targetAudience": null,
+          "culturalContext": null,
+          "era": null,
+          "mood": null,
+          "variantName": "",
+          "richDescription": "named is with Red hair and Blue eyes. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "comprehensiveTags": [
+            "age-teen",
+            "hair-red",
+            "eye-color-blue",
+            "trendy",
+            "viral-potential"
+          ],
+          "language": "English",
+          "realName": "",
+          "baseStarId": "",
+          "variantType": ""
+        },
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "S.GRL.YOU.008",
+        "friendlyName": "S.GRL.YOU.008",
+        "creatorDescription": "A Short Blonde Haired Variant of a Young Girl Star named Pia",
+        "description": "A Short Blonde Haired Variant of a Young Girl Star named Pia",
+        "tags": [
+          "gender-female",
+          "female-talent",
+          "female-performer",
+          "age-young_adult",
+          "hair-blonde",
+          "hair-style-short",
+          "hair-length-short",
+          "height-short",
+          "trendy",
+          "viral-potential"
+        ],
+        "starMetadata": {
+          "layerType": "stars",
+          "starName": "Pia",
+          "gender": "Female",
+          "ageGroup": "young_adult",
+          "archetype": "",
+          "energy": "Medium",
+          "hairColor": "Blonde",
+          "hairStyle": "Short",
+          "hairLength": "Short",
+          "hairTexture": "1A (Straight, Fine)",
+          "hairTreatment": "",
+          "hairAccessories": "",
+          "eyeColor": "Brown",
+          "skinTone": "Medium",
+          "bodyType": "Curvy",
+          "ethnicity": "Other",
+          "makeupType": "",
+          "eyeMakeup": "",
+          "lipMakeup": "",
+          "faceMakeup": "",
+          "makeupEffects": "",
+          "colorPalette": "Neutral",
+          "personalityTraits": [],
+          "stylePreferences": [],
+          "careerStage": "Unknown",
+          "vibe": "",
+          "musicalStyle": [
+            "Pop",
+            "R&B"
+          ],
+          "_normalized": true,
+          "assetType": "base",
+          "energyLevel": "Medium",
+          "height": "Average",
+          "performanceContext": null,
+          "targetAudience": null,
+          "culturalContext": null,
+          "era": null,
+          "mood": null,
+          "variantName": "",
+          "richDescription": "named is a young_adult Female with Blonde Short hair. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "comprehensiveTags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-young_adult",
+            "hair-blonde",
+            "hair-style-short",
+            "hair-length-short",
+            "height-short",
+            "trendy",
+            "viral-potential"
+          ],
+          "language": "English",
+          "realName": "",
+          "baseStarId": "",
+          "variantType": ""
+        },
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "S.GRL.YOU.007",
+        "friendlyName": "S.GRL.YOU.007",
+        "creatorDescription": "A Short Blonde Haired Variant of a Young Girl Star named Gigi",
+        "description": "A Short Blonde Haired Variant of a Young Girl Star named Gigi",
+        "tags": [
+          "gender-female",
+          "female-talent",
+          "female-performer",
+          "age-young_adult",
+          "hair-blonde",
+          "hair-style-short",
+          "hair-length-short",
+          "height-short",
+          "trendy",
+          "viral-potential"
+        ],
+        "starMetadata": {
+          "layerType": "stars",
+          "starName": "Gigi",
+          "gender": "Female",
+          "ageGroup": "young_adult",
+          "archetype": "",
+          "energy": "Medium",
+          "hairColor": "Blonde",
+          "hairStyle": "Short",
+          "hairLength": "Short",
+          "hairTexture": "1A (Straight, Fine)",
+          "hairTreatment": "",
+          "hairAccessories": "",
+          "eyeColor": "Brown",
+          "skinTone": "Medium",
+          "bodyType": "Curvy",
+          "ethnicity": "Other",
+          "makeupType": "",
+          "eyeMakeup": "",
+          "lipMakeup": "",
+          "faceMakeup": "",
+          "makeupEffects": "",
+          "colorPalette": "Neutral",
+          "personalityTraits": [],
+          "stylePreferences": [],
+          "careerStage": "Unknown",
+          "vibe": "",
+          "musicalStyle": [
+            "Pop",
+            "R&B"
+          ],
+          "_normalized": true,
+          "assetType": "base",
+          "energyLevel": "Medium",
+          "height": "Average",
+          "performanceContext": null,
+          "targetAudience": null,
+          "culturalContext": null,
+          "era": null,
+          "mood": null,
+          "variantName": "",
+          "richDescription": "named is a young_adult Female with Blonde Short hair. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "comprehensiveTags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-young_adult",
+            "hair-blonde",
+            "hair-style-short",
+            "hair-length-short",
+            "height-short",
+            "trendy",
+            "viral-potential"
+          ],
+          "language": "English",
+          "realName": "",
+          "baseStarId": "",
+          "variantType": ""
+        },
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "S.GRL.YOU.006",
+        "friendlyName": "S.GRL.YOU.006",
+        "creatorDescription": "A Blue Haired Variant of a Young Girl Star named Gigi",
+        "description": "A Blue Haired Variant of a Young Girl Star named Gigi",
+        "tags": [
+          "gender-female",
+          "female-talent",
+          "female-performer",
+          "age-young_adult",
+          "hair-red",
+          "eye-color-blue",
+          "trendy",
+          "viral-potential"
+        ],
+        "starMetadata": {
+          "starName": "Gigi",
+          "archetype": "",
+          "energyLevel": "Medium",
+          "gender": "Female",
+          "ageGroup": "young_adult",
+          "ethnicity": "Other",
+          "skinTone": "Medium",
+          "bodyType": "Curvy",
+          "height": "",
+          "vibe": "",
+          "hairColor": "Blue",
+          "hairLength": "Long",
+          "hairStyle": "Natural",
+          "hairTexture": "1B (Straight, Medium)",
+          "hairTreatment": "",
+          "hairAccessories": "",
+          "eyeColor": "Brown",
+          "makeupType": "",
+          "eyeMakeup": "",
+          "lipMakeup": "",
+          "faceMakeup": "",
+          "makeupEffects": "",
+          "colorPalette": "Neutral",
+          "performanceContext": null,
+          "musicalStyle": [
+            "Pop",
+            "Electronic"
+          ],
+          "energy": "Medium",
+          "personalityTraits": [],
+          "stylePreferences": [],
+          "targetAudience": null,
+          "culturalContext": null,
+          "era": null,
+          "mood": null,
+          "variantName": "",
+          "assetType": "base",
+          "layerType": "stars",
+          "richDescription": "named is a young_adult Female with Red hair and Blue eyes. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "comprehensiveTags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-young_adult",
+            "hair-red",
+            "eye-color-blue",
+            "trendy",
+            "viral-potential"
+          ],
+          "language": "English",
+          "careerStage": "Unknown",
+          "_normalized": true,
+          "realName": "",
+          "baseStarId": "",
+          "variantType": ""
+        },
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "S.GRL.YOU.005",
+        "friendlyName": "S.GRL.YOU.005",
+        "creatorDescription": "A Pink Haired Variant of a Young Girl Star named Gigi",
+        "description": "A Pink Haired Variant of a Young Girl Star named Gigi",
+        "tags": [
+          "gender-female",
+          "female-talent",
+          "female-performer",
+          "age-young_adult",
+          "hair-red",
+          "trendy",
+          "viral-potential"
+        ],
+        "starMetadata": {
+          "layerType": "stars",
+          "starName": "Gigi",
+          "gender": "Female",
+          "ageGroup": "young_adult",
+          "archetype": "",
+          "energy": "Medium",
+          "hairColor": "Pink",
+          "hairStyle": "Straight",
+          "hairLength": "Long",
+          "hairTexture": "1B (Straight, Medium)",
+          "hairTreatment": "",
+          "hairAccessories": "",
+          "eyeColor": "Brown",
+          "skinTone": "Medium",
+          "bodyType": "Curvy",
+          "ethnicity": "Other",
+          "makeupType": "",
+          "eyeMakeup": "",
+          "lipMakeup": "",
+          "faceMakeup": "",
+          "makeupEffects": "",
+          "colorPalette": "Neutral",
+          "personalityTraits": [],
+          "stylePreferences": [],
+          "careerStage": "Unknown",
+          "vibe": "",
+          "musicalStyle": [
+            "Pop",
+            "Electronic"
+          ],
+          "_normalized": true,
+          "assetType": "base",
+          "energyLevel": "Medium",
+          "height": "",
+          "performanceContext": null,
+          "targetAudience": null,
+          "culturalContext": null,
+          "era": null,
+          "mood": null,
+          "variantName": "",
+          "richDescription": "named is a young_adult Female with Red hair. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "comprehensiveTags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-young_adult",
+            "hair-red",
+            "trendy",
+            "viral-potential"
+          ],
+          "language": "English",
+          "realName": "",
+          "baseStarId": "",
+          "variantType": ""
+        },
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "S.GRL.YOU.004",
+        "friendlyName": "S.GRL.YOU.004",
+        "creatorDescription": "A Pink Haired Variant of a Young Girl Star named Pia",
+        "description": "A Pink Haired Variant of a Young Girl Star named Pia",
+        "tags": [
+          "gender-female",
+          "female-talent",
+          "female-performer",
+          "age-young_adult",
+          "hair-red",
+          "trendy",
+          "viral-potential"
+        ],
+        "starMetadata": {
+          "starName": "Pia",
+          "archetype": "",
+          "energyLevel": "Medium",
+          "gender": "Female",
+          "ageGroup": "young_adult",
+          "ethnicity": "Other",
+          "skinTone": "Medium",
+          "bodyType": "Curvy",
+          "height": "",
+          "vibe": "",
+          "hairColor": "Pink",
+          "hairLength": "Long",
+          "hairStyle": "Wavy",
+          "hairTexture": "2B (Wavy, Medium)",
+          "hairTreatment": "",
+          "hairAccessories": "",
+          "eyeColor": "Brown",
+          "makeupType": "",
+          "eyeMakeup": "",
+          "lipMakeup": "",
+          "faceMakeup": "",
+          "makeupEffects": "",
+          "colorPalette": "Neutral",
+          "performanceContext": null,
+          "musicalStyle": [
+            "Pop",
+            "Hip-Hop"
+          ],
+          "energy": "Medium",
+          "personalityTraits": [],
+          "stylePreferences": [],
+          "targetAudience": null,
+          "culturalContext": null,
+          "era": null,
+          "mood": null,
+          "variantName": "",
+          "assetType": "base",
+          "layerType": "stars",
+          "richDescription": "named is a young_adult Female with Red hair. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "comprehensiveTags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-young_adult",
+            "hair-red",
+            "trendy",
+            "viral-potential"
+          ],
+          "language": "English",
+          "careerStage": "Unknown",
+          "_normalized": true,
+          "realName": "",
+          "baseStarId": "",
+          "variantType": ""
+        },
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "S.GRL.YOU.003",
+        "friendlyName": "S.GRL.YOU.003",
+        "creatorDescription": "A Blue Haired Variant of a Young Girl Star named Pia",
+        "description": "A Blue Haired Variant of a Young Girl Star named Pia",
+        "tags": [
+          "gender-female",
+          "female-talent",
+          "female-performer",
+          "age-young_adult",
+          "hair-red",
+          "eye-color-blue",
+          "trendy",
+          "viral-potential"
+        ],
+        "starMetadata": {
+          "layerType": "stars",
+          "starName": "Pia",
+          "gender": "Female",
+          "ageGroup": "young_adult",
+          "archetype": "",
+          "energy": "Medium",
+          "hairColor": "Blue",
+          "hairStyle": "Wavy",
+          "hairLength": "",
+          "hairTexture": "2B (Wavy, Medium)",
+          "hairTreatment": "",
+          "hairAccessories": "",
+          "eyeColor": "Brown",
+          "skinTone": "Medium",
+          "bodyType": "Curvy",
+          "ethnicity": "Other",
+          "makeupType": "",
+          "eyeMakeup": "",
+          "lipMakeup": "",
+          "faceMakeup": "",
+          "makeupEffects": "",
+          "colorPalette": "Neutral",
+          "personalityTraits": [],
+          "stylePreferences": [],
+          "careerStage": "Unknown",
+          "vibe": "",
+          "musicalStyle": [
+            "Pop",
+            "Hip-Hop"
+          ],
+          "_normalized": true,
+          "assetType": "variant",
+          "baseStarId": "S.GRL.YOU.002",
+          "energyLevel": "Medium",
+          "richDescription": "named is a young_adult Female. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "comprehensiveTags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-young_adult",
+            "trendy",
+            "viral-potential"
+          ],
+          "language": "English",
+          "tags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-young_adult",
+            "hair-red",
+            "eye-color-blue",
+            "trendy",
+            "viral-potential"
+          ],
+          "height": "",
+          "performanceContext": null,
+          "targetAudience": null,
+          "culturalContext": null,
+          "era": null,
+          "mood": null,
+          "variantName": "",
+          "realName": "",
+          "variantType": ""
+        },
+        "performanceContext": [],
+        "musicalStyle": [
+          "Pop",
+          "Hip-Hop"
+        ]
+      },
+      {
+        "name": "S.GRL.YOU.002",
+        "friendlyName": "S.GRL.YOU.002",
+        "creatorDescription": "A Young Girl Star named Pia",
+        "description": "A Young Girl Star named Pia",
+        "tags": [
+          "gender-female",
+          "female-talent",
+          "female-performer",
+          "age-young_adult",
+          "trendy",
+          "viral-potential"
+        ],
+        "starMetadata": {
+          "layerType": "stars",
+          "starName": "Pia",
+          "gender": "Female",
+          "ageGroup": "young_adult",
+          "archetype": "",
+          "energy": "Medium",
+          "hairColor": "Dark Brown",
+          "hairStyle": "Wavy",
+          "hairLength": "Long",
+          "hairTexture": "2B (Wavy, Medium)",
+          "hairTreatment": "",
+          "hairAccessories": "",
+          "eyeColor": "Brown",
+          "skinTone": "Medium",
+          "bodyType": "Curvy",
+          "ethnicity": "Other",
+          "makeupType": "",
+          "eyeMakeup": "",
+          "lipMakeup": "",
+          "faceMakeup": "",
+          "makeupEffects": "",
+          "colorPalette": "Neutral",
+          "personalityTraits": [],
+          "stylePreferences": [],
+          "careerStage": "Unknown",
+          "vibe": "",
+          "musicalStyle": [
+            "Pop",
+            "Hip-Hop"
+          ],
+          "_normalized": true,
+          "assetType": "base",
+          "energyLevel": "Medium",
+          "height": "",
+          "performanceContext": null,
+          "targetAudience": null,
+          "culturalContext": null,
+          "era": null,
+          "mood": null,
+          "variantName": "",
+          "richDescription": "named is a young_adult Female. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "comprehensiveTags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-young_adult",
+            "trendy",
+            "viral-potential"
+          ],
+          "language": "English",
+          "realName": "",
+          "baseStarId": "",
+          "variantType": ""
+        },
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "S.GRL.YOU.001",
+        "friendlyName": "S.GRL.YOU.001",
+        "creatorDescription": "A Young Girl Star named Gigi",
+        "description": "A Young Girl Star named Gigi",
+        "tags": [
+          "gender-female",
+          "female-talent",
+          "female-performer",
+          "age-young_adult",
+          "trendy",
+          "viral-potential"
+        ],
+        "starMetadata": {
+          "layerType": "stars",
+          "starName": "Gigi",
+          "gender": "Female",
+          "ageGroup": "young_adult",
+          "archetype": "",
+          "energy": "Medium",
+          "hairColor": "Light Brown",
+          "hairStyle": "Natural",
+          "hairLength": "Long",
+          "hairTexture": "1B (Straight, Medium)",
+          "hairTreatment": "",
+          "hairAccessories": "",
+          "eyeColor": "Brown",
+          "skinTone": "Medium",
+          "bodyType": "Curvy",
+          "ethnicity": "Other",
+          "makeupType": "Natural",
+          "eyeMakeup": "",
+          "lipMakeup": "",
+          "faceMakeup": "",
+          "makeupEffects": "",
+          "colorPalette": "Neutral",
+          "personalityTraits": [],
+          "stylePreferences": [],
+          "careerStage": "Unknown",
+          "vibe": "",
+          "musicalStyle": [
+            "Pop"
+          ],
+          "_normalized": true,
+          "assetType": "base",
+          "energyLevel": "Medium",
+          "height": "",
+          "performanceContext": null,
+          "targetAudience": null,
+          "culturalContext": null,
+          "era": null,
+          "mood": null,
+          "variantName": "",
+          "richDescription": "named is a young_adult Female. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "comprehensiveTags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-young_adult",
+            "trendy",
+            "viral-potential"
+          ],
+          "language": "English",
+          "realName": "",
+          "baseStarId": "",
+          "variantType": ""
+        },
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "S.TEN.YOU.002",
+        "friendlyName": "S.TEN.YOU.002",
+        "creatorDescription": "A Young Teen Star named Justin",
+        "description": "A Young Teen Star named Justin",
+        "tags": [
+          "age-teen",
+          "trendy",
+          "viral-potential",
+          "pop"
+        ],
+        "starMetadata": {
+          "layerType": "stars",
+          "starName": "Justin",
+          "gender": "Male",
+          "ageGroup": "teen",
+          "archetype": "",
+          "energy": "Medium",
+          "hairColor": "Dirty Blonde",
+          "hairStyle": "Tousled",
+          "hairLength": "Medium",
+          "hairTexture": "2B (Wavy, Medium)",
+          "hairTreatment": "",
+          "hairAccessories": "",
+          "eyeColor": "Gray",
+          "skinTone": "",
+          "bodyType": "",
+          "ethnicity": "Other",
+          "makeupType": "",
+          "eyeMakeup": "",
+          "lipMakeup": "",
+          "faceMakeup": "",
+          "makeupEffects": "",
+          "colorPalette": "Neutral",
+          "personalityTraits": [],
+          "stylePreferences": [],
+          "careerStage": "Unknown",
+          "vibe": "",
+          "musicalStyle": [
+            "Pop"
+          ],
+          "_normalized": true,
+          "assetType": "base",
+          "energyLevel": "Medium",
+          "height": "",
+          "performanceContext": null,
+          "targetAudience": null,
+          "culturalContext": null,
+          "era": null,
+          "mood": null,
+          "variantName": "",
+          "richDescription": "named is. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "comprehensiveTags": [
+            "age-teen",
+            "trendy",
+            "viral-potential"
+          ],
+          "language": "English",
+          "realName": "",
+          "baseStarId": "",
+          "variantType": ""
+        },
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "S.TEN.YOU.001",
+        "friendlyName": "S.TEN.YOU.001",
+        "creatorDescription": "A Young Teen Star named Michael",
+        "description": "A Young Teen Star named Michael",
+        "tags": [
+          "age-teen",
+          "trendy",
+          "viral-potential"
+        ],
+        "starMetadata": {
+          "layerType": "stars",
+          "starName": "Michael",
+          "gender": "Male",
+          "ageGroup": "teen",
+          "archetype": "Emerging",
+          "energy": "Medium",
+          "hairColor": "Black",
+          "hairStyle": "Wavy",
+          "hairLength": "Medium",
+          "hairTexture": "2B (Wavy, Medium)",
+          "hairTreatment": "",
+          "hairAccessories": "",
+          "eyeColor": "Brown",
+          "skinTone": "Light",
+          "bodyType": "",
+          "ethnicity": "Caucasian",
+          "makeupType": "",
+          "eyeMakeup": "",
+          "lipMakeup": "",
+          "faceMakeup": "",
+          "makeupEffects": "",
+          "colorPalette": "Neutral",
+          "personalityTraits": [],
+          "stylePreferences": [],
+          "careerStage": "New",
+          "vibe": "Calm",
+          "musicalStyle": [
+            "Pop"
+          ],
+          "_normalized": true,
+          "assetType": "base",
+          "energyLevel": "Medium",
+          "height": "",
+          "performanceContext": null,
+          "targetAudience": null,
+          "culturalContext": null,
+          "era": null,
+          "mood": null,
+          "variantName": "",
+          "richDescription": "named is. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "comprehensiveTags": [
+            "age-teen",
+            "trendy",
+            "viral-potential"
+          ],
+          "language": "English",
+          "realName": "",
+          "baseStarId": "",
+          "variantType": ""
+        },
+        "performanceContext": [],
+        "musicalStyle": []
+      }
+    ],
+    "avgDescriptionLength": 48,
+    "topWords": [
+      {
+        "word": "young",
+        "count": 27
+      },
+      {
+        "word": "star",
+        "count": 27
+      },
+      {
+        "word": "variant",
+        "count": 19
+      },
+      {
+        "word": "girl",
+        "count": 18
+      },
+      {
+        "word": "named",
+        "count": 17
+      },
+      {
+        "word": "haired",
+        "count": 16
+      },
+      {
+        "word": "gigi",
+        "count": 10
+      },
+      {
+        "word": "teen",
+        "count": 9
+      },
+      {
+        "word": "whole",
+        "count": 8
+      },
+      {
+        "word": "body",
+        "count": 8
+      },
+      {
+        "word": "blue",
+        "count": 8
+      },
+      {
+        "word": "short",
+        "count": 7
+      },
+      {
+        "word": "blonde",
+        "count": 7
+      },
+      {
+        "word": "pink",
+        "count": 6
+      },
+      {
+        "word": "hairstyle",
+        "count": 5
+      },
+      {
+        "word": "michael",
+        "count": 5
+      },
+      {
+        "word": "shot",
+        "count": 4
+      },
+      {
+        "word": "hair",
+        "count": 4
+      },
+      {
+        "word": "justin",
+        "count": 4
+      },
+      {
+        "word": "multicolor",
+        "count": 2
+      },
+      {
+        "word": "high",
+        "count": 2
+      },
+      {
+        "word": "style",
+        "count": 1
+      }
+    ]
+  },
+  "metadata": {
+    "layer": "stars",
+    "totalAssets": 31,
+    "fieldAnalysis": {
+      "starMetadata": {
+        "total": 31,
+        "filled": 31,
+        "empty": 0,
+        "examples": [
+          {
+            "name": "S.GRL.YOU.022",
+            "value": {
+              "layerType": "stars",
+              "starName": "Gigi",
+              "gender": "Female",
+              "ageGroup": "young_adult",
+              "archetype": "",
+              "energy": "Medium",
+              "hairColor": "Blonde",
+              "hairStyle": "Short",
+              "hairLength": "Short",
+              "hairTexture": "1A (Straight, Fine)",
+              "hairTreatment": "",
+              "hairAccessories": "",
+              "eyeColor": "Brown",
+              "skinTone": "Medium",
+              "bodyType": "Curvy",
+              "ethnicity": "Other",
+              "makeupType": "",
+              "eyeMakeup": "",
+              "lipMakeup": "",
+              "faceMakeup": "",
+              "makeupEffects": "",
+              "colorPalette": "Neutral",
+              "personalityTraits": [],
+              "stylePreferences": [],
+              "careerStage": "Unknown",
+              "vibe": "",
+              "musicalStyle": [
+                "Pop"
+              ],
+              "_normalized": true,
+              "assetType": "base",
+              "energyLevel": "Medium",
+              "height": "Average",
+              "performanceContext": null,
+              "targetAudience": null,
+              "culturalContext": null,
+              "era": null,
+              "mood": null,
+              "variantName": "",
+              "richDescription": "Gigi is a young_adult Female with Blonde Short hair. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+              "comprehensiveTags": [
+                "gender-female",
+                "female-talent",
+                "female-performer",
+                "age-young_adult",
+                "hair-blonde",
+                "hair-style-short",
+                "hair-length-short",
+                "height-short",
+                "trendy",
+                "viral-potential"
+              ],
+              "language": "English",
+              "realName": "",
+              "baseStarId": "",
+              "variantType": ""
+            }
+          },
+          {
+            "name": "S.GRL.YOU.021",
+            "value": {
+              "layerType": "stars",
+              "starName": "Gigi",
+              "gender": "Female",
+              "ageGroup": "young_adult",
+              "archetype": "",
+              "energy": "Medium",
+              "hairColor": "Blue",
+              "hairStyle": "Natural",
+              "hairLength": "Long",
+              "hairTexture": "1B (Straight, Medium)",
+              "hairTreatment": "",
+              "hairAccessories": "",
+              "eyeColor": "Blue",
+              "skinTone": "",
+              "bodyType": "Curvy",
+              "ethnicity": "Other",
+              "makeupType": "",
+              "eyeMakeup": "",
+              "lipMakeup": "",
+              "faceMakeup": "",
+              "makeupEffects": "",
+              "colorPalette": "Neutral",
+              "personalityTraits": [],
+              "stylePreferences": [],
+              "careerStage": "Unknown",
+              "vibe": "",
+              "musicalStyle": [
+                "Pop"
+              ],
+              "_normalized": true,
+              "assetType": "base",
+              "energyLevel": "Medium",
+              "height": "",
+              "performanceContext": null,
+              "targetAudience": null,
+              "culturalContext": null,
+              "era": null,
+              "mood": null,
+              "variantName": "",
+              "richDescription": "Gigi is a young_adult Female with Red hair and Blue eyes. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+              "comprehensiveTags": [
+                "gender-female",
+                "female-talent",
+                "female-performer",
+                "age-young_adult",
+                "hair-red",
+                "eye-color-blue",
+                "trendy",
+                "viral-potential"
+              ],
+              "language": "English",
+              "realName": "",
+              "baseStarId": "",
+              "variantType": ""
+            }
+          },
+          {
+            "name": "S.GRL.YOU.020",
+            "value": {
+              "layerType": "stars",
+              "starName": "Gigi",
+              "gender": "Female",
+              "ageGroup": "young_adult",
+              "archetype": "",
+              "energy": "Medium",
+              "hairColor": "Pink",
+              "hairStyle": "Straight",
+              "hairLength": "Long",
+              "hairTexture": "1A (Straight, Fine)",
+              "hairTreatment": "",
+              "hairAccessories": "",
+              "eyeColor": "Brown",
+              "skinTone": "Medium",
+              "bodyType": "Curvy",
+              "ethnicity": "Other",
+              "makeupType": "",
+              "eyeMakeup": "",
+              "lipMakeup": "",
+              "faceMakeup": "",
+              "makeupEffects": "",
+              "colorPalette": "Neutral",
+              "personalityTraits": [],
+              "stylePreferences": [],
+              "careerStage": "Unknown",
+              "vibe": "",
+              "musicalStyle": [
+                "Pop"
+              ],
+              "_normalized": true,
+              "assetType": "base",
+              "energyLevel": "Medium",
+              "height": "",
+              "performanceContext": null,
+              "targetAudience": null,
+              "culturalContext": null,
+              "era": null,
+              "mood": null,
+              "variantName": "",
+              "richDescription": "Gigi is a young_adult Female with Red hair. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+              "comprehensiveTags": [
+                "gender-female",
+                "female-talent",
+                "female-performer",
+                "age-young_adult",
+                "hair-red",
+                "trendy",
+                "viral-potential"
+              ],
+              "language": "English",
+              "realName": "",
+              "baseStarId": "",
+              "variantType": ""
+            }
+          }
+        ],
+        "percentage": 100
+      },
+      "performanceContext": {
+        "total": 31,
+        "filled": 0,
+        "empty": 31,
+        "examples": [],
+        "percentage": 0
+      },
+      "musicalStyle": {
+        "total": 31,
+        "filled": 12,
+        "empty": 19,
+        "examples": [
+          {
+            "name": "S.TEN.YOU.009",
+            "value": [
+              "Pop"
+            ]
+          },
+          {
+            "name": "S.TEN.YOU.008",
+            "value": [
+              "Pop"
+            ]
+          },
+          {
+            "name": "S.TEN.YOU.007",
+            "value": [
+              "Pop"
+            ]
+          }
+        ],
+        "percentage": 39
+      },
+      "ageAppropriateness": {
+        "total": 31,
+        "filled": 0,
+        "empty": 31,
+        "examples": [],
+        "percentage": 0
+      }
+    },
+    "arrayFieldAnalysis": {},
+    "tagAnalysis": {
+      "totalTags": 201,
+      "avgTagCount": 6,
+      "richTags": 23,
+      "poorTags": 8
+    },
+    "examples": {
+      "rich": [
+        {
+          "name": "S.TEN.YOU.009",
+          "completionRate": 50,
+          "creatorDescription": "A Young Teen Star named Justin in a Multicolor hairstyle",
+          "tags": [
+            "age-teen",
+            "hair-other",
+            "trendy",
+            "viral-potential"
+          ]
+        },
+        {
+          "name": "S.TEN.YOU.008",
+          "completionRate": 50,
+          "creatorDescription": "A Young Teen Star named Justin in a High Man Bun hairstyle",
+          "tags": [
+            "gender-male",
+            "male-talent",
+            "male-performer",
+            "age-teen",
+            "hair-style-bun",
+            "trendy",
+            "viral-potential"
+          ]
+        },
+        {
+          "name": "S.TEN.YOU.007",
+          "completionRate": 50,
+          "creatorDescription": "A Young Teen Star named Justin in a Blue Hairstyle",
+          "tags": [
+            "age-teen",
+            "hair-blue",
+            "eye-color-blue",
+            "trendy",
+            "viral-potential"
+          ]
+        },
+        {
+          "name": "S.GRL.YOU.014",
+          "completionRate": 50,
+          "creatorDescription": "A Short Blonde Haired Variant of a Young Girl Star Gigi",
+          "tags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-young_adult",
+            "hair-blonde",
+            "hair-style-short",
+            "hair-length-short",
+            "height-short",
+            "trendy",
+            "viral-potential"
+          ]
+        },
+        {
+          "name": "S.TEN.YOU.006",
+          "completionRate": 50,
+          "creatorDescription": "A Young Teen Star named Michael in a Multicolor hairstyle",
+          "tags": [
+            "age-teen",
+            "hair-other",
+            "trendy",
+            "viral-potential"
+          ]
+        }
+      ],
+      "poor": [
+        {
+          "name": "S.GRL.YOU.022",
+          "completionRate": 25,
+          "creatorDescription": "Whole body shot of the Short Blonde Haired Variant of Young Girl Star Gigi",
+          "tags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-young_adult",
+            "hair-blonde",
+            "hair-style-short",
+            "hair-length-short",
+            "height-short",
+            "trendy",
+            "viral-potential"
+          ]
+        },
+        {
+          "name": "S.GRL.YOU.021",
+          "completionRate": 25,
+          "creatorDescription": "Whole body shot of the Blue Haired Variant of Young Girl Star Gigi",
+          "tags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-young_adult",
+            "hair-red",
+            "eye-color-blue",
+            "trendy",
+            "viral-potential"
+          ]
+        },
+        {
+          "name": "S.GRL.YOU.020",
+          "completionRate": 25,
+          "creatorDescription": "Whole body shot of the Pink Haired Variant of Young Girl Star Gigi",
+          "tags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-young_adult",
+            "hair-red",
+            "trendy",
+            "viral-potential"
+          ]
+        },
+        {
+          "name": "S.GRL.YOU.019",
+          "completionRate": 25,
+          "creatorDescription": "Pia Whole Body, Pink Hair Variant",
+          "tags": [
+            "hair-pink",
+            "trendy",
+            "viral-potential"
+          ]
+        },
+        {
+          "name": "S.GRL.YOU.018",
+          "completionRate": 25,
+          "creatorDescription": "Pia Whole Body, Blue Hair Variant",
+          "tags": [
+            "hair-blue",
+            "eye-color-blue",
+            "trendy",
+            "viral-potential"
+          ]
+        }
+      ]
+    }
+  }
+}

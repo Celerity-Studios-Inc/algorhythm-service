@@ -1,0 +1,300 @@
+{
+  "creator": {
+    "layer": "worlds",
+    "totalAssets": 3,
+    "descriptionLengths": [
+      27,
+      17,
+      42
+    ],
+    "commonWords": {
+      "cozy": 1,
+      "minimalist": 1,
+      "living": 1,
+      "room": 2,
+      "modern": 1,
+      "study": 1,
+      "park": 2,
+      "path": 1,
+      "walkway": 1,
+      "nature": 1,
+      "trip": 1
+    },
+    "descriptionPatterns": [],
+    "examples": [
+      {
+        "name": "W.HOM.LIV.001",
+        "friendlyName": "W.HOM.LIV.001",
+        "creatorDescription": "Cozy Minimalist living room",
+        "description": "Cozy Minimalist living room",
+        "tags": [
+          "indoor",
+          "cozy",
+          "minimalist",
+          "soft lighting",
+          "intimate",
+          "evening",
+          "modern",
+          "serene",
+          "uncluttered",
+          "acoustic-suitable",
+          "indie-atmosphere",
+          "lo-fi-environment",
+          "warm",
+          "inviting",
+          "open layout",
+          "moderate lighting",
+          "modern era",
+          "simple production",
+          "variable season",
+          "variable weather"
+        ],
+        "worldCulturalContext": [],
+        "worldColorPalette": [],
+        "textureElements": [],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "W.HOM.STU.001",
+        "friendlyName": "W.HOM.STU.001",
+        "creatorDescription": "Modern Study Room",
+        "description": "Modern Study Room",
+        "tags": [
+          "indoor",
+          "study room",
+          "focused",
+          "calm",
+          "artificial lighting",
+          "moderate intensity",
+          "modern",
+          "enclosed",
+          "small",
+          "controlled environment",
+          "simple production",
+          "acoustic-suitable",
+          "indie-atmosphere",
+          "lo-fi-environment",
+          "variable time",
+          "moderate temperature",
+          "modern era",
+          "intimate",
+          "productive",
+          "serene"
+        ],
+        "worldCulturalContext": [],
+        "worldColorPalette": [],
+        "textureElements": [],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "W.NAT.GRO.001",
+        "friendlyName": "W.NAT.GRO.001",
+        "creatorDescription": "Park Path Walkway, nature, park, trip, day",
+        "description": "Park Path Walkway, nature, park, trip, day",
+        "tags": [
+          "natural",
+          "peaceful",
+          "natural lighting",
+          "outdoor",
+          "day",
+          "sunny",
+          "calm",
+          "serene",
+          "acoustic-suitable",
+          "folk-atmosphere",
+          "indie-environment",
+          "spacious",
+          "nature",
+          "park",
+          "walkway",
+          "daytime",
+          "relaxing",
+          "tranquil",
+          "moderate production",
+          "minimal effects"
+        ],
+        "worldCulturalContext": [],
+        "worldColorPalette": [],
+        "textureElements": [],
+        "performanceContext": [],
+        "musicalStyle": []
+      }
+    ],
+    "avgDescriptionLength": 29,
+    "topWords": [
+      {
+        "word": "room",
+        "count": 2
+      },
+      {
+        "word": "park",
+        "count": 2
+      },
+      {
+        "word": "cozy",
+        "count": 1
+      },
+      {
+        "word": "minimalist",
+        "count": 1
+      },
+      {
+        "word": "living",
+        "count": 1
+      },
+      {
+        "word": "modern",
+        "count": 1
+      },
+      {
+        "word": "study",
+        "count": 1
+      },
+      {
+        "word": "path",
+        "count": 1
+      },
+      {
+        "word": "walkway",
+        "count": 1
+      },
+      {
+        "word": "nature",
+        "count": 1
+      },
+      {
+        "word": "trip",
+        "count": 1
+      }
+    ]
+  },
+  "metadata": {
+    "layer": "worlds",
+    "totalAssets": 3,
+    "fieldAnalysis": {
+      "worldCulturalContext": {
+        "total": 3,
+        "filled": 0,
+        "empty": 3,
+        "examples": [],
+        "percentage": 0
+      },
+      "worldColorPalette": {
+        "total": 3,
+        "filled": 0,
+        "empty": 3,
+        "examples": [],
+        "percentage": 0
+      },
+      "textureElements": {
+        "total": 3,
+        "filled": 0,
+        "empty": 3,
+        "examples": [],
+        "percentage": 0
+      },
+      "performanceContext": {
+        "total": 3,
+        "filled": 0,
+        "empty": 3,
+        "examples": [],
+        "percentage": 0
+      }
+    },
+    "arrayFieldAnalysis": {},
+    "tagAnalysis": {
+      "totalTags": 60,
+      "avgTagCount": 20,
+      "richTags": 3,
+      "poorTags": 0
+    },
+    "examples": {
+      "rich": [],
+      "poor": [
+        {
+          "name": "W.HOM.LIV.001",
+          "completionRate": 0,
+          "creatorDescription": "Cozy Minimalist living room",
+          "tags": [
+            "indoor",
+            "cozy",
+            "minimalist",
+            "soft lighting",
+            "intimate",
+            "evening",
+            "modern",
+            "serene",
+            "uncluttered",
+            "acoustic-suitable",
+            "indie-atmosphere",
+            "lo-fi-environment",
+            "warm",
+            "inviting",
+            "open layout",
+            "moderate lighting",
+            "modern era",
+            "simple production",
+            "variable season",
+            "variable weather"
+          ]
+        },
+        {
+          "name": "W.HOM.STU.001",
+          "completionRate": 0,
+          "creatorDescription": "Modern Study Room",
+          "tags": [
+            "indoor",
+            "study room",
+            "focused",
+            "calm",
+            "artificial lighting",
+            "moderate intensity",
+            "modern",
+            "enclosed",
+            "small",
+            "controlled environment",
+            "simple production",
+            "acoustic-suitable",
+            "indie-atmosphere",
+            "lo-fi-environment",
+            "variable time",
+            "moderate temperature",
+            "modern era",
+            "intimate",
+            "productive",
+            "serene"
+          ]
+        },
+        {
+          "name": "W.NAT.GRO.001",
+          "completionRate": 0,
+          "creatorDescription": "Park Path Walkway, nature, park, trip, day",
+          "tags": [
+            "natural",
+            "peaceful",
+            "natural lighting",
+            "outdoor",
+            "day",
+            "sunny",
+            "calm",
+            "serene",
+            "acoustic-suitable",
+            "folk-atmosphere",
+            "indie-environment",
+            "spacious",
+            "nature",
+            "park",
+            "walkway",
+            "daytime",
+            "relaxing",
+            "tranquil",
+            "moderate production",
+            "minimal effects"
+          ]
+        }
+      ]
+    }
+  }
+}

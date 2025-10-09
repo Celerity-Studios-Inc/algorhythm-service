@@ -1,0 +1,1049 @@
+{
+  "creator": {
+    "layer": "composites",
+    "totalAssets": 36,
+    "descriptionLengths": [
+      70,
+      62,
+      62,
+      49,
+      137,
+      137,
+      143,
+      140,
+      143,
+      135,
+      140,
+      137,
+      135,
+      144,
+      140,
+      137,
+      135,
+      144,
+      140,
+      136,
+      132,
+      141,
+      131,
+      141,
+      132,
+      141,
+      131,
+      141,
+      132,
+      137,
+      137,
+      131,
+      137,
+      132,
+      131,
+      137
+    ],
+    "commonWords": {
+      "short": 1,
+      "blonde": 1,
+      "hair": 3,
+      "variant": 3,
+      "wearing": 4,
+      "charcoal": 4,
+      "print": 12,
+      "cropped": 8,
+      "pink": 1,
+      "blue": 1,
+      "base": 1,
+      "full": 32,
+      "composite": 32,
+      "video": 32,
+      "gigi": 32,
+      "coral": 8,
+      "front": 8,
+      "shirt": 12,
+      "dancing": 32,
+      "tiktok": 32,
+      "challenge": 32,
+      "song": 32,
+      "called": 32,
+      "push": 32,
+      "start": 32,
+      "park": 8,
+      "path": 8,
+      "walkway": 8,
+      "black": 4,
+      "iron": 8,
+      "maiden": 8,
+      "graphic": 4,
+      "modern": 16,
+      "study": 16,
+      "room": 24,
+      "white": 8,
+      "crop": 4,
+      "cozy": 8,
+      "minimalist": 8,
+      "living": 8
+    },
+    "descriptionPatterns": [],
+    "examples": [
+      {
+        "name": "C.PAR.2LA.004",
+        "friendlyName": "C.PAR.2LA.004",
+        "creatorDescription": "Pia Short Blonde Hair Variant wearing Charcoal Cat Print Cropped Top. ",
+        "description": "Pia Short Blonde Hair Variant wearing Charcoal Cat Print Cropped Top.",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.PAR.2LA.003",
+        "friendlyName": "C.PAR.2LA.003",
+        "creatorDescription": "Pia Pink Hair Variant wearing Charcoal Cat Print Cropped Top. ",
+        "description": "Pia Pink Hair Variant wearing Charcoal Cat Print Cropped Top.",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.PAR.2LA.002",
+        "friendlyName": "C.PAR.2LA.002",
+        "creatorDescription": "Pia Blue Hair Variant wearing Charcoal Cat Print Cropped Top. ",
+        "description": "Pia Blue Hair Variant wearing Charcoal Cat Print Cropped Top.",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.PAR.2LA.001",
+        "friendlyName": "C.PAR.2LA.001",
+        "creatorDescription": "Pia Base wearing Charcoal Cat Print Cropped Top. ",
+        "description": "Pia Base wearing Charcoal Cat Print Cropped Top.",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.FUL.ALL.032",
+        "friendlyName": "C.FUL.ALL.032",
+        "creatorDescription": "Full Composite Video of Gigi in a Coral Tie-Front T-Shirt dancing a Tiktok Challenge to a song called PUSH 2 START in a Park Path Walkway",
+        "description": "Full Composite Video of Gigi in a Coral Tie-Front T-Shirt dancing a Tiktok Challenge to a song called PUSH 2 START in a Park Path Walkway",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.FUL.ALL.031",
+        "friendlyName": "C.FUL.ALL.031",
+        "creatorDescription": "Full Composite Video of Gigi in a Coral Tie-Front T-Shirt dancing a Tiktok Challenge to a song called PUSH 2 START in a Park Path Walkway",
+        "description": "Full Composite Video of Gigi in a Coral Tie-Front T-Shirt dancing a Tiktok Challenge to a song called PUSH 2 START in a Park Path Walkway",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.FUL.ALL.030",
+        "friendlyName": "C.FUL.ALL.030",
+        "creatorDescription": "Full Composite Video of Gigi in a Black Iron Maiden Graphic Tee Dancing a Tiktok Challenge to a song called PUSH 2 START in a Park Path Walkway",
+        "description": "Full Composite Video of Gigi in a Black Iron Maiden Graphic Tee Dancing a Tiktok Challenge to a song called PUSH 2 START in a Park Path Walkway",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.FUL.ALL.029",
+        "friendlyName": "C.FUL.ALL.029",
+        "creatorDescription": "Full Composite Video of Gigi in a Coral Tie-Front T-Shirt, dancing a Tiktok Challenge, to a song called Push 2 Start, in a Modern Study Room",
+        "description": "Full Composite Video of Gigi in a Coral Tie-Front T-Shirt, dancing a Tiktok Challenge, to a song called Push 2 Start, in a Modern Study Room",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.FUL.ALL.028",
+        "friendlyName": "C.FUL.ALL.028",
+        "creatorDescription": "Full Composite Video of Gigi in a Black Iron Maiden Graphic Tee Dancing a Tiktok Challenge to a song called PUSH 2 START in a Park Path Walkway",
+        "description": "Full Composite Video of Gigi in a Black Iron Maiden Graphic Tee Dancing a Tiktok Challenge to a song called PUSH 2 START in a Park Path Walkway",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.FUL.ALL.027",
+        "friendlyName": "C.FUL.ALL.027",
+        "creatorDescription": "Full Composite Video of Gigi in an Iron Maiden Shirt, dancing a Tiktok Challenge, to a song called Push 2 Start, in a Modern Study Room",
+        "description": "Full Composite Video of Gigi in an Iron Maiden Shirt, dancing a Tiktok Challenge, to a song called Push 2 Start, in a Modern Study Room",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.FUL.ALL.026",
+        "friendlyName": "C.FUL.ALL.026",
+        "creatorDescription": "Full Composite Video of Gigi in a Coral Tie-Front T-Shirt, dancing a Tiktok Challenge, to a song called Push 2 Start, in a Modern Study Room",
+        "description": "Full Composite Video of Gigi in a Coral Tie-Front T-Shirt, dancing a Tiktok Challenge, to a song called Push 2 Start, in a Modern Study Room",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.FUL.ALL.025",
+        "friendlyName": "C.FUL.ALL.025",
+        "creatorDescription": "Full Composite Video of Gigi in a Coral Tie-Front T-Shirt dancing a Tiktok Challenge to a song called PUSH 2 START in a Park Path Walkway",
+        "description": "Full Composite Video of Gigi in a Coral Tie-Front T-Shirt dancing a Tiktok Challenge to a song called PUSH 2 START in a Park Path Walkway",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.FUL.ALL.024",
+        "friendlyName": "C.FUL.ALL.024",
+        "creatorDescription": "Full Composite Video of Gigi in an Iron Maiden Shirt, dancing a Tiktok Challenge, to a song called Push 2 Start, in a Modern Study Room",
+        "description": "Full Composite Video of Gigi in an Iron Maiden Shirt, dancing a Tiktok Challenge, to a song called Push 2 Start, in a Modern Study Room",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.FUL.ALL.023",
+        "friendlyName": "C.FUL.ALL.023",
+        "creatorDescription": "Full Composite Video of Gigi in a Black Iron Maiden Graphic Tee Dancing a Tiktok Challenge to a song called PUSH 2 START in a Park Path Walkway\n",
+        "description": "Full Composite Video of Gigi in a Black Iron Maiden Graphic Tee Dancing a Tiktok Challenge to a song called PUSH 2 START in a Park Path Walkway",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.FUL.ALL.022",
+        "friendlyName": "C.FUL.ALL.022",
+        "creatorDescription": "Full Composite Video of Gigi in a Coral Tie-Front T-Shirt, dancing a Tiktok Challenge, to a song called Push 2 Start, in a Modern Study Room",
+        "description": "Full Composite Video of Gigi in a Coral Tie-Front T-Shirt, dancing a Tiktok Challenge, to a song called Push 2 Start, in a Modern Study Room",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.FUL.ALL.021",
+        "friendlyName": "C.FUL.ALL.021",
+        "creatorDescription": "Full Composite Video of Gigi in a Coral Tie-Front T-Shirt dancing a Tiktok Challenge to a song called PUSH 2 START in a Park Path Walkway",
+        "description": "Full Composite Video of Gigi in a Coral Tie-Front T-Shirt dancing a Tiktok Challenge to a song called PUSH 2 START in a Park Path Walkway",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.FUL.ALL.020",
+        "friendlyName": "C.FUL.ALL.020",
+        "creatorDescription": "Full Composite Video of Gigi in an Iron Maiden Shirt, dancing a Tiktok Challenge, to a song called Push 2 Start, in a Modern Study Room",
+        "description": "Full Composite Video of Gigi in an Iron Maiden Shirt, dancing a Tiktok Challenge, to a song called Push 2 Start, in a Modern Study Room",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.FUL.ALL.019",
+        "friendlyName": "C.FUL.ALL.019",
+        "creatorDescription": "Full Composite Video of Gigi in a Black Iron Maiden Graphic Tee Dancing a Tiktok Challenge to a song called PUSH 2 START in a Park Path Walkway\n",
+        "description": "Full Composite Video of Gigi in a Black Iron Maiden Graphic Tee Dancing a Tiktok Challenge to a song called PUSH 2 START in a Park Path Walkway",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.FUL.ALL.018",
+        "friendlyName": "C.FUL.ALL.018",
+        "creatorDescription": "Full Composite Video of Gigi in a Coral Tie-Front T-Shirt, dancing a Tiktok Challenge, to a song called Push 2 Start, in a Modern Study Room",
+        "description": "Full Composite Video of Gigi in a Coral Tie-Front T-Shirt, dancing a Tiktok Challenge, to a song called Push 2 Start, in a Modern Study Room",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.FUL.ALL.017",
+        "friendlyName": "C.FUL.ALL.017",
+        "creatorDescription": "Full Composite Video of Gigi in an Iron Maiden Shirt, dancing a Tiktok Challenge, to a song called Push to Start, in a Modern Study Room",
+        "description": "Full Composite Video of Gigi in an Iron Maiden Shirt, dancing a Tiktok Challenge, to a song called Push to Start, in a Modern Study Room",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.FUL.ALL.016",
+        "friendlyName": "C.FUL.ALL.016",
+        "creatorDescription": "Full Composite Video of Gigi in a White Crop Top, dancing a Tiktok Challenge, to a song called Push to Start, in a Modern Study Room",
+        "description": "Full Composite Video of Gigi in a White Crop Top, dancing a Tiktok Challenge, to a song called Push to Start, in a Modern Study Room",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.FUL.ALL.015",
+        "friendlyName": "C.FUL.ALL.015",
+        "creatorDescription": "Full Composite Video of Gigi in a White Cropped Top Dancing a Tiktok Challenge to a song called PUSH 2 START in a Cozy Minimalist Living Room",
+        "description": "Full Composite Video of Gigi in a White Cropped Top Dancing a Tiktok Challenge to a song called PUSH 2 START in a Cozy Minimalist Living Room",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.FUL.ALL.014",
+        "friendlyName": "C.FUL.ALL.014",
+        "creatorDescription": "Full Composite Video of Gigi in a Cat Print Top, dancing a Tiktok Challenge, to a song called Push to Start, in a Modern Study Room",
+        "description": "Full Composite Video of Gigi in a Cat Print Top, dancing a Tiktok Challenge, to a song called Push to Start, in a Modern Study Room",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.FUL.ALL.013",
+        "friendlyName": "C.FUL.ALL.013",
+        "creatorDescription": "Full Composite Video of Gigi in a White Cropped Top Dancing a Tiktok Challenge to a song called PUSH 2 START in a Cozy Minimalist Living Room",
+        "description": "Full Composite Video of Gigi in a White Cropped Top Dancing a Tiktok Challenge to a song called PUSH 2 START in a Cozy Minimalist Living Room",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.FUL.ALL.012",
+        "friendlyName": "C.FUL.ALL.012",
+        "creatorDescription": "Full Composite Video of Gigi in a White Crop Top, dancing a Tiktok Challenge, to a song called Push to Start, in a Modern Study Room",
+        "description": "Full Composite Video of Gigi in a White Crop Top, dancing a Tiktok Challenge, to a song called Push to Start, in a Modern Study Room",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.FUL.ALL.011",
+        "friendlyName": "C.FUL.ALL.011",
+        "creatorDescription": "Full Composite Video of Gigi in a White Cropped Top Dancing a Tiktok Challenge to a song called PUSH 2 START in a Cozy Minimalist Living Room",
+        "description": "Full Composite Video of Gigi in a White Cropped Top Dancing a Tiktok Challenge to a song called PUSH 2 START in a Cozy Minimalist Living Room",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.FUL.ALL.010",
+        "friendlyName": "C.FUL.ALL.010",
+        "creatorDescription": "Full Composite Video of Gigi in a Cat Print Top, dancing a Tiktok Challenge, to a song called Push to Start, in a Modern Study Room",
+        "description": "Full Composite Video of Gigi in a Cat Print Top, dancing a Tiktok Challenge, to a song called Push to Start, in a Modern Study Room",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.FUL.ALL.009",
+        "friendlyName": "C.FUL.ALL.009",
+        "creatorDescription": "Full Composite Video of Gigi in a White Cropped Top Dancing a Tiktok Challenge to a song called PUSH 2 START in a Cozy Minimalist Living Room",
+        "description": "Full Composite Video of Gigi in a White Cropped Top Dancing a Tiktok Challenge to a song called PUSH 2 START in a Cozy Minimalist Living Room",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.FUL.ALL.008",
+        "friendlyName": "C.FUL.ALL.008",
+        "creatorDescription": "Full Composite Video of Gigi in a White Crop Top, dancing a Tiktok Challenge, to a song called Push to Start, in a Modern Study Room",
+        "description": "Full Composite Video of Gigi in a White Crop Top, dancing a Tiktok Challenge, to a song called Push to Start, in a Modern Study Room",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.FUL.ALL.007",
+        "friendlyName": "C.FUL.ALL.007",
+        "creatorDescription": "Full Composite Video of Gigi in a Cat Print Top Dancing a Tiktok Challenge to a song called PUSH 2 START in a Cozy Minimalist Living Room",
+        "description": "Full Composite Video of Gigi in a Cat Print Top Dancing a Tiktok Challenge to a song called PUSH 2 START in a Cozy Minimalist Living Room",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.FUL.ALL.006",
+        "friendlyName": "C.FUL.ALL.006",
+        "creatorDescription": "Full Composite Video of Gigi in a Cat Print Top Dancing a Tiktok Challenge to a song called PUSH 2 START in a Cozy Minimalist Living Room",
+        "description": "Full Composite Video of Gigi in a Cat Print Top Dancing a Tiktok Challenge to a song called PUSH 2 START in a Cozy Minimalist Living Room",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.FUL.ALL.005",
+        "friendlyName": "C.FUL.ALL.005",
+        "creatorDescription": "Full Composite Video of Gigi in a Cat Print Top, dancing a Tiktok Challenge, to a song called Push to Start, in a Modern Study Room",
+        "description": "Full Composite Video of Gigi in a Cat Print Top, dancing a Tiktok Challenge, to a song called Push to Start, in a Modern Study Room",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.FUL.ALL.004",
+        "friendlyName": "C.FUL.ALL.004",
+        "creatorDescription": "Full Composite Video of Gigi in a Cat Print Top Dancing a Tiktok Challenge to a song called PUSH 2 START in a Cozy Minimalist Living Room",
+        "description": "Full Composite Video of Gigi in a Cat Print Top Dancing a Tiktok Challenge to a song called PUSH 2 START in a Cozy Minimalist Living Room",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.FUL.ALL.003",
+        "friendlyName": "C.FUL.ALL.003",
+        "creatorDescription": "Full Composite Video of Gigi in a White Crop Top, dancing a Tiktok Challenge, to a song called Push to Start, in a Modern Study Room",
+        "description": "Full Composite Video of Gigi in a White Crop Top, dancing a Tiktok Challenge, to a song called Push to Start, in a Modern Study Room",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.FUL.ALL.002",
+        "friendlyName": "C.FUL.ALL.002",
+        "creatorDescription": "Full Composite Video of Gigi in a Cat Print Top, dancing a Tiktok Challenge, to a song called Push to Start, in a Modern Study Room",
+        "description": "Full Composite Video of Gigi in a Cat Print Top, dancing a Tiktok Challenge, to a song called Push to Start, in a Modern Study Room",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "C.FUL.ALL.001",
+        "friendlyName": "C.FUL.ALL.001",
+        "creatorDescription": "Full Composite Video of Gigi in a Cat Print Top Dancing a Tiktok Challenge to a song called PUSH 2 START in a Cozy Minimalist Living Room",
+        "description": "Full Composite Video of Gigi in a Cat Print Top Dancing a Tiktok Challenge to a song called PUSH 2 START in a Cozy Minimalist Living Room",
+        "tags": [
+          "nna-layer-G",
+          "nna-layer-S",
+          "nna-layer-L",
+          "nna-layer-M",
+          "nna-layer-W",
+          "nna-compliant",
+          "dual-addressing",
+          "hfn-mfa-mapped",
+          "multi-layer-composite",
+          "cross-layer-optimized"
+        ],
+        "performanceContext": [],
+        "musicalStyle": []
+      }
+    ],
+    "avgDescriptionLength": 129,
+    "topWords": [
+      {
+        "word": "full",
+        "count": 32
+      },
+      {
+        "word": "composite",
+        "count": 32
+      },
+      {
+        "word": "video",
+        "count": 32
+      },
+      {
+        "word": "gigi",
+        "count": 32
+      },
+      {
+        "word": "dancing",
+        "count": 32
+      },
+      {
+        "word": "tiktok",
+        "count": 32
+      },
+      {
+        "word": "challenge",
+        "count": 32
+      },
+      {
+        "word": "song",
+        "count": 32
+      },
+      {
+        "word": "called",
+        "count": 32
+      },
+      {
+        "word": "push",
+        "count": 32
+      },
+      {
+        "word": "start",
+        "count": 32
+      },
+      {
+        "word": "room",
+        "count": 24
+      },
+      {
+        "word": "modern",
+        "count": 16
+      },
+      {
+        "word": "study",
+        "count": 16
+      },
+      {
+        "word": "print",
+        "count": 12
+      },
+      {
+        "word": "shirt",
+        "count": 12
+      },
+      {
+        "word": "cropped",
+        "count": 8
+      },
+      {
+        "word": "coral",
+        "count": 8
+      },
+      {
+        "word": "front",
+        "count": 8
+      },
+      {
+        "word": "park",
+        "count": 8
+      },
+      {
+        "word": "path",
+        "count": 8
+      },
+      {
+        "word": "walkway",
+        "count": 8
+      },
+      {
+        "word": "iron",
+        "count": 8
+      },
+      {
+        "word": "maiden",
+        "count": 8
+      },
+      {
+        "word": "white",
+        "count": 8
+      },
+      {
+        "word": "cozy",
+        "count": 8
+      },
+      {
+        "word": "minimalist",
+        "count": 8
+      },
+      {
+        "word": "living",
+        "count": 8
+      },
+      {
+        "word": "wearing",
+        "count": 4
+      },
+      {
+        "word": "charcoal",
+        "count": 4
+      }
+    ]
+  },
+  "metadata": {
+    "layer": "composites",
+    "totalAssets": 36,
+    "fieldAnalysis": {
+      "components": {
+        "total": 36,
+        "filled": 0,
+        "empty": 36,
+        "examples": [],
+        "percentage": 0
+      },
+      "componentAssets": {
+        "total": 36,
+        "filled": 0,
+        "empty": 36,
+        "examples": [],
+        "percentage": 0
+      }
+    },
+    "arrayFieldAnalysis": {},
+    "tagAnalysis": {
+      "totalTags": 360,
+      "avgTagCount": 10,
+      "richTags": 36,
+      "poorTags": 0
+    },
+    "examples": {
+      "rich": [],
+      "poor": [
+        {
+          "name": "C.PAR.2LA.004",
+          "completionRate": 0,
+          "creatorDescription": "Pia Short Blonde Hair Variant wearing Charcoal Cat Print Cropped Top. ",
+          "tags": [
+            "nna-layer-G",
+            "nna-layer-S",
+            "nna-layer-L",
+            "nna-layer-M",
+            "nna-layer-W",
+            "nna-compliant",
+            "dual-addressing",
+            "hfn-mfa-mapped",
+            "multi-layer-composite",
+            "cross-layer-optimized"
+          ]
+        },
+        {
+          "name": "C.PAR.2LA.003",
+          "completionRate": 0,
+          "creatorDescription": "Pia Pink Hair Variant wearing Charcoal Cat Print Cropped Top. ",
+          "tags": [
+            "nna-layer-G",
+            "nna-layer-S",
+            "nna-layer-L",
+            "nna-layer-M",
+            "nna-layer-W",
+            "nna-compliant",
+            "dual-addressing",
+            "hfn-mfa-mapped",
+            "multi-layer-composite",
+            "cross-layer-optimized"
+          ]
+        },
+        {
+          "name": "C.PAR.2LA.002",
+          "completionRate": 0,
+          "creatorDescription": "Pia Blue Hair Variant wearing Charcoal Cat Print Cropped Top. ",
+          "tags": [
+            "nna-layer-G",
+            "nna-layer-S",
+            "nna-layer-L",
+            "nna-layer-M",
+            "nna-layer-W",
+            "nna-compliant",
+            "dual-addressing",
+            "hfn-mfa-mapped",
+            "multi-layer-composite",
+            "cross-layer-optimized"
+          ]
+        },
+        {
+          "name": "C.PAR.2LA.001",
+          "completionRate": 0,
+          "creatorDescription": "Pia Base wearing Charcoal Cat Print Cropped Top. ",
+          "tags": [
+            "nna-layer-G",
+            "nna-layer-S",
+            "nna-layer-L",
+            "nna-layer-M",
+            "nna-layer-W",
+            "nna-compliant",
+            "dual-addressing",
+            "hfn-mfa-mapped",
+            "multi-layer-composite",
+            "cross-layer-optimized"
+          ]
+        },
+        {
+          "name": "C.FUL.ALL.032",
+          "completionRate": 0,
+          "creatorDescription": "Full Composite Video of Gigi in a Coral Tie-Front T-Shirt dancing a Tiktok Challenge to a song called PUSH 2 START in a Park Path Walkway",
+          "tags": [
+            "nna-layer-G",
+            "nna-layer-S",
+            "nna-layer-L",
+            "nna-layer-M",
+            "nna-layer-W",
+            "nna-compliant",
+            "dual-addressing",
+            "hfn-mfa-mapped",
+            "multi-layer-composite",
+            "cross-layer-optimized"
+          ]
+        }
+      ]
+    }
+  }
+}

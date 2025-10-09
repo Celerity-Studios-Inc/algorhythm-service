@@ -1,0 +1,183 @@
+{
+  "timestamp": "2025-10-09T23:20:01.695Z",
+  "totalAssets": 85,
+  "layerBreakdown": {
+    "S": 41,
+    "G": 14,
+    "L": 14,
+    "M": 8,
+    "W": 6,
+    "C": 2
+  },
+  "algorhythmCompletion": {
+    "S": {
+      "performanceContext": {
+        "completed": 41,
+        "total": 41,
+        "percentage": 100
+      },
+      "targetAudience": {
+        "completed": 0,
+        "total": 41,
+        "percentage": 0
+      },
+      "culturalContext": {
+        "completed": 0,
+        "total": 41,
+        "percentage": 0
+      },
+      "musicalStyle": {
+        "completed": 41,
+        "total": 41,
+        "percentage": 100
+      },
+      "energyLevel": {
+        "completed": 26,
+        "total": 41,
+        "percentage": 63
+      }
+    },
+    "L": {
+      "performanceContext": {
+        "completed": 14,
+        "total": 14,
+        "percentage": 100
+      },
+      "targetAudience": {
+        "completed": 0,
+        "total": 14,
+        "percentage": 0
+      },
+      "culturalContext": {
+        "completed": 0,
+        "total": 14,
+        "percentage": 0
+      },
+      "style": {
+        "completed": 0,
+        "total": 14,
+        "percentage": 0
+      },
+      "occasion": {
+        "completed": 0,
+        "total": 14,
+        "percentage": 0
+      },
+      "colorScheme": {
+        "completed": 0,
+        "total": 14,
+        "percentage": 0
+      }
+    },
+    "M": {
+      "performanceContext": {
+        "completed": 8,
+        "total": 8,
+        "percentage": 100
+      },
+      "targetAudience": {
+        "completed": 0,
+        "total": 8,
+        "percentage": 0
+      },
+      "culturalContext": {
+        "completed": 0,
+        "total": 8,
+        "percentage": 0
+      },
+      "danceStyle": {
+        "completed": 0,
+        "total": 8,
+        "percentage": 0
+      },
+      "complexity": {
+        "completed": 0,
+        "total": 8,
+        "percentage": 0
+      },
+      "energyLevel": {
+        "completed": 0,
+        "total": 8,
+        "percentage": 0
+      }
+    },
+    "W": {
+      "performanceContext": {
+        "completed": 6,
+        "total": 6,
+        "percentage": 100
+      },
+      "targetAudience": {
+        "completed": 0,
+        "total": 6,
+        "percentage": 0
+      },
+      "culturalContext": {
+        "completed": 0,
+        "total": 6,
+        "percentage": 0
+      },
+      "environment": {
+        "completed": 0,
+        "total": 6,
+        "percentage": 0
+      },
+      "atmosphere": {
+        "completed": 0,
+        "total": 6,
+        "percentage": 0
+      },
+      "mood": {
+        "completed": 6,
+        "total": 6,
+        "percentage": 100
+      }
+    },
+    "G": {
+      "genre": {
+        "completed": 14,
+        "total": 14,
+        "percentage": 100
+      },
+      "mood": {
+        "completed": 14,
+        "total": 14,
+        "percentage": 100
+      },
+      "musicalStyle": {
+        "completed": 14,
+        "total": 14,
+        "percentage": 100
+      },
+      "songCulturalOrigin": {
+        "completed": 14,
+        "total": 14,
+        "percentage": 100
+      },
+      "ageAppropriateness": {
+        "completed": 14,
+        "total": 14,
+        "percentage": 100
+      }
+    },
+    "C": {
+      "components": {
+        "completed": 2,
+        "total": 2,
+        "percentage": 100
+      },
+      "componentAssets": {
+        "completed": 2,
+        "total": 2,
+        "percentage": 100
+      },
+      "synergyScore": {
+        "completed": 0,
+        "total": 2,
+        "percentage": 0
+      }
+    }
+  },
+  "indexUpdates": 0,
+  "overallAlgorhythmCompletion": 48
+}

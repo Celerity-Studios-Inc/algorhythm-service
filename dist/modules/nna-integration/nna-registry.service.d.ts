@@ -10,6 +10,7 @@ export declare class NnaRegistryService {
     getAssetByAddress(address: string): Promise<any>;
     getAssetsByLayer(layer: string, limit?: number): Promise<any[]>;
     getCompositesBySong(songId: string, limit?: number): Promise<any[]>;
+    getFullCompositesBySong(songId: string, limit?: number): Promise<any[]>;
     searchAssets(query: string, filters?: {
         layer?: string;
         category?: string;

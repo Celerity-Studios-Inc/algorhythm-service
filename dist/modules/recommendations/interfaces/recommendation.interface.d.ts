@@ -13,6 +13,9 @@ export interface TemplateRecommendation {
     template_name: string;
     nna_address: string;
     compatibility_score: number;
+    gcp_storage_url?: string;
+    thumbnail_url?: string;
+    preview_url?: string;
     components: {
         song_id: string;
         star_id: string;
@@ -24,6 +27,13 @@ export interface TemplateRecommendation {
         created_at: string;
         tags: string[];
         description?: string;
+        media?: {
+            duration_seconds?: number;
+            file_size_mb?: number;
+            resolution?: string;
+            format?: string;
+            quality_score?: number;
+        };
     };
     scoring_details?: CompatibilityScoreDetails;
 }

@@ -281,7 +281,8 @@ export class ReVizCompleteExperienceService {
   }
 
   private async getCompositeVideos(songId: string, maxComposites: number) {
-    const templates = await this.nnaRegistryService.getCompositesBySong(songId);
+    // 🔧 FIX: Use getFullCompositesBySong for ReViz developers to ensure C.FUL only
+    const templates = await this.nnaRegistryService.getFullCompositesBySong(songId);
     
     return templates.slice(0, maxComposites).map((template, index) => ({
       composite_id: template._id || template.nna_address,

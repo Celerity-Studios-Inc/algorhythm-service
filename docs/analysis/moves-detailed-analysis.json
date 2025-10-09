@@ -1,0 +1,227 @@
+{
+  "creator": {
+    "layer": "moves",
+    "totalAssets": 3,
+    "descriptionLengths": [
+      34,
+      35,
+      39
+    ],
+    "commonWords": {
+      "pretty": 1,
+      "little": 1,
+      "baby": 1,
+      "dance": 3,
+      "challenge": 3,
+      "your": 1,
+      "eyes": 1,
+      "tiktok": 2,
+      "party": 1
+    },
+    "descriptionPatterns": [],
+    "examples": [
+      {
+        "name": "M.TIK.CHA.003",
+        "friendlyName": "M.TIK.CHA.003",
+        "creatorDescription": "Pretty Little Baby Dance Challenge",
+        "description": "Pretty Little Baby Dance Challenge",
+        "tags": [
+          "dance-style-contemporary",
+          "energy-medium",
+          "complexity-intermediate",
+          "cultural-global",
+          "movement-analyzed",
+          "characteristic-controlled",
+          "characteristic-expressive",
+          "pattern-linear",
+          "pattern-circular",
+          "music-pop"
+        ],
+        "primaryMoves": [],
+        "moveCulturalOrigin": [],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "M.TIK.CHA.002",
+        "friendlyName": "M.TIK.CHA.002",
+        "creatorDescription": "In Your Eyes Tiktok Dance Challenge",
+        "description": "In Your Eyes Tiktok Dance Challenge",
+        "tags": [
+          "dance-style-contemporary",
+          "energy-medium",
+          "complexity-intermediate",
+          "cultural-global",
+          "movement-analyzed",
+          "characteristic-controlled",
+          "characteristic-expressive",
+          "pattern-linear",
+          "pattern-circular",
+          "music-pop"
+        ],
+        "primaryMoves": [],
+        "moveCulturalOrigin": [],
+        "performanceContext": [],
+        "musicalStyle": []
+      },
+      {
+        "name": "M.TIK.CHA.001",
+        "friendlyName": "M.TIK.CHA.001",
+        "creatorDescription": "Party in The USA Tiktok Dance Challenge",
+        "description": "Party in The USA Tiktok Dance Challenge",
+        "tags": [
+          "dance-style-contemporary",
+          "energy-medium",
+          "complexity-intermediate",
+          "cultural-american",
+          "movement-analyzed",
+          "characteristic-controlled",
+          "characteristic-expressive",
+          "pattern-linear",
+          "pattern-circular",
+          "music-pop"
+        ],
+        "primaryMoves": [],
+        "moveCulturalOrigin": [],
+        "performanceContext": [],
+        "musicalStyle": []
+      }
+    ],
+    "avgDescriptionLength": 36,
+    "topWords": [
+      {
+        "word": "dance",
+        "count": 3
+      },
+      {
+        "word": "challenge",
+        "count": 3
+      },
+      {
+        "word": "tiktok",
+        "count": 2
+      },
+      {
+        "word": "pretty",
+        "count": 1
+      },
+      {
+        "word": "little",
+        "count": 1
+      },
+      {
+        "word": "baby",
+        "count": 1
+      },
+      {
+        "word": "your",
+        "count": 1
+      },
+      {
+        "word": "eyes",
+        "count": 1
+      },
+      {
+        "word": "party",
+        "count": 1
+      }
+    ]
+  },
+  "metadata": {
+    "layer": "moves",
+    "totalAssets": 3,
+    "fieldAnalysis": {
+      "primaryMoves": {
+        "total": 3,
+        "filled": 0,
+        "empty": 3,
+        "examples": [],
+        "percentage": 0
+      },
+      "moveCulturalOrigin": {
+        "total": 3,
+        "filled": 0,
+        "empty": 3,
+        "examples": [],
+        "percentage": 0
+      },
+      "performanceContext": {
+        "total": 3,
+        "filled": 0,
+        "empty": 3,
+        "examples": [],
+        "percentage": 0
+      },
+      "musicalStyle": {
+        "total": 3,
+        "filled": 0,
+        "empty": 3,
+        "examples": [],
+        "percentage": 0
+      }
+    },
+    "arrayFieldAnalysis": {},
+    "tagAnalysis": {
+      "totalTags": 30,
+      "avgTagCount": 10,
+      "richTags": 3,
+      "poorTags": 0
+    },
+    "examples": {
+      "rich": [],
+      "poor": [
+        {
+          "name": "M.TIK.CHA.003",
+          "completionRate": 0,
+          "creatorDescription": "Pretty Little Baby Dance Challenge",
+          "tags": [
+            "dance-style-contemporary",
+            "energy-medium",
+            "complexity-intermediate",
+            "cultural-global",
+            "movement-analyzed",
+            "characteristic-controlled",
+            "characteristic-expressive",
+            "pattern-linear",
+            "pattern-circular",
+            "music-pop"
+          ]
+        },
+        {
+          "name": "M.TIK.CHA.002",
+          "completionRate": 0,
+          "creatorDescription": "In Your Eyes Tiktok Dance Challenge",
+          "tags": [
+            "dance-style-contemporary",
+            "energy-medium",
+            "complexity-intermediate",
+            "cultural-global",
+            "movement-analyzed",
+            "characteristic-controlled",
+            "characteristic-expressive",
+            "pattern-linear",
+            "pattern-circular",
+            "music-pop"
+          ]
+        },
+        {
+          "name": "M.TIK.CHA.001",
+          "completionRate": 0,
+          "creatorDescription": "Party in The USA Tiktok Dance Challenge",
+          "tags": [
+            "dance-style-contemporary",
+            "energy-medium",
+            "complexity-intermediate",
+            "cultural-american",
+            "movement-analyzed",
+            "characteristic-controlled",
+            "characteristic-expressive",
+            "pattern-linear",
+            "pattern-circular",
+            "music-pop"
+          ]
+        }
+      ]
+    }
+  }
+}

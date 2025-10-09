@@ -1,0 +1,489 @@
+{
+  "totalAssets": 14,
+  "layers": {
+    "S": {
+      "count": 14,
+      "patterns": [
+        {
+          "original": "Alice is a teen female star.",
+          "length": 28,
+          "hasName": true,
+          "hasAge": true,
+          "hasGender": true,
+          "hasStyle": false,
+          "hasEnergy": false,
+          "hasContext": false
+        },
+        {
+          "original": "Alice is a teen female star.",
+          "length": 28,
+          "hasName": true,
+          "hasAge": true,
+          "hasGender": true,
+          "hasStyle": false,
+          "hasEnergy": false,
+          "hasContext": false
+        },
+        {
+          "original": "Alice is a teen female star.",
+          "length": 28,
+          "hasName": true,
+          "hasAge": true,
+          "hasGender": true,
+          "hasStyle": false,
+          "hasEnergy": false,
+          "hasContext": false
+        },
+        {
+          "original": "Alice is a teen female star.",
+          "length": 28,
+          "hasName": true,
+          "hasAge": true,
+          "hasGender": true,
+          "hasStyle": false,
+          "hasEnergy": false,
+          "hasContext": false
+        },
+        {
+          "original": "Alice is a teen female star.",
+          "length": 28,
+          "hasName": true,
+          "hasAge": true,
+          "hasGender": true,
+          "hasStyle": false,
+          "hasEnergy": false,
+          "hasContext": false
+        },
+        {
+          "original": "Alice is a teen female star.",
+          "length": 28,
+          "hasName": true,
+          "hasAge": true,
+          "hasGender": true,
+          "hasStyle": false,
+          "hasEnergy": false,
+          "hasContext": false
+        },
+        {
+          "original": "Alice is a teen female star.",
+          "length": 28,
+          "hasName": true,
+          "hasAge": true,
+          "hasGender": true,
+          "hasStyle": false,
+          "hasEnergy": false,
+          "hasContext": false
+        },
+        {
+          "original": "Alice is a teen female star.",
+          "length": 28,
+          "hasName": true,
+          "hasAge": true,
+          "hasGender": true,
+          "hasStyle": false,
+          "hasEnergy": false,
+          "hasContext": false
+        },
+        {
+          "original": "Alice is a teen female star.",
+          "length": 28,
+          "hasName": true,
+          "hasAge": true,
+          "hasGender": true,
+          "hasStyle": false,
+          "hasEnergy": false,
+          "hasContext": false
+        },
+        {
+          "original": "Alice is a teen female star.",
+          "length": 28,
+          "hasName": true,
+          "hasAge": true,
+          "hasGender": true,
+          "hasStyle": false,
+          "hasEnergy": false,
+          "hasContext": false
+        },
+        {
+          "original": "Alice is a teen female star.",
+          "length": 28,
+          "hasName": true,
+          "hasAge": true,
+          "hasGender": true,
+          "hasStyle": false,
+          "hasEnergy": false,
+          "hasContext": false
+        },
+        {
+          "original": "Alice is a teen female star.",
+          "length": 28,
+          "hasName": true,
+          "hasAge": true,
+          "hasGender": true,
+          "hasStyle": false,
+          "hasEnergy": false,
+          "hasContext": false
+        },
+        {
+          "original": "Alice is a teen female star.",
+          "length": 28,
+          "hasName": true,
+          "hasAge": true,
+          "hasGender": true,
+          "hasStyle": false,
+          "hasEnergy": false,
+          "hasContext": false
+        },
+        {
+          "original": "Alice is a teen female star.",
+          "length": 28,
+          "hasName": true,
+          "hasAge": true,
+          "hasGender": true,
+          "hasStyle": false,
+          "hasEnergy": false,
+          "hasContext": false
+        }
+      ],
+      "aiQuality": [
+        {
+          "description": "Alice is a teen Female. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "tags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-teen",
+            "trendy",
+            "viral-potential"
+          ],
+          "tagCount": 6,
+          "nullFields": 22,
+          "totalFields": 30,
+          "fillRate": 26.7,
+          "hasPerformanceContext": false,
+          "hasTargetAudience": false,
+          "hasCulturalContext": false,
+          "hasEnergy": false,
+          "hasHairColor": false,
+          "hasSkinTone": false,
+          "hasBodyType": false
+        },
+        {
+          "description": "Alice is a teen Female. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "tags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-teen",
+            "trendy",
+            "viral-potential"
+          ],
+          "tagCount": 6,
+          "nullFields": 22,
+          "totalFields": 30,
+          "fillRate": 26.7,
+          "hasPerformanceContext": false,
+          "hasTargetAudience": false,
+          "hasCulturalContext": false,
+          "hasEnergy": false,
+          "hasHairColor": false,
+          "hasSkinTone": false,
+          "hasBodyType": false
+        },
+        {
+          "description": "Alice is a teen Female. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "tags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-teen",
+            "trendy",
+            "viral-potential"
+          ],
+          "tagCount": 6,
+          "nullFields": 22,
+          "totalFields": 30,
+          "fillRate": 26.7,
+          "hasPerformanceContext": false,
+          "hasTargetAudience": false,
+          "hasCulturalContext": false,
+          "hasEnergy": false,
+          "hasHairColor": false,
+          "hasSkinTone": false,
+          "hasBodyType": false
+        },
+        {
+          "description": "Alice is a teen Female. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "tags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-teen",
+            "trendy",
+            "viral-potential"
+          ],
+          "tagCount": 6,
+          "nullFields": 22,
+          "totalFields": 30,
+          "fillRate": 26.7,
+          "hasPerformanceContext": false,
+          "hasTargetAudience": false,
+          "hasCulturalContext": false,
+          "hasEnergy": false,
+          "hasHairColor": false,
+          "hasSkinTone": false,
+          "hasBodyType": false
+        },
+        {
+          "description": "Alice is a teen Female. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "tags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-teen",
+            "trendy",
+            "viral-potential"
+          ],
+          "tagCount": 6,
+          "nullFields": 22,
+          "totalFields": 30,
+          "fillRate": 26.7,
+          "hasPerformanceContext": false,
+          "hasTargetAudience": false,
+          "hasCulturalContext": false,
+          "hasEnergy": false,
+          "hasHairColor": false,
+          "hasSkinTone": false,
+          "hasBodyType": false
+        },
+        {
+          "description": "Alice is a teen Female. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "tags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-teen",
+            "trendy",
+            "viral-potential"
+          ],
+          "tagCount": 6,
+          "nullFields": 22,
+          "totalFields": 30,
+          "fillRate": 26.7,
+          "hasPerformanceContext": false,
+          "hasTargetAudience": false,
+          "hasCulturalContext": false,
+          "hasEnergy": false,
+          "hasHairColor": false,
+          "hasSkinTone": false,
+          "hasBodyType": false
+        },
+        {
+          "description": "Alice is a teen Female. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "tags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-teen",
+            "trendy",
+            "viral-potential"
+          ],
+          "tagCount": 6,
+          "nullFields": 22,
+          "totalFields": 30,
+          "fillRate": 26.7,
+          "hasPerformanceContext": false,
+          "hasTargetAudience": false,
+          "hasCulturalContext": false,
+          "hasEnergy": false,
+          "hasHairColor": false,
+          "hasSkinTone": false,
+          "hasBodyType": false
+        },
+        {
+          "description": "Alice is a teen Female. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "tags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-teen",
+            "trendy",
+            "viral-potential"
+          ],
+          "tagCount": 6,
+          "nullFields": 22,
+          "totalFields": 30,
+          "fillRate": 26.7,
+          "hasPerformanceContext": false,
+          "hasTargetAudience": false,
+          "hasCulturalContext": false,
+          "hasEnergy": false,
+          "hasHairColor": false,
+          "hasSkinTone": false,
+          "hasBodyType": false
+        },
+        {
+          "description": "Alice is a teen Female. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "tags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-teen",
+            "trendy",
+            "viral-potential"
+          ],
+          "tagCount": 6,
+          "nullFields": 22,
+          "totalFields": 30,
+          "fillRate": 26.7,
+          "hasPerformanceContext": false,
+          "hasTargetAudience": false,
+          "hasCulturalContext": false,
+          "hasEnergy": false,
+          "hasHairColor": false,
+          "hasSkinTone": false,
+          "hasBodyType": false
+        },
+        {
+          "description": "Alice is a teen Female. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "tags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-teen",
+            "trendy",
+            "viral-potential"
+          ],
+          "tagCount": 6,
+          "nullFields": 24,
+          "totalFields": 31,
+          "fillRate": 22.6,
+          "hasPerformanceContext": false,
+          "hasTargetAudience": false,
+          "hasCulturalContext": false,
+          "hasEnergy": false,
+          "hasHairColor": false,
+          "hasSkinTone": false,
+          "hasBodyType": false
+        },
+        {
+          "description": "Alice is a teen Female. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "tags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-teen",
+            "trendy",
+            "viral-potential"
+          ],
+          "tagCount": 6,
+          "nullFields": 24,
+          "totalFields": 31,
+          "fillRate": 22.6,
+          "hasPerformanceContext": false,
+          "hasTargetAudience": false,
+          "hasCulturalContext": false,
+          "hasEnergy": false,
+          "hasHairColor": false,
+          "hasSkinTone": false,
+          "hasBodyType": false
+        },
+        {
+          "description": "Alice is a teen Female. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "tags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-teen",
+            "trendy",
+            "viral-potential"
+          ],
+          "tagCount": 6,
+          "nullFields": 24,
+          "totalFields": 32,
+          "fillRate": 25,
+          "hasPerformanceContext": false,
+          "hasTargetAudience": false,
+          "hasCulturalContext": false,
+          "hasEnergy": false,
+          "hasHairColor": false,
+          "hasSkinTone": false,
+          "hasBodyType": false
+        },
+        {
+          "description": "Alice is a teen Female. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "tags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-teen",
+            "trendy",
+            "viral-potential"
+          ],
+          "tagCount": 6,
+          "nullFields": 24,
+          "totalFields": 32,
+          "fillRate": 25,
+          "hasPerformanceContext": false,
+          "hasTargetAudience": false,
+          "hasCulturalContext": false,
+          "hasEnergy": false,
+          "hasHairColor": false,
+          "hasSkinTone": false,
+          "hasBodyType": false
+        },
+        {
+          "description": "Alice is a teen Female. This performer embodies the modern star ideal with versatility for both intimate studio sessions and energetic concert performances.",
+          "tags": [
+            "gender-female",
+            "female-talent",
+            "female-performer",
+            "age-teen",
+            "trendy",
+            "viral-potential"
+          ],
+          "tagCount": 6,
+          "nullFields": 24,
+          "totalFields": 32,
+          "fillRate": 25,
+          "hasPerformanceContext": false,
+          "hasTargetAudience": false,
+          "hasCulturalContext": false,
+          "hasEnergy": false,
+          "hasHairColor": false,
+          "hasSkinTone": false,
+          "hasBodyType": false
+        }
+      ],
+      "creatorEdits": []
+    },
+    "L": {
+      "count": 0,
+      "patterns": [],
+      "aiQuality": [],
+      "creatorEdits": []
+    },
+    "M": {
+      "count": 0,
+      "patterns": [],
+      "aiQuality": [],
+      "creatorEdits": []
+    },
+    "W": {
+      "count": 0,
+      "patterns": [],
+      "aiQuality": [],
+      "creatorEdits": []
+    },
+    "C": {
+      "count": 0,
+      "patterns": [],
+      "aiQuality": [],
+      "creatorEdits": []
+    }
+  },
+  "creatorDescriptionPatterns": [],
+  "aiGenerationQuality": [],
+  "gaps": [],
+  "recommendations": []
+}

@@ -100,7 +100,8 @@ export class RecommendationsService {
     }
 
     // Get all available templates (composites) for this song
-    const availableTemplates = await this.nnaRegistryService.getCompositesBySong(songId);
+    // 🔧 FIX: Use getFullCompositesBySong for ReViz developers to ensure C.FUL only
+    const availableTemplates = await this.nnaRegistryService.getFullCompositesBySong(songId);
     
     if (availableTemplates.length === 0) {
       const originalId = request.song_id !== songId ? `${request.song_id} (${songId})` : songId;
@@ -124,12 +125,16 @@ export class RecommendationsService {
     // EMERGENCY FIX: Bypass scoring entirely to unblock ReViz developers
     const scoringStartTime = Date.now();
     
-    // Create mock scored templates with default scores
+    // Create mock scored templates with default scores and GCP URLs
     const scoredTemplates = availableTemplates.map((template, index) => ({
       template_id: template._id || template.nna_address,
       template_name: template.name || `Template ${index + 1}`,
       nna_address: template.nna_address,
       compatibility_score: 0.8, // Default high score for all templates
+      // 🔧 FIX: Add GCP URLs for ReViz developers to display assets
+      gcp_storage_url: template.gcpStorageUrl || `https://storage.googleapis.com/nna_registry_assets_dev/composites/${template.nna_address}/full.mp4`,
+      thumbnail_url: template.thumbnailUrl || `https://storage.googleapis.com/nna_registry_assets_dev/composites/${template.nna_address}/thumb.jpg`,
+      preview_url: template.previewUrl || `https://storage.googleapis.com/nna_registry_assets_dev/composites/${template.nna_address}/preview.mp4`,
       components: {
         song_id: song.nna_address,
         star_id: template.star_id || '2.009.002.018',
@@ -141,6 +146,14 @@ export class RecommendationsService {
         created_at: template.createdAt || new Date().toISOString(),
         tags: template.tags || [],
         description: template.description || 'Template description',
+        // 🔧 FIX: Add media metadata for ReViz developers
+        media: {
+          duration_seconds: template.duration || 30,
+          file_size_mb: template.fileSize || 15.2,
+          resolution: template.resolution || '1080p',
+          format: template.format || 'mp4',
+          quality_score: template.qualityScore || 0.9
+        }
       },
       scoring_details: {
         tempo_score: 0.8,
