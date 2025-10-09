@@ -133,8 +133,8 @@ export class RecommendationsService {
       compatibility_score: 0.8, // Default high score for all templates
       // 🔧 FIX: Add GCP URLs for ReViz developers to display assets
       gcp_storage_url: template.gcpStorageUrl || `https://storage.googleapis.com/nna_registry_assets_dev/composites/${template.nna_address}/full.mp4`,
-      thumbnail_url: template.thumbnailUrl || `https://storage.googleapis.com/nna_registry_assets_dev/composites/${template.nna_address}/thumb.jpg`,
-      preview_url: template.previewUrl || `https://storage.googleapis.com/nna_registry_assets_dev/composites/${template.nna_address}/preview.mp4`,
+      thumbnail_url: template.thumbnailUrl || this.generateThumbnailUrl(template.gcpStorageUrl, template.nna_address),
+      preview_url: template.previewUrl || this.generatePreviewUrl(template.gcpStorageUrl, template.nna_address),
       components: {
         song_id: song.nna_address,
         star_id: template.star_id || '2.009.002.018',
@@ -388,5 +388,27 @@ export class RecommendationsService {
         description: asset.description,
       },
     };
+  }
+
+  /**
+   * Generate thumbnail URL from GCP storage URL
+   */
+  private generateThumbnailUrl(gcpStorageUrl: string, nnaAddress: string): string {
+    if (gcpStorageUrl) {
+      // Replace .mp4 with .jpg for thumbnail
+      return gcpStorageUrl.replace(/\.mp4$/, '.jpg');
+    }
+    return `https://storage.googleapis.com/nna_registry_assets_dev/composites/${nnaAddress}/thumb.jpg`;
+  }
+
+  /**
+   * Generate preview URL from GCP storage URL
+   */
+  private generatePreviewUrl(gcpStorageUrl: string, nnaAddress: string): string {
+    if (gcpStorageUrl) {
+      // Replace .mp4 with _preview.mp4 for preview
+      return gcpStorageUrl.replace(/\.mp4$/, '_preview.mp4');
+    }
+    return `https://storage.googleapis.com/nna_registry_assets_dev/composites/${nnaAddress}/preview.mp4`;
   }
 }
