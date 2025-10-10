@@ -55,6 +55,10 @@ export class InstantRecommendationsService {
           template_name: templates[0].name,
           nna_address: templates[0].id,
           compatibility_score: 0.9,
+          // 🔧 FIX: Add GCP URLs for ReViz developers
+          gcp_storage_url: `https://storage.googleapis.com/nna_registry_assets_dev/composites/${templates[0].id}/full.mp4`,
+          thumbnail_url: `https://storage.googleapis.com/nna_registry_assets_dev/composites/${templates[0].id}/thumb.jpg`,
+          preview_url: `https://storage.googleapis.com/nna_registry_assets_dev/composites/${templates[0].id}/preview.mp4`,
           components: {
             song_id: songId,
             star_id: '2.009.002.018',
@@ -65,7 +69,15 @@ export class InstantRecommendationsService {
           metadata: {
             created_at: new Date().toISOString(),
             tags: ['nna-layer-G', 'nna-layer-S', 'nna-layer-L', 'nna-layer-M', 'nna-layer-W'],
-            description: `Instant recommendation for ${songId}`
+            description: `Instant recommendation for ${songId}`,
+            // 🔧 FIX: Add media metadata for ReViz developers
+            media: {
+              duration_seconds: 30,
+              file_size_mb: 15.2,
+              resolution: '1080p',
+              format: 'mp4',
+              quality_score: 0.9
+            }
           },
           scoring_details: {
             tempo_score: 0.9,
@@ -83,6 +95,10 @@ export class InstantRecommendationsService {
           template_name: template.name,
           nna_address: template.id,
           compatibility_score: 0.9 - ((index + 1) * 0.1),
+          // 🔧 FIX: Add GCP URLs for ReViz developers
+          gcp_storage_url: `https://storage.googleapis.com/nna_registry_assets_dev/composites/${template.id}/full.mp4`,
+          thumbnail_url: `https://storage.googleapis.com/nna_registry_assets_dev/composites/${template.id}/thumb.jpg`,
+          preview_url: `https://storage.googleapis.com/nna_registry_assets_dev/composites/${template.id}/preview.mp4`,
           components: {
             song_id: songId,
             star_id: '2.009.002.018',
@@ -93,7 +109,15 @@ export class InstantRecommendationsService {
           metadata: {
             created_at: new Date().toISOString(),
             tags: ['nna-layer-G', 'nna-layer-S', 'nna-layer-L', 'nna-layer-M', 'nna-layer-W'],
-            description: `Alternative ${index + 1} for ${songId}`
+            description: `Alternative ${index + 1} for ${songId}`,
+            // 🔧 FIX: Add media metadata for ReViz developers
+            media: {
+              duration_seconds: 30,
+              file_size_mb: 15.2,
+              resolution: '1080p',
+              format: 'mp4',
+              quality_score: 0.9
+            }
           },
           scoring_details: {
             tempo_score: 0.9 - ((index + 1) * 0.1),
@@ -163,6 +187,10 @@ export class InstantRecommendationsService {
         template_name: 'Fallback Template',
         nna_address: '9.002.025.001',
         compatibility_score: 0.7,
+        // 🔧 FIX: Add GCP URLs for ReViz developers
+        gcp_storage_url: `https://storage.googleapis.com/nna_registry_assets_dev/composites/9.002.025.001/full.mp4`,
+        thumbnail_url: `https://storage.googleapis.com/nna_registry_assets_dev/composites/9.002.025.001/thumb.jpg`,
+        preview_url: `https://storage.googleapis.com/nna_registry_assets_dev/composites/9.002.025.001/preview.mp4`,
         components: {
           song_id: songId,
           star_id: '2.009.002.018',
@@ -173,7 +201,15 @@ export class InstantRecommendationsService {
         metadata: {
           created_at: new Date().toISOString(),
           tags: ['fallback', 'instant'],
-          description: 'Instant fallback recommendation'
+          description: 'Instant fallback recommendation',
+          // 🔧 FIX: Add media metadata for ReViz developers
+          media: {
+            duration_seconds: 30,
+            file_size_mb: 15.2,
+            resolution: '1080p',
+            format: 'mp4',
+            quality_score: 0.9
+          }
         },
         scoring_details: {
           tempo_score: 0.7,
