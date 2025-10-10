@@ -1,0 +1,1929 @@
+{
+  "exportDate": "2025-10-10T21:03:06.202Z",
+  "totalAssets": 72,
+  "description": "Individual assets with Algorhythm metadata for layer-specific analysis",
+  "assets": [
+    {
+      "_id": "68e70872be623bf1d7076d39",
+      "name": "G.POP.TEE.001",
+      "layer": "G",
+      "category": "POP",
+      "subcategory": "TEE",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "live"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "pop"
+        ],
+        "musicalStyle": [
+          "pop",
+          "electronic"
+        ],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-09T00:57:22.985Z",
+      "updatedAt": "2025-10-10T20:47:40.445Z"
+    },
+    {
+      "_id": "68e70968be623bf1d7076d63",
+      "name": "S.GRL.TEE.001",
+      "layer": "S",
+      "category": "GRL",
+      "subcategory": "TEE",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "concert"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "k_pop"
+        ],
+        "musicalStyle": [
+          "pop",
+          "electronic"
+        ],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-09T01:01:28.441Z",
+      "updatedAt": "2025-10-10T20:47:40.517Z"
+    },
+    {
+      "_id": "68e70a35be623bf1d7076d70",
+      "name": "S.GRL.TEE.002",
+      "layer": "S",
+      "category": "GRL",
+      "subcategory": "TEE",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "concert"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "k_pop"
+        ],
+        "musicalStyle": [
+          "pop",
+          "electronic"
+        ],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-09T01:04:53.158Z",
+      "updatedAt": "2025-10-10T20:47:40.549Z"
+    },
+    {
+      "_id": "68e7141c5d018de8e180683c",
+      "name": "M.TIK.CHA.001",
+      "layer": "M",
+      "category": "TIK",
+      "subcategory": "CHA",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "urban"
+        ],
+        "musicalStyle": [
+          "pop",
+          "hip_hop"
+        ],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-09T01:47:08.366Z",
+      "updatedAt": "2025-10-10T20:47:40.771Z"
+    },
+    {
+      "_id": "68e7157f5d018de8e180684e",
+      "name": "L.CAS.COM.001",
+      "layer": "L",
+      "category": "CAS",
+      "subcategory": "COM",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "fashion_show"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "street_fashion"
+        ],
+        "musicalStyle": [
+          "pop",
+          "hip_hop"
+        ],
+        "energyLevel": "medium"
+      },
+      "createdAt": "2025-10-09T01:53:03.781Z",
+      "updatedAt": "2025-10-10T20:47:40.665Z"
+    },
+    {
+      "_id": "68e716eb5d018de8e18068a9",
+      "name": "M.TIK.CHA.002",
+      "layer": "M",
+      "category": "TIK",
+      "subcategory": "CHA",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "urban"
+        ],
+        "musicalStyle": [
+          "pop",
+          "hip_hop"
+        ],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-09T01:59:07.893Z",
+      "updatedAt": "2025-10-10T20:47:40.801Z"
+    },
+    {
+      "_id": "68e719ec5d018de8e180699c",
+      "name": "M.TIK.CHA.003",
+      "layer": "M",
+      "category": "TIK",
+      "subcategory": "CHA",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "urban"
+        ],
+        "musicalStyle": [
+          "pop",
+          "hip_hop"
+        ],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-09T02:11:56.521Z",
+      "updatedAt": "2025-10-10T20:47:40.834Z"
+    },
+    {
+      "_id": "68e720a35d018de8e1806adc",
+      "name": "G.ASI.KPO.001",
+      "layer": "G",
+      "category": "ASI",
+      "subcategory": "KPO",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "live"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "pop"
+        ],
+        "musicalStyle": [
+          "pop",
+          "electronic"
+        ],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-09T02:40:35.897Z",
+      "updatedAt": "2025-10-10T20:47:40.416Z"
+    },
+    {
+      "_id": "68e7218b5d018de8e1806af7",
+      "name": "S.GRL.TEE.003",
+      "layer": "S",
+      "category": "GRL",
+      "subcategory": "TEE",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "concert"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "k_pop"
+        ],
+        "musicalStyle": [
+          "pop",
+          "electronic"
+        ],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-09T02:44:27.316Z",
+      "updatedAt": "2025-10-10T20:47:40.578Z"
+    },
+    {
+      "_id": "68e723035d018de8e1806b0d",
+      "name": "G.AFR.AMA.001",
+      "layer": "G",
+      "category": "AFR",
+      "subcategory": "AMA",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "live"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "pop"
+        ],
+        "musicalStyle": [
+          "pop",
+          "electronic"
+        ],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-09T02:50:43.255Z",
+      "updatedAt": "2025-10-10T20:47:40.384Z"
+    },
+    {
+      "_id": "68e723e35d018de8e1806b19",
+      "name": "G.POP.DAN.006",
+      "layer": "G",
+      "category": "POP",
+      "subcategory": "DAN",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "live"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "pop"
+        ],
+        "musicalStyle": [
+          "pop",
+          "electronic"
+        ],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-09T02:54:27.510Z",
+      "updatedAt": "2025-10-10T20:34:29.034Z"
+    },
+    {
+      "_id": "68e726485d018de8e1806b84",
+      "name": "M.TIK.CHA.007",
+      "layer": "M",
+      "category": "TIK",
+      "subcategory": "CHA",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "urban"
+        ],
+        "musicalStyle": [
+          "pop",
+          "hip_hop"
+        ],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-09T03:04:40.605Z",
+      "updatedAt": "2025-10-10T20:34:30.356Z"
+    },
+    {
+      "_id": "68e727fb5d018de8e1806c34",
+      "name": "M.TIK.CHA.008",
+      "layer": "M",
+      "category": "TIK",
+      "subcategory": "CHA",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "urban"
+        ],
+        "musicalStyle": [
+          "pop",
+          "hip_hop"
+        ],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-09T03:11:55.274Z",
+      "updatedAt": "2025-10-10T20:34:30.324Z"
+    },
+    {
+      "_id": "68e729c25d018de8e1806c71",
+      "name": "L.ATH.OUT.001",
+      "layer": "L",
+      "category": "ATH",
+      "subcategory": "OUT",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "fashion_show"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "street_fashion"
+        ],
+        "musicalStyle": [
+          "pop",
+          "hip_hop"
+        ],
+        "energyLevel": "medium"
+      },
+      "createdAt": "2025-10-09T03:19:30.977Z",
+      "updatedAt": "2025-10-10T20:47:40.635Z"
+    },
+    {
+      "_id": "68e72eeb5d018de8e1806cbe",
+      "name": "W.CIT.DOW.001",
+      "layer": "W",
+      "category": "CIT",
+      "subcategory": "DOW",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "outdoor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "urban"
+        ],
+        "musicalStyle": [
+          "pop",
+          "electronic"
+        ],
+        "energyLevel": "medium"
+      },
+      "createdAt": "2025-10-09T03:41:31.902Z",
+      "updatedAt": "2025-10-10T20:47:40.892Z"
+    },
+    {
+      "_id": "68e731655d018de8e1806cfb",
+      "name": "W.HOM.LIV.001",
+      "layer": "W",
+      "category": "HOM",
+      "subcategory": "LIV",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "outdoor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "urban"
+        ],
+        "musicalStyle": [
+          "pop",
+          "electronic"
+        ],
+        "energyLevel": "medium"
+      },
+      "createdAt": "2025-10-09T03:52:05.447Z",
+      "updatedAt": "2025-10-10T20:47:40.924Z"
+    },
+    {
+      "_id": "68e734795d018de8e1806d86",
+      "name": "W.HOM.LIV.002",
+      "layer": "W",
+      "category": "HOM",
+      "subcategory": "LIV",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "outdoor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "urban"
+        ],
+        "musicalStyle": [
+          "pop",
+          "electronic"
+        ],
+        "energyLevel": "medium"
+      },
+      "createdAt": "2025-10-09T04:05:13.829Z",
+      "updatedAt": "2025-10-10T20:47:40.955Z"
+    },
+    {
+      "_id": "68e735c45d018de8e1806e19",
+      "name": "L.CAS.WEE.001",
+      "layer": "L",
+      "category": "CAS",
+      "subcategory": "WEE",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "fashion_show"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "street_fashion"
+        ],
+        "musicalStyle": [
+          "pop",
+          "hip_hop"
+        ],
+        "energyLevel": "medium"
+      },
+      "createdAt": "2025-10-09T04:10:44.807Z",
+      "updatedAt": "2025-10-10T20:47:40.695Z"
+    },
+    {
+      "_id": "68e736165d018de8e1806e4a",
+      "name": "W.RUR.BRI.001",
+      "layer": "W",
+      "category": "RUR",
+      "subcategory": "BRI",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "outdoor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "urban"
+        ],
+        "musicalStyle": [
+          "pop",
+          "electronic"
+        ],
+        "energyLevel": "medium"
+      },
+      "createdAt": "2025-10-09T04:12:06.949Z",
+      "updatedAt": "2025-10-10T20:34:30.452Z"
+    },
+    {
+      "_id": "68e7361b5d018de8e1806e4f",
+      "name": "W.CIT.DOW.002",
+      "layer": "W",
+      "category": "CIT",
+      "subcategory": "DOW",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "outdoor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "urban"
+        ],
+        "musicalStyle": [
+          "pop",
+          "electronic"
+        ],
+        "energyLevel": "medium"
+      },
+      "createdAt": "2025-10-09T04:12:11.334Z",
+      "updatedAt": "2025-10-10T20:34:30.421Z"
+    },
+    {
+      "_id": "68e739405d018de8e1806f48",
+      "name": "L.CAS.REL.001",
+      "layer": "L",
+      "category": "CAS",
+      "subcategory": "REL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "fashion_show"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "street_fashion"
+        ],
+        "musicalStyle": [
+          "pop",
+          "hip_hop"
+        ],
+        "energyLevel": "medium"
+      },
+      "createdAt": "2025-10-09T04:25:36.379Z",
+      "updatedAt": "2025-10-10T20:34:29.964Z"
+    },
+    {
+      "_id": "68e73a6e5d018de8e1806f5d",
+      "name": "L.CAS.EVE.001",
+      "layer": "L",
+      "category": "CAS",
+      "subcategory": "EVE",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "fashion_show"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "street_fashion"
+        ],
+        "musicalStyle": [
+          "pop",
+          "hip_hop"
+        ],
+        "energyLevel": "medium"
+      },
+      "createdAt": "2025-10-09T04:30:38.848Z",
+      "updatedAt": "2025-10-10T20:34:29.930Z"
+    },
+    {
+      "_id": "68e73bb75d018de8e1806f8b",
+      "name": "S.TEN.YOU.035",
+      "layer": "S",
+      "category": "TEN",
+      "subcategory": "YOU",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "concert"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "k_pop"
+        ],
+        "musicalStyle": [
+          "pop",
+          "electronic"
+        ],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-09T04:36:07.954Z",
+      "updatedAt": "2025-10-10T20:34:29.430Z"
+    },
+    {
+      "_id": "68e73c085d018de8e1806faa",
+      "name": "S.TEN.YOU.036",
+      "layer": "S",
+      "category": "TEN",
+      "subcategory": "YOU",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "concert"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "k_pop"
+        ],
+        "musicalStyle": [
+          "pop",
+          "electronic"
+        ],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-09T04:37:28.835Z",
+      "updatedAt": "2025-10-10T20:34:29.395Z"
+    },
+    {
+      "_id": "68e80577cb2cf372c7a6f87f",
+      "name": "G.POP.TEE.003",
+      "layer": "G",
+      "category": "POP",
+      "subcategory": "TEE",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "live"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "pop"
+        ],
+        "musicalStyle": [
+          "pop",
+          "electronic"
+        ],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-09T18:56:55.781Z",
+      "updatedAt": "2025-10-10T20:34:29.000Z"
+    },
+    {
+      "_id": "68e84b2990aed1e09c95edc2",
+      "name": "C.FUL.ALL.004:2.009.001.001+3.003.002.001+1.018.003.002+4.022.002.002+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "concert",
+          "fashion_show",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "k_pop"
+        ],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-09T23:54:17.957Z",
+      "updatedAt": "2025-10-10T20:47:56.279Z"
+    },
+    {
+      "_id": "68e865dba6eb15b829fc766b",
+      "name": "C.PAR.2LA.001:2.009.001.001+3.003.002.001",
+      "layer": "C",
+      "category": "PAR",
+      "subcategory": "2LA",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "concert",
+          "fashion_show"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "k_pop"
+        ],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T01:48:11.736Z",
+      "updatedAt": "2025-10-10T20:47:56.217Z"
+    },
+    {
+      "_id": "68e86a96b22580a0dc811739",
+      "name": "C.PAR.2LA.002:3.003.002.001+2.009.001.002",
+      "layer": "C",
+      "category": "PAR",
+      "subcategory": "2LA",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "concert",
+          "fashion_show"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "k_pop"
+        ],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T02:08:22.459Z",
+      "updatedAt": "2025-10-10T20:47:56.159Z"
+    },
+    {
+      "_id": "68e8765d732428ba11275f24",
+      "name": "C.FUL.ALL.005:1.018.003.002+2.009.001.002+3.003.002.001+4.022.002.003+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "concert",
+          "fashion_show",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "k_pop"
+        ],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T02:58:37.931Z",
+      "updatedAt": "2025-10-10T20:47:56.096Z"
+    },
+    {
+      "_id": "68e8794ce83471f51bbd3684",
+      "name": "C.FUL.ALL.006:1.018.003.002+2.020.001.027+3.003.010.002+4.022.002.003+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T03:11:08.183Z",
+      "updatedAt": "2025-10-10T20:47:56.020Z"
+    },
+    {
+      "_id": "68e87977e83471f51bbd36a6",
+      "name": "C.FUL.ALL.007:1.018.003.002+2.009.001.004+3.003.002.001+4.022.002.003+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "fashion_show",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T03:11:51.792Z",
+      "updatedAt": "2025-10-10T20:47:55.961Z"
+    },
+    {
+      "_id": "68e87deae83471f51bbd3716",
+      "name": "C.FUL.ALL.008:1.018.003.002+2.009.001.005+3.003.002.001+4.022.002.003+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "fashion_show",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T03:30:50.595Z",
+      "updatedAt": "2025-10-10T20:47:55.901Z"
+    },
+    {
+      "_id": "68e8838e857213fc2aa43dad",
+      "name": "C.FUL.ALL.009:1.018.003.002+2.020.001.027+3.003.004.001+4.022.002.003+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "fashion_show",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T03:54:54.541Z",
+      "updatedAt": "2025-10-10T20:47:55.841Z"
+    },
+    {
+      "_id": "68e88416857213fc2aa43e2d",
+      "name": "C.FUL.ALL.010:1.018.003.002+2.020.001.027+3.013.001.001+4.022.002.003+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T03:57:10.144Z",
+      "updatedAt": "2025-10-10T20:47:55.782Z"
+    },
+    {
+      "_id": "68e8844c857213fc2aa43e4b",
+      "name": "C.FUL.ALL.011:2.009.001.001+1.018.003.002+3.003.010.002+4.022.002.003+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "concert",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "k_pop"
+        ],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T03:58:04.007Z",
+      "updatedAt": "2025-10-10T20:47:55.719Z"
+    },
+    {
+      "_id": "68e884e3857213fc2aa43ec7",
+      "name": "C.FUL.ALL.012:2.009.001.002+1.018.003.002+4.022.002.003+5.015.001.003+3.003.002.001",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "concert",
+          "fashion_show",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "k_pop"
+        ],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T04:00:35.074Z",
+      "updatedAt": "2025-10-10T20:47:55.654Z"
+    },
+    {
+      "_id": "68e8851c857213fc2aa43ee6",
+      "name": "C.FUL.ALL.013:1.018.003.002+2.009.001.004+3.003.010.002+4.022.002.003+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T04:01:32.575Z",
+      "updatedAt": "2025-10-10T20:47:55.594Z"
+    },
+    {
+      "_id": "68e88555857213fc2aa43f05",
+      "name": "C.FUL.ALL.014:1.018.003.002+2.009.001.005+3.003.010.002+4.022.002.003+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T04:02:29.353Z",
+      "updatedAt": "2025-10-10T20:47:55.532Z"
+    },
+    {
+      "_id": "68e8860c857213fc2aa43f27",
+      "name": "C.FUL.ALL.015:1.018.003.002+2.009.001.001+3.003.004.001+4.022.002.003+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "concert",
+          "fashion_show",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "k_pop"
+        ],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T04:05:32.369Z",
+      "updatedAt": "2025-10-10T20:47:55.470Z"
+    },
+    {
+      "_id": "68e88964857213fc2aa43f5e",
+      "name": "C.FUL.ALL.016:1.018.003.002+2.020.001.027+3.003.002.001+4.022.002.003+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "fashion_show",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T04:19:48.266Z",
+      "updatedAt": "2025-10-10T20:47:55.409Z"
+    },
+    {
+      "_id": "68e88bc5857213fc2aa43f7d",
+      "name": "C.FUL.ALL.017:1.018.003.002+2.009.001.002+3.003.004.001+4.022.002.003+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "concert",
+          "fashion_show",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "k_pop"
+        ],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T04:29:57.710Z",
+      "updatedAt": "2025-10-10T20:47:55.350Z"
+    },
+    {
+      "_id": "68e88c00857213fc2aa43f9c",
+      "name": "C.FUL.ALL.018:1.018.003.002+2.009.001.004+3.003.004.001+4.022.002.003+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "fashion_show",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T04:30:56.995Z",
+      "updatedAt": "2025-10-10T20:47:55.289Z"
+    },
+    {
+      "_id": "68e88c3d857213fc2aa43fbb",
+      "name": "C.FUL.ALL.019:1.018.003.002+2.009.001.005+3.003.004.001+4.022.002.003+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "fashion_show",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T04:31:57.749Z",
+      "updatedAt": "2025-10-10T20:47:55.227Z"
+    },
+    {
+      "_id": "68e88caf857213fc2aa43fda",
+      "name": "C.FUL.ALL.020:1.018.003.002+2.009.001.001+3.013.001.001+4.022.002.003+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "concert",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "k_pop"
+        ],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T04:33:51.330Z",
+      "updatedAt": "2025-10-10T20:47:55.169Z"
+    },
+    {
+      "_id": "68e88cdf857213fc2aa43ff9",
+      "name": "C.FUL.ALL.021:1.018.003.002+2.009.001.002+3.013.001.001+4.022.002.003+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "concert",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "k_pop"
+        ],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T04:34:39.127Z",
+      "updatedAt": "2025-10-10T20:47:55.106Z"
+    },
+    {
+      "_id": "68e88d18857213fc2aa4401d",
+      "name": "C.FUL.ALL.022:1.018.003.002+2.009.001.004+3.013.001.001+4.022.002.003+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T04:35:36.642Z",
+      "updatedAt": "2025-10-10T20:47:55.040Z"
+    },
+    {
+      "_id": "68e88d7e857213fc2aa4405b",
+      "name": "C.FUL.ALL.023:1.018.003.002+2.009.001.005+3.013.001.001+4.022.002.003+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T04:37:18.480Z",
+      "updatedAt": "2025-10-10T20:47:54.980Z"
+    },
+    {
+      "_id": "68e892dd857213fc2aa44106",
+      "name": "C.FUL.ALL.024:1.018.003.002+2.020.001.032+3.003.010.002+4.022.002.003+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T05:00:13.417Z",
+      "updatedAt": "2025-10-10T20:47:54.920Z"
+    },
+    {
+      "_id": "68e893e0857213fc2aa44171",
+      "name": "C.FUL.ALL.025:1.018.003.002+2.020.001.032+3.003.004.001+4.022.002.003+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "fashion_show",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T05:04:32.886Z",
+      "updatedAt": "2025-10-10T20:47:54.860Z"
+    },
+    {
+      "_id": "68e8947a857213fc2aa4419e",
+      "name": "C.FUL.ALL.026:1.018.003.002+2.020.001.032+3.013.001.001+4.022.002.003+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T05:07:06.663Z",
+      "updatedAt": "2025-10-10T20:47:54.798Z"
+    },
+    {
+      "_id": "68e8956f857213fc2aa441db",
+      "name": "C.FUL.ALL.027:1.018.003.002+2.020.001.032+3.003.002.001+4.022.002.003+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "fashion_show",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T05:11:11.101Z",
+      "updatedAt": "2025-10-10T20:47:54.736Z"
+    },
+    {
+      "_id": "68e898d9857213fc2aa44202",
+      "name": "C.FUL.ALL.028:1.018.003.002+2.009.001.001+3.013.001.001+4.022.002.007+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "concert",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "k_pop"
+        ],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T05:25:45.754Z",
+      "updatedAt": "2025-10-10T20:47:54.676Z"
+    },
+    {
+      "_id": "68e89927857213fc2aa44221",
+      "name": "C.FUL.ALL.029:1.018.003.002+2.009.001.002+3.013.001.001+4.022.002.007+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "concert",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "k_pop"
+        ],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T05:27:03.637Z",
+      "updatedAt": "2025-10-10T20:47:54.614Z"
+    },
+    {
+      "_id": "68e89963857213fc2aa44240",
+      "name": "C.FUL.ALL.030:1.018.003.002+2.009.001.004+3.013.001.001+4.022.002.007+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T05:28:03.126Z",
+      "updatedAt": "2025-10-10T20:47:54.546Z"
+    },
+    {
+      "_id": "68e899a8857213fc2aa4425f",
+      "name": "C.FUL.ALL.031:1.018.003.002+2.009.001.005+3.013.001.001+4.022.002.007+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T05:29:12.247Z",
+      "updatedAt": "2025-10-10T20:47:54.484Z"
+    },
+    {
+      "_id": "68e89a2b857213fc2aa44285",
+      "name": "C.FUL.ALL.032:1.018.003.002+2.009.001.001+3.003.010.002+4.022.002.007+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "concert",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "k_pop"
+        ],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T05:31:23.698Z",
+      "updatedAt": "2025-10-10T20:47:54.419Z"
+    },
+    {
+      "_id": "68e89a7a857213fc2aa442a8",
+      "name": "C.FUL.ALL.033:1.018.003.002+2.009.001.002+3.003.010.002+4.022.002.007+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "concert",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "k_pop"
+        ],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T05:32:42.875Z",
+      "updatedAt": "2025-10-10T20:47:54.355Z"
+    },
+    {
+      "_id": "68e89ac3857213fc2aa442c7",
+      "name": "C.FUL.ALL.034:1.018.003.002+2.009.001.004+3.003.010.002+4.022.002.007+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T05:33:55.463Z",
+      "updatedAt": "2025-10-10T20:47:54.285Z"
+    },
+    {
+      "_id": "68e89b20857213fc2aa442e6",
+      "name": "C.FUL.ALL.035:1.018.003.002+2.009.001.005+3.003.010.002+4.022.002.007+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T05:35:28.133Z",
+      "updatedAt": "2025-10-10T20:47:54.224Z"
+    },
+    {
+      "_id": "68e89e5b857213fc2aa4430b",
+      "name": "C.FUL.ALL.036:1.018.003.002+2.009.001.001+3.003.004.001+4.022.002.007+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "concert",
+          "fashion_show",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "k_pop"
+        ],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T05:49:15.778Z",
+      "updatedAt": "2025-10-10T20:47:54.163Z"
+    },
+    {
+      "_id": "68e89ed2857213fc2aa4432a",
+      "name": "C.FUL.ALL.037:1.018.003.002+2.009.001.002+3.003.004.001+4.022.002.007+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "concert",
+          "fashion_show",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "k_pop"
+        ],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T05:51:14.040Z",
+      "updatedAt": "2025-10-10T20:47:54.099Z"
+    },
+    {
+      "_id": "68e89f15857213fc2aa44349",
+      "name": "C.FUL.ALL.038:1.018.003.002+2.009.001.004+3.003.004.001+4.022.002.007+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "fashion_show",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T05:52:21.531Z",
+      "updatedAt": "2025-10-10T20:47:54.038Z"
+    },
+    {
+      "_id": "68e89f55857213fc2aa44368",
+      "name": "C.FUL.ALL.039:1.018.003.002+2.009.001.005+3.003.004.001+4.022.002.007+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "fashion_show",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T05:53:25.012Z",
+      "updatedAt": "2025-10-10T20:47:53.979Z"
+    },
+    {
+      "_id": "68e89fd5857213fc2aa4438b",
+      "name": "C.FUL.ALL.040:1.018.003.002+2.009.001.001+3.003.002.001+4.022.002.007+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "concert",
+          "fashion_show",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "k_pop"
+        ],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T05:55:33.731Z",
+      "updatedAt": "2025-10-10T20:47:53.911Z"
+    },
+    {
+      "_id": "68e8a00e857213fc2aa443aa",
+      "name": "C.FUL.ALL.041:1.018.003.002+2.009.001.002+3.003.002.001+4.022.002.007+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "concert",
+          "fashion_show",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "k_pop"
+        ],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T05:56:30.838Z",
+      "updatedAt": "2025-10-10T20:47:53.851Z"
+    },
+    {
+      "_id": "68e8a067857213fc2aa443c9",
+      "name": "C.FUL.ALL.042:1.018.003.002+2.009.001.004+3.003.002.001+4.022.002.007+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "fashion_show",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T05:57:59.408Z",
+      "updatedAt": "2025-10-10T20:47:53.792Z"
+    },
+    {
+      "_id": "68e8a09b857213fc2aa443e8",
+      "name": "C.FUL.ALL.043:1.018.003.002+2.009.001.005+3.003.002.001+4.022.002.007+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "fashion_show",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T05:58:51.259Z",
+      "updatedAt": "2025-10-10T20:47:53.727Z"
+    },
+    {
+      "_id": "68e8cb74857213fc2aa4446e",
+      "name": "C.FUL.ALL.044:1.018.003.002+2.020.001.031+3.003.010.002+4.022.002.003+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T09:01:40.091Z",
+      "updatedAt": "2025-10-10T20:47:53.669Z"
+    },
+    {
+      "_id": "68e8cecd857213fc2aa444c9",
+      "name": "C.FUL.ALL.045:1.018.003.002+2.020.001.031+3.003.004.001+4.022.002.003+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "fashion_show",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T09:15:57.041Z",
+      "updatedAt": "2025-10-10T20:47:53.609Z"
+    },
+    {
+      "_id": "68e8d052857213fc2aa4450c",
+      "name": "C.FUL.ALL.046:1.018.003.002+2.020.001.031+3.013.001.001+4.022.002.003+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T09:22:26.643Z",
+      "updatedAt": "2025-10-10T20:47:53.543Z"
+    },
+    {
+      "_id": "68e8d336857213fc2aa44545",
+      "name": "C.FUL.ALL.047:1.018.003.002+2.020.001.031+3.003.002.001+4.022.002.003+5.015.001.003",
+      "layer": "C",
+      "category": "FUL",
+      "subcategory": "ALL",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "fashion_show",
+          "dance_floor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults",
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [],
+        "musicalStyle": [],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T09:34:46.200Z",
+      "updatedAt": "2025-10-10T20:47:53.483Z"
+    },
+    {
+      "_id": "68e970f7cff37267aafafdea",
+      "name": "C.TEST.001:1.001.001.001+2.001.001.001+3.001.001.001+4.001.001.001+5.001.001.001",
+      "layer": "C",
+      "category": "TEST",
+      "subcategory": "001",
+      "algorhythmMetadata": {
+        "performanceContext": [
+          "studio",
+          "live",
+          "concert",
+          "fashion_show",
+          "dance_floor",
+          "outdoor"
+        ],
+        "targetAudience": [
+          "teens",
+          "young_adults"
+        ],
+        "culturalContext": [
+          "western",
+          "pop",
+          "k_pop"
+        ],
+        "musicalStyle": [
+          "pop",
+          "electronic"
+        ],
+        "energyLevel": "high"
+      },
+      "createdAt": "2025-10-10T20:47:51.122Z",
+      "updatedAt": "2025-10-10T20:47:53.422Z"
+    }
+  ]
+}

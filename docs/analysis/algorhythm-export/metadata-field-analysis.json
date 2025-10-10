@@ -1,0 +1,204 @@
+{
+  "exportDate": "2025-10-10T21:03:06.205Z",
+  "description": "Metadata field distribution analysis for index optimization",
+  "layerAnalysis": {
+    "G": {
+      "count": 5,
+      "performanceContext": {
+        "studio": 5,
+        "live": 5
+      },
+      "targetAudience": {
+        "teens": 5,
+        "young_adults": 5
+      },
+      "culturalContext": {
+        "western": 5,
+        "pop": 5
+      },
+      "musicalStyle": {
+        "pop": 5,
+        "electronic": 5
+      },
+      "energyLevel": {
+        "high": 5
+      }
+    },
+    "S": {
+      "count": 5,
+      "performanceContext": {
+        "studio": 5,
+        "concert": 5
+      },
+      "targetAudience": {
+        "teens": 5,
+        "young_adults": 5
+      },
+      "culturalContext": {
+        "western": 5,
+        "k_pop": 5
+      },
+      "musicalStyle": {
+        "pop": 5,
+        "electronic": 5
+      },
+      "energyLevel": {
+        "high": 5
+      }
+    },
+    "L": {
+      "count": 5,
+      "performanceContext": {
+        "studio": 5,
+        "fashion_show": 5
+      },
+      "targetAudience": {
+        "teens": 5,
+        "young_adults": 5
+      },
+      "culturalContext": {
+        "western": 5,
+        "street_fashion": 5
+      },
+      "musicalStyle": {
+        "pop": 5,
+        "hip_hop": 5
+      },
+      "energyLevel": {
+        "medium": 5
+      }
+    },
+    "M": {
+      "count": 5,
+      "performanceContext": {
+        "studio": 5,
+        "dance_floor": 5
+      },
+      "targetAudience": {
+        "teens": 5,
+        "young_adults": 5
+      },
+      "culturalContext": {
+        "western": 5,
+        "urban": 5
+      },
+      "musicalStyle": {
+        "pop": 5,
+        "hip_hop": 5
+      },
+      "energyLevel": {
+        "high": 5
+      }
+    },
+    "W": {
+      "count": 5,
+      "performanceContext": {
+        "studio": 5,
+        "outdoor": 5
+      },
+      "targetAudience": {
+        "teens": 5,
+        "young_adults": 5
+      },
+      "culturalContext": {
+        "western": 5,
+        "urban": 5
+      },
+      "musicalStyle": {
+        "pop": 5,
+        "electronic": 5
+      },
+      "energyLevel": {
+        "medium": 5
+      }
+    }
+  },
+  "fieldDistribution": {
+    "performanceContext": {
+      "studio": 25,
+      "live": 5,
+      "concert": 5,
+      "fashion_show": 5,
+      "dance_floor": 5,
+      "outdoor": 5
+    },
+    "targetAudience": {
+      "teens": 25,
+      "young_adults": 25
+    },
+    "culturalContext": {
+      "western": 25,
+      "pop": 5,
+      "k_pop": 5,
+      "street_fashion": 5,
+      "urban": 10
+    },
+    "musicalStyle": {
+      "pop": 25,
+      "electronic": 15,
+      "hip_hop": 10
+    },
+    "energyLevel": {
+      "high": 15,
+      "medium": 10
+    }
+  },
+  "synergyAnalysis": {
+    "synergyScores": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "synergyBreakdown": {
+      "visualCohesion": [],
+      "culturalAlignment": [],
+      "energyBalance": [],
+      "audienceMatch": [],
+      "thematicCoherence": []
+    }
+  }
+}
