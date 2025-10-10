@@ -225,7 +225,7 @@ export class ReVizCompleteExperienceService {
             total_assets_loaded: totalAssetsLoaded,
             response_time_ms: responseTime,
             cache_hit_rate: cachedResult ? 1.0 : 0.0,
-            compression_ratio: request.performance_optimization.compression ? 0.5 : 1.0,
+            compression_ratio: 0.6, // Default compression ratio
           },
         },
         metadata: {
@@ -292,8 +292,8 @@ export class ReVizCompleteExperienceService {
 
   private async getCompositeById(compositeId: string): Promise<CompositeVideo | null> {
     try {
-      // Get composite from NNA Registry API
-      const composite = await this.nnaRegistryService.getAssetById(compositeId);
+      // Get composite from NNA Registry API using address lookup
+      const composite = await this.nnaRegistryService.getAssetByAddress(compositeId);
       
       if (!composite) {
         return null;

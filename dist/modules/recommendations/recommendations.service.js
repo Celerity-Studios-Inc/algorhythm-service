@@ -39,17 +39,7 @@ let RecommendationsService = RecommendationsService_1 = class RecommendationsSer
     }
     async getTemplateRecommendation(request) {
         const startTime = Date.now();
-        try {
-            const instantResult = await this.instantRecommendationsService.getTemplateRecommendation(request);
-            if (instantResult.cache_hit) {
-                const responseTime = Date.now() - startTime;
-                this.logger.debug(`⚡ Instant service response: ${responseTime}ms`);
-                return instantResult;
-            }
-        }
-        catch (error) {
-            this.logger.warn('Instant service failed, falling back to standard service:', error.message);
-        }
+        this.logger.debug('🚫 Instant service disabled - using main service for real GCP URLs');
         const primaryCacheKey = `${cache_keys_1.CACHE_KEYS.TEMPLATE_RECOMMENDATION}:${request.song_id}:${JSON.stringify(request.user_context)}`;
         const primaryCachedResult = await this.cacheService.get(primaryCacheKey);
         if (primaryCachedResult) {
