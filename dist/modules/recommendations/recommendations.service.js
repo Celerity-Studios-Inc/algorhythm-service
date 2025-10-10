@@ -102,9 +102,9 @@ let RecommendationsService = RecommendationsService_1 = class RecommendationsSer
             template_name: template.name || `Template ${index + 1}`,
             nna_address: template.nna_address,
             compatibility_score: 0.8,
-            gcp_storage_url: template.gcpStorageUrl || `https://storage.googleapis.com/nna_registry_assets_dev/composites/${template.nna_address}/full.mp4`,
-            thumbnail_url: template.thumbnailUrl || `https://storage.googleapis.com/nna_registry_assets_dev/composites/${template.nna_address}/thumb.jpg`,
-            preview_url: template.previewUrl || `https://storage.googleapis.com/nna_registry_assets_dev/composites/${template.nna_address}/preview.mp4`,
+            gcp_storage_url: template.gcpStorageUrl || null,
+            thumbnail_url: template.thumbnailUrl || this.generateThumbnailUrl(template.gcpStorageUrl, template.nna_address),
+            preview_url: template.previewUrl || this.generatePreviewUrl(template.gcpStorageUrl, template.nna_address),
             components: {
                 song_id: song.nna_address,
                 star_id: template.star_id || '2.009.002.018',
@@ -272,6 +272,18 @@ let RecommendationsService = RecommendationsService_1 = class RecommendationsSer
                 description: asset.description,
             },
         };
+    }
+    generateThumbnailUrl(gcpStorageUrl, nnaAddress) {
+        if (gcpStorageUrl) {
+            return gcpStorageUrl.replace(/\.mp4$/, '.jpg');
+        }
+        return null;
+    }
+    generatePreviewUrl(gcpStorageUrl, nnaAddress) {
+        if (gcpStorageUrl) {
+            return gcpStorageUrl.replace(/\.mp4$/, '_preview.mp4');
+        }
+        return null;
     }
 };
 exports.RecommendationsService = RecommendationsService;

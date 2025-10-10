@@ -131,8 +131,8 @@ export class RecommendationsService {
       template_name: template.name || `Template ${index + 1}`,
       nna_address: template.nna_address,
       compatibility_score: 0.8, // Default high score for all templates
-      // 🔧 FIX: Add GCP URLs for ReViz developers to display assets
-      gcp_storage_url: template.gcpStorageUrl || `https://storage.googleapis.com/nna_registry_assets_dev/composites/${template.nna_address}/full.mp4`,
+      // 🔧 FIX: Use REAL GCP URLs from NNA Registry API (not hallucinated)
+      gcp_storage_url: template.gcpStorageUrl || null, // Only use real URLs, don't generate fake ones
       thumbnail_url: template.thumbnailUrl || this.generateThumbnailUrl(template.gcpStorageUrl, template.nna_address),
       preview_url: template.previewUrl || this.generatePreviewUrl(template.gcpStorageUrl, template.nna_address),
       components: {
@@ -391,24 +391,24 @@ export class RecommendationsService {
   }
 
   /**
-   * Generate thumbnail URL from GCP storage URL
+   * Generate thumbnail URL from REAL GCP storage URL
    */
-  private generateThumbnailUrl(gcpStorageUrl: string, nnaAddress: string): string {
+  private generateThumbnailUrl(gcpStorageUrl: string, nnaAddress: string): string | null {
     if (gcpStorageUrl) {
-      // Replace .mp4 with .jpg for thumbnail
+      // Replace .mp4 with .jpg for thumbnail using the real canonical URL
       return gcpStorageUrl.replace(/\.mp4$/, '.jpg');
     }
-    return `https://storage.googleapis.com/nna_registry_assets_dev/composites/${nnaAddress}/thumb.jpg`;
+    return null; // Don't generate fake URLs
   }
 
   /**
-   * Generate preview URL from GCP storage URL
+   * Generate preview URL from REAL GCP storage URL
    */
-  private generatePreviewUrl(gcpStorageUrl: string, nnaAddress: string): string {
+  private generatePreviewUrl(gcpStorageUrl: string, nnaAddress: string): string | null {
     if (gcpStorageUrl) {
-      // Replace .mp4 with _preview.mp4 for preview
+      // Replace .mp4 with _preview.mp4 for preview using the real canonical URL
       return gcpStorageUrl.replace(/\.mp4$/, '_preview.mp4');
     }
-    return `https://storage.googleapis.com/nna_registry_assets_dev/composites/${nnaAddress}/preview.mp4`;
+    return null; // Don't generate fake URLs
   }
 }

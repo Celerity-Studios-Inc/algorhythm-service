@@ -40,4 +40,6 @@ export declare class RecommendationsService {
     private mapVariationLayerToNnaLayer;
     private extractLayerAssetId;
     private mapAssetToLayerVariation;
+    private generateThumbnailUrl;
+    private generatePreviewUrl;
 }

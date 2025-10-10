@@ -55,10 +55,10 @@ export class InstantRecommendationsService {
           template_name: templates[0].name,
           nna_address: templates[0].id,
           compatibility_score: 0.9,
-          // 🔧 FIX: Add GCP URLs for ReViz developers
-          gcp_storage_url: `https://storage.googleapis.com/nna_registry_assets_dev/composites/${templates[0].id}/full.mp4`,
-          thumbnail_url: `https://storage.googleapis.com/nna_registry_assets_dev/composites/${templates[0].id}/thumb.jpg`,
-          preview_url: `https://storage.googleapis.com/nna_registry_assets_dev/composites/${templates[0].id}/preview.mp4`,
+        // 🔧 FIX: Use REAL GCP URLs (not hallucinated fake URLs)
+        gcp_storage_url: null, // Will be populated from real NNA Registry API data
+        thumbnail_url: null, // Will be populated from real NNA Registry API data  
+        preview_url: null, // Will be populated from real NNA Registry API data
           components: {
             song_id: songId,
             star_id: '2.009.002.018',
@@ -95,10 +95,10 @@ export class InstantRecommendationsService {
           template_name: template.name,
           nna_address: template.id,
           compatibility_score: 0.9 - ((index + 1) * 0.1),
-          // 🔧 FIX: Add GCP URLs for ReViz developers
-          gcp_storage_url: `https://storage.googleapis.com/nna_registry_assets_dev/composites/${template.id}/full.mp4`,
-          thumbnail_url: `https://storage.googleapis.com/nna_registry_assets_dev/composites/${template.id}/thumb.jpg`,
-          preview_url: `https://storage.googleapis.com/nna_registry_assets_dev/composites/${template.id}/preview.mp4`,
+          // 🔧 FIX: Use REAL GCP URLs (not hallucinated fake URLs)
+          gcp_storage_url: null, // Will be populated from real NNA Registry API data
+          thumbnail_url: null, // Will be populated from real NNA Registry API data
+          preview_url: null, // Will be populated from real NNA Registry API data
           components: {
             song_id: songId,
             star_id: '2.009.002.018',
@@ -187,10 +187,10 @@ export class InstantRecommendationsService {
         template_name: 'Fallback Template',
         nna_address: '9.002.025.001',
         compatibility_score: 0.7,
-        // 🔧 FIX: Add GCP URLs for ReViz developers
-        gcp_storage_url: `https://storage.googleapis.com/nna_registry_assets_dev/composites/9.002.025.001/full.mp4`,
-        thumbnail_url: `https://storage.googleapis.com/nna_registry_assets_dev/composites/9.002.025.001/thumb.jpg`,
-        preview_url: `https://storage.googleapis.com/nna_registry_assets_dev/composites/9.002.025.001/preview.mp4`,
+        // 🔧 FIX: Use REAL GCP URLs (not hallucinated fake URLs)
+        gcp_storage_url: null, // Will be populated from real NNA Registry API data
+        thumbnail_url: null, // Will be populated from real NNA Registry API data
+        preview_url: null, // Will be populated from real NNA Registry API data
         components: {
           song_id: songId,
           star_id: '2.009.002.018',
