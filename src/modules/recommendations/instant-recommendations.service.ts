@@ -24,8 +24,8 @@ export class InstantRecommendationsService {
     this.precomputeResponses();
   }
 
-  private async precomputeResponses() {
-    this.logger.log('🚀 Pre-computing instant responses with REAL data from NNA Registry API');
+  private precomputeResponses() {
+    this.logger.log('🚀 Pre-computing instant responses with fallback data');
 
     // Known songs from our database
     const songs = [
@@ -42,34 +42,16 @@ export class InstantRecommendationsService {
       '1.001.003.001'  // G.AFR.AMA.001
     ];
 
-    // 🔧 FIX: Fetch REAL templates from NNA Registry API instead of mock data
-    let templates;
-    try {
-      // Get real composite templates for the primary song
-      const realTemplates = await this.nnaRegistryService.getFullCompositesBySong('1.018.003.002');
-      this.logger.log(`✅ Fetched ${realTemplates.length} real composite templates from NNA Registry API`);
-      
-      // Use real templates with actual GCP URLs
-      templates = realTemplates.slice(0, 5).map(template => ({
-        id: template._id || template.nna_address,
-        name: template.name || `C.FUL.ALL.${template.nna_address.split('.').pop()}`,
-        gcpStorageUrl: template.gcpStorageUrl,
-        thumbnailUrl: template.thumbnailUrl,
-        previewUrl: template.previewUrl,
-      }));
-      
-      this.logger.log(`🎬 Using ${templates.length} real templates with GCP URLs`);
-    } catch (error) {
-      this.logger.warn('⚠️ Failed to fetch real templates, using fallback mock data');
-      // Fallback to mock data if NNA Registry API fails
-      templates = [
-        { id: '9.002.025.025', name: 'C.FUL.ALL.025', gcpStorageUrl: null, thumbnailUrl: null, previewUrl: null },
-        { id: '9.002.025.003', name: 'C.FUL.ALL.003', gcpStorageUrl: null, thumbnailUrl: null, previewUrl: null },
-        { id: '9.002.025.030', name: 'C.FUL.ALL.030', gcpStorageUrl: null, thumbnailUrl: null, previewUrl: null },
-        { id: '9.002.025.017', name: 'C.FUL.ALL.017', gcpStorageUrl: null, thumbnailUrl: null, previewUrl: null },
-        { id: '9.002.025.018', name: 'C.FUL.ALL.018', gcpStorageUrl: null, thumbnailUrl: null, previewUrl: null }
-      ];
-    }
+    // 🔧 FIX: Use fallback mock data to avoid async constructor issues
+    const templates = [
+      { id: '9.002.025.025', name: 'C.FUL.ALL.025', gcpStorageUrl: null, thumbnailUrl: null, previewUrl: null },
+      { id: '9.002.025.003', name: 'C.FUL.ALL.003', gcpStorageUrl: null, thumbnailUrl: null, previewUrl: null },
+      { id: '9.002.025.030', name: 'C.FUL.ALL.030', gcpStorageUrl: null, thumbnailUrl: null, previewUrl: null },
+      { id: '9.002.025.017', name: 'C.FUL.ALL.017', gcpStorageUrl: null, thumbnailUrl: null, previewUrl: null },
+      { id: '9.002.025.018', name: 'C.FUL.ALL.018', gcpStorageUrl: null, thumbnailUrl: null, previewUrl: null }
+    ];
+    
+    this.logger.log(`🎬 Using ${templates.length} fallback templates (instant service disabled)`);
 
     for (const songId of songs) {
       const response = {
@@ -78,10 +60,10 @@ export class InstantRecommendationsService {
           template_name: templates[0].name,
           nna_address: templates[0].id,
           compatibility_score: 0.9,
-        // 🔧 FIX: Use REAL GCP URLs from NNA Registry API
+        // 🔧 FIX: Use fallback data (instant service disabled)
         gcp_storage_url: templates[0].gcpStorageUrl || null,
-        thumbnail_url: templates[0].thumbnailUrl || this.generateThumbnailUrl(templates[0].gcpStorageUrl),
-        preview_url: templates[0].previewUrl || this.generatePreviewUrl(templates[0].gcpStorageUrl),
+        thumbnail_url: templates[0].thumbnailUrl || null,
+        preview_url: templates[0].previewUrl || null,
           components: {
             song_id: songId,
             star_id: '2.009.002.018',
@@ -118,10 +100,10 @@ export class InstantRecommendationsService {
           template_name: template.name,
           nna_address: template.id,
           compatibility_score: 0.9 - ((index + 1) * 0.1),
-          // 🔧 FIX: Use REAL GCP URLs from NNA Registry API
+          // 🔧 FIX: Use fallback data (instant service disabled)
           gcp_storage_url: template.gcpStorageUrl || null,
-          thumbnail_url: template.thumbnailUrl || this.generateThumbnailUrl(template.gcpStorageUrl),
-          preview_url: template.previewUrl || this.generatePreviewUrl(template.gcpStorageUrl),
+          thumbnail_url: template.thumbnailUrl || null,
+          preview_url: template.previewUrl || null,
           components: {
             song_id: songId,
             star_id: '2.009.002.018',
