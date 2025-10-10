@@ -45,17 +45,9 @@ export class RecommendationsService {
   }> {
     const startTime = Date.now();
     
-    // PERFORMANCE OPTIMIZATION: Try instant service first for known songs
-    try {
-      const instantResult = await this.instantRecommendationsService.getTemplateRecommendation(request);
-      if (instantResult.cache_hit) {
-        const responseTime = Date.now() - startTime;
-        this.logger.debug(`⚡ Instant service response: ${responseTime}ms`);
-        return instantResult;
-      }
-    } catch (error) {
-      this.logger.warn('Instant service failed, falling back to standard service:', error.message);
-    }
+    // 🔧 TEMPORARY FIX: Disable instant service to force real NNA Registry API calls
+    // TODO: Fix instant service to use real data from NNA Registry API
+    this.logger.debug('🚫 Instant service disabled - using main service for real GCP URLs');
     
     // Check cache first
     const primaryCacheKey = `${CACHE_KEYS.TEMPLATE_RECOMMENDATION}:${request.song_id}:${JSON.stringify(request.user_context)}`;

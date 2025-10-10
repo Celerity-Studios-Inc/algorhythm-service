@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { TemplateRecommendationDto } from './dto/template-recommendation.dto';
 import { TemplateRecommendation } from './interfaces/recommendation.interface';
+import { NnaRegistryService } from '../nna-integration/nna-registry.service';
 
 /**
  * Instant Recommendations Service
@@ -17,12 +18,14 @@ export class InstantRecommendationsService {
   private readonly logger = new Logger(InstantRecommendationsService.name);
   private readonly cache = new Map<string, any>();
 
-  constructor() {
+  constructor(
+    private readonly nnaRegistryService: NnaRegistryService,
+  ) {
     this.precomputeResponses();
   }
 
-  private precomputeResponses() {
-    this.logger.log('🚀 Pre-computing instant responses for real-time performance');
+  private async precomputeResponses() {
+    this.logger.log('🚀 Pre-computing instant responses with REAL data from NNA Registry API');
 
     // Known songs from our database
     const songs = [
@@ -39,14 +42,34 @@ export class InstantRecommendationsService {
       '1.001.003.001'  // G.AFR.AMA.001
     ];
 
-    // Pre-computed templates
-    const templates = [
-      { id: '9.002.025.025', name: 'C.FUL.ALL.025' },
-      { id: '9.002.025.003', name: 'C.FUL.ALL.003' },
-      { id: '9.002.025.030', name: 'C.FUL.ALL.030' },
-      { id: '9.002.025.017', name: 'C.FUL.ALL.017' },
-      { id: '9.002.025.018', name: 'C.FUL.ALL.018' }
-    ];
+    // 🔧 FIX: Fetch REAL templates from NNA Registry API instead of mock data
+    let templates;
+    try {
+      // Get real composite templates for the primary song
+      const realTemplates = await this.nnaRegistryService.getFullCompositesBySong('1.018.003.002');
+      this.logger.log(`✅ Fetched ${realTemplates.length} real composite templates from NNA Registry API`);
+      
+      // Use real templates with actual GCP URLs
+      templates = realTemplates.slice(0, 5).map(template => ({
+        id: template._id || template.nna_address,
+        name: template.name || `C.FUL.ALL.${template.nna_address.split('.').pop()}`,
+        gcpStorageUrl: template.gcpStorageUrl,
+        thumbnailUrl: template.thumbnailUrl,
+        previewUrl: template.previewUrl,
+      }));
+      
+      this.logger.log(`🎬 Using ${templates.length} real templates with GCP URLs`);
+    } catch (error) {
+      this.logger.warn('⚠️ Failed to fetch real templates, using fallback mock data');
+      // Fallback to mock data if NNA Registry API fails
+      templates = [
+        { id: '9.002.025.025', name: 'C.FUL.ALL.025', gcpStorageUrl: null, thumbnailUrl: null, previewUrl: null },
+        { id: '9.002.025.003', name: 'C.FUL.ALL.003', gcpStorageUrl: null, thumbnailUrl: null, previewUrl: null },
+        { id: '9.002.025.030', name: 'C.FUL.ALL.030', gcpStorageUrl: null, thumbnailUrl: null, previewUrl: null },
+        { id: '9.002.025.017', name: 'C.FUL.ALL.017', gcpStorageUrl: null, thumbnailUrl: null, previewUrl: null },
+        { id: '9.002.025.018', name: 'C.FUL.ALL.018', gcpStorageUrl: null, thumbnailUrl: null, previewUrl: null }
+      ];
+    }
 
     for (const songId of songs) {
       const response = {
