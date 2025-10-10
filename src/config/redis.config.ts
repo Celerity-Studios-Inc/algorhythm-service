@@ -9,7 +9,9 @@ export const REDIS_CLIENT = 'REDIS_CLIENT';
     {
       provide: REDIS_CLIENT,
       useFactory: (configService: ConfigService) => {
-        const redisUrl = configService.get<string>('REDIS_URL');
+        const redisUrl = configService.get<string>('REDIS_URL') || 'redis://localhost:6379';
+        console.log('🔴 Redis URL:', redisUrl.includes('localhost') ? 'fallback-local' : 'cloud-redis');
+        
         const redis = new Redis(redisUrl, {
           maxRetriesPerRequest: 3,
           keyPrefix: 'algorhythm:',

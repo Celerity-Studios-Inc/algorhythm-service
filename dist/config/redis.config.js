@@ -20,7 +20,8 @@ exports.RedisModule = RedisModule = __decorate([
             {
                 provide: exports.REDIS_CLIENT,
                 useFactory: (configService) => {
-                    const redisUrl = configService.get('REDIS_URL');
+                    const redisUrl = configService.get('REDIS_URL') || 'redis://localhost:6379';
+                    console.log('🔴 Redis URL:', redisUrl.includes('localhost') ? 'fallback-local' : 'cloud-redis');
                     const redis = new ioredis_1.default(redisUrl, {
                         maxRetriesPerRequest: 3,
                         keyPrefix: 'algorhythm:',

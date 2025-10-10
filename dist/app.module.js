@@ -44,11 +44,15 @@ exports.AppModule = AppModule = __decorate([
             }),
             mongoose_1.MongooseModule.forRootAsync({
                 imports: [config_1.ConfigModule],
-                useFactory: async (configService) => ({
-                    uri: configService.get('MONGODB_URI'),
-                    retryWrites: true,
-                    w: 'majority',
-                }),
+                useFactory: async (configService) => {
+                    const mongoUri = configService.get('MONGODB_URI') || 'mongodb://localhost:27017/algorhythm-fallback';
+                    console.log('🗄️  MongoDB URI:', mongoUri.includes('localhost') ? 'fallback-local' : 'cloud-database');
+                    return {
+                        uri: mongoUri,
+                        retryWrites: true,
+                        w: 'majority',
+                    };
+                },
                 inject: [config_1.ConfigService],
             }),
             redis_config_1.RedisModule,

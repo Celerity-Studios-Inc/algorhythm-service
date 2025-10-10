@@ -41,11 +41,16 @@ import { HealthMonitorService } from './common/services/health-monitor.service';
     // Database connection
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        uri: configService.get<string>('MONGODB_URI'),
-        retryWrites: true,
-        w: 'majority',
-      }),
+      useFactory: async (configService: ConfigService) => {
+        const mongoUri = configService.get<string>('MONGODB_URI') || 'mongodb://localhost:27017/algorhythm-fallback';
+        console.log('🗄️  MongoDB URI:', mongoUri.includes('localhost') ? 'fallback-local' : 'cloud-database');
+        
+        return {
+          uri: mongoUri,
+          retryWrites: true,
+          w: 'majority',
+        };
+      },
       inject: [ConfigService],
     }),
 
