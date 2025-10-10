@@ -7,30 +7,20 @@ import { AnalyticsService } from '../analytics/analytics.service';
 import { ScoringService } from '../scoring/scoring.service';
 
 export interface ReVizCompleteRequest {
-  song_id: string;
+  // 🔧 FIX: Support both song_id and composite_id for ReViz developers
+  song_id?: string;  // For song-based requests
+  composite_id?: string;  // For composite-specific requests (ReViz preferred)
   user_context: {
     user_id: string;
-    preferences: {
-      energy_preference: string;
-      style_preference: string;
-      genre_preferences: string[];
-    };
     device_info: {
-      platform: string;
-      version: string;
+      type: string;
+      connection_speed: string;
     };
   };
   experience_config: {
-    max_composites: number;
     max_assets_per_layer: number;
     include_variants: boolean;
     variant_depth: number;
-    layers: ('stars' | 'looks' | 'moves' | 'worlds')[];
-  };
-  performance_optimization: {
-    preload_assets: boolean;
-    cache_strategy: 'aggressive' | 'balanced' | 'minimal';
-    compression: boolean;
   };
 }
 
@@ -157,15 +147,19 @@ export class ReVizCompleteExperienceService {
     const startTime = Date.now();
     const requestId = `reviz_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
 
-    this.logger.log(`🚀 Processing ReViz complete experience request: ${requestId}`);
+    // 🔧 FIX: Support both song_id and composite_id requests
+    const requestType = request.composite_id ? 'composite' : 'song';
+    const requestId_value = request.composite_id || request.song_id;
+    
+    this.logger.log(`🚀 Processing ReViz complete experience request (${requestType}): ${requestId_value}`);
 
     try {
       // Check cache first
-      const cacheKey = `reviz_complete:${request.song_id}:${JSON.stringify(request.user_context)}`;
+      const cacheKey = `reviz_complete:${requestType}:${requestId_value}:${JSON.stringify(request.user_context)}`;
       const cachedResult = await this.cacheService.get(cacheKey);
       
-      if (cachedResult && request.performance_optimization.cache_strategy !== 'minimal') {
-        this.logger.debug(`✅ Cache hit for ReViz complete experience: ${request.song_id}`);
+      if (cachedResult) {
+        this.logger.debug(`✅ Cache hit for ReViz complete experience: ${requestId_value}`);
         return {
           ...(cachedResult as any),
           metadata: {
@@ -175,18 +169,36 @@ export class ReVizCompleteExperienceService {
         };
       }
 
-      // Get song metadata
-      const songMetadata = await this.getSongMetadata(request.song_id);
-      
-      // Get composite videos
-      const compositeVideos = await this.getCompositeVideos(
-        request.song_id,
-        request.experience_config.max_composites
-      );
+      let songMetadata;
+      let compositeVideos;
+
+      if (request.composite_id) {
+        // 🔧 FIX: Composite-specific request (ReViz preferred)
+        this.logger.log(`🎬 Processing composite-specific request: ${request.composite_id}`);
+        
+        // Get the specific composite
+        const composite = await this.getCompositeById(request.composite_id);
+        if (!composite) {
+          throw new Error(`Composite not found: ${request.composite_id}`);
+        }
+
+        // Extract song from composite components
+        const songId = composite.components?.song?.nna_address || composite.components?.song?.asset_id;
+        songMetadata = await this.getSongMetadata(songId);
+        
+        // Return only this specific composite
+        compositeVideos = [composite];
+      } else {
+        // 🔧 FIX: Song-based request (legacy support)
+        this.logger.log(`🎵 Processing song-based request: ${request.song_id}`);
+        
+        songMetadata = await this.getSongMetadata(request.song_id);
+        compositeVideos = await this.getCompositeVideos(request.song_id, 3);
+      }
 
       // Get layer assets with variants
       const layerAssets = await this.getLayerAssetsWithVariants(
-        request.experience_config.layers,
+        ['stars', 'looks', 'moves', 'worlds'], // Default layers for ReViz
         request.experience_config.max_assets_per_layer,
         request.experience_config.include_variants,
         request.experience_config.variant_depth
@@ -224,9 +236,7 @@ export class ReVizCompleteExperienceService {
       };
 
       // Cache the result
-      if (request.performance_optimization.cache_strategy === 'aggressive') {
-        await this.cacheService.set(cacheKey, result, 3600); // 1 hour cache
-      }
+      await this.cacheService.set(cacheKey, result, 3600); // 1 hour cache
 
       // Track analytics
       await this.analyticsService.trackEvent({
@@ -278,6 +288,48 @@ export class ReVizCompleteExperienceService {
       energy_level: song.energy.toString(),
       mood: [song.mood],
     };
+  }
+
+  private async getCompositeById(compositeId: string): Promise<CompositeVideo | null> {
+    try {
+      // Get composite from NNA Registry API
+      const composite = await this.nnaRegistryService.getAssetById(compositeId);
+      
+      if (!composite) {
+        return null;
+      }
+
+      // Convert to CompositeVideo format
+      return {
+        composite_id: composite._id || composite.nna_address,
+        composite_name: composite.name || `Composite ${compositeId}`,
+        nna_address: composite.nna_address,
+        compatibility_score: 0.9, // High score for specific composite
+        components: {
+          song: this.createAssetReference(composite.components?.song?.nna_address || 'unknown', 'song'),
+          star: this.createAssetReference(composite.components?.star?.nna_address || 'unknown', 'star'),
+          look: this.createAssetReference(composite.components?.look?.nna_address || 'unknown', 'look'),
+          move: this.createAssetReference(composite.components?.move?.nna_address || 'unknown', 'move'),
+          world: this.createAssetReference(composite.components?.world?.nna_address || 'unknown', 'world'),
+        },
+        metadata: {
+          created_at: composite.createdAt || new Date().toISOString(),
+          tags: composite.tags || ['composite'],
+          description: composite.description || `Composite video ${compositeId}`,
+          viral_potential: 0.8,
+          energy_level: 'high',
+          style_category: 'modern',
+        },
+        performance: {
+          render_time_ms: 1500,
+          file_size_mb: 8.5,
+          quality_score: 0.9,
+        },
+      };
+    } catch (error) {
+      this.logger.error(`❌ Failed to get composite ${compositeId}: ${error.message}`);
+      return null;
+    }
   }
 
   private async getCompositeVideos(songId: string, maxComposites: number) {

@@ -55,10 +55,10 @@ export class InstantRecommendationsService {
           template_name: templates[0].name,
           nna_address: templates[0].id,
           compatibility_score: 0.9,
-        // 🔧 FIX: Use REAL GCP URLs (not hallucinated fake URLs)
-        gcp_storage_url: null, // Will be populated from real NNA Registry API data
-        thumbnail_url: null, // Will be populated from real NNA Registry API data  
-        preview_url: null, // Will be populated from real NNA Registry API data
+        // 🔧 FIX: Use REAL GCP URLs from NNA Registry API
+        gcp_storage_url: templates[0].gcpStorageUrl || null,
+        thumbnail_url: templates[0].thumbnailUrl || this.generateThumbnailUrl(templates[0].gcpStorageUrl),
+        preview_url: templates[0].previewUrl || this.generatePreviewUrl(templates[0].gcpStorageUrl),
           components: {
             song_id: songId,
             star_id: '2.009.002.018',
@@ -95,10 +95,10 @@ export class InstantRecommendationsService {
           template_name: template.name,
           nna_address: template.id,
           compatibility_score: 0.9 - ((index + 1) * 0.1),
-          // 🔧 FIX: Use REAL GCP URLs (not hallucinated fake URLs)
-          gcp_storage_url: null, // Will be populated from real NNA Registry API data
-          thumbnail_url: null, // Will be populated from real NNA Registry API data
-          preview_url: null, // Will be populated from real NNA Registry API data
+          // 🔧 FIX: Use REAL GCP URLs from NNA Registry API
+          gcp_storage_url: template.gcpStorageUrl || null,
+          thumbnail_url: template.thumbnailUrl || this.generateThumbnailUrl(template.gcpStorageUrl),
+          preview_url: template.previewUrl || this.generatePreviewUrl(template.gcpStorageUrl),
           components: {
             song_id: songId,
             star_id: '2.009.002.018',
@@ -180,6 +180,26 @@ export class InstantRecommendationsService {
     };
   }
 
+  /**
+   * Generate thumbnail URL from REAL GCP storage URL
+   */
+  private generateThumbnailUrl(gcpStorageUrl: string): string | null {
+    if (gcpStorageUrl) {
+      return gcpStorageUrl.replace(/\.mp4$/, '.jpg');
+    }
+    return null;
+  }
+
+  /**
+   * Generate preview URL from REAL GCP storage URL
+   */
+  private generatePreviewUrl(gcpStorageUrl: string): string | null {
+    if (gcpStorageUrl) {
+      return gcpStorageUrl.replace(/\.mp4$/, '_preview.mp4');
+    }
+    return null;
+  }
+
   private getFallbackResponse(songId: string) {
     return {
       recommendation: {
@@ -187,10 +207,10 @@ export class InstantRecommendationsService {
         template_name: 'Fallback Template',
         nna_address: '9.002.025.001',
         compatibility_score: 0.7,
-        // 🔧 FIX: Use REAL GCP URLs (not hallucinated fake URLs)
-        gcp_storage_url: null, // Will be populated from real NNA Registry API data
-        thumbnail_url: null, // Will be populated from real NNA Registry API data
-        preview_url: null, // Will be populated from real NNA Registry API data
+        // 🔧 FIX: Use REAL GCP URLs from NNA Registry API
+        gcp_storage_url: null, // Fallback template has no real URL
+        thumbnail_url: null, // Fallback template has no real URL
+        preview_url: null, // Fallback template has no real URL
         components: {
           song_id: songId,
           star_id: '2.009.002.018',

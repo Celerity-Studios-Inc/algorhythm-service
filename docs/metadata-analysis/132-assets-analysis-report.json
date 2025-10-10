@@ -1,0 +1,351 @@
+{
+  "timestamp": "2025-10-10T14:39:02.420Z",
+  "environment": "development",
+  "totalAssets": 132,
+  "completeness": {
+    "total": 132,
+    "withAIMetadata": 83,
+    "withCreatorDescription": 129,
+    "withBoth": 83,
+    "withNeither": 3,
+    "byLayer": {
+      "S": {
+        "total": 41,
+        "withAIMetadata": 41,
+        "withCreatorDescription": 41,
+        "withBoth": 41,
+        "withNeither": 0
+      },
+      "L": {
+        "total": 14,
+        "withAIMetadata": 14,
+        "withCreatorDescription": 14,
+        "withBoth": 14,
+        "withNeither": 0
+      },
+      "G": {
+        "total": 14,
+        "withAIMetadata": 14,
+        "withCreatorDescription": 14,
+        "withBoth": 14,
+        "withNeither": 0
+      },
+      "M": {
+        "total": 8,
+        "withAIMetadata": 8,
+        "withCreatorDescription": 8,
+        "withBoth": 8,
+        "withNeither": 0
+      },
+      "W": {
+        "total": 6,
+        "withAIMetadata": 6,
+        "withCreatorDescription": 6,
+        "withBoth": 6,
+        "withNeither": 0
+      },
+      "C": {
+        "total": 49,
+        "withAIMetadata": 0,
+        "withCreatorDescription": 46,
+        "withBoth": 0,
+        "withNeither": 3
+      }
+    }
+  },
+  "quality": {
+    "total": 83,
+    "highQuality": 0,
+    "mediumQuality": 0,
+    "lowQuality": 83,
+    "byLayer": {
+      "S": {
+        "total": 41,
+        "highQuality": 0,
+        "mediumQuality": 0,
+        "lowQuality": 41,
+        "avgFields": 1.8048780487804879,
+        "commonFields": {}
+      },
+      "L": {
+        "total": 14,
+        "highQuality": 0,
+        "mediumQuality": 0,
+        "lowQuality": 14,
+        "avgFields": 1,
+        "commonFields": {}
+      },
+      "G": {
+        "total": 14,
+        "highQuality": 0,
+        "mediumQuality": 0,
+        "lowQuality": 14,
+        "avgFields": 1,
+        "commonFields": {}
+      },
+      "M": {
+        "total": 8,
+        "highQuality": 0,
+        "mediumQuality": 0,
+        "lowQuality": 8,
+        "avgFields": 1,
+        "commonFields": {}
+      },
+      "W": {
+        "total": 6,
+        "highQuality": 0,
+        "mediumQuality": 0,
+        "lowQuality": 6,
+        "avgFields": 1,
+        "commonFields": {}
+      },
+      "C": {
+        "total": 0,
+        "highQuality": 0,
+        "mediumQuality": 0,
+        "lowQuality": 0,
+        "avgFields": 0,
+        "commonFields": {}
+      }
+    },
+    "commonPatterns": {
+      "layerMetadata": 83
+    },
+    "failurePatterns": {}
+  },
+  "patterns": {
+    "byLayer": {
+      "S": {
+        "total": 41,
+        "successful": 41,
+        "failed": 0,
+        "commonFields": {},
+        "successfulFields": {
+          "layerMetadata": 41
+        },
+        "failedFields": {}
+      },
+      "L": {
+        "total": 14,
+        "successful": 14,
+        "failed": 0,
+        "commonFields": {},
+        "successfulFields": {
+          "layerMetadata": 14
+        },
+        "failedFields": {}
+      },
+      "G": {
+        "total": 14,
+        "successful": 14,
+        "failed": 0,
+        "commonFields": {},
+        "successfulFields": {
+          "layerMetadata": 14
+        },
+        "failedFields": {}
+      },
+      "M": {
+        "total": 8,
+        "successful": 8,
+        "failed": 0,
+        "commonFields": {},
+        "successfulFields": {
+          "layerMetadata": 8
+        },
+        "failedFields": {}
+      },
+      "W": {
+        "total": 6,
+        "successful": 6,
+        "failed": 0,
+        "commonFields": {},
+        "successfulFields": {
+          "layerMetadata": 6
+        },
+        "failedFields": {}
+      },
+      "C": {
+        "total": 49,
+        "successful": 0,
+        "failed": 49,
+        "commonFields": {},
+        "successfulFields": {},
+        "failedFields": {}
+      }
+    },
+    "successfulPatterns": {},
+    "failedPatterns": {},
+    "commonFields": {
+      "description": 132,
+      "tags": 132,
+      "category": 132,
+      "subcategory": 132
+    }
+  },
+  "recommendations": {
+    "byLayer": {
+      "S": {
+        "successRate": 100,
+        "recommendedFields": [
+          "layerMetadata"
+        ],
+        "formStructure": {}
+      },
+      "L": {
+        "successRate": 100,
+        "recommendedFields": [
+          "layerMetadata"
+        ],
+        "formStructure": {}
+      },
+      "G": {
+        "successRate": 100,
+        "recommendedFields": [
+          "layerMetadata"
+        ],
+        "formStructure": {}
+      },
+      "M": {
+        "successRate": 100,
+        "recommendedFields": [
+          "layerMetadata"
+        ],
+        "formStructure": {}
+      },
+      "W": {
+        "successRate": 100,
+        "recommendedFields": [
+          "layerMetadata"
+        ],
+        "formStructure": {}
+      },
+      "C": {
+        "successRate": 0,
+        "recommendedFields": [],
+        "formStructure": {}
+      }
+    },
+    "commonGuidelines": [
+      "Provide clear, descriptive input for better AI extraction",
+      "Use specific categories and subcategories",
+      "Include relevant tags for better classification",
+      "Provide context about the asset's purpose and audience"
+    ],
+    "formStructures": {
+      "S": {
+        "requiredFields": [
+          "name",
+          "description",
+          "category",
+          "subcategory"
+        ],
+        "optionalFields": [
+          "tags",
+          "creatorDescription"
+        ],
+        "validationRules": {
+          "description": "min:10, max:5000",
+          "tags": "max:50, each:max:100",
+          "category": "required, max:100",
+          "subcategory": "required, max:100"
+        }
+      },
+      "L": {
+        "requiredFields": [
+          "name",
+          "description",
+          "category",
+          "subcategory"
+        ],
+        "optionalFields": [
+          "tags",
+          "creatorDescription"
+        ],
+        "validationRules": {
+          "description": "min:10, max:5000",
+          "tags": "max:50, each:max:100",
+          "category": "required, max:100",
+          "subcategory": "required, max:100"
+        }
+      },
+      "G": {
+        "requiredFields": [
+          "name",
+          "description",
+          "category",
+          "subcategory"
+        ],
+        "optionalFields": [
+          "tags",
+          "creatorDescription"
+        ],
+        "validationRules": {
+          "description": "min:10, max:5000",
+          "tags": "max:50, each:max:100",
+          "category": "required, max:100",
+          "subcategory": "required, max:100"
+        }
+      },
+      "M": {
+        "requiredFields": [
+          "name",
+          "description",
+          "category",
+          "subcategory"
+        ],
+        "optionalFields": [
+          "tags",
+          "creatorDescription"
+        ],
+        "validationRules": {
+          "description": "min:10, max:5000",
+          "tags": "max:50, each:max:100",
+          "category": "required, max:100",
+          "subcategory": "required, max:100"
+        }
+      },
+      "W": {
+        "requiredFields": [
+          "name",
+          "description",
+          "category",
+          "subcategory"
+        ],
+        "optionalFields": [
+          "tags",
+          "creatorDescription"
+        ],
+        "validationRules": {
+          "description": "min:10, max:5000",
+          "tags": "max:50, each:max:100",
+          "category": "required, max:100",
+          "subcategory": "required, max:100"
+        }
+      },
+      "C": {
+        "requiredFields": [
+          "name",
+          "description",
+          "category",
+          "subcategory"
+        ],
+        "optionalFields": [
+          "tags",
+          "creatorDescription"
+        ],
+        "validationRules": {
+          "description": "min:10, max:5000",
+          "tags": "max:50, each:max:100",
+          "category": "required, max:100",
+          "subcategory": "required, max:100"
+        }
+      }
+    }
+  },
+  "summary": {
+    "overallSuccessRate": 62.878787878787875,
+    "highQualityRate": 0,
+    "recommendationsGenerated": 6
+  }
+}
