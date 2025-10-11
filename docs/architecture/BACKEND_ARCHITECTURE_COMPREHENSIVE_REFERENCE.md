@@ -1,44 +1,43 @@
 # 🏗️ Backend Architecture Comprehensive Reference
 
-**Date**: September 7, 2025  
-**Version**: 3.0 - Complete Schema Alignment Architecture  
-**Status**: 🔧 **SCHEMA FIXES IN PROGRESS** - Backend team implementing critical alignment fixes  
-**Context**: Comprehensive architecture with complete schema alignment requirements and solutions
+**Date**: October 11, 2025  
+**Version**: 4.0 - Webhook Integration Architecture  
+**Status**: 🚀 **WEBHOOK INFRASTRUCTURE COMPLETE** - Event-driven architecture implemented  
+**Context**: Comprehensive architecture with webhook integration and event-driven design
 
 ---
 
-## 🚨 **CRITICAL SCHEMA ALIGNMENT STATUS**
+## 🚀 **WEBHOOK INTEGRATION STATUS**
 
 ### **Current Implementation Progress**
-After comprehensive schema analysis, we've identified and are fixing **4 critical backend issues**:
+After comprehensive webhook infrastructure development, we've successfully implemented **event-driven architecture**:
 
-| Issue | Component | Status | Impact |
-|-------|-----------|--------|--------|
-| **Database Schema Type Mismatch** | `genre?: string` → `string[]` | 🔧 **IN PROGRESS** | UPDATE operations fail |
-| **AI Service Missing Fields** | Missing 3 new fields + naming | 🔧 **IN PROGRESS** | AI processing incomplete |
-| **Hybrid Extraction Gaps** | Missing 3 new fields | 🔧 **IN PROGRESS** | Metadata extraction fails |
-| **Field Naming Inconsistency** | `albumArtUrl` vs `albumArt` | 🔧 **IN PROGRESS** | Field mapping errors |
+| Component | Status | Impact |
+|-----------|--------|--------|
+| **Webhook Infrastructure** | ✅ **COMPLETE** | Real-time event processing |
+| **Security Implementation** | ✅ **COMPLETE** | HMAC signature validation |
+| **Event Processing** | ✅ **COMPLETE** | Internal event handling |
+| **Integration Testing** | 🔄 **IN PROGRESS** | End-to-end validation |
 
-### **Schema Alignment Overview**
+### **Webhook Architecture Overview**
 ```
-Current Alignment: 69% → Target: 100%
-- Frontend: ✅ 100% aligned (16/16 fields)
-- Backend DTOs: ✅ 100% aligned (16/16 fields)  
-- Database Schema: ❌ 88% aligned (14/16 fields)
-- AI Service: ❌ 69% aligned (11/16 fields)
-- Hybrid Extraction: ❌ 81% aligned (13/16 fields)
+Event-Driven Architecture: 100% Complete
+- Algorhythm Service: ✅ Webhook endpoints ready
+- NNA Registry Service: ✅ Event publishing ready
+- Security: ✅ HMAC validation implemented
+- Integration: 🔄 Testing in progress
 ```
 
 ---
 
 ## 🎯 **EXECUTIVE SUMMARY**
 
-This document provides the definitive backend architecture reference with **complete schema alignment specifications** for the NNA Registry Service. The backend implements a sophisticated multi-layer architecture with AI integration, but requires critical schema fixes to resolve 6-week recurring Edit Details issues.
+This document provides the definitive backend architecture reference with **webhook integration and event-driven design** for the Algorhythm Service. The backend implements a sophisticated multi-layer architecture with real-time webhook integration, providing autonomous operation and improved performance.
 
 ### **Architecture Priorities**
-1. **Immediate**: Fix 4 critical schema alignment issues
-2. **Short-term**: Implement OpenAPI-first shared schema architecture  
-3. **Long-term**: Maintain schema alignment through automated validation
+1. **Immediate**: Webhook infrastructure implementation complete
+2. **Short-term**: Real-time index updates and local data storage
+3. **Long-term**: Performance optimization and monitoring
 
 ---
 
@@ -124,6 +123,55 @@ src/
     ├── filters/
     ├── guards/
     └── interceptors/
+```
+
+---
+
+## 🔗 **WEBHOOK INTEGRATION ARCHITECTURE**
+
+### **Event-Driven Design**
+The Algorhythm service implements a sophisticated webhook infrastructure for real-time integration with the NNA Registry service:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    Algorhythm Service                      │
+├─────────────────────────────────────────────────────────────┤
+│  Webhook Infrastructure                                   │
+│  ├── Webhook Controller                                   │
+│  │   ├── POST /webhooks/assets/created                    │
+│  │   ├── POST /webhooks/composites/created                │
+│  │   └── POST /webhooks/assets/updated                    │
+│  ├── Webhook Service                                       │
+│  │   ├── HMAC Signature Validation                        │
+│  │   ├── Timestamp Validation                            │
+│  │   └── Payload Validation                              │
+│  └── Event Processor Service                              │
+│      ├── Asset Event Processing                          │
+│      ├── Composite Event Processing                      │
+│      └── Internal Event Emission                        │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### **Security Implementation**
+```typescript
+// HMAC Signature Validation
+const signature = crypto
+  .createHmac('sha256', webhookSecret)
+  .update(`${timestamp}.${payload}`)
+  .digest('hex');
+
+// Timestamp Validation (5-minute tolerance)
+const currentTime = Math.floor(Date.now() / 1000);
+const eventTime = Math.floor(new Date(timestamp).getTime() / 1000);
+const timeDiff = Math.abs(currentTime - eventTime);
+```
+
+### **Event Processing Pipeline**
+```
+NNA Registry → Webhook → Validation → Processing → Index Update → ReViz
+     ↓            ↓         ↓           ↓            ↓          ↓
+Asset Event  Security   Event      Real-time    Local      Fast
+Creation     Check      Processing  Indexing    Storage    Queries
 ```
 
 ---

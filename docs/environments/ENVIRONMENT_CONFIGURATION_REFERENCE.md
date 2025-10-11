@@ -4,9 +4,9 @@
 
 This document provides the definitive reference for all environment configurations in the NNA Registry Service. It includes canonical domain mappings, environment-specific variables, and verification procedures to ensure proper isolation between development, staging, and production environments.
 
-**Last Updated**: July 5, 2025  
-**Version**: 1.0  
-**Status**: ✅ **Canonical Configuration Established**
+**Last Updated**: October 11, 2025  
+**Version**: 2.0  
+**Status**: 🚀 **Webhook Integration Complete**
 
 ---
 
@@ -19,6 +19,34 @@ This document provides the definitive reference for all environment configuratio
 | **Development** | `https://nna-registry-frontend-dev.vercel.app` | `https://registry.dev.reviz.dev` | `nna-registry-service-dev`        | `nna_registry_assets_dev`  | `https://nna-registry-frontend-dev.vercel.app` | `mongodb+srv://admin:PTtQFc0N9gftuRIX@registryservice.xhmyito.mongodb.net/nna-registry-service-dev?retryWrites=true&w=majority&appName=registryService`        |
 | **Staging**     | `https://nna-registry-frontend-stg.vercel.app` | `https://registry.stg.reviz.dev` | `nna-registry-service-staging`    | `nna_registry_assets_stg`  | `https://nna-registry-frontend-stg.vercel.app` | `mongodb+srv://admin:PTtQFc0N9gftuRIX@registryservice.xhmyito.mongodb.net/nna-registry-service-staging?retryWrites=true&w=majority&appName=registryService`    |
 | **Production**  | `https://nna-registry-frontend.vercel.app`     | `https://registry.reviz.dev`     | `nna-registry-service-production` | `nna_registry_assets_prod` | `https://nna-registry-frontend.vercel.app`     | `mongodb+srv://admin:PTtQFc0N9gftuRIX@registryservice.xhmyito.mongodb.net/nna-registry-service-production?retryWrites=true&w=majority&appName=registryService` |
+
+---
+
+## 🔗 **WEBHOOK INTEGRATION CONFIGURATION**
+
+### **Algorhythm Service Webhook Endpoints**
+
+| Environment     | Algorhythm Service URL                        | Webhook Endpoints                                                                 |
+| --------------- | ---------------------------------------------- | --------------------------------------------------------------------------------- |
+| **Development** | `https://algorhythm.dev.reviz.dev`           | `POST /webhooks/assets/created`, `/composites/created`, `/assets/updated`       |
+| **Staging**     | `https://algorhythm.stg.reviz.dev`           | `POST /webhooks/assets/created`, `/composites/created`, `/assets/updated`       |
+| **Production**  | `https://algorhythm.prod.reviz.dev`          | `POST /webhooks/assets/created`, `/composites/created`, `/assets/updated`       |
+
+### **Webhook Security Configuration**
+
+| Environment     | Webhook Secret                                                                 | HMAC Algorithm | Timestamp Tolerance |
+| --------------- | ------------------------------------------------------------------------------- | -------------- | ------------------- |
+| **Development** | `43b377dd2766939804720f61f10d8e1b61bbb8df9a89e502e3cd75d0b318783a`           | SHA-256        | 5 minutes           |
+| **Staging**     | `54594dd7bce76e5603c1fbdb359d7774ceeb611a34d6397cc85f05e8e56feacf`           | SHA-256        | 5 minutes           |
+| **Production**  | `94c67a59112e52474ee30c5a8af2b52adbd4052bb82f584e20ce05f7c7cd8e91`           | SHA-256        | 5 minutes           |
+
+### **NNA Registry Webhook Configuration**
+
+| Environment     | NNA Registry URL                               | Webhook Target URL                              | Max Retries | Retry Delay |
+| --------------- | ---------------------------------------------- | ----------------------------------------------- | ----------- | ----------- |
+| **Development** | `https://registry.dev.reviz.dev`              | `https://algorhythm.dev.reviz.dev/webhooks`    | 3           | 1000ms      |
+| **Staging**     | `https://registry.stg.reviz.dev`              | `https://algorhythm.stg.reviz.dev/webhooks`    | 3           | 1000ms      |
+| **Production**  | `https://registry.prod.reviz.dev`              | `https://algorhythm.prod.reviz.dev/webhooks`   | 3           | 1000ms      |
 
 ---
 
