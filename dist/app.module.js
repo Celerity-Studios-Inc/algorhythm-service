@@ -85,7 +85,6 @@ exports.AppModule = AppModule = __decorate([
             nna_integration_module_1.NnaIntegrationModule,
             algorhythm_module_1.AlgorhythmModule,
             webhook_module_1.WebhookModule,
-            indexing_module_1.IndexingModule,
             ...(process.env.MONGODB_URI ? [
                 recommendations_module_1.RecommendationsModule,
                 scoring_module_1.ScoringModule,
@@ -93,6 +92,7 @@ exports.AppModule = AppModule = __decorate([
                 daemon_module_1.DaemonModule,
                 analytics_module_1.AnalyticsModule,
                 health_module_1.HealthModule,
+                indexing_module_1.IndexingModule,
             ] : []),
             ...(process.env.REDIS_URL ? [caching_module_1.CachingModule] : []),
         ],

@@ -22,7 +22,7 @@ export declare class RecommendationsService {
     private readonly localDataQuery;
     private readonly cacheWarming;
     private readonly logger;
-    constructor(compatibilityScoreModel: Model<CompatibilityScore>, recommendationCacheModel: Model<RecommendationCache>, scoringService: ScoringService, cacheService: CacheService, nnaRegistryService: NnaRegistryService, analyticsService: AnalyticsService, instantRecommendationsService: InstantRecommendationsService, localDataQuery: LocalDataQueryService, cacheWarming: CacheWarmingService);
+    constructor(compatibilityScoreModel: Model<CompatibilityScore>, recommendationCacheModel: Model<RecommendationCache>, scoringService: ScoringService, cacheService: CacheService, nnaRegistryService: NnaRegistryService, analyticsService: AnalyticsService, instantRecommendationsService: InstantRecommendationsService, localDataQuery: LocalDataQueryService | null, cacheWarming: CacheWarmingService | null);
     getTemplateRecommendation(request: TemplateRecommendationDto): Promise<{
         recommendation: TemplateRecommendation;
         alternatives: TemplateRecommendation[];

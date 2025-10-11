@@ -101,7 +101,6 @@ import { IndexingModule } from './modules/indexing/indexing.module';
     NnaIntegrationModule,
     AlgorhythmModule,
     WebhookModule,
-    IndexingModule,
     
     // Database-dependent modules (optional)
     ...(process.env.MONGODB_URI ? [
@@ -111,6 +110,7 @@ import { IndexingModule } from './modules/indexing/indexing.module';
       DaemonModule,
       AnalyticsModule,
       HealthModule,
+      IndexingModule,
     ] : []),
     
     // Cache module (optional)
