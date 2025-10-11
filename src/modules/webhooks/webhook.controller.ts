@@ -1,6 +1,7 @@
 import { Controller, Post, Body, Headers, HttpCode, HttpStatus, Logger } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { WebhookService } from './webhook.service';
+import { WebhookPayloadTransformerService } from './webhook-payload-transformer.service';
 import { AssetCreatedEventDto, CompositeCreatedEventDto, AssetUpdatedEventDto, AssetDeletedEventDto } from './dto/webhook-events.dto';
 
 @ApiTags('Webhooks')
@@ -8,7 +9,10 @@ import { AssetCreatedEventDto, CompositeCreatedEventDto, AssetUpdatedEventDto, A
 export class WebhookController {
   private readonly logger = new Logger(WebhookController.name);
 
-  constructor(private readonly webhookService: WebhookService) {}
+  constructor(
+    private readonly webhookService: WebhookService,
+    private readonly payloadTransformer: WebhookPayloadTransformerService
+  ) {}
 
   @Post('assets/created')
   @HttpCode(HttpStatus.OK)
@@ -17,15 +21,25 @@ export class WebhookController {
   @ApiResponse({ status: 400, description: 'Invalid webhook payload' })
   @ApiResponse({ status: 401, description: 'Invalid webhook signature' })
   async handleAssetCreated(
-    @Body() payload: AssetCreatedEventDto,
+    @Body() payload: any,
     @Headers('x-algorhythm-signature') signature: string,
     @Headers('x-algorhythm-timestamp') timestamp: string
   ) {
-    this.logger.log(`🔄 Processing asset created webhook: ${payload.assetId}`);
+    this.logger.log(`🔄 Processing asset created webhook`);
     
     try {
-      const result = await this.webhookService.processAssetCreated(payload, signature, timestamp);
-      this.logger.log(`✅ Asset created webhook processed successfully: ${payload.assetId}`);
+      // Transform payload from NNA Registry format to Algorhythm format
+      const transformedPayload = this.payloadTransformer.transformPayload(payload);
+      
+      // Validate transformed payload
+      if (!this.payloadTransformer.validateTransformedPayload(transformedPayload)) {
+        throw new Error('Invalid transformed payload');
+      }
+      
+      this.logger.log(`🔄 Processing asset created webhook: ${transformedPayload.assetId}`);
+      
+      const result = await this.webhookService.processAssetCreated(transformedPayload, signature, timestamp);
+      this.logger.log(`✅ Asset created webhook processed successfully: ${transformedPayload.assetId}`);
       return result;
     } catch (error) {
       this.logger.error(`❌ Asset created webhook failed: ${error.message}`);
@@ -40,15 +54,25 @@ export class WebhookController {
   @ApiResponse({ status: 400, description: 'Invalid webhook payload' })
   @ApiResponse({ status: 401, description: 'Invalid webhook signature' })
   async handleAssetUpdated(
-    @Body() payload: AssetUpdatedEventDto,
+    @Body() payload: any,
     @Headers('x-algorhythm-signature') signature: string,
     @Headers('x-algorhythm-timestamp') timestamp: string
   ) {
-    this.logger.log(`🔄 Processing asset updated webhook: ${payload.assetId}`);
+    this.logger.log(`🔄 Processing asset updated webhook`);
     
     try {
-      const result = await this.webhookService.processAssetUpdated(payload, signature, timestamp);
-      this.logger.log(`✅ Asset updated webhook processed successfully: ${payload.assetId}`);
+      // Transform payload from NNA Registry format to Algorhythm format
+      const transformedPayload = this.payloadTransformer.transformPayload(payload);
+      
+      // Validate transformed payload
+      if (!this.payloadTransformer.validateTransformedPayload(transformedPayload)) {
+        throw new Error('Invalid transformed payload');
+      }
+      
+      this.logger.log(`🔄 Processing asset updated webhook: ${transformedPayload.assetId}`);
+      
+      const result = await this.webhookService.processAssetUpdated(transformedPayload, signature, timestamp);
+      this.logger.log(`✅ Asset updated webhook processed successfully: ${transformedPayload.assetId}`);
       return result;
     } catch (error) {
       this.logger.error(`❌ Asset updated webhook failed: ${error.message}`);
@@ -63,15 +87,25 @@ export class WebhookController {
   @ApiResponse({ status: 400, description: 'Invalid webhook payload' })
   @ApiResponse({ status: 401, description: 'Invalid webhook signature' })
   async handleAssetDeleted(
-    @Body() payload: AssetDeletedEventDto,
+    @Body() payload: any,
     @Headers('x-algorhythm-signature') signature: string,
     @Headers('x-algorhythm-timestamp') timestamp: string
   ) {
-    this.logger.log(`🔄 Processing asset deleted webhook: ${payload.assetId}`);
+    this.logger.log(`🔄 Processing asset deleted webhook`);
     
     try {
-      const result = await this.webhookService.processAssetDeleted(payload, signature, timestamp);
-      this.logger.log(`✅ Asset deleted webhook processed successfully: ${payload.assetId}`);
+      // Transform payload from NNA Registry format to Algorhythm format
+      const transformedPayload = this.payloadTransformer.transformPayload(payload);
+      
+      // Validate transformed payload
+      if (!this.payloadTransformer.validateTransformedPayload(transformedPayload)) {
+        throw new Error('Invalid transformed payload');
+      }
+      
+      this.logger.log(`🔄 Processing asset deleted webhook: ${transformedPayload.assetId}`);
+      
+      const result = await this.webhookService.processAssetDeleted(transformedPayload, signature, timestamp);
+      this.logger.log(`✅ Asset deleted webhook processed successfully: ${transformedPayload.assetId}`);
       return result;
     } catch (error) {
       this.logger.error(`❌ Asset deleted webhook failed: ${error.message}`);
@@ -86,15 +120,25 @@ export class WebhookController {
   @ApiResponse({ status: 400, description: 'Invalid webhook payload' })
   @ApiResponse({ status: 401, description: 'Invalid webhook signature' })
   async handleCompositeCreated(
-    @Body() payload: CompositeCreatedEventDto,
+    @Body() payload: any,
     @Headers('x-algorhythm-signature') signature: string,
     @Headers('x-algorhythm-timestamp') timestamp: string
   ) {
-    this.logger.log(`🔄 Processing composite created webhook: ${payload.compositeId}`);
+    this.logger.log(`🔄 Processing composite created webhook`);
     
     try {
-      const result = await this.webhookService.processCompositeCreated(payload, signature, timestamp);
-      this.logger.log(`✅ Composite created webhook processed successfully: ${payload.compositeId}`);
+      // Transform payload from NNA Registry format to Algorhythm format
+      const transformedPayload = this.payloadTransformer.transformPayload(payload);
+      
+      // Validate transformed payload
+      if (!this.payloadTransformer.validateTransformedPayload(transformedPayload)) {
+        throw new Error('Invalid transformed payload');
+      }
+      
+      this.logger.log(`🔄 Processing composite created webhook: ${transformedPayload.compositeId}`);
+      
+      const result = await this.webhookService.processCompositeCreated(transformedPayload, signature, timestamp);
+      this.logger.log(`✅ Composite created webhook processed successfully: ${transformedPayload.compositeId}`);
       return result;
     } catch (error) {
       this.logger.error(`❌ Composite created webhook failed: ${error.message}`);

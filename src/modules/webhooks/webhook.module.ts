@@ -4,6 +4,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { WebhookController } from './webhook.controller';
 import { WebhookService } from './webhook.service';
 import { WebhookValidationService } from './webhook-validation.service';
+import { WebhookPayloadTransformerService } from './webhook-payload-transformer.service';
 import { EventProcessorService } from '../events/event-processor.service';
 // import { IndexingModule } from '../indexing/indexing.module'; // Conditional import
 
@@ -32,6 +33,7 @@ import { EventProcessorService } from '../events/event-processor.service';
   providers: [
     WebhookService,
     WebhookValidationService,
+    WebhookPayloadTransformerService,
     EventProcessorService,
   ],
   exports: [WebhookService, EventProcessorService],

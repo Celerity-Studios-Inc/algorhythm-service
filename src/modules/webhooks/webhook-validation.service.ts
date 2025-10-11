@@ -13,7 +13,8 @@ export class WebhookValidationService {
     signature: string,
     timestamp: string
   ): Promise<boolean> {
-    const webhookSecret = this.configService.get<string>('WEBHOOK_SECRET');
+    const webhookSecret = this.configService.get<string>('WEBHOOK_SECRET') || 
+                         this.configService.get<string>('ALGORHYTHM_WEBHOOK_SECRET');
     
     if (!webhookSecret) {
       this.logger.error('❌ Webhook secret not configured');
@@ -78,7 +79,7 @@ export class WebhookValidationService {
     }
 
     // Validate event types
-    const validEvents = ['asset.created', 'asset.updated', 'composite.created'];
+    const validEvents = ['asset.created', 'asset.updated', 'asset.deleted', 'composite.created'];
     if (!validEvents.includes(payload.event)) {
       this.logger.error(`❌ Invalid event type: ${payload.event}`);
       throw new BadRequestException(`Invalid event type: ${payload.event}`);
