@@ -9,18 +9,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.HealthModule = void 0;
 const common_1 = require("@nestjs/common");
 const health_controller_1 = require("./health.controller");
-const health_service_1 = require("./health.service");
-const nna_integration_module_1 = require("../nna-integration/nna-integration.module");
-const caching_module_1 = require("../caching/caching.module");
 let HealthModule = class HealthModule {
 };
 exports.HealthModule = HealthModule;
 exports.HealthModule = HealthModule = __decorate([
     (0, common_1.Module)({
-        imports: [nna_integration_module_1.NnaIntegrationModule, caching_module_1.CachingModule],
         controllers: [health_controller_1.HealthController],
-        providers: [health_service_1.HealthService],
-        exports: [health_service_1.HealthService],
+        providers: [],
+        exports: [],
     })
 ], HealthModule);
 //# sourceMappingURL=health.module.js.map

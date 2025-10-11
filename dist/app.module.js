@@ -16,6 +16,7 @@ const core_1 = require("@nestjs/core");
 const winston = require("winston");
 const auth_module_1 = require("./modules/auth/auth.module");
 const caching_module_1 = require("./modules/caching/caching.module");
+const health_module_1 = require("./modules/health/health.module");
 const environment_validation_1 = require("./config/environment-validation");
 const redis_config_1 = require("./config/redis.config");
 const global_exception_filter_1 = require("./common/filters/global-exception.filter");
@@ -73,6 +74,7 @@ exports.AppModule = AppModule = __decorate([
                 ],
             }),
             auth_module_1.AuthModule,
+            health_module_1.HealthModule,
             algorhythm_module_1.AlgorhythmModule,
             ...(process.env.REDIS_URL ? [caching_module_1.CachingModule] : []),
         ],

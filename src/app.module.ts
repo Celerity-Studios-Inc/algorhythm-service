@@ -98,6 +98,7 @@ import { IndexingModule } from './modules/indexing/indexing.module';
 
     // Feature modules (ULTRA-MINIMAL for Cloud Run)
     AuthModule,
+    HealthModule, // ✅ FIX: Add health check endpoint
     // NnaIntegrationModule, // DISABLED - might be causing startup issues
     AlgorhythmModule,
     // WebhookModule, // DISABLED - might be causing startup issues

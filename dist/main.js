@@ -7,8 +7,6 @@ const app_module_1 = require("./app.module");
 const swagger_config_1 = require("./config/swagger.config");
 const http_exception_filter_1 = require("./common/filters/http-exception.filter");
 const logging_interceptor_1 = require("./common/interceptors/logging.interceptor");
-const analytics_interceptor_1 = require("./common/interceptors/analytics.interceptor");
-const analytics_service_1 = require("./modules/analytics/analytics.service");
 const environment_validation_1 = require("./config/environment-validation");
 console.log('🚀 AlgoRhythm Recommendation Engine: Starting application...');
 console.log('📅 Timestamp:', new Date().toISOString());
@@ -16,6 +14,10 @@ console.log('🔧 Node version:', process.version);
 console.log('🌍 NODE_ENV:', process.env.NODE_ENV);
 console.log('🏭 ENVIRONMENT:', process.env.ENVIRONMENT);
 console.log('🔑 PORT:', process.env.PORT);
+console.log('🌐 Binding to: 0.0.0.0:' + (process.env.PORT || 3000));
+console.log('🗄️ Database:', process.env.MONGODB_URI ? 'configured' : 'not configured');
+console.log('🔐 JWT Secret:', process.env.JWT_SECRET ? 'configured' : 'not configured');
+console.log('🔗 Webhook Secret:', process.env.WEBHOOK_SECRET ? 'configured' : 'not configured');
 const dbUri = process.env.MONGODB_URI;
 if (dbUri) {
     const dbName = dbUri.split('/').pop()?.split('?')[0];
@@ -77,7 +79,7 @@ async function bootstrap() {
         forbidNonWhitelisted: true,
     }));
     app.useGlobalFilters(new http_exception_filter_1.HttpExceptionFilter());
-    app.useGlobalInterceptors(new logging_interceptor_1.LoggingInterceptor(), new analytics_interceptor_1.AnalyticsInterceptor(app.get(analytics_service_1.AnalyticsService)));
+    app.useGlobalInterceptors(new logging_interceptor_1.LoggingInterceptor());
     const document = swagger_1.SwaggerModule.createDocument(app, swagger_config_1.swaggerConfig);
     swagger_1.SwaggerModule.setup('api/docs', app, document, {
         customSiteTitle: 'AlgoRhythm API Documentation',
@@ -85,10 +87,11 @@ async function bootstrap() {
         customCssUrl: '/swagger-ui.css',
     });
     const port = process.env.PORT || 3000;
-    await app.listen(port);
+    await app.listen(port, '0.0.0.0');
     console.log(`🎵 AlgoRhythm Recommendation Engine running on port ${port}`);
     console.log(`📚 API Documentation: http://localhost:${port}/api/docs`);
     console.log(`🎯 Environment: ${nodeEnv}`);
+    console.log(`🌐 Binding to: 0.0.0.0:${port}`);
 }
 bootstrap().catch(error => {
     console.error('💥 Failed to start AlgoRhythm:', error);

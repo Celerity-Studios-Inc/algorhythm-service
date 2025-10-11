@@ -1,26 +1,25 @@
-import { HealthService } from './health.service';
 export declare class HealthController {
-    private readonly healthService;
-    constructor(healthService: HealthService);
-    getHealth(): Promise<{
-        status: "healthy" | "degraded" | "unhealthy";
-        version: string;
-        uptime_seconds: number;
+    check(): {
+        status: string;
         timestamp: string;
-        services: {
-            database: any;
-            cache: any;
-            nna_registry: any;
-        };
-        metrics: any;
-    }>;
-    getSystemInfo(): Promise<{
-        node_version: string;
-        memory_usage: NodeJS.MemoryUsage;
-        cpu_usage: number;
-        load_average: number[];
+        service: string;
+        version: string;
         environment: string;
-        database_stats: any;
-        cache_stats: any;
-    }>;
+        port: number;
+        uptime: number;
+        memory: NodeJS.MemoryUsage;
+        nodeVersion: string;
+    };
+    ready(): {
+        status: string;
+        timestamp: string;
+        service: string;
+        ready: boolean;
+    };
+    live(): {
+        status: string;
+        timestamp: string;
+        service: string;
+        alive: boolean;
+    };
 }

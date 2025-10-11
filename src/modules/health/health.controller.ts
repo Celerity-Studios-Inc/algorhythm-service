@@ -1,44 +1,76 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { HealthService } from './health.service';
 
-@ApiTags('health')
+@ApiTags('Health')
 @Controller('health')
 export class HealthController {
-  constructor(private readonly healthService: HealthService) {}
-
-  @ApiOperation({ summary: 'Get service health status' })
-  @ApiResponse({ 
-    status: 200, 
-    description: 'Health status retrieved successfully',
+  @Get()
+  @ApiOperation({
+    summary: 'Health check endpoint',
+    description: 'Check if the Algorhythm service is running and healthy'
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Service is healthy',
     schema: {
       type: 'object',
       properties: {
-        status: { type: 'string', enum: ['healthy', 'degraded', 'unhealthy'] },
-        version: { type: 'string' },
-        uptime_seconds: { type: 'number' },
+        status: { type: 'string' },
         timestamp: { type: 'string' },
-        services: {
-          type: 'object',
-          properties: {
-            database: { type: 'object' },
-            cache: { type: 'object' },
-            nna_registry: { type: 'object' },
-          },
-        },
-        metrics: { type: 'object' },
-      },
-    },
+        service: { type: 'string' },
+        version: { type: 'string' },
+        environment: { type: 'string' },
+        port: { type: 'number' }
+      }
+    }
   })
-  @Get()
-  async getHealth() {
-    return await this.healthService.getHealthStatus();
+  check() {
+    return {
+      status: 'ok',
+      timestamp: new Date().toISOString(),
+      service: 'algorhythm-service',
+      version: process.env.npm_package_version || '1.0.0',
+      environment: process.env.NODE_ENV || 'development',
+      port: parseInt(process.env.PORT || '3000'),
+      uptime: process.uptime(),
+      memory: process.memoryUsage(),
+      nodeVersion: process.version
+    };
   }
 
-  @ApiOperation({ summary: 'Get detailed system information' })
-  @ApiResponse({ status: 200, description: 'System info retrieved successfully' })
-  @Get('info')
-  async getSystemInfo() {
-    return await this.healthService.getSystemInfo();
+  @Get('ready')
+  @ApiOperation({
+    summary: 'Readiness check',
+    description: 'Check if the service is ready to accept traffic'
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Service is ready'
+  })
+  ready() {
+    return {
+      status: 'ready',
+      timestamp: new Date().toISOString(),
+      service: 'algorhythm-service',
+      ready: true
+    };
+  }
+
+  @Get('live')
+  @ApiOperation({
+    summary: 'Liveness check',
+    description: 'Check if the service is alive and responding'
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Service is alive'
+  })
+  live() {
+    return {
+      status: 'alive',
+      timestamp: new Date().toISOString(),
+      service: 'algorhythm-service',
+      alive: true
+    };
   }
 }

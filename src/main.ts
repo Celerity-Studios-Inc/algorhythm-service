@@ -7,7 +7,7 @@ import { swaggerConfig } from './config/swagger.config';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 import { AnalyticsInterceptor } from './common/interceptors/analytics.interceptor';
-import { AnalyticsService } from './modules/analytics/analytics.service';
+// import { AnalyticsService } from './modules/analytics/analytics.service'; // Disabled for minimal deployment
 import { EnvironmentValidationService } from './config/environment-validation';
 import { Request, Response, Application } from 'express';
 
@@ -17,6 +17,10 @@ console.log('🔧 Node version:', process.version);
 console.log('🌍 NODE_ENV:', process.env.NODE_ENV);
 console.log('🏭 ENVIRONMENT:', process.env.ENVIRONMENT);
 console.log('🔑 PORT:', process.env.PORT);
+console.log('🌐 Binding to: 0.0.0.0:' + (process.env.PORT || 3000));
+console.log('🗄️ Database:', process.env.MONGODB_URI ? 'configured' : 'not configured');
+console.log('🔐 JWT Secret:', process.env.JWT_SECRET ? 'configured' : 'not configured');
+console.log('🔗 Webhook Secret:', process.env.WEBHOOK_SECRET ? 'configured' : 'not configured');
 
 // Log the MongoDB database in use at startup
 const dbUri = process.env.MONGODB_URI;
@@ -94,7 +98,8 @@ async function bootstrap() {
   // Global interceptors
   app.useGlobalInterceptors(
     new LoggingInterceptor(),
-    new AnalyticsInterceptor(app.get(AnalyticsService)),
+    // AnalyticsInterceptor disabled for minimal deployment
+    // new AnalyticsInterceptor(app.get(AnalyticsService)),
   );
 
   // Setup Swagger documentation
@@ -106,11 +111,14 @@ async function bootstrap() {
   });
 
   const port = process.env.PORT || 3000;
-  await app.listen(port);
+  
+  // ✅ FIX: Bind to 0.0.0.0 for Cloud Run compatibility
+  await app.listen(port, '0.0.0.0');
   
   console.log(`🎵 AlgoRhythm Recommendation Engine running on port ${port}`);
   console.log(`📚 API Documentation: http://localhost:${port}/api/docs`);
   console.log(`🎯 Environment: ${nodeEnv}`);
+  console.log(`🌐 Binding to: 0.0.0.0:${port}`);
 }
 
 bootstrap().catch(error => {

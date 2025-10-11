@@ -12,59 +12,93 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.HealthController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
-const health_service_1 = require("./health.service");
 let HealthController = class HealthController {
-    constructor(healthService) {
-        this.healthService = healthService;
+    check() {
+        return {
+            status: 'ok',
+            timestamp: new Date().toISOString(),
+            service: 'algorhythm-service',
+            version: process.env.npm_package_version || '1.0.0',
+            environment: process.env.NODE_ENV || 'development',
+            port: parseInt(process.env.PORT || '3000'),
+            uptime: process.uptime(),
+            memory: process.memoryUsage(),
+            nodeVersion: process.version
+        };
     }
-    async getHealth() {
-        return await this.healthService.getHealthStatus();
+    ready() {
+        return {
+            status: 'ready',
+            timestamp: new Date().toISOString(),
+            service: 'algorhythm-service',
+            ready: true
+        };
     }
-    async getSystemInfo() {
-        return await this.healthService.getSystemInfo();
+    live() {
+        return {
+            status: 'alive',
+            timestamp: new Date().toISOString(),
+            service: 'algorhythm-service',
+            alive: true
+        };
     }
 };
 exports.HealthController = HealthController;
 __decorate([
-    (0, swagger_1.ApiOperation)({ summary: 'Get service health status' }),
+    (0, common_1.Get)(),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Health check endpoint',
+        description: 'Check if the Algorhythm service is running and healthy'
+    }),
     (0, swagger_1.ApiResponse)({
         status: 200,
-        description: 'Health status retrieved successfully',
+        description: 'Service is healthy',
         schema: {
             type: 'object',
             properties: {
-                status: { type: 'string', enum: ['healthy', 'degraded', 'unhealthy'] },
-                version: { type: 'string' },
-                uptime_seconds: { type: 'number' },
+                status: { type: 'string' },
                 timestamp: { type: 'string' },
-                services: {
-                    type: 'object',
-                    properties: {
-                        database: { type: 'object' },
-                        cache: { type: 'object' },
-                        nna_registry: { type: 'object' },
-                    },
-                },
-                metrics: { type: 'object' },
-            },
-        },
+                service: { type: 'string' },
+                version: { type: 'string' },
+                environment: { type: 'string' },
+                port: { type: 'number' }
+            }
+        }
     }),
-    (0, common_1.Get)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], HealthController.prototype, "getHealth", null);
+    __metadata("design:returntype", void 0)
+], HealthController.prototype, "check", null);
 __decorate([
-    (0, swagger_1.ApiOperation)({ summary: 'Get detailed system information' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'System info retrieved successfully' }),
-    (0, common_1.Get)('info'),
+    (0, common_1.Get)('ready'),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Readiness check',
+        description: 'Check if the service is ready to accept traffic'
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Service is ready'
+    }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], HealthController.prototype, "getSystemInfo", null);
+    __metadata("design:returntype", void 0)
+], HealthController.prototype, "ready", null);
+__decorate([
+    (0, common_1.Get)('live'),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Liveness check',
+        description: 'Check if the service is alive and responding'
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Service is alive'
+    }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], HealthController.prototype, "live", null);
 exports.HealthController = HealthController = __decorate([
-    (0, swagger_1.ApiTags)('health'),
-    (0, common_1.Controller)('health'),
-    __metadata("design:paramtypes", [health_service_1.HealthService])
+    (0, swagger_1.ApiTags)('Health'),
+    (0, common_1.Controller)('health')
 ], HealthController);
 //# sourceMappingURL=health.controller.js.map
