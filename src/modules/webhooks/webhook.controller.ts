@@ -37,10 +37,11 @@ export class WebhookController {
         throw new Error('Invalid transformed payload');
       }
       
-      this.logger.log(`🔄 Processing asset created webhook: ${transformedPayload.assetId}`);
+      const assetId = transformedPayload.assetId || transformedPayload.asset_id;
+      this.logger.log(`🔄 Processing asset created webhook: ${assetId}`);
       
       const result = await this.webhookService.processAssetCreated(transformedPayload, signature, timestamp);
-      this.logger.log(`✅ Asset created webhook processed successfully: ${transformedPayload.assetId}`);
+      this.logger.log(`✅ Asset created webhook processed successfully: ${assetId}`);
       return result;
     } catch (error) {
       this.logger.error(`❌ Asset created webhook failed: ${error.message}`);
@@ -70,10 +71,11 @@ export class WebhookController {
         throw new Error('Invalid transformed payload');
       }
       
-      this.logger.log(`🔄 Processing asset updated webhook: ${transformedPayload.assetId}`);
+      const assetId = transformedPayload.assetId || transformedPayload.asset_id;
+      this.logger.log(`🔄 Processing asset updated webhook: ${assetId}`);
       
       const result = await this.webhookService.processAssetUpdated(transformedPayload, signature, timestamp);
-      this.logger.log(`✅ Asset updated webhook processed successfully: ${transformedPayload.assetId}`);
+      this.logger.log(`✅ Asset updated webhook processed successfully: ${assetId}`);
       return result;
     } catch (error) {
       this.logger.error(`❌ Asset updated webhook failed: ${error.message}`);
@@ -103,10 +105,11 @@ export class WebhookController {
         throw new Error('Invalid transformed payload');
       }
       
-      this.logger.log(`🔄 Processing asset deleted webhook: ${transformedPayload.assetId}`);
+      const assetId = transformedPayload.assetId || transformedPayload.asset_id;
+      this.logger.log(`🔄 Processing asset deleted webhook: ${assetId}`);
       
       const result = await this.webhookService.processAssetDeleted(transformedPayload, signature, timestamp);
-      this.logger.log(`✅ Asset deleted webhook processed successfully: ${transformedPayload.assetId}`);
+      this.logger.log(`✅ Asset deleted webhook processed successfully: ${assetId}`);
       return result;
     } catch (error) {
       this.logger.error(`❌ Asset deleted webhook failed: ${error.message}`);
@@ -136,10 +139,11 @@ export class WebhookController {
         throw new Error('Invalid transformed payload');
       }
       
-      this.logger.log(`🔄 Processing composite created webhook: ${transformedPayload.compositeId}`);
+      const compositeId = transformedPayload.compositeId || transformedPayload.composite_id;
+      this.logger.log(`🔄 Processing composite created webhook: ${compositeId}`);
       
       const result = await this.webhookService.processCompositeCreated(transformedPayload, signature, timestamp);
-      this.logger.log(`✅ Composite created webhook processed successfully: ${transformedPayload.compositeId}`);
+      this.logger.log(`✅ Composite created webhook processed successfully: ${compositeId}`);
       return result;
     } catch (error) {
       this.logger.error(`❌ Composite created webhook failed: ${error.message}`);
