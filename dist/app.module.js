@@ -31,6 +31,7 @@ const rate_limiting_guard_1 = require("./common/guards/rate-limiting.guard");
 const health_monitor_service_1 = require("./common/services/health-monitor.service");
 const algorhythm_module_1 = require("./modules/algorhythm/algorhythm.module");
 const webhook_module_1 = require("./modules/webhooks/webhook.module");
+const indexing_module_1 = require("./modules/indexing/indexing.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -84,6 +85,7 @@ exports.AppModule = AppModule = __decorate([
             nna_integration_module_1.NnaIntegrationModule,
             algorhythm_module_1.AlgorhythmModule,
             webhook_module_1.WebhookModule,
+            indexing_module_1.IndexingModule,
             ...(process.env.MONGODB_URI ? [
                 recommendations_module_1.RecommendationsModule,
                 scoring_module_1.ScoringModule,

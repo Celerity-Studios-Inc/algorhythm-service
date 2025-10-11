@@ -6,6 +6,8 @@ import { CacheService } from '../caching/cache.service';
 import { NnaRegistryService } from '../nna-integration/nna-registry.service';
 import { AnalyticsService } from '../analytics/analytics.service';
 import { InstantRecommendationsService } from './instant-recommendations.service';
+import { LocalDataQueryService } from '../indexing/local-data-query.service';
+import { CacheWarmingService } from '../indexing/cache-warming.service';
 import { TemplateRecommendationDto } from './dto/template-recommendation.dto';
 import { LayerVariationDto } from './dto/layer-variation.dto';
 import { TemplateRecommendation, LayerVariation } from './interfaces/recommendation.interface';
@@ -17,8 +19,10 @@ export declare class RecommendationsService {
     private readonly nnaRegistryService;
     private readonly analyticsService;
     private readonly instantRecommendationsService;
+    private readonly localDataQuery;
+    private readonly cacheWarming;
     private readonly logger;
-    constructor(compatibilityScoreModel: Model<CompatibilityScore>, recommendationCacheModel: Model<RecommendationCache>, scoringService: ScoringService, cacheService: CacheService, nnaRegistryService: NnaRegistryService, analyticsService: AnalyticsService, instantRecommendationsService: InstantRecommendationsService);
+    constructor(compatibilityScoreModel: Model<CompatibilityScore>, recommendationCacheModel: Model<RecommendationCache>, scoringService: ScoringService, cacheService: CacheService, nnaRegistryService: NnaRegistryService, analyticsService: AnalyticsService, instantRecommendationsService: InstantRecommendationsService, localDataQuery: LocalDataQueryService, cacheWarming: CacheWarmingService);
     getTemplateRecommendation(request: TemplateRecommendationDto): Promise<{
         recommendation: TemplateRecommendation;
         alternatives: TemplateRecommendation[];

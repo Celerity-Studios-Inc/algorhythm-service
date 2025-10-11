@@ -245,13 +245,13 @@ export class CacheWarmingService {
       }
       acc[asset.layer].push(asset);
       return acc;
-    }, {});
+    }, {} as Record<string, any[]>);
 
     // Generate variations for each layer
     return Object.entries(assetsByLayer).map(([layer, layerAssets]) => ({
       layer,
-      assets: layerAssets.slice(0, 3), // Top 3 assets per layer
-      count: layerAssets.length,
+      assets: (layerAssets as any[]).slice(0, 3), // Top 3 assets per layer
+      count: (layerAssets as any[]).length,
     }));
   }
 
