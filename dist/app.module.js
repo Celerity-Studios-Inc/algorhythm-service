@@ -42,20 +42,20 @@ exports.AppModule = AppModule = __decorate([
                     '.env',
                 ],
             }),
-            mongoose_1.MongooseModule.forRootAsync({
-                imports: [config_1.ConfigModule],
-                useFactory: async (configService) => {
-                    const mongoUri = configService.get('MONGODB_URI') || 'mongodb://localhost:27017/algorhythm-fallback';
-                    console.log('🗄️  MongoDB URI:', mongoUri.includes('localhost') ? 'fallback-local' : 'cloud-database');
-                    return {
-                        uri: mongoUri,
-                        retryWrites: true,
-                        w: 'majority',
-                    };
-                },
-                inject: [config_1.ConfigService],
-            }),
-            redis_config_1.RedisModule,
+            ...(process.env.MONGODB_URI ? [mongoose_1.MongooseModule.forRootAsync({
+                    imports: [config_1.ConfigModule],
+                    useFactory: async (configService) => {
+                        const mongoUri = configService.get('MONGODB_URI');
+                        console.log('🗄️  MongoDB URI: cloud-database');
+                        return {
+                            uri: mongoUri,
+                            retryWrites: true,
+                            w: 'majority',
+                        };
+                    },
+                    inject: [config_1.ConfigService],
+                })] : []),
+            ...(process.env.REDIS_URL ? [redis_config_1.RedisModule] : []),
             throttler_1.ThrottlerModule.forRoot({
                 ttl: 60000,
                 limit: 100,
@@ -79,14 +79,16 @@ exports.AppModule = AppModule = __decorate([
                 ],
             }),
             auth_module_1.AuthModule,
-            recommendations_module_1.RecommendationsModule,
-            scoring_module_1.ScoringModule,
             nna_integration_module_1.NnaIntegrationModule,
-            caching_module_1.CachingModule,
-            analytics_module_1.AnalyticsModule,
-            health_module_1.HealthModule,
-            seeding_module_1.SeedingModule,
-            daemon_module_1.DaemonModule,
+            ...(process.env.MONGODB_URI ? [
+                recommendations_module_1.RecommendationsModule,
+                scoring_module_1.ScoringModule,
+                seeding_module_1.SeedingModule,
+                daemon_module_1.DaemonModule,
+                analytics_module_1.AnalyticsModule,
+                health_module_1.HealthModule,
+            ] : []),
+            ...(process.env.REDIS_URL ? [caching_module_1.CachingModule] : []),
         ],
         providers: [
             environment_validation_1.EnvironmentValidationService,

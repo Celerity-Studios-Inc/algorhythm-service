@@ -9,10 +9,15 @@ export class CacheService {
 
   constructor(
     @Inject(REDIS_CLIENT)
-    private readonly redisClient: Redis,
+    private readonly redisClient: Redis | null,
   ) {}
 
   async get<T>(key: string): Promise<T | null> {
+    if (!this.redisClient) {
+      this.logger.debug(`Redis not available, cache miss for key: ${key}`);
+      return null;
+    }
+    
     try {
       const cached = await this.redisClient.get(key);
       if (cached) {
@@ -29,6 +34,11 @@ export class CacheService {
   }
 
   async set(key: string, value: any, ttl?: number): Promise<boolean> {
+    if (!this.redisClient) {
+      this.logger.debug(`Redis not available, cache set skipped for key: ${key}`);
+      return false;
+    }
+    
     try {
       const serialized = JSON.stringify(value);
       const effectiveTtl = ttl || CACHE_TTL.TEMPLATE_RECOMMENDATION;
@@ -43,6 +53,11 @@ export class CacheService {
   }
 
   async delete(key: string): Promise<boolean> {
+    if (!this.redisClient) {
+      this.logger.debug(`Redis not available, cache delete skipped for key: ${key}`);
+      return false;
+    }
+    
     try {
       const result = await this.redisClient.del(key);
       this.logger.debug(`Cache delete for key: ${key}, result: ${result}`);
@@ -54,6 +69,11 @@ export class CacheService {
   }
 
   async deletePattern(pattern: string): Promise<number> {
+    if (!this.redisClient) {
+      this.logger.debug(`Redis not available, cache delete pattern skipped for pattern: ${pattern}`);
+      return 0;
+    }
+    
     try {
       const keys = await this.redisClient.keys(pattern);
       if (keys.length === 0) return 0;
@@ -68,6 +88,11 @@ export class CacheService {
   }
 
   async exists(key: string): Promise<boolean> {
+    if (!this.redisClient) {
+      this.logger.debug(`Redis not available, cache exists returns false for key: ${key}`);
+      return false;
+    }
+    
     try {
       const result = await this.redisClient.exists(key);
       return result === 1;
@@ -78,6 +103,11 @@ export class CacheService {
   }
 
   async mget(keys: string[]): Promise<(any | null)[]> {
+    if (!this.redisClient) {
+      this.logger.debug(`Redis not available, cache mget returns nulls for ${keys.length} keys`);
+      return keys.map(() => null);
+    }
+    
     try {
       if (keys.length === 0) return [];
 
@@ -90,6 +120,11 @@ export class CacheService {
   }
 
   async mset(keyValuePairs: Array<{ key: string; value: any; ttl?: number }>): Promise<boolean> {
+    if (!this.redisClient) {
+      this.logger.debug(`Redis not available, cache mset skipped for ${keyValuePairs.length} pairs`);
+      return false;
+    }
+    
     try {
       if (keyValuePairs.length === 0) return true;
 

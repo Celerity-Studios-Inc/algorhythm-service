@@ -2,7 +2,7 @@ import { Redis } from 'ioredis';
 export declare class CacheService {
     private readonly redisClient;
     private readonly logger;
-    constructor(redisClient: Redis);
+    constructor(redisClient: Redis | null);
     get<T>(key: string): Promise<T | null>;
     set(key: string, value: any, ttl?: number): Promise<boolean>;
     delete(key: string): Promise<boolean>;

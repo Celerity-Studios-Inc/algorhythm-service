@@ -24,6 +24,10 @@ let CacheService = CacheService_1 = class CacheService {
         this.logger = new common_1.Logger(CacheService_1.name);
     }
     async get(key) {
+        if (!this.redisClient) {
+            this.logger.debug(`Redis not available, cache miss for key: ${key}`);
+            return null;
+        }
         try {
             const cached = await this.redisClient.get(key);
             if (cached) {
@@ -39,6 +43,10 @@ let CacheService = CacheService_1 = class CacheService {
         }
     }
     async set(key, value, ttl) {
+        if (!this.redisClient) {
+            this.logger.debug(`Redis not available, cache set skipped for key: ${key}`);
+            return false;
+        }
         try {
             const serialized = JSON.stringify(value);
             const effectiveTtl = ttl || cache_keys_1.CACHE_TTL.TEMPLATE_RECOMMENDATION;
@@ -52,6 +60,10 @@ let CacheService = CacheService_1 = class CacheService {
         }
     }
     async delete(key) {
+        if (!this.redisClient) {
+            this.logger.debug(`Redis not available, cache delete skipped for key: ${key}`);
+            return false;
+        }
         try {
             const result = await this.redisClient.del(key);
             this.logger.debug(`Cache delete for key: ${key}, result: ${result}`);
@@ -63,6 +75,10 @@ let CacheService = CacheService_1 = class CacheService {
         }
     }
     async deletePattern(pattern) {
+        if (!this.redisClient) {
+            this.logger.debug(`Redis not available, cache delete pattern skipped for pattern: ${pattern}`);
+            return 0;
+        }
         try {
             const keys = await this.redisClient.keys(pattern);
             if (keys.length === 0)
@@ -77,6 +93,10 @@ let CacheService = CacheService_1 = class CacheService {
         }
     }
     async exists(key) {
+        if (!this.redisClient) {
+            this.logger.debug(`Redis not available, cache exists returns false for key: ${key}`);
+            return false;
+        }
         try {
             const result = await this.redisClient.exists(key);
             return result === 1;
@@ -87,6 +107,10 @@ let CacheService = CacheService_1 = class CacheService {
         }
     }
     async mget(keys) {
+        if (!this.redisClient) {
+            this.logger.debug(`Redis not available, cache mget returns nulls for ${keys.length} keys`);
+            return keys.map(() => null);
+        }
         try {
             if (keys.length === 0)
                 return [];
@@ -99,6 +123,10 @@ let CacheService = CacheService_1 = class CacheService {
         }
     }
     async mset(keyValuePairs) {
+        if (!this.redisClient) {
+            this.logger.debug(`Redis not available, cache mset skipped for ${keyValuePairs.length} pairs`);
+            return false;
+        }
         try {
             if (keyValuePairs.length === 0)
                 return true;

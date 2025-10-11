@@ -38,12 +38,12 @@ import { HealthMonitorService } from './common/services/health-monitor.service';
       ],
     }),
 
-    // Database connection
-    MongooseModule.forRootAsync({
+    // Database connection (optional for development)
+    ...(process.env.MONGODB_URI ? [MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => {
-        const mongoUri = configService.get<string>('MONGODB_URI') || 'mongodb://localhost:27017/algorhythm-fallback';
-        console.log('🗄️  MongoDB URI:', mongoUri.includes('localhost') ? 'fallback-local' : 'cloud-database');
+        const mongoUri = configService.get<string>('MONGODB_URI');
+        console.log('🗄️  MongoDB URI: cloud-database');
         
         return {
           uri: mongoUri,
@@ -52,10 +52,10 @@ import { HealthMonitorService } from './common/services/health-monitor.service';
         };
       },
       inject: [ConfigService],
-    }),
+    })] : []),
 
-    // Redis connection
-    RedisModule,
+    // Redis connection (optional for development)
+    ...(process.env.REDIS_URL ? [RedisModule] : []),
 
     // Rate limiting
     ThrottlerModule.forRoot({
@@ -95,14 +95,20 @@ import { HealthMonitorService } from './common/services/health-monitor.service';
 
     // Feature modules
     AuthModule,
-    RecommendationsModule,
-    ScoringModule,
     NnaIntegrationModule,
-    CachingModule,
-    AnalyticsModule,
-    HealthModule,
-    SeedingModule,
-    DaemonModule,
+    
+    // Database-dependent modules (optional)
+    ...(process.env.MONGODB_URI ? [
+      RecommendationsModule,
+      ScoringModule,
+      SeedingModule,
+      DaemonModule,
+      AnalyticsModule,
+      HealthModule,
+    ] : []),
+    
+    // Cache module (optional)
+    ...(process.env.REDIS_URL ? [CachingModule] : []),
   ],
   providers: [
     EnvironmentValidationService,
