@@ -27,6 +27,7 @@ import { ErrorLoggingInterceptor } from './common/interceptors/error-logging.int
 import { RateLimitingGuard } from './common/guards/rate-limiting.guard';
 import { HealthMonitorService } from './common/services/health-monitor.service';
 import { AlgorhythmModule } from './modules/algorhythm/algorhythm.module';
+import { WebhookModule } from './modules/webhooks/webhook.module';
 
 @Module({
   imports: [
@@ -98,6 +99,7 @@ import { AlgorhythmModule } from './modules/algorhythm/algorhythm.module';
     AuthModule,
     NnaIntegrationModule,
     AlgorhythmModule,
+    WebhookModule,
     
     // Database-dependent modules (optional)
     ...(process.env.MONGODB_URI ? [

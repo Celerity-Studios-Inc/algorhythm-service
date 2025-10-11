@@ -26,6 +26,7 @@
     "@nestjs/common": "^11.1.6",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.1.6",
+    "@nestjs/event-emitter": "^3.0.1",
     "@nestjs/jwt": "^10.1.0",
     "@nestjs/mongoose": "^11.0.3",
     "@nestjs/passport": "^10.0.0",
