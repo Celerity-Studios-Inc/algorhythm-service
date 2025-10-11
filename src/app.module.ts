@@ -103,9 +103,9 @@ import { IndexingModule } from './modules/indexing/indexing.module';
     AlgorhythmModule,
     WebhookModule, // ✅ RE-ENABLED: Webhook endpoints for NNA Registry
     
-    // Database-dependent modules (DISABLED for Cloud Run until MongoDB is configured)
+    // Database-dependent modules (ENABLED for ReViz API)
+    RecommendationsModule, // ✅ ENABLED: ReViz Composite API
     // ...(process.env.MONGODB_URI ? [
-    //   RecommendationsModule,
     //   ScoringModule,
     //   SeedingModule,
     //   DaemonModule,
