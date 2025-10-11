@@ -67,7 +67,14 @@ jobs:
             --set-secrets=JWT_SECRET=algorhythm-jwt-secret-dev:latest \
             --set-secrets=NNA_REGISTRY_JWT_SECRET=algorhythm-nna-jwt-secret-dev:latest \
             --set-secrets=NNA_REGISTRY_API_KEY=algorhythm-nna-api-key-dev:latest \
-                        --set-env-vars "NODE_ENV=development,ENVIRONMENT=development,NNA_REGISTRY_BASE_URL=https://registry.dev.reviz.dev,ALGORHYTHM_BASE_URL=https://dev.algorhythm.media"
+            --set-secrets=WEBHOOK_SECRET=algorhythm-webhook-secret-dev:latest \
+            --set-secrets=ALGORHYTHM_WEBHOOK_SECRET=algorhythm-webhook-secret-dev:latest \
+            --set-secrets=ALGORHYTHM_WEBHOOK_URL=algorhythm-webhook-url-dev:latest \
+            --set-secrets=ALGORHYTHM_WEBHOOK_MAX_RETRIES=algorhythm-webhook-max-retries-dev:latest \
+            --set-secrets=ALGORHYTHM_WEBHOOK_RETRY_DELAY=algorhythm-webhook-retry-delay-dev:latest \
+            --set-secrets=NNA_REGISTRY_BASE_URL=NNA_REGISTRY_BASE_URL:latest \
+            --set-secrets=NNA_REGISTRY_API_KEY=NNA_REGISTRY_API_KEY:latest \
+            --set-env-vars "NODE_ENV=development,ENVIRONMENT=development,ALGORHYTHM_BASE_URL=https://dev.algorhythm.media"
 
       - name: Update Traffic to Latest Revision
         run: |
