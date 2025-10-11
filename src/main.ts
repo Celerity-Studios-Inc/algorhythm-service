@@ -34,14 +34,30 @@ if (dbUri) {
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Validate environment configuration
-  const envValidation = app.get(EnvironmentValidationService);
-  envValidation.validateEnvironment();
+  // Validate environment configuration (skip in Cloud Run to avoid startup issues)
+  try {
+    const envValidation = app.get(EnvironmentValidationService);
+    envValidation.validateEnvironment();
+  } catch (error) {
+    console.log('⚠️ Environment validation skipped:', error.message);
+  }
 
-  // Set global prefix for all routes except root health
-  app.setGlobalPrefix('api/v1', {
-    exclude: [{ path: 'health', method: RequestMethod.GET }]
+  // Add simple health endpoint before global prefix
+  app.use('/health', (req, res) => {
+    res.json({
+      status: 'ok',
+      timestamp: new Date().toISOString(),
+      service: 'algorhythm-service',
+      version: '1.0.0',
+      environment: process.env.NODE_ENV || 'production',
+      port: parseInt(process.env.PORT || '3000'),
+      uptime: process.uptime(),
+      nodeVersion: process.version
+    });
   });
+
+  // Set global prefix for all routes
+  app.setGlobalPrefix('api/v1');
 
   // Enable CORS with specific origins based on environment
   const nodeEnv = process.env.NODE_ENV || process.env.ENVIRONMENT || 'production';

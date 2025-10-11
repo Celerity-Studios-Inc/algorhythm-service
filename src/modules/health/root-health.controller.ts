@@ -4,7 +4,7 @@ import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 @ApiTags('Root Health')
 @Controller()
 export class RootHealthController {
-  @Get('health')
+  @Get('api/health')
   @ApiOperation({
     summary: 'Root health check endpoint',
     description: 'Check if the Algorhythm service is running and healthy (root level)'
