@@ -11,7 +11,7 @@ echo "🚀 Starting Webhook Integration Tests"
 echo "====================================="
 
 # Configuration
-ALGORHYTHM_BASE_URL=${ALGORHYTHM_BASE_URL:-"https://algorhythm-service-dev-***.run.app"}
+ALGORHYTHM_BASE_URL=${ALGORHYTHM_BASE_URL:-"https://dev.algorhythm.media"}
 WEBHOOK_SECRET=${WEBHOOK_SECRET:-"test-secret-key"}
 
 echo "Algorhythm Service: $ALGORHYTHM_BASE_URL"

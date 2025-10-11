@@ -229,10 +229,10 @@ export const developmentConfig = {
 ### **Step 2: Test Webhook Endpoints**
 ```bash
 # Test webhook endpoints are accessible
-curl -X GET https://algorhythm-service-dev-***.run.app/webhooks/assets/created
-curl -X GET https://algorhythm-service-dev-***.run.app/webhooks/assets/updated
-curl -X GET https://algorhythm-service-dev-***.run.app/webhooks/composites/created
-curl -X GET https://algorhythm-service-dev-***.run.app/webhooks/assets/deleted
+curl -X GET https://dev.algorhythm.media/webhooks/assets/created
+curl -X GET https://dev.algorhythm.media/webhooks/assets/updated
+curl -X GET https://dev.algorhythm.media/webhooks/composites/created
+curl -X GET https://dev.algorhythm.media/webhooks/assets/deleted
 ```
 
 ### **Step 3: Test with NNA Registry**

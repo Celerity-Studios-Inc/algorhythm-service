@@ -28,9 +28,9 @@ This document provides the definitive reference for all environment configuratio
 
 | Environment     | Algorhythm Service URL                        | Webhook Endpoints                                                                 |
 | --------------- | ---------------------------------------------- | --------------------------------------------------------------------------------- |
-| **Development** | `https://algorhythm.dev.reviz.dev`           | `POST /webhooks/assets/created`, `/composites/created`, `/assets/updated`       |
-| **Staging**     | `https://algorhythm.stg.reviz.dev`           | `POST /webhooks/assets/created`, `/composites/created`, `/assets/updated`       |
-| **Production**  | `https://algorhythm.prod.reviz.dev`          | `POST /webhooks/assets/created`, `/composites/created`, `/assets/updated`       |
+| **Development** | `https://dev.algorhythm.media`               | `POST /webhooks/assets/created`, `/composites/created`, `/assets/updated`       |
+| **Staging**     | `https://stg.algorhythm.media`               | `POST /webhooks/assets/created`, `/composites/created`, `/assets/updated`       |
+| **Production**  | `https://algorhythm.media`                   | `POST /webhooks/assets/created`, `/composites/created`, `/assets/updated`       |
 
 ### **Webhook Security Configuration**
 
@@ -44,9 +44,9 @@ This document provides the definitive reference for all environment configuratio
 
 | Environment     | NNA Registry URL                               | Webhook Target URL                              | Max Retries | Retry Delay |
 | --------------- | ---------------------------------------------- | ----------------------------------------------- | ----------- | ----------- |
-| **Development** | `https://registry.dev.reviz.dev`              | `https://algorhythm.dev.reviz.dev/webhooks`    | 3           | 1000ms      |
-| **Staging**     | `https://registry.stg.reviz.dev`              | `https://algorhythm.stg.reviz.dev/webhooks`    | 3           | 1000ms      |
-| **Production**  | `https://registry.prod.reviz.dev`              | `https://algorhythm.prod.reviz.dev/webhooks`   | 3           | 1000ms      |
+| **Development** | `https://registry.dev.reviz.dev`              | `https://dev.algorhythm.media/api/v1/webhooks` | 3           | 1000ms      |
+| **Staging**     | `https://registry.stg.reviz.dev`              | `https://stg.algorhythm.media/api/v1/webhooks` | 3           | 1000ms      |
+| **Production**  | `https://registry.reviz.dev`                  | `https://algorhythm.media/api/v1/webhooks`    | 3           | 1000ms      |
 
 ---
 

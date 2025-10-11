@@ -10,14 +10,14 @@
 
 AlgoRhythm service is deployed across three environments with the following canonical URLs:
 
-- **Development**: `https://algorhythm-service-dev-5jm4duk5oa-uc.a.run.app` (Currently Active)
+- **Development**: `https://dev.algorhythm.media` (Currently Active)
 - **Staging**: `https://stg.algorhythm.media` (Planned)
 - **Production**: `https://prod.algorhythm.media` (Planned)
 
 **Configuration Example:**
 ```typescript
 const ALGORHYTHM_API = __DEV__ 
-  ? 'https://algorhythm-service-dev-5jm4duk5oa-uc.a.run.app'
+  ? 'https://dev.algorhythm.media'
   : 'https://prod.algorhythm.media';
 ```
 

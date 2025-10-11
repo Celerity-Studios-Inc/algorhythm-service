@@ -11,7 +11,7 @@ const axios = require('axios');
 const crypto = require('crypto');
 
 // Configuration
-const ALGORHYTHM_BASE_URL = process.env.ALGORHYTHM_BASE_URL || 'https://algorhythm-service-dev-***.run.app';
+const ALGORHYTHM_BASE_URL = process.env.ALGORHYTHM_BASE_URL || 'https://dev.algorhythm.media';
 const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET || 'test-secret-key';
 
 // Test data

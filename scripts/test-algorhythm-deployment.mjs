@@ -13,7 +13,7 @@
 import axios from 'axios';
 
 // Configuration
-const ALGORHYTHM_BASE_URL = 'https://algorhythm-service-dev-***.run.app'; // Replace with actual URL
+const ALGORHYTHM_BASE_URL = 'https://dev.algorhythm.media';
 const TEST_TIMEOUT = 10000; // 10 seconds
 
 // Test results tracking

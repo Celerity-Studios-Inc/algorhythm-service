@@ -123,9 +123,9 @@ gcloud logs read --service=algorhythm-service --region=us-central1 --limit=50
 ## API Endpoints
 
 Once deployed, your service will be available at:
-- **Base URL**: `https://algorhythm-service-<hash>-uc.a.run.app`
-- **API Documentation**: `https://algorhythm-service-<hash>-uc.a.run.app/api/docs`
-- **Health Check**: `https://algorhythm-service-<hash>-uc.a.run.app/api/v1/health`
+- **Base URL**: `https://dev.algorhythm.media`
+- **API Documentation**: `https://dev.algorhythm.media/api/docs`
+- **Health Check**: `https://dev.algorhythm.media/api/v1/health`
 
 ### Main Endpoints
 - `POST /api/v1/recommend/template` - Get template recommendations
