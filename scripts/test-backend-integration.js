@@ -9,7 +9,7 @@ const https = require('https');
 const crypto = require('crypto');
 
 // Configuration
-const ALGORHYTHM_BASE_URL = 'https://algorhythm-service-dev-5jm4duk5oa-uc.a.run.app';
+const ALGORHYTHM_BASE_URL = 'https://dev.algorhythm.media';
 const WEBHOOK_SECRET = '43b377dd2766939804720f61f10d8e1b61bbb8df9a89e502e3cd75d0b318783a';
 
 /**

@@ -4,7 +4,7 @@
 
 **Date**: October 11, 2025  
 **Status**: ✅ **FULLY READY FOR INTEGRATION**  
-**Service URL**: `https://algorhythm-service-dev-5jm4duk5oa-uc.a.run.app`
+**Service URL**: `https://dev.algorhythm.media`
 
 ---
 
@@ -56,7 +56,7 @@
 ### **✅ NNA Registry Environment Variables**
 ```bash
 # NNA Registry Configuration for Algorhythm Integration
-ALGORHYTHM_WEBHOOK_URL=https://algorhythm-service-dev-5jm4duk5oa-uc.a.run.app/api/v1/webhooks
+ALGORHYTHM_WEBHOOK_URL=https://dev.algorhythm.media/api/v1/webhooks
 ALGORHYTHM_WEBHOOK_SECRET=43b377dd2766939804720f61f10d8e1b61bbb8df9a89e502e3cd75d0b318783a
 ALGORHYTHM_WEBHOOK_MAX_RETRIES=3
 ALGORHYTHM_WEBHOOK_RETRY_DELAY_MS=1000
@@ -65,7 +65,7 @@ ALGORHYTHM_WEBHOOK_RETRY_DELAY_MS=1000
 ### **✅ Webhook Delivery Configuration**
 ```bash
 # NNA Registry Webhook Delivery Settings
-ALGORHYTHM_WEBHOOK_URL=https://algorhythm-service-dev-5jm4duk5oa-uc.a.run.app/api/v1/webhooks
+ALGORHYTHM_WEBHOOK_URL=https://dev.algorhythm.media/api/v1/webhooks
 ALGORHYTHM_WEBHOOK_SECRET=43b377dd2766939804720f61f10d8e1b61bbb8df9a89e502e3cd75d0b318783a
 ALGORHYTHM_WEBHOOK_TIMEOUT_MS=10000
 ALGORHYTHM_WEBHOOK_MAX_RETRIES=3
@@ -79,7 +79,7 @@ ALGORHYTHM_WEBHOOK_RETRY_DELAY_MS=1000
 ### **Step 1: Configure NNA Registry Webhook Delivery** ✅
 ```bash
 # Update NNA Registry environment variables
-export ALGORHYTHM_WEBHOOK_URL="https://algorhythm-service-dev-5jm4duk5oa-uc.a.run.app/api/v1/webhooks"
+export ALGORHYTHM_WEBHOOK_URL="https://dev.algorhythm.media/api/v1/webhooks"
 export ALGORHYTHM_WEBHOOK_SECRET="43b377dd2766939804720f61f10d8e1b61bbb8df9a89e502e3cd75d0b318783a"
 export ALGORHYTHM_WEBHOOK_MAX_RETRIES=3
 export ALGORHYTHM_WEBHOOK_RETRY_DELAY_MS=1000
@@ -148,7 +148,7 @@ export ALGORHYTHM_WEBHOOK_RETRY_DELAY_MS=1000
 ## 📞 **COORDINATION STATUS**
 
 ### **✅ ALGORHYTHM TEAM DELIVERABLES**
-- ✅ **Service URL**: `https://algorhythm-service-dev-5jm4duk5oa-uc.a.run.app`
+- ✅ **Service URL**: `https://dev.algorhythm.media`
 - ✅ **Webhook Endpoints**: All 4 endpoints operational and tested
 - ✅ **Security Implementation**: HMAC and timestamp validation ready
 - ✅ **Webhook Secret**: `43b377dd2766939804720f61f10d8e1b61bbb8df9a89e502e3cd75d0b318783a`
@@ -167,28 +167,28 @@ export ALGORHYTHM_WEBHOOK_RETRY_DELAY_MS=1000
 ### **Test Webhook Endpoints (Ready Now)**
 ```bash
 # Test asset created webhook
-curl -X POST https://algorhythm-service-dev-5jm4duk5oa-uc.a.run.app/api/v1/webhooks/assets/created \
+curl -X POST https://dev.algorhythm.media/api/v1/webhooks/assets/created \
   -H "Content-Type: application/json" \
   -H "x-algorhythm-signature: $(echo -n 'payload' | openssl dgst -sha256 -hmac '43b377dd2766939804720f61f10d8e1b61bbb8df9a89e502e3cd75d0b318783a' -binary | base64)" \
   -H "x-algorhythm-timestamp: $(date +%s)" \
   -d '{"event":"asset.created","assetId":"test","layer":"test","category":"test","subcategory":"test","name":"Test Asset","gcpStorageUrl":"https://test.com","metadata":{},"timestamp":"'$(date -Iseconds)'"}'
 
 # Test asset updated webhook
-curl -X POST https://algorhythm-service-dev-5jm4duk5oa-uc.a.run.app/api/v1/webhooks/assets/updated \
+curl -X POST https://dev.algorhythm.media/api/v1/webhooks/assets/updated \
   -H "Content-Type: application/json" \
   -H "x-algorhythm-signature: $(echo -n 'payload' | openssl dgst -sha256 -hmac '43b377dd2766939804720f61f10d8e1b61bbb8df9a89e502e3cd75d0b318783a' -binary | base64)" \
   -H "x-algorhythm-timestamp: $(date +%s)" \
   -d '{"event":"asset.updated","assetId":"test","layer":"test","category":"test","subcategory":"test","name":"Test Asset","gcpStorageUrl":"https://test.com","metadata":{},"changes":{},"timestamp":"'$(date -Iseconds)'"}'
 
 # Test asset deleted webhook
-curl -X POST https://algorhythm-service-dev-5jm4duk5oa-uc.a.run.app/api/v1/webhooks/assets/deleted \
+curl -X POST https://dev.algorhythm.media/api/v1/webhooks/assets/deleted \
   -H "Content-Type: application/json" \
   -H "x-algorhythm-signature: $(echo -n 'payload' | openssl dgst -sha256 -hmac '43b377dd2766939804720f61f10d8e1b61bbb8df9a89e502e3cd75d0b318783a' -binary | base64)" \
   -H "x-algorhythm-timestamp: $(date +%s)" \
   -d '{"event":"asset.deleted","assetId":"test","timestamp":"'$(date -Iseconds)'"}'
 
 # Test composite created webhook
-curl -X POST https://algorhythm-service-dev-5jm4duk5oa-uc.a.run.app/api/v1/webhooks/composites/created \
+curl -X POST https://dev.algorhythm.media/api/v1/webhooks/composites/created \
   -H "Content-Type: application/json" \
   -H "x-algorhythm-signature: $(echo -n 'payload' | openssl dgst -sha256 -hmac '43b377dd2766939804720f61f10d8e1b61bbb8df9a89e502e3cd75d0b318783a' -binary | base64)" \
   -H "x-algorhythm-timestamp: $(date +%s)" \
