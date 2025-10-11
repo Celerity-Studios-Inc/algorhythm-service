@@ -6,6 +6,7 @@ import { WebhookService } from './webhook.service';
 import { WebhookValidationService } from './webhook-validation.service';
 import { WebhookPayloadTransformerService } from './webhook-payload-transformer.service';
 import { EventProcessorService } from '../events/event-processor.service';
+import { EventListenerService } from '../events/event-listener.service';
 // import { IndexingModule } from '../indexing/indexing.module'; // Conditional import
 
 @Module({
@@ -35,6 +36,7 @@ import { EventProcessorService } from '../events/event-processor.service';
     WebhookValidationService,
     WebhookPayloadTransformerService,
     EventProcessorService,
+    EventListenerService,
   ],
   exports: [WebhookService, EventProcessorService],
 })

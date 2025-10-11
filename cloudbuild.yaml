@@ -38,8 +38,8 @@ steps:
       '--set-secrets', 'REDIS_URL=REDIS_URL:latest',
       '--set-secrets', 'JWT_SECRET=JWT_SECRET:latest',
       '--set-secrets', 'ALGORHYTHM_WEBHOOK_SECRET=ALGORHYTHM_WEBHOOK_SECRET:latest',
-      '--set-env-vars', 'NNA_REGISTRY_BASE_URL=https://nna-registry-service-<your-hash>-uc.a.run.app',
-      '--set-env-vars', 'NNA_REGISTRY_API_KEY=<your-api-key>',
+      '--set-env-vars', 'NNA_REGISTRY_BASE_URL=https://registry.dev.reviz.dev',
+      '--set-env-vars', 'NNA_REGISTRY_API_KEY=fallback-api-key',
       '--service-account', '116756405696741720548@revize-453014.iam.gserviceaccount.com'
     ]
 

@@ -28,8 +28,19 @@ export class EventProcessorService {
       //   timestamp: event.timestamp
       // });
       
-      // For now, just log the event (indexing will be enabled when database is available)
-      this.logger.log(`📝 Asset created event logged: ${event.assetId}`);
+      // Emit internal event for processing
+      this.eventEmitter.emit('asset.created', {
+        assetId: event.assetId,
+        layer: event.layer,
+        category: event.category,
+        subcategory: event.subcategory,
+        name: event.name,
+        gcpStorageUrl: event.gcpStorageUrl,
+        metadata: event.metadata,
+        timestamp: event.timestamp
+      });
+      
+      this.logger.log(`📝 Asset created event processed and emitted: ${event.assetId}`);
 
       this.logger.log(`✅ Asset created event processed: ${event.assetId}`);
     } catch (error) {
@@ -55,8 +66,20 @@ export class EventProcessorService {
       //   timestamp: event.timestamp
       // });
       
-      // For now, just log the event (indexing will be enabled when database is available)
-      this.logger.log(`📝 Asset updated event logged: ${event.assetId}`);
+      // Emit internal event for processing
+      this.eventEmitter.emit('asset.updated', {
+        assetId: event.assetId,
+        layer: event.layer,
+        category: event.category,
+        subcategory: event.subcategory,
+        name: event.name,
+        gcpStorageUrl: event.gcpStorageUrl,
+        metadata: event.metadata,
+        changes: event.changes,
+        timestamp: event.timestamp
+      });
+      
+      this.logger.log(`📝 Asset updated event processed and emitted: ${event.assetId}`);
 
       this.logger.log(`✅ Asset updated event processed: ${event.assetId}`);
     } catch (error) {
@@ -75,8 +98,13 @@ export class EventProcessorService {
       //   timestamp: event.timestamp
       // });
       
-      // For now, just log the event (indexing will be enabled when database is available)
-      this.logger.log(`📝 Asset deleted event logged: ${event.assetId}`);
+      // Emit internal event for processing
+      this.eventEmitter.emit('asset.deleted', {
+        assetId: event.assetId,
+        timestamp: event.timestamp
+      });
+      
+      this.logger.log(`📝 Asset deleted event processed and emitted: ${event.assetId}`);
 
       this.logger.log(`✅ Asset deleted event processed: ${event.assetId}`);
     } catch (error) {
@@ -106,8 +134,24 @@ export class EventProcessorService {
       //   timestamp: event.timestamp
       // });
       
-      // For now, just log the event (indexing will be enabled when database is available)
-      this.logger.log(`📝 Composite created event logged: ${event.compositeId}`);
+      // Emit internal event for processing
+      this.eventEmitter.emit('composite.created', {
+        compositeId: event.compositeId,
+        layer: event.layer,
+        category: event.category,
+        subcategory: event.subcategory,
+        name: event.name,
+        gcpStorageUrl: event.gcpStorageUrl,
+        compositeType: event.compositeType,
+        componentCount: event.componentCount,
+        componentLayers: event.componentLayers,
+        componentIds: event.componentIds,
+        metadata: event.metadata,
+        components: event.components,
+        timestamp: event.timestamp
+      });
+      
+      this.logger.log(`📝 Composite created event processed and emitted: ${event.compositeId}`);
 
       this.logger.log(`✅ Composite created event processed: ${event.compositeId}`);
     } catch (error) {
