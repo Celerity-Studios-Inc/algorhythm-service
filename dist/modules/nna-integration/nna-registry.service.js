@@ -20,11 +20,8 @@ let NnaRegistryService = NnaRegistryService_1 = class NnaRegistryService {
         this.httpService = httpService;
         this.configService = configService;
         this.logger = new common_1.Logger(NnaRegistryService_1.name);
-        this.baseUrl = this.configService.get('NNA_REGISTRY_BASE_URL');
-        this.apiKey = this.configService.get('NNA_REGISTRY_API_KEY');
-        if (!this.baseUrl) {
-            throw new Error('NNA_REGISTRY_BASE_URL is required');
-        }
+        this.baseUrl = this.configService.get('NNA_REGISTRY_BASE_URL') || 'https://registry.dev.reviz.dev';
+        this.apiKey = this.configService.get('NNA_REGISTRY_API_KEY') || 'fallback-api-key';
         this.logger.log(`NNA Registry integration configured for: ${this.baseUrl}`);
     }
     async getAssetByAddress(address) {

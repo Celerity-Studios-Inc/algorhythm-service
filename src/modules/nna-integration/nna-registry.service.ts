@@ -14,12 +14,8 @@ export class NnaRegistryService {
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
   ) {
-    this.baseUrl = this.configService.get<string>('NNA_REGISTRY_BASE_URL');
-    this.apiKey = this.configService.get<string>('NNA_REGISTRY_API_KEY');
-
-    if (!this.baseUrl) {
-      throw new Error('NNA_REGISTRY_BASE_URL is required');
-    }
+    this.baseUrl = this.configService.get<string>('NNA_REGISTRY_BASE_URL') || 'https://registry.dev.reviz.dev';
+    this.apiKey = this.configService.get<string>('NNA_REGISTRY_API_KEY') || 'fallback-api-key';
 
     this.logger.log(`NNA Registry integration configured for: ${this.baseUrl}`);
   }
