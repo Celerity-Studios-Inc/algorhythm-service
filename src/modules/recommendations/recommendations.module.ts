@@ -7,6 +7,8 @@ import { ReVizCompleteExperienceProductionService } from './reviz-complete-exper
 import { ReVizCompleteExperienceProductionController } from './reviz-complete-experience-production.controller';
 import { ReVizCompleteExperienceEnhancedService } from './reviz-complete-experience-enhanced.service';
 import { ReVizCompleteExperienceEnhancedController } from './reviz-complete-experience-enhanced.controller';
+import { ReVizCompositeExperienceService } from './reviz-composite-experience.service';
+import { ReVizCompositeExperienceController } from './reviz-composite-experience.controller';
 import { CacheWarmingService } from './cache-warming.service';
 import { ScoringModule } from '../scoring/scoring.module';
 import { CachingModule } from '../caching/caching.module';
@@ -39,13 +41,15 @@ import { Composite, CompositeSchema } from '../../models/composite.schema';
   controllers: [
     RecommendationsController, 
     ReVizCompleteExperienceProductionController,
-    ReVizCompleteExperienceEnhancedController
+    ReVizCompleteExperienceEnhancedController,
+    ReVizCompositeExperienceController
   ],
   providers: [
     RecommendationsService, 
     InstantRecommendationsService, 
     ReVizCompleteExperienceProductionService,
     ReVizCompleteExperienceEnhancedService,
+    ReVizCompositeExperienceService,
     CacheWarmingService
   ],
   exports: [
@@ -53,6 +57,7 @@ import { Composite, CompositeSchema } from '../../models/composite.schema';
     InstantRecommendationsService, 
     ReVizCompleteExperienceProductionService,
     ReVizCompleteExperienceEnhancedService,
+    ReVizCompositeExperienceService,
     CacheWarmingService
   ],
 })
