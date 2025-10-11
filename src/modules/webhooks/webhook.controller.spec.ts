@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { WebhookController } from './webhook.controller';
 import { WebhookService } from './webhook.service';
 import { WebhookValidationService } from './webhook-validation.service';
+import { WebhookPayloadTransformerService } from './webhook-payload-transformer.service';
 import { EventProcessorService } from '../events/event-processor.service';
 
 describe('WebhookController', () => {
@@ -24,6 +25,13 @@ describe('WebhookController', () => {
           provide: WebhookValidationService,
           useValue: {
             validateSignature: jest.fn().mockResolvedValue(true),
+          },
+        },
+        {
+          provide: WebhookPayloadTransformerService,
+          useValue: {
+            transformPayload: jest.fn().mockImplementation((payload) => payload),
+            validateTransformedPayload: jest.fn().mockReturnValue(true),
           },
         },
         {
