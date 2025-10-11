@@ -96,22 +96,22 @@ import { IndexingModule } from './modules/indexing/indexing.module';
       ],
     }),
 
-    // Feature modules
+    // Feature modules (minimal for Cloud Run)
     AuthModule,
     NnaIntegrationModule,
     AlgorhythmModule,
     WebhookModule,
     
-    // Database-dependent modules (optional)
-    ...(process.env.MONGODB_URI ? [
-      RecommendationsModule,
-      ScoringModule,
-      SeedingModule,
-      DaemonModule,
-      AnalyticsModule,
-      HealthModule,
-      IndexingModule,
-    ] : []),
+    // Database-dependent modules (DISABLED for Cloud Run until MongoDB is configured)
+    // ...(process.env.MONGODB_URI ? [
+    //   RecommendationsModule,
+    //   ScoringModule,
+    //   SeedingModule,
+    //   DaemonModule,
+    //   AnalyticsModule,
+    //   HealthModule,
+    //   IndexingModule,
+    // ] : []),
     
     // Cache module (optional)
     ...(process.env.REDIS_URL ? [CachingModule] : []),

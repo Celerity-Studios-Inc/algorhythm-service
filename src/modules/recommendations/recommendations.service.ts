@@ -8,8 +8,8 @@ import { CacheService } from '../caching/cache.service';
 import { NnaRegistryService } from '../nna-integration/nna-registry.service';
 import { AnalyticsService } from '../analytics/analytics.service';
 import { InstantRecommendationsService } from './instant-recommendations.service';
-import { LocalDataQueryService } from '../indexing/local-data-query.service';
-import { CacheWarmingService } from '../indexing/cache-warming.service';
+// import { LocalDataQueryService } from '../indexing/local-data-query.service';
+// import { CacheWarmingService } from '../indexing/cache-warming.service';
 import { TemplateRecommendationDto } from './dto/template-recommendation.dto';
 import { LayerVariationDto } from './dto/layer-variation.dto';
 import { 
@@ -33,8 +33,8 @@ export class RecommendationsService {
     private readonly nnaRegistryService: NnaRegistryService,
     private readonly analyticsService: AnalyticsService,
     private readonly instantRecommendationsService: InstantRecommendationsService,
-    private readonly localDataQuery: LocalDataQueryService | null,
-    private readonly cacheWarming: CacheWarmingService | null,
+    // private readonly localDataQuery: LocalDataQueryService | null,
+    // private readonly cacheWarming: CacheWarmingService | null,
   ) {}
 
   async getTemplateRecommendation(
@@ -52,32 +52,32 @@ export class RecommendationsService {
     // 🚀 Using local data storage for fast queries
     this.logger.debug('🚀 Using local data storage for fast queries');
     
-    // Check cache warming first (if available)
-    if (this.cacheWarming) {
-      const cachedRecommendations = await this.cacheWarming.getCachedRecommendations(
-        request.song_id,
-        request.user_context
-      );
-      
-      if (cachedRecommendations) {
-        this.logger.debug(`✅ Cache hit for template recommendation: ${request.song_id}`);
-        
-        // Track analytics for cached result
-        await this.analyticsService.trackEvent({
-          event_type: 'template_recommendation_served',
-          user_id: request.user_context.user_id,
-          song_id: request.song_id,
-          template_id: cachedRecommendations.recommendation?.template_id || 'unknown',
-          cache_hit: true,
-          response_time_ms: Date.now() - startTime,
-        });
-
-        return {
-          ...cachedRecommendations,
-          cache_hit: true,
-        };
-      }
-    }
+    // Check cache warming first (if available) - DISABLED for minimal deployment
+    // if (this.cacheWarming) {
+    //   const cachedRecommendations = await this.cacheWarming.getCachedRecommendations(
+    //     request.song_id,
+    //     request.user_context
+    //   );
+    //   
+    //   if (cachedRecommendations) {
+    //     this.logger.debug(`✅ Cache hit for template recommendation: ${request.song_id}`);
+    //     
+    //     // Track analytics for cached result
+    //     await this.analyticsService.trackEvent({
+    //       event_type: 'template_recommendation_served',
+    //       user_id: request.user_context.user_id,
+    //       song_id: request.song_id,
+    //       template_id: cachedRecommendations.recommendation?.template_id || 'unknown',
+    //       cache_hit: true,
+    //       response_time_ms: Date.now() - startTime,
+    //     });
+    //
+    //     return {
+    //       ...cachedRecommendations,
+    //       cache_hit: true,
+    //     };
+    //   }
+    // }
     
     // Check cache first
     const primaryCacheKey = `${CACHE_KEYS.TEMPLATE_RECOMMENDATION}:${request.song_id}:${JSON.stringify(request.user_context)}`;
@@ -123,10 +123,8 @@ export class RecommendationsService {
 
     // Get all available templates (composites) for this song
     // 🔧 FIX: Use getFullCompositesBySong for ReViz developers to ensure C.FUL only
-    // Use local data query if available, otherwise fall back to NNA Registry
-    const availableTemplates = this.localDataQuery 
-      ? await this.localDataQuery.getFullCompositesBySong(songId)
-      : await this.nnaRegistryService.getFullCompositesBySong(songId);
+    // Use NNA Registry directly (local data query disabled for minimal deployment)
+    const availableTemplates = await this.nnaRegistryService.getFullCompositesBySong(songId);
     
     if (availableTemplates.length === 0) {
       const originalId = request.song_id !== songId ? `${request.song_id} (${songId})` : songId;

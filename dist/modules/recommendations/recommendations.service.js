@@ -24,12 +24,10 @@ const cache_service_1 = require("../caching/cache.service");
 const nna_registry_service_1 = require("../nna-integration/nna-registry.service");
 const analytics_service_1 = require("../analytics/analytics.service");
 const instant_recommendations_service_1 = require("./instant-recommendations.service");
-const local_data_query_service_1 = require("../indexing/local-data-query.service");
-const cache_warming_service_1 = require("../indexing/cache-warming.service");
 const cache_keys_1 = require("../../common/constants/cache-keys");
 const compatibility_weights_1 = require("../../common/constants/compatibility-weights");
 let RecommendationsService = RecommendationsService_1 = class RecommendationsService {
-    constructor(compatibilityScoreModel, recommendationCacheModel, scoringService, cacheService, nnaRegistryService, analyticsService, instantRecommendationsService, localDataQuery, cacheWarming) {
+    constructor(compatibilityScoreModel, recommendationCacheModel, scoringService, cacheService, nnaRegistryService, analyticsService, instantRecommendationsService) {
         this.compatibilityScoreModel = compatibilityScoreModel;
         this.recommendationCacheModel = recommendationCacheModel;
         this.scoringService = scoringService;
@@ -37,31 +35,11 @@ let RecommendationsService = RecommendationsService_1 = class RecommendationsSer
         this.nnaRegistryService = nnaRegistryService;
         this.analyticsService = analyticsService;
         this.instantRecommendationsService = instantRecommendationsService;
-        this.localDataQuery = localDataQuery;
-        this.cacheWarming = cacheWarming;
         this.logger = new common_1.Logger(RecommendationsService_1.name);
     }
     async getTemplateRecommendation(request) {
         const startTime = Date.now();
         this.logger.debug('🚀 Using local data storage for fast queries');
-        if (this.cacheWarming) {
-            const cachedRecommendations = await this.cacheWarming.getCachedRecommendations(request.song_id, request.user_context);
-            if (cachedRecommendations) {
-                this.logger.debug(`✅ Cache hit for template recommendation: ${request.song_id}`);
-                await this.analyticsService.trackEvent({
-                    event_type: 'template_recommendation_served',
-                    user_id: request.user_context.user_id,
-                    song_id: request.song_id,
-                    template_id: cachedRecommendations.recommendation?.template_id || 'unknown',
-                    cache_hit: true,
-                    response_time_ms: Date.now() - startTime,
-                });
-                return {
-                    ...cachedRecommendations,
-                    cache_hit: true,
-                };
-            }
-        }
         const primaryCacheKey = `${cache_keys_1.CACHE_KEYS.TEMPLATE_RECOMMENDATION}:${request.song_id}:${JSON.stringify(request.user_context)}`;
         const primaryCachedResult = await this.cacheService.get(primaryCacheKey);
         if (primaryCachedResult) {
@@ -92,9 +70,7 @@ let RecommendationsService = RecommendationsService_1 = class RecommendationsSer
         if (!song) {
             throw new common_1.NotFoundException(`Song not found: ${songId}`);
         }
-        const availableTemplates = this.localDataQuery
-            ? await this.localDataQuery.getFullCompositesBySong(songId)
-            : await this.nnaRegistryService.getFullCompositesBySong(songId);
+        const availableTemplates = await this.nnaRegistryService.getFullCompositesBySong(songId);
         if (availableTemplates.length === 0) {
             const originalId = request.song_id !== songId ? `${request.song_id} (${songId})` : songId;
             throw new common_1.NotFoundException(`No templates available for song: ${originalId}`);
@@ -311,8 +287,6 @@ exports.RecommendationsService = RecommendationsService = RecommendationsService
         cache_service_1.CacheService,
         nna_registry_service_1.NnaRegistryService,
         analytics_service_1.AnalyticsService,
-        instant_recommendations_service_1.InstantRecommendationsService,
-        local_data_query_service_1.LocalDataQueryService,
-        cache_warming_service_1.CacheWarmingService])
+        instant_recommendations_service_1.InstantRecommendationsService])
 ], RecommendationsService);
 //# sourceMappingURL=recommendations.service.js.map
