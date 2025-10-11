@@ -15,6 +15,7 @@ const nest_winston_1 = require("nest-winston");
 const core_1 = require("@nestjs/core");
 const winston = require("winston");
 const auth_module_1 = require("./modules/auth/auth.module");
+const nna_integration_module_1 = require("./modules/nna-integration/nna-integration.module");
 const caching_module_1 = require("./modules/caching/caching.module");
 const health_module_1 = require("./modules/health/health.module");
 const environment_validation_1 = require("./config/environment-validation");
@@ -24,6 +25,7 @@ const error_logging_interceptor_1 = require("./common/interceptors/error-logging
 const rate_limiting_guard_1 = require("./common/guards/rate-limiting.guard");
 const health_monitor_service_1 = require("./common/services/health-monitor.service");
 const algorhythm_module_1 = require("./modules/algorhythm/algorhythm.module");
+const webhook_module_1 = require("./modules/webhooks/webhook.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -75,7 +77,9 @@ exports.AppModule = AppModule = __decorate([
             }),
             auth_module_1.AuthModule,
             health_module_1.HealthModule,
+            nna_integration_module_1.NnaIntegrationModule,
             algorhythm_module_1.AlgorhythmModule,
+            webhook_module_1.WebhookModule,
             ...(process.env.REDIS_URL ? [caching_module_1.CachingModule] : []),
         ],
         providers: [

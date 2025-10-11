@@ -96,12 +96,12 @@ import { IndexingModule } from './modules/indexing/indexing.module';
       ],
     }),
 
-    // Feature modules (ULTRA-MINIMAL for Cloud Run)
+    // Feature modules (PHASE 2: Re-enable core functionality)
     AuthModule,
     HealthModule, // ✅ FIX: Add health check endpoint
-    // NnaIntegrationModule, // DISABLED - might be causing startup issues
+    NnaIntegrationModule, // ✅ RE-ENABLED: NNA Registry API integration
     AlgorhythmModule,
-    // WebhookModule, // DISABLED - might be causing startup issues
+    WebhookModule, // ✅ RE-ENABLED: Webhook endpoints for NNA Registry
     
     // Database-dependent modules (DISABLED for Cloud Run until MongoDB is configured)
     // ...(process.env.MONGODB_URI ? [
