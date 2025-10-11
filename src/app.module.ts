@@ -105,11 +105,11 @@ import { IndexingModule } from './modules/indexing/indexing.module';
     
     // Database-dependent modules (ENABLED for ReViz API)
     RecommendationsModule, // ✅ ENABLED: ReViz Composite API
+    ScoringModule, // ✅ ENABLED: Required by RecommendationsModule
+    AnalyticsModule, // ✅ ENABLED: Required by RecommendationsModule
     // ...(process.env.MONGODB_URI ? [
-    //   ScoringModule,
     //   SeedingModule,
     //   DaemonModule,
-    //   AnalyticsModule,
     //   HealthModule,
     //   IndexingModule,
     // ] : []),
