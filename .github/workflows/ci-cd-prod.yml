@@ -89,6 +89,7 @@ jobs:
             --set-secrets=ALGORHYTHM_WEBHOOK_URL=algorhythm-webhook-url-prod:latest \
             --set-secrets=ALGORHYTHM_WEBHOOK_MAX_RETRIES=algorhythm-webhook-max-retries-prod:latest \
             --set-secrets=ALGORHYTHM_WEBHOOK_RETRY_DELAY=algorhythm-webhook-retry-delay-prod:latest \
+            --set-secrets=REVIZ_API_KEY=algorhythm-reviz-api-key-prod:latest \
                         --set-env-vars "NODE_ENV=production,ENVIRONMENT=production,NNA_REGISTRY_BASE_URL=https://registry.reviz.dev,ALGORHYTHM_BASE_URL=https://prod.algorhythm.media"
 
       - name: Update Traffic to Latest Revision

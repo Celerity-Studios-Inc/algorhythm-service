@@ -70,17 +70,24 @@ async function bootstrap() {
       'http://localhost:3000',
       'http://localhost:3001',
       'exp://localhost:8081', // Expo dev
+      'exp://192.168.1.100:8081', // Expo dev on network
+      'exp://10.0.2.2:8081', // Android emulator
+      'exp://192.168.0.100:8081', // iOS simulator
+      'http://localhost:8081', // Metro bundler
+      'http://192.168.1.100:8081', // Network Metro
     ];
   } else if (nodeEnv === 'staging') {
     allowedOrigins = [
       'https://stg.algorhythm.media',
       'https://registry.stg.reviz.dev',
+      'https://stg.reviz.app', // Staging mobile app
     ];
   } else {
     allowedOrigins = [
       'https://algorhythm.media',
       'https://registry.reviz.dev',
       'https://reviz.app', // Production mobile app
+      'https://app.reviz.dev', // Alternative production domain
     ];
   }
 
@@ -92,6 +99,7 @@ async function bootstrap() {
       'Authorization',
       'X-User-Context',
       'X-Request-ID',
+      'X-API-Key',
       'Accept',
       'Origin',
       'X-Requested-With',

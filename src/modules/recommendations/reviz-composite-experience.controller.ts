@@ -1,6 +1,5 @@
-import { Controller, Post, Body, Get, UseGuards, Logger } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiBody } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { Controller, Post, Body, Logger, Headers, UnauthorizedException } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiHeader } from '@nestjs/swagger';
 import { ReVizCompositeExperienceService } from './reviz-composite-experience.service';
 import { ReVizCompositeRequest, ReVizCompositeResponse } from './interfaces/reviz-composite-experience.interface';
 
@@ -15,8 +14,6 @@ import { ReVizCompositeRequest, ReVizCompositeResponse } from './interfaces/revi
  */
 @ApiTags('reviz-composite')
 @Controller('reviz/composite')
-@UseGuards(JwtAuthGuard)
-@ApiBearerAuth()
 export class ReVizCompositeExperienceController {
   private readonly logger = new Logger(ReVizCompositeExperienceController.name);
 
@@ -34,6 +31,12 @@ export class ReVizCompositeExperienceController {
    * - Returns real GCP URLs (not mock data)
    */
   @Post('complete-experience')
+  @ApiHeader({
+    name: 'x-api-key',
+    description: 'ReViz API key for authentication',
+    required: true,
+    example: 'reviz-api-key-123'
+  })
   @ApiOperation({
     summary: 'Get complete ReViz experience for a specific composite (ReViz Developer Request)',
     description: `
@@ -74,14 +77,15 @@ export class ReVizCompositeExperienceController {
     description: 'ReViz Composite Experience Request',
     examples: {
       mobile: {
-        summary: 'Mobile configuration for composite C.FUL.001',
+        summary: 'Mobile configuration (cellular)',
         value: {
-          composite_id: 'C.FUL.001',
+          composite_id: 'COMPOSITE_001',
           user_context: {
             user_id: 'user_123',
             device_type: 'mobile',
             connection_speed: 'medium',
             preferences: {
+              preferred_genres: ['pop', 'rock'],
               energy_preference: 'high',
               style_preference: 'modern'
             }
@@ -89,29 +93,40 @@ export class ReVizCompositeExperienceController {
           experience_config: {
             max_assets_per_layer: 4,
             include_variants: true,
-            variant_depth: 3,
+            variant_depth: 2,
             layers: ['stars', 'looks', 'moves', 'worlds']
           }
         }
       },
       desktop: {
-        summary: 'Desktop configuration for composite C.FUL.002',
+        summary: 'Desktop configuration (WiFi)',
         value: {
-          composite_id: 'C.FUL.002',
+          composite_id: 'COMPOSITE_002',
           user_context: {
             user_id: 'user_456',
             device_type: 'desktop',
             connection_speed: 'fast',
             preferences: {
+              preferred_genres: ['electronic', 'indie'],
               energy_preference: 'medium',
-              style_preference: 'classic'
+              style_preference: 'trendy'
             }
           },
           experience_config: {
             max_assets_per_layer: 8,
             include_variants: true,
-            variant_depth: 5,
+            variant_depth: 4,
             layers: ['stars', 'looks', 'moves', 'worlds']
+          }
+        }
+      },
+      minimal: {
+        summary: 'Minimal configuration',
+        value: {
+          composite_id: 'COMPOSITE_003',
+          experience_config: {
+            max_assets_per_layer: 2,
+            include_variants: false
           }
         }
       }
@@ -120,52 +135,58 @@ export class ReVizCompositeExperienceController {
   @ApiResponse({
     status: 200,
     description: 'Successful response with complete composite experience data',
-    schema: {
-      type: 'object',
-      properties: {
-        success: { type: 'boolean', example: true },
-        data: {
-          type: 'object',
-          properties: {
+    examples: {
+      success: {
+        summary: 'Successful composite experience response',
+        value: {
+          success: true,
+          data: {
             composite_info: {
-              type: 'object',
-              properties: {
-                composite_id: { type: 'string', example: 'C.FUL.001' },
-                composite_name: { type: 'string', example: 'Epic Dance Composite' },
-                gcp_storage_url: { type: 'string', example: 'https://storage.googleapis.com/algorhythm-assets/composites/C.FUL.001.mp4' },
-                thumbnail_url: { type: 'string', example: 'https://storage.googleapis.com/algorhythm-assets/thumbnails/C.FUL.001.jpg' },
-                duration_seconds: { type: 'number', example: 30 },
-                file_size_mb: { type: 'number', example: 15.2 },
-                resolution: { type: 'string', example: '1080p' },
-                format: { type: 'string', example: 'mp4' },
-                compatibility_score: { type: 'number', example: 0.8 }
-              }
+              composite_id: 'COMPOSITE_001',
+              composite_name: 'Pop Star Experience',
+              gcp_storage_url: 'https://storage.googleapis.com/algorhythm-assets/composites/COMPOSITE_001.mp4',
+              thumbnail_url: 'https://storage.googleapis.com/algorhythm-assets/thumbnails/composites/COMPOSITE_001.jpg',
+              duration_seconds: 180,
+              file_size_mb: 45.2,
+              resolution: '1920x1080',
+              format: 'mp4',
+              compatibility_score: 0.95
             },
             layer_assets: {
-              type: 'object',
-              properties: {
-                stars: {
-                  type: 'object',
-                  properties: {
-                    layer_type: { type: 'string', example: 'stars' },
-                    total_assets: { type: 'number', example: 4 },
-                    assets: {
-                      type: 'array',
-                      items: {
-                        type: 'object',
-                        properties: {
-                          asset_id: { type: 'string', example: 'star_001' },
-                          asset_name: { type: 'string', example: 'Dancing Star' },
-                          gcp_storage_url: { type: 'string', example: 'https://storage.googleapis.com/algorhythm-assets/stars/star_001.mp4' },
-                          thumbnail_url: { type: 'string', example: 'https://storage.googleapis.com/algorhythm-assets/thumbnails/stars/star_001.jpg' },
-                          compatibility_score: { type: 'number', example: 0.8 }
-                        }
-                      }
-                    }
+              stars: {
+                layer_type: 'stars',
+                total_assets: 4,
+                assets: [
+                  {
+                    asset_id: 'STAR_001',
+                    asset_name: 'Pop Star Performance',
+                    gcp_storage_url: 'https://storage.googleapis.com/algorhythm-assets/stars/STAR_001.mp4',
+                    thumbnail_url: 'https://storage.googleapis.com/algorhythm-assets/thumbnails/stars/STAR_001.jpg',
+                    duration_seconds: 30,
+                    file_size_mb: 8.5,
+                    resolution: '1920x1080',
+                    format: 'mp4',
+                    compatibility_score: 0.92,
+                    layer: 'stars',
+                    category: 'performance',
+                    subcategory: 'dancing'
                   }
-                }
+                ]
               }
+            },
+            performance_metrics: {
+              total_assets_loaded: 14,
+              response_time_ms: 245,
+              response_size_bytes: 2847392,
+              cache_hit_rate: 0.85,
+              assets_from_cdn: 12
             }
+          },
+          metadata: {
+            request_id: 'req_12345',
+            timestamp: '2025-10-11T20:21:00.000Z',
+            version: '2.0.0',
+            partial_response: false
           }
         }
       }
@@ -173,54 +194,102 @@ export class ReVizCompositeExperienceController {
   })
   @ApiResponse({
     status: 400,
-    description: 'Bad request - invalid composite_id or configuration'
-  })
-  @ApiResponse({
-    status: 401,
-    description: 'Unauthorized - invalid or missing JWT token'
-  })
-  @ApiResponse({
-    status: 404,
-    description: 'Composite not found'
-  })
-  @ApiResponse({
-    status: 500,
-    description: 'Internal server error'
-  })
-  async getCompleteExperience(
-    @Body() request: ReVizCompositeRequest
-  ): Promise<ReVizCompositeResponse> {
-    this.logger.log(`Processing composite experience request for composite: ${request.composite_id}`);
-    return await this.revizCompositeService.getCompleteExperience(request);
-  }
-
-  /**
-   * Health check endpoint
-   */
-  @Get('health')
-  @ApiOperation({
-    summary: 'Health check endpoint',
-    description: 'Check if the ReViz Composite API service is healthy'
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'Service is healthy',
-    schema: {
-      type: 'object',
-      properties: {
-        status: { type: 'string', example: 'ok' },
-        timestamp: { type: 'string', format: 'date-time' },
-        version: { type: 'string', example: '3.0' },
-        architecture: { type: 'string', example: 'Composite-based with real GCP URLs' }
+    description: 'Bad request - invalid parameters',
+    examples: {
+      invalid_composite: {
+        summary: 'Invalid composite_id',
+        value: {
+          success: false,
+          error: {
+            status: 400,
+            message: 'Invalid composite_id: COMPOSITE_INVALID',
+            error: 'Bad Request',
+            statusCode: 400
+          },
+          timestamp: '2025-10-11T20:21:00.000Z',
+          path: '/api/v1/reviz/composite/complete-experience',
+          method: 'POST'
+        }
+      },
+      missing_composite: {
+        summary: 'Missing composite_id',
+        value: {
+          success: false,
+          error: {
+            status: 400,
+            message: 'composite_id is required',
+            error: 'Bad Request',
+            statusCode: 400
+          },
+          timestamp: '2025-10-11T20:21:00.000Z',
+          path: '/api/v1/reviz/composite/complete-experience',
+          method: 'POST'
+        }
       }
     }
   })
-  async healthCheck() {
-    return {
-      status: 'ok',
-      timestamp: new Date().toISOString(),
-      version: '3.0',
-      architecture: 'Composite-based with real GCP URLs'
-    };
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized - invalid or missing API key',
+    examples: {
+      unauthorized: {
+        summary: 'Missing API key',
+        value: {
+          success: false,
+          error: {
+            status: 401,
+            message: 'Unauthorized',
+            error: 'Unauthorized',
+            statusCode: 401
+          },
+          timestamp: '2025-10-11T20:21:00.000Z',
+          path: '/api/v1/reviz/composite/complete-experience',
+          method: 'POST'
+        }
+      }
+    }
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error',
+    examples: {
+      server_error: {
+        summary: 'Internal server error',
+        value: {
+          success: false,
+          error: {
+            status: 500,
+            message: 'Internal server error',
+            error: 'Internal Server Error',
+            statusCode: 500
+          },
+          timestamp: '2025-10-11T20:21:00.000Z',
+          path: '/api/v1/reviz/composite/complete-experience',
+          method: 'POST'
+        }
+      }
+    }
+  })
+  async getCompleteExperience(
+    @Body() request: ReVizCompositeRequest,
+    @Headers('x-api-key') apiKey?: string
+  ): Promise<ReVizCompositeResponse> {
+    // 🔧 FIX: Add API key validation for ReViz mobile app
+    if (!apiKey || apiKey !== process.env.REVIZ_API_KEY) {
+      throw new UnauthorizedException('Invalid or missing API key');
+    }
+    
+    this.logger.log(`🎬 ReViz composite experience request for composite: ${request.composite_id}`);
+    
+    try {
+      const result = await this.revizCompositeService.getCompleteExperience(request);
+      
+      this.logger.log(`✅ ReViz composite experience successful: ${result.data.performance_metrics.total_assets_loaded} assets loaded`);
+      
+      return result;
+    } catch (error) {
+      this.logger.error(`❌ ReViz composite experience failed: ${error.message}`);
+      throw error;
+    }
   }
 }
