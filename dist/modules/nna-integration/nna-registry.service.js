@@ -113,39 +113,85 @@ let NnaRegistryService = NnaRegistryService_1 = class NnaRegistryService {
     async getFullCompositesBySong(songId, limit = 1000) {
         try {
             const url = `${this.baseUrl}/api/assets`;
-            this.logger.debug(`Fetching FULL composites for ReViz developers - song: ${songId}`);
-            const response = await (0, rxjs_1.firstValueFrom)(this.httpService.get(url, {
-                headers: this.getHeaders(),
-                params: {
-                    layer: 'C',
-                    components: songId,
-                    limit,
-                    sort: 'createdAt',
-                    order: 'desc',
-                    composite_type: 'full',
-                },
-                timeout: 15000,
-            }));
+            this.logger.debug(`🔍 Fetching FULL composites for ReViz developers - song: ${songId}`);
+            let response;
+            try {
+                response = await (0, rxjs_1.firstValueFrom)(this.httpService.get(url, {
+                    headers: this.getHeaders(),
+                    params: {
+                        layer: 'C',
+                        components: songId,
+                        limit,
+                        sort: 'createdAt',
+                        order: 'desc',
+                        composite_type: 'full',
+                    },
+                    timeout: 15000,
+                }));
+            }
+            catch (error) {
+                this.logger.warn(`⚠️ First attempt failed, trying without composite_type filter: ${error.message}`);
+                response = await (0, rxjs_1.firstValueFrom)(this.httpService.get(url, {
+                    headers: this.getHeaders(),
+                    params: {
+                        layer: 'C',
+                        components: songId,
+                        limit,
+                        sort: 'createdAt',
+                        order: 'desc',
+                    },
+                    timeout: 15000,
+                }));
+            }
             if (response.data?.success && response.data?.data) {
                 const allComposites = response.data.data;
+                this.logger.debug(`📊 Raw API response: ${allComposites.length} total composites for song: ${songId}`);
+                if (allComposites.length > 0) {
+                    this.logger.debug(`🔍 Sample composite: ${JSON.stringify(allComposites[0], null, 2)}`);
+                }
                 const fullComposites = allComposites.filter(composite => {
                     const nnaAddress = composite.nna_address || composite.name || '';
                     const compositeType = composite.composite_type || composite.compositeType || '';
-                    return (nnaAddress.includes('C.FUL') || nnaAddress.startsWith('C.FUL')) &&
-                        (compositeType === 'full' || compositeType === 'full_curated' || compositeType === 'FULL');
+                    const category = composite.category || '';
+                    const subcategory = composite.subcategory || '';
+                    const isFullComposite = nnaAddress.includes('C.FUL') ||
+                        nnaAddress.startsWith('C.FUL') ||
+                        nnaAddress.includes('FUL') ||
+                        compositeType === 'full' ||
+                        compositeType === 'full_curated' ||
+                        compositeType === 'FULL' ||
+                        category === 'FUL' ||
+                        subcategory === 'FUL';
+                    this.logger.debug(`🔍 Composite ${nnaAddress}: type=${compositeType}, category=${category}, isFull=${isFullComposite}`);
+                    return isFullComposite;
                 });
-                this.logger.debug(`ReViz API: Retrieved ${allComposites.length} total, ${fullComposites.length} FULL composites for song: ${songId}`);
+                this.logger.debug(`✅ ReViz API: Retrieved ${allComposites.length} total, ${fullComposites.length} FULL composites for song: ${songId}`);
                 if (fullComposites.length === 0) {
-                    this.logger.warn(`ReViz API: No FULL composites available for song: ${songId}`);
+                    this.logger.warn(`❌ ReViz API: No FULL composites available for song: ${songId}`);
+                    this.logger.warn(`📋 Available composite types: ${allComposites.map(c => c.composite_type || c.category || 'unknown').join(', ')}`);
+                    this.logger.warn(`🔄 FALLBACK: Returning any composites that contain song ${songId}`);
+                    const fallbackComposites = allComposites.filter(composite => {
+                        const components = composite.components || [];
+                        return components.includes(songId) ||
+                            components.some(comp => comp.includes(songId)) ||
+                            composite.song_id === songId ||
+                            composite.songId === songId;
+                    });
+                    if (fallbackComposites.length > 0) {
+                        this.logger.warn(`🔄 FALLBACK: Found ${fallbackComposites.length} composites containing song ${songId}`);
+                        return fallbackComposites;
+                    }
                 }
                 return fullComposites;
             }
             else {
-                this.logger.warn(`ReViz API: No composites found for song: ${songId}`);
+                this.logger.warn(`❌ ReViz API: No composites found for song: ${songId}`);
+                this.logger.warn(`📋 API Response: ${JSON.stringify(response.data, null, 2)}`);
                 return [];
             }
         }
         catch (error) {
+            this.logger.error(`💥 ReViz API Error for song ${songId}:`, error);
             return this.handleHttpError(error, `getFullCompositesBySong(${songId})`, []);
         }
     }
