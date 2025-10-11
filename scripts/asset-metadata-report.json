@@ -1,11 +1,11 @@
 {
-  "timestamp": "2025-10-11T17:00:00.968Z",
-  "totalAssets": 207,
+  "timestamp": "2025-10-11T17:20:02.584Z",
+  "totalAssets": 208,
   "layerBreakdown": {
     "C": 110,
     "S": 46,
+    "G": 18,
     "L": 17,
-    "G": 17,
     "M": 9,
     "W": 8
   },
@@ -135,28 +135,28 @@
     },
     "G": {
       "genre": {
-        "completed": 17,
-        "total": 17,
+        "completed": 18,
+        "total": 18,
         "percentage": 100
       },
       "mood": {
-        "completed": 17,
-        "total": 17,
+        "completed": 18,
+        "total": 18,
         "percentage": 100
       },
       "musicalStyle": {
-        "completed": 17,
-        "total": 17,
+        "completed": 18,
+        "total": 18,
         "percentage": 100
       },
       "songCulturalOrigin": {
-        "completed": 17,
-        "total": 17,
+        "completed": 18,
+        "total": 18,
         "percentage": 100
       },
       "ageAppropriateness": {
-        "completed": 17,
-        "total": 17,
+        "completed": 18,
+        "total": 18,
         "percentage": 100
       }
     },
@@ -179,5 +179,5 @@
     }
   },
   "indexUpdates": 0,
-  "overallAlgorhythmCompletion": 54
+  "overallAlgorhythmCompletion": 55
 }

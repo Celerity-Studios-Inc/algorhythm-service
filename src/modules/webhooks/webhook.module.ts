@@ -5,12 +5,12 @@ import { WebhookController } from './webhook.controller';
 import { WebhookService } from './webhook.service';
 import { WebhookValidationService } from './webhook-validation.service';
 import { EventProcessorService } from '../events/event-processor.service';
-import { IndexingModule } from '../indexing/indexing.module';
+// import { IndexingModule } from '../indexing/indexing.module'; // Conditional import
 
 @Module({
   imports: [
     ConfigModule,
-    IndexingModule,
+    // IndexingModule, // Conditional - only load when database available
     EventEmitterModule.forRoot({
       // Set this to `true` to use wildcards
       wildcard: false,

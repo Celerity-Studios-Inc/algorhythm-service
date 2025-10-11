@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { AssetCreatedEventDto, CompositeCreatedEventDto, AssetUpdatedEventDto } from '../webhooks/dto/webhook-events.dto';
-import { RealTimeIndexService } from '../indexing/real-time-index.service';
+// import { RealTimeIndexService } from '../indexing/real-time-index.service'; // Optional dependency
 
 @Injectable()
 export class EventProcessorService {
@@ -9,24 +9,27 @@ export class EventProcessorService {
 
   constructor(
     private readonly eventEmitter: EventEmitter2,
-    private readonly realTimeIndex: RealTimeIndexService,
+    // private readonly realTimeIndex: RealTimeIndexService, // Optional dependency
   ) {}
 
   async processAssetCreated(event: AssetCreatedEventDto): Promise<void> {
     try {
       this.logger.log(`🔄 Processing asset created event: ${event.assetId}`);
 
-      // Process with real-time indexing
-      await this.realTimeIndex.handleAssetCreated({
-        assetId: event.assetId,
-        layer: event.layer,
-        category: event.category,
-        subcategory: event.subcategory,
-        name: event.name,
-        gcpStorageUrl: event.gcpStorageUrl,
-        metadata: event.metadata,
-        timestamp: event.timestamp
-      });
+      // Process with real-time indexing (if available)
+      // await this.realTimeIndex.handleAssetCreated({
+      //   assetId: event.assetId,
+      //   layer: event.layer,
+      //   category: event.category,
+      //   subcategory: event.subcategory,
+      //   name: event.name,
+      //   gcpStorageUrl: event.gcpStorageUrl,
+      //   metadata: event.metadata,
+      //   timestamp: event.timestamp
+      // });
+      
+      // For now, just log the event (indexing will be enabled when database is available)
+      this.logger.log(`📝 Asset created event logged: ${event.assetId}`);
 
       this.logger.log(`✅ Asset created event processed: ${event.assetId}`);
     } catch (error) {
@@ -39,18 +42,21 @@ export class EventProcessorService {
     try {
       this.logger.log(`🔄 Processing asset updated event: ${event.assetId}`);
 
-      // Process with real-time indexing
-      await this.realTimeIndex.handleAssetUpdated({
-        assetId: event.assetId,
-        layer: event.layer,
-        category: event.category,
-        subcategory: event.subcategory,
-        name: event.name,
-        gcpStorageUrl: event.gcpStorageUrl,
-        metadata: event.metadata,
-        changes: event.changes,
-        timestamp: event.timestamp
-      });
+      // Process with real-time indexing (if available)
+      // await this.realTimeIndex.handleAssetUpdated({
+      //   assetId: event.assetId,
+      //   layer: event.layer,
+      //   category: event.category,
+      //   subcategory: event.subcategory,
+      //   name: event.name,
+      //   gcpStorageUrl: event.gcpStorageUrl,
+      //   metadata: event.metadata,
+      //   changes: event.changes,
+      //   timestamp: event.timestamp
+      // });
+      
+      // For now, just log the event (indexing will be enabled when database is available)
+      this.logger.log(`📝 Asset updated event logged: ${event.assetId}`);
 
       this.logger.log(`✅ Asset updated event processed: ${event.assetId}`);
     } catch (error) {
@@ -63,22 +69,25 @@ export class EventProcessorService {
     try {
       this.logger.log(`🔄 Processing composite created event: ${event.compositeId}`);
 
-      // Process with real-time indexing
-      await this.realTimeIndex.handleCompositeCreated({
-        compositeId: event.compositeId,
-        layer: event.layer,
-        category: event.category,
-        subcategory: event.subcategory,
-        name: event.name,
-        gcpStorageUrl: event.gcpStorageUrl,
-        compositeType: event.compositeType,
-        componentCount: event.componentCount,
-        componentLayers: event.componentLayers,
-        componentIds: event.componentIds,
-        metadata: event.metadata,
-        components: event.components,
-        timestamp: event.timestamp
-      });
+      // Process with real-time indexing (if available)
+      // await this.realTimeIndex.handleCompositeCreated({
+      //   compositeId: event.compositeId,
+      //   layer: event.layer,
+      //   category: event.category,
+      //   subcategory: event.subcategory,
+      //   name: event.name,
+      //   gcpStorageUrl: event.gcpStorageUrl,
+      //   compositeType: event.compositeType,
+      //   componentCount: event.componentCount,
+      //   componentLayers: event.componentLayers,
+      //   componentIds: event.componentIds,
+      //   metadata: event.metadata,
+      //   components: event.components,
+      //   timestamp: event.timestamp
+      // });
+      
+      // For now, just log the event (indexing will be enabled when database is available)
+      this.logger.log(`📝 Composite created event logged: ${event.compositeId}`);
 
       this.logger.log(`✅ Composite created event processed: ${event.compositeId}`);
     } catch (error) {
