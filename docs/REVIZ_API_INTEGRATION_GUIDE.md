@@ -3,6 +3,81 @@
 ## 🎬 Overview
 This guide shows ReViz developers how to integrate with the AlgoRhythm API to get asset recommendations for each layer (Stars, Looks, Moves, Worlds) based on selected songs.
 
+## ⚠️ **CURRENT DEPLOYMENT STATUS**
+
+### **Minimal Deployment Active**
+The AlgoRhythm service is currently running in **minimal deployment mode** for Cloud Run compatibility. This means:
+
+- ✅ **Health Endpoints**: Working (`/api/v1/health`)
+- ✅ **Webhook Endpoints**: Working (`/api/v1/webhooks/*`)
+- ❌ **Recommendation Endpoints**: **DISABLED** (requires MongoDB)
+- ❌ **ReViz Integration**: **TEMPORARILY UNAVAILABLE**
+
+### **Why Recommendation Endpoints Are Disabled**
+The recommendation endpoints require:
+1. **MongoDB Database Connection** (not configured in minimal deployment)
+2. **Full Asset Database** (not available without MongoDB)
+3. **Real-time Indexing** (disabled for Cloud Run compatibility)
+
+### **When Will ReViz Integration Be Available?**
+ReViz integration will be available once:
+1. **MongoDB is configured** in the AlgoRhythm service
+2. **Database-dependent modules are re-enabled**
+3. **Full deployment is completed**
+
+**Expected Timeline**: Next deployment phase
+
+## 🧪 **CURRENT TESTING OPTIONS**
+
+### **Available Endpoints for Testing**
+
+#### **1. Health Check** ✅ **WORKING**
+```bash
+curl -s https://dev.algorhythm.media/api/v1/health
+```
+**Response**:
+```json
+{
+  "status": "ok",
+  "timestamp": "2025-10-11T19:12:32.940Z",
+  "service": "algorhythm-service",
+  "version": "1.0.0",
+  "environment": "development",
+  "port": 8080,
+  "uptime": 270.889256193,
+  "memory": {
+    "rss": 104198144,
+    "heapTotal": 43130880,
+    "heapUsed": 39417624,
+    "external": 21291771,
+    "arrayBuffers": 18378900
+  },
+  "nodeVersion": "v18.20.8"
+}
+```
+
+#### **2. API Documentation** ✅ **WORKING**
+```bash
+# Open in browser
+https://dev.algorhythm.media/api/docs
+```
+
+#### **3. Webhook Endpoints** ✅ **WORKING** (for Backend Team)
+```bash
+# Test webhook endpoints (requires proper authentication)
+curl -X POST https://dev.algorhythm.media/api/v1/webhooks/assets/created \
+  -H "Content-Type: application/json" \
+  -H "x-algorhythm-signature: test-signature" \
+  -H "x-algorhythm-timestamp: 2025-10-11T19:12:00.000Z" \
+  -d '{"event": "asset.created", "assetId": "test-123", "layer": "drums", "category": "percussion", "subcategory": "kick", "name": "Test Kick", "gcpStorageUrl": "https://storage.googleapis.com/test-bucket/test-kick.wav", "metadata": {"tags": ["electronic", "drum"]}, "timestamp": "2025-10-11T19:12:00.000Z"}'
+```
+
+### **What ReViz Developers Can Do Now**
+1. **Test Service Health**: Verify the AlgoRhythm service is running
+2. **Review API Documentation**: Understand the full API structure
+3. **Prepare Integration Code**: Use the examples below for when endpoints are enabled
+4. **Test Authentication**: Verify JWT tokens work (when endpoints are enabled)
+
 ## 🔑 Authentication
 ```javascript
 const JWT_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGRjODNlNzRlY2I0YTcwOWEzNGMyNWEiLCJlbWFpbCI6InRlc3QtdXNlckBleGFtcGxlLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU5ODU1ODMzLCJleHAiOjE3NTk5NDIyMzN9.5SccUhM8VPfxhfoE3RR6AifN6N7vWJ_0rfoqDXXqQ1U';
@@ -12,6 +87,8 @@ const JWT_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGRjODNl
 ```
 POST https://dev.algorhythm.media/api/v1/recommend/template
 ```
+
+**⚠️ CURRENT STATUS**: This endpoint is **DISABLED** in the current minimal deployment. It will be available once MongoDB is configured and the full deployment is completed.
 
 ## 📤 Request Format
 ```javascript
