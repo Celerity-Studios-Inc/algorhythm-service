@@ -26,6 +26,7 @@ import { GlobalExceptionFilter } from './common/filters/global-exception.filter'
 import { ErrorLoggingInterceptor } from './common/interceptors/error-logging.interceptor';
 import { RateLimitingGuard } from './common/guards/rate-limiting.guard';
 import { HealthMonitorService } from './common/services/health-monitor.service';
+import { AlgorhythmModule } from './modules/algorhythm/algorhythm.module';
 
 @Module({
   imports: [
@@ -96,6 +97,7 @@ import { HealthMonitorService } from './common/services/health-monitor.service';
     // Feature modules
     AuthModule,
     NnaIntegrationModule,
+    AlgorhythmModule,
     
     // Database-dependent modules (optional)
     ...(process.env.MONGODB_URI ? [

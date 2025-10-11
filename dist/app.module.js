@@ -29,6 +29,7 @@ const global_exception_filter_1 = require("./common/filters/global-exception.fil
 const error_logging_interceptor_1 = require("./common/interceptors/error-logging.interceptor");
 const rate_limiting_guard_1 = require("./common/guards/rate-limiting.guard");
 const health_monitor_service_1 = require("./common/services/health-monitor.service");
+const algorhythm_module_1 = require("./modules/algorhythm/algorhythm.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -80,6 +81,7 @@ exports.AppModule = AppModule = __decorate([
             }),
             auth_module_1.AuthModule,
             nna_integration_module_1.NnaIntegrationModule,
+            algorhythm_module_1.AlgorhythmModule,
             ...(process.env.MONGODB_URI ? [
                 recommendations_module_1.RecommendationsModule,
                 scoring_module_1.ScoringModule,
