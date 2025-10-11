@@ -69,6 +69,7 @@ export interface ReVizCompositeResponse {
     timestamp: string;
     version: string;
     partial_response: boolean;
+    fallback_reason?: string; // 🔧 FIX: Add optional fallback reason
   };
 }
 
