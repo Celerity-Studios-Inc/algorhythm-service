@@ -37,6 +37,7 @@ steps:
       '--set-secrets', 'MONGODB_URI=MONGODB_URI:latest',
       '--set-secrets', 'REDIS_URL=REDIS_URL:latest',
       '--set-secrets', 'JWT_SECRET=JWT_SECRET:latest',
+      '--set-secrets', 'WEBHOOK_SECRET=algorhythm-webhook-secret-dev:latest',
       '--set-secrets', 'ALGORHYTHM_WEBHOOK_SECRET=algorhythm-webhook-secret-dev:latest',
       '--set-secrets', 'ALGORHYTHM_WEBHOOK_URL=algorhythm-webhook-url-dev:latest',
       '--set-secrets', 'ALGORHYTHM_WEBHOOK_MAX_RETRIES=algorhythm-webhook-max-retries-dev:latest',
