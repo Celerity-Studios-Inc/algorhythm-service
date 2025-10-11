@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { AssetCreatedEventDto, CompositeCreatedEventDto, AssetUpdatedEventDto } from '../webhooks/dto/webhook-events.dto';
+import { AssetCreatedEventDto, CompositeCreatedEventDto, AssetUpdatedEventDto, AssetDeletedEventDto } from '../webhooks/dto/webhook-events.dto';
 // import { RealTimeIndexService } from '../indexing/real-time-index.service'; // Optional dependency
 
 @Injectable()
@@ -61,6 +61,26 @@ export class EventProcessorService {
       this.logger.log(`✅ Asset updated event processed: ${event.assetId}`);
     } catch (error) {
       this.logger.error(`❌ Failed to process asset updated event: ${error.message}`);
+      throw error;
+    }
+  }
+
+  async processAssetDeleted(event: AssetDeletedEventDto): Promise<void> {
+    try {
+      this.logger.log(`🔄 Processing asset deleted event: ${event.assetId}`);
+
+      // Process with real-time indexing (if available)
+      // await this.realTimeIndex.handleAssetDeleted({
+      //   assetId: event.assetId,
+      //   timestamp: event.timestamp
+      // });
+      
+      // For now, just log the event (indexing will be enabled when database is available)
+      this.logger.log(`📝 Asset deleted event logged: ${event.assetId}`);
+
+      this.logger.log(`✅ Asset deleted event processed: ${event.assetId}`);
+    } catch (error) {
+      this.logger.error(`❌ Failed to process asset deleted event: ${error.message}`);
       throw error;
     }
   }

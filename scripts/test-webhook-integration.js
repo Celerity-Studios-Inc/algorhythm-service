@@ -75,8 +75,8 @@ async function testWebhookEndpoint(endpoint, payload, eventType) {
     const response = await axios.post(`${ALGORHYTHM_BASE_URL}/webhooks/${endpoint}`, payload, {
       headers: {
         'Content-Type': 'application/json',
-        'x-nna-signature': signature,
-        'x-nna-timestamp': timestamp
+        'x-algorhythm-signature': signature,
+        'x-algorhythm-timestamp': timestamp
       },
       timeout: 10000
     });

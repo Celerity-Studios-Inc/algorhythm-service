@@ -1,7 +1,7 @@
 import { Controller, Post, Body, Headers, HttpCode, HttpStatus, Logger } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { WebhookService } from './webhook.service';
-import { AssetCreatedEventDto, CompositeCreatedEventDto, AssetUpdatedEventDto } from './dto/webhook-events.dto';
+import { AssetCreatedEventDto, CompositeCreatedEventDto, AssetUpdatedEventDto, AssetDeletedEventDto } from './dto/webhook-events.dto';
 
 @ApiTags('Webhooks')
 @Controller('webhooks')
@@ -18,8 +18,8 @@ export class WebhookController {
   @ApiResponse({ status: 401, description: 'Invalid webhook signature' })
   async handleAssetCreated(
     @Body() payload: AssetCreatedEventDto,
-    @Headers('x-signature') signature: string,
-    @Headers('x-timestamp') timestamp: string
+    @Headers('x-algorhythm-signature') signature: string,
+    @Headers('x-algorhythm-timestamp') timestamp: string
   ) {
     this.logger.log(`🔄 Processing asset created webhook: ${payload.assetId}`);
     
@@ -41,8 +41,8 @@ export class WebhookController {
   @ApiResponse({ status: 401, description: 'Invalid webhook signature' })
   async handleAssetUpdated(
     @Body() payload: AssetUpdatedEventDto,
-    @Headers('x-signature') signature: string,
-    @Headers('x-timestamp') timestamp: string
+    @Headers('x-algorhythm-signature') signature: string,
+    @Headers('x-algorhythm-timestamp') timestamp: string
   ) {
     this.logger.log(`🔄 Processing asset updated webhook: ${payload.assetId}`);
     
@@ -56,6 +56,29 @@ export class WebhookController {
     }
   }
 
+  @Post('assets/deleted')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Handle asset deletion webhook from NNA Registry' })
+  @ApiResponse({ status: 200, description: 'Asset deleted webhook processed successfully' })
+  @ApiResponse({ status: 400, description: 'Invalid webhook payload' })
+  @ApiResponse({ status: 401, description: 'Invalid webhook signature' })
+  async handleAssetDeleted(
+    @Body() payload: AssetDeletedEventDto,
+    @Headers('x-algorhythm-signature') signature: string,
+    @Headers('x-algorhythm-timestamp') timestamp: string
+  ) {
+    this.logger.log(`🔄 Processing asset deleted webhook: ${payload.assetId}`);
+    
+    try {
+      const result = await this.webhookService.processAssetDeleted(payload, signature, timestamp);
+      this.logger.log(`✅ Asset deleted webhook processed successfully: ${payload.assetId}`);
+      return result;
+    } catch (error) {
+      this.logger.error(`❌ Asset deleted webhook failed: ${error.message}`);
+      throw error;
+    }
+  }
+
   @Post('composites/created')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Handle composite creation webhook from NNA Registry' })
@@ -64,8 +87,8 @@ export class WebhookController {
   @ApiResponse({ status: 401, description: 'Invalid webhook signature' })
   async handleCompositeCreated(
     @Body() payload: CompositeCreatedEventDto,
-    @Headers('x-signature') signature: string,
-    @Headers('x-timestamp') timestamp: string
+    @Headers('x-algorhythm-signature') signature: string,
+    @Headers('x-algorhythm-timestamp') timestamp: string
   ) {
     this.logger.log(`🔄 Processing composite created webhook: ${payload.compositeId}`);
     

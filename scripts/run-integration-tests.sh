@@ -87,8 +87,8 @@ echo "Testing HMAC signature validation..."
 INVALID_SIGNATURE_RESPONSE=$(curl -s -w "%{http_code}" -o /tmp/invalid_sig_response.json \
     -X POST \
     -H "Content-Type: application/json" \
-    -H "x-nna-signature: invalid-signature" \
-    -H "x-nna-timestamp: $(date +%s)" \
+    -H "x-algorhythm-signature: invalid-signature" \
+    -H "x-algorhythm-timestamp: $(date +%s)" \
     -d '{"event":"asset.created","data":{"assetId":"test"},"timestamp":"'$(date -Iseconds)'"}' \
     "$ALGORHYTHM_BASE_URL/webhooks/assets/created" || echo "000")
 

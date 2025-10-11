@@ -108,6 +108,25 @@ export class AssetUpdatedEventDto {
   signature?: string;
 }
 
+export class AssetDeletedEventDto {
+  @ApiProperty({ description: 'Event type' })
+  @IsString()
+  event: 'asset.deleted';
+
+  @ApiProperty({ description: 'Asset ID' })
+  @IsString()
+  assetId: string;
+
+  @ApiProperty({ description: 'Event timestamp' })
+  @IsDateString()
+  timestamp: string;
+
+  @ApiProperty({ description: 'Event signature' })
+  @IsString()
+  @IsOptional()
+  signature?: string;
+}
+
 export class CompositeCreatedEventDto {
   @ApiProperty({ description: 'Event type' })
   @IsString()
