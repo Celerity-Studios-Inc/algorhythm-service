@@ -3,6 +3,7 @@ import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagg
 import { WebhookService } from './webhook.service';
 import { WebhookPayloadTransformerService } from './webhook-payload-transformer.service';
 import { AssetCreatedEventDto, CompositeCreatedEventDto, AssetUpdatedEventDto, AssetDeletedEventDto } from './dto/webhook-events.dto';
+import { WebhookPayloadDto } from './dto/webhook-payload.dto';
 
 @ApiTags('Webhooks')
 @Controller('webhooks')
@@ -21,7 +22,7 @@ export class WebhookController {
   @ApiResponse({ status: 400, description: 'Invalid webhook payload' })
   @ApiResponse({ status: 401, description: 'Invalid webhook signature' })
   async handleAssetCreated(
-    @Body() payload: any,
+    @Body() payload: WebhookPayloadDto,
     @Headers('x-algorhythm-signature') signature: string,
     @Headers('x-algorhythm-timestamp') timestamp: string
   ) {
@@ -54,7 +55,7 @@ export class WebhookController {
   @ApiResponse({ status: 400, description: 'Invalid webhook payload' })
   @ApiResponse({ status: 401, description: 'Invalid webhook signature' })
   async handleAssetUpdated(
-    @Body() payload: any,
+    @Body() payload: WebhookPayloadDto,
     @Headers('x-algorhythm-signature') signature: string,
     @Headers('x-algorhythm-timestamp') timestamp: string
   ) {
@@ -87,7 +88,7 @@ export class WebhookController {
   @ApiResponse({ status: 400, description: 'Invalid webhook payload' })
   @ApiResponse({ status: 401, description: 'Invalid webhook signature' })
   async handleAssetDeleted(
-    @Body() payload: any,
+    @Body() payload: WebhookPayloadDto,
     @Headers('x-algorhythm-signature') signature: string,
     @Headers('x-algorhythm-timestamp') timestamp: string
   ) {
@@ -120,7 +121,7 @@ export class WebhookController {
   @ApiResponse({ status: 400, description: 'Invalid webhook payload' })
   @ApiResponse({ status: 401, description: 'Invalid webhook signature' })
   async handleCompositeCreated(
-    @Body() payload: any,
+    @Body() payload: WebhookPayloadDto,
     @Headers('x-algorhythm-signature') signature: string,
     @Headers('x-algorhythm-timestamp') timestamp: string
   ) {

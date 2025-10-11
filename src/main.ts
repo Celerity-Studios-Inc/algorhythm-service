@@ -1,6 +1,6 @@
 import { existsSync, readFileSync, readdirSync } from 'fs';
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, RequestMethod } from '@nestjs/common';
 import { SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { swaggerConfig } from './config/swagger.config';
@@ -38,8 +38,10 @@ async function bootstrap() {
   const envValidation = app.get(EnvironmentValidationService);
   envValidation.validateEnvironment();
 
-  // Set global prefix for all routes
-  app.setGlobalPrefix('api/v1');
+  // Set global prefix for all routes except root health
+  app.setGlobalPrefix('api/v1', {
+    exclude: [{ path: 'health', method: RequestMethod.GET }]
+  });
 
   // Enable CORS with specific origins based on environment
   const nodeEnv = process.env.NODE_ENV || process.env.ENVIRONMENT || 'production';

@@ -30,7 +30,9 @@ async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     const envValidation = app.get(environment_validation_1.EnvironmentValidationService);
     envValidation.validateEnvironment();
-    app.setGlobalPrefix('api/v1');
+    app.setGlobalPrefix('api/v1', {
+        exclude: [{ path: 'health', method: common_1.RequestMethod.GET }]
+    });
     const nodeEnv = process.env.NODE_ENV || process.env.ENVIRONMENT || 'production';
     let allowedOrigins;
     if (nodeEnv === 'development') {
