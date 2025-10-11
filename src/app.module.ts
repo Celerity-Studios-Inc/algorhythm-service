@@ -96,11 +96,11 @@ import { IndexingModule } from './modules/indexing/indexing.module';
       ],
     }),
 
-    // Feature modules (minimal for Cloud Run)
+    // Feature modules (ULTRA-MINIMAL for Cloud Run)
     AuthModule,
-    NnaIntegrationModule,
+    // NnaIntegrationModule, // DISABLED - might be causing startup issues
     AlgorhythmModule,
-    WebhookModule,
+    // WebhookModule, // DISABLED - might be causing startup issues
     
     // Database-dependent modules (DISABLED for Cloud Run until MongoDB is configured)
     // ...(process.env.MONGODB_URI ? [
