@@ -18,11 +18,35 @@ This document outlines the environment configuration for the new webhook infrast
 
 ## 🔐 **SECRET CONFIGURATION**
 
+### **🚨 CRITICAL: ENVIRONMENT VARIABLE MAPPING**
+
+**⚠️ IMPORTANT**: The code expects specific environment variable names. This mapping must be verified in every deployment:
+
+| **Code Expects** | **Deployment Sets** | **Priority** | **Status** |
+|------------------|---------------------|--------------|------------|
+| `WEBHOOK_SECRET` | `WEBHOOK_SECRET` | **PRIMARY** | ✅ Required |
+| `ALGORHYTHM_WEBHOOK_SECRET` | `ALGORHYTHM_WEBHOOK_SECRET` | **FALLBACK** | ✅ Required |
+| `ALGORHYTHM_WEBHOOK_URL` | `ALGORHYTHM_WEBHOOK_URL` | **PRIMARY** | ✅ Required |
+| `ALGORHYTHM_WEBHOOK_MAX_RETRIES` | `ALGORHYTHM_WEBHOOK_MAX_RETRIES` | **PRIMARY** | ✅ Required |
+| `ALGORHYTHM_WEBHOOK_RETRY_DELAY` | `ALGORHYTHM_WEBHOOK_RETRY_DELAY` | **PRIMARY** | ✅ Required |
+
+**🔧 Code Logic**:
+```typescript
+// src/modules/webhooks/webhook-validation.service.ts:16-17
+const webhookSecret = this.configService.get<string>('WEBHOOK_SECRET') || 
+                     this.configService.get<string>('ALGORHYTHM_WEBHOOK_SECRET');
+```
+
 ### **Development Environment**
 ```bash
-# Algorhythm Service
-WEBHOOK_SECRET_DEV=43b377dd2766939804720f61f10d8e1b61bbb8df9a89e502e3cd75d0b318783a
-NNA_REGISTRY_WEBHOOK_URL_DEV=https://registry.dev.reviz.dev/webhooks
+# Algorhythm Service - BOTH REQUIRED
+WEBHOOK_SECRET=43b377dd2766939804720f61f10d8e1b61bbb8df9a89e502e3cd75d0b318783a
+ALGORHYTHM_WEBHOOK_SECRET=43b377dd2766939804720f61f10d8e1b61bbb8df9a89e502e3cd75d0b318783a
+ALGORHYTHM_WEBHOOK_URL=https://algorhythm-webhook-url-dev:latest
+ALGORHYTHM_WEBHOOK_MAX_RETRIES=algorhythm-webhook-max-retries-dev:latest
+ALGORHYTHM_WEBHOOK_RETRY_DELAY=algorhythm-webhook-retry-delay-dev:latest
+NNA_REGISTRY_BASE_URL=NNA_REGISTRY_BASE_URL:latest
+NNA_REGISTRY_API_KEY=NNA_REGISTRY_API_KEY:latest
 
 # NNA Registry Service
 ALGORHYTHM_WEBHOOK_URL_DEV=https://algorhythm.dev.reviz.dev/webhooks

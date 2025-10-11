@@ -18,6 +18,51 @@ This document outlines the new event-driven webhook architecture for the Algorhy
 - **Rate Limiting**: Built-in retry logic with exponential backoff
 - **Payload Validation**: Complete event structure validation
 
+## 🚨 **CRITICAL: ENVIRONMENT VARIABLE ARCHITECTURE**
+
+### **⚠️ ENVIRONMENT VARIABLE MAPPING REQUIREMENTS**
+
+**CRITICAL**: The webhook architecture requires specific environment variable mapping between code and deployment. This mapping MUST be verified for every deployment:
+
+| **Component** | **Code Expects** | **Deployment Sets** | **Priority** | **Critical** |
+|---------------|------------------|---------------------|--------------|--------------|
+| **Webhook Validation** | `WEBHOOK_SECRET` | `WEBHOOK_SECRET` | **PRIMARY** | ✅ **YES** |
+| **Webhook Validation** | `ALGORHYTHM_WEBHOOK_SECRET` | `ALGORHYTHM_WEBHOOK_SECRET` | **FALLBACK** | ✅ **YES** |
+| **Webhook Service** | `ALGORHYTHM_WEBHOOK_URL` | `ALGORHYTHM_WEBHOOK_URL` | **PRIMARY** | ✅ **YES** |
+| **Webhook Service** | `ALGORHYTHM_WEBHOOK_MAX_RETRIES` | `ALGORHYTHM_WEBHOOK_MAX_RETRIES` | **PRIMARY** | ✅ **YES** |
+| **Webhook Service** | `ALGORHYTHM_WEBHOOK_RETRY_DELAY` | `ALGORHYTHM_WEBHOOK_RETRY_DELAY` | **PRIMARY** | ✅ **YES** |
+
+### **🔧 CODE LOGIC IMPLEMENTATION**
+
+```typescript
+// src/modules/webhooks/webhook-validation.service.ts:16-17
+const webhookSecret = this.configService.get<string>('WEBHOOK_SECRET') || 
+                     this.configService.get<string>('ALGORHYTHM_WEBHOOK_SECRET');
+
+if (!webhookSecret) {
+  this.logger.error('❌ Webhook secret not configured');
+  throw new UnauthorizedException('Webhook secret not configured');
+}
+```
+
+### **🔧 DEPLOYMENT CONFIGURATION**
+
+```yaml
+# cloudbuild.yaml - BOTH REQUIRED
+'--set-secrets', 'WEBHOOK_SECRET=algorhythm-webhook-secret-dev:latest',
+'--set-secrets', 'ALGORHYTHM_WEBHOOK_SECRET=algorhythm-webhook-secret-dev:latest',
+'--set-secrets', 'ALGORHYTHM_WEBHOOK_URL=algorhythm-webhook-url-dev:latest',
+'--set-secrets', 'ALGORHYTHM_WEBHOOK_MAX_RETRIES=algorhythm-webhook-max-retries-dev:latest',
+'--set-secrets', 'ALGORHYTHM_WEBHOOK_RETRY_DELAY=algorhythm-webhook-retry-delay-dev:latest',
+```
+
+### **🚨 CRITICAL FAILURE POINTS**
+
+1. **Environment Variable Mismatch**: Code expects `WEBHOOK_SECRET` but deployment only sets `ALGORHYTHM_WEBHOOK_SECRET`
+2. **Missing Fallback Variables**: Code has fallback logic but deployment doesn't set fallback variables
+3. **Secret Manager Mismatch**: Deployment references secrets that don't exist in Secret Manager
+4. **Typo in Environment Variable Names**: Small typos in environment variable names
+
 ## 🔧 **COMPONENT ARCHITECTURE**
 
 ### **Algorhythm Service Components**
