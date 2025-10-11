@@ -28,6 +28,7 @@ import { RateLimitingGuard } from './common/guards/rate-limiting.guard';
 import { HealthMonitorService } from './common/services/health-monitor.service';
 import { AlgorhythmModule } from './modules/algorhythm/algorhythm.module';
 import { WebhookModule } from './modules/webhooks/webhook.module';
+import { IndexingModule } from './modules/indexing/indexing.module';
 
 @Module({
   imports: [
@@ -100,6 +101,7 @@ import { WebhookModule } from './modules/webhooks/webhook.module';
     NnaIntegrationModule,
     AlgorhythmModule,
     WebhookModule,
+    IndexingModule,
     
     // Database-dependent modules (optional)
     ...(process.env.MONGODB_URI ? [

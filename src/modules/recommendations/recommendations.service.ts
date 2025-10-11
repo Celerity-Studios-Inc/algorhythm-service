@@ -45,9 +45,8 @@ export class RecommendationsService {
   }> {
     const startTime = Date.now();
     
-    // 🔧 TEMPORARY FIX: Disable instant service to force real NNA Registry API calls
-    // TODO: Fix instant service to use real data from NNA Registry API
-    this.logger.debug('🚫 Instant service disabled - using main service for real GCP URLs');
+    // 🚀 Using local data storage for fast queries
+    this.logger.debug('🚀 Using local data storage for fast queries');
     
     // Check cache first
     const primaryCacheKey = `${CACHE_KEYS.TEMPLATE_RECOMMENDATION}:${request.song_id}:${JSON.stringify(request.user_context)}`;

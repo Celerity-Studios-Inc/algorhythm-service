@@ -1,19 +1,23 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { AssetCreatedEventDto, CompositeCreatedEventDto, AssetUpdatedEventDto } from '../webhooks/dto/webhook-events.dto';
+import { RealTimeIndexService } from '../indexing/real-time-index.service';
 
 @Injectable()
 export class EventProcessorService {
   private readonly logger = new Logger(EventProcessorService.name);
 
-  constructor(private readonly eventEmitter: EventEmitter2) {}
+  constructor(
+    private readonly eventEmitter: EventEmitter2,
+    private readonly realTimeIndex: RealTimeIndexService,
+  ) {}
 
   async processAssetCreated(event: AssetCreatedEventDto): Promise<void> {
     try {
       this.logger.log(`🔄 Processing asset created event: ${event.assetId}`);
 
-      // Emit internal event for processing
-      await this.eventEmitter.emitAsync('asset.created', {
+      // Process with real-time indexing
+      await this.realTimeIndex.handleAssetCreated({
         assetId: event.assetId,
         layer: event.layer,
         category: event.category,
@@ -35,8 +39,8 @@ export class EventProcessorService {
     try {
       this.logger.log(`🔄 Processing asset updated event: ${event.assetId}`);
 
-      // Emit internal event for processing
-      await this.eventEmitter.emitAsync('asset.updated', {
+      // Process with real-time indexing
+      await this.realTimeIndex.handleAssetUpdated({
         assetId: event.assetId,
         layer: event.layer,
         category: event.category,
@@ -59,8 +63,8 @@ export class EventProcessorService {
     try {
       this.logger.log(`🔄 Processing composite created event: ${event.compositeId}`);
 
-      // Emit internal event for processing
-      await this.eventEmitter.emitAsync('composite.created', {
+      // Process with real-time indexing
+      await this.realTimeIndex.handleCompositeCreated({
         compositeId: event.compositeId,
         layer: event.layer,
         category: event.category,

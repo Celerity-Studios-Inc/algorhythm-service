@@ -5,10 +5,12 @@ import { WebhookController } from './webhook.controller';
 import { WebhookService } from './webhook.service';
 import { WebhookValidationService } from './webhook-validation.service';
 import { EventProcessorService } from '../events/event-processor.service';
+import { IndexingModule } from '../indexing/indexing.module';
 
 @Module({
   imports: [
     ConfigModule,
+    IndexingModule,
     EventEmitterModule.forRoot({
       // Set this to `true` to use wildcards
       wildcard: false,
