@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, Inject, Optional } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { firstValueFrom } from 'rxjs';
@@ -15,12 +15,20 @@ export class OptimizedNnaRegistryService {
   constructor(
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
-    private readonly cacheService: CacheService | null,
+    @Optional() private readonly cacheService: CacheService | null,
   ) {
     this.baseUrl = this.configService.get<string>('NNA_REGISTRY_BASE_URL') || 'https://registry.dev.reviz.dev';
     this.apiKey = this.configService.get<string>('REVIZ_API_KEY') || 'reviz-dev-30390-13220-4896-9516-9001';
     
     // 🔍 ADD DEBUG LOG
+    console.error('=====================================');
+    console.error('🚀 OPTIMIZED NNA REGISTRY SERVICE STARTING');
+    console.error('=====================================');
+    console.error('Base URL:', this.baseUrl);
+    console.error('API Key set:', !!this.apiKey);
+    console.error('Cache Service available:', !!this.cacheService);
+    console.error('=====================================');
+    
     this.logger.log(`🔍 [INIT] NNA Registry URL: ${this.baseUrl}`);
     this.logger.log(`🔍 [INIT] OptimizedNnaRegistryService initialized`);
   }
