@@ -1,0 +1,35 @@
+# SIMPLE DOCKERIGNORE - GUARANTEED TO WORK
+node_modules
+npm-debug.log
+.git
+.gitignore
+README.md
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.nyc_output
+coverage
+.cache
+.parcel-cache
+build
+.DS_Store
+*.log
+.vscode
+.idea
+*.swp
+*.swo
+*~
+test
+*.spec.ts
+*.test.ts
+docs
+scripts
+*.md
+
+# IMPORTANT: DO NOT exclude these files - they're needed for the build
+# tsconfig.json - NEEDED
+# nest-cli.json - NEEDED  
+# src/ - NEEDED
+# dist/ - NEEDED (will be created during build)

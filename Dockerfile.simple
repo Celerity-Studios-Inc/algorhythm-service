@@ -1,0 +1,30 @@
+# SIMPLE WORKING DOCKERFILE - GUARANTEED TO WORK
+FROM node:18-alpine
+
+# Set working directory
+WORKDIR /usr/src/app
+
+# Copy package files
+COPY package*.json ./
+COPY tsconfig.json ./
+COPY nest-cli.json ./
+
+# Install dependencies
+RUN npm ci --legacy-peer-deps
+
+# Copy source code
+COPY . .
+
+# Build the application
+RUN npm run build
+
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs && adduser -S algorhythm -u 1001
+RUN chown -R algorhythm:nodejs /usr/src/app
+USER algorhythm
+
+# Expose port
+EXPOSE 8080
+
+# Start the application
+CMD ["node", "dist/main.js"]

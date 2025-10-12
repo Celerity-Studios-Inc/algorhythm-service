@@ -1,38 +1,54 @@
+# WORKING DOCKERIGNORE FOR ALGORHYTHM SERVICE
+# This ensures all necessary files are included in the Docker build
+
+# Exclude node_modules (will be installed fresh)
 node_modules
-npm-debug.log
+npm-debug.log*
+
+# Exclude development files
 .git
 .gitignore
 README.md
 .env
 .env.local
-.env.development
-.env.test
-.env.production
-.nyc_output
-coverage
-.nyc_output
-.coverage
-.cache
-.parcel-cache
-# dist - REMOVED for pre-built deployment
-build
-.DS_Store
-*.log
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Exclude test files
+test
+tests
+*.test.js
+*.test.ts
+*.spec.js
+*.spec.ts
+
+# Exclude documentation
+docs
+*.md
+
+# Exclude CI/CD files
+.github
+.gitlab-ci.yml
+.travis.yml
+
+# Exclude IDE files
 .vscode
 .idea
 *.swp
 *.swo
-*~
-# Exclude source files since we're using pre-built dist
-src
-*.ts
-tsconfig.json
-nest-cli.json
-# Exclude test files
-test
-*.spec.ts
-*.test.ts
-# Exclude development files
-docs
-scripts
-*.md
+
+# Exclude OS files
+.DS_Store
+Thumbs.db
+
+# Exclude logs
+logs
+*.log
+
+# Exclude temporary files
+tmp
+temp
+
+# IMPORTANT: DO NOT exclude dist folder - it's needed for the application to run
+# The dist folder contains the compiled TypeScript code that the application needs
