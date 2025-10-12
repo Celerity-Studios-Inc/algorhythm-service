@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Body, UseGuards } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtFallbackGuard } from './guards/jwt-fallback.guard';
+import { ApiKeyGuard } from './guards/api-key.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -10,6 +11,7 @@ export class AuthController {
   debugEnvironmentVariables() {
     const jwtSecret = this.configService.get<string>('JWT_SECRET');
     const nnaJwtSecret = this.configService.get<string>('NNA_REGISTRY_JWT_SECRET');
+    const algorhythmApiKey = this.configService.get<string>('ALGORHYTHM_API_KEY');
     
     return {
       jwtSecret: {
@@ -22,6 +24,11 @@ export class AuthController {
         length: nnaJwtSecret ? nnaJwtSecret.length : 0,
         preview: nnaJwtSecret ? `${nnaJwtSecret.substring(0, 8)}...` : 'undefined'
       },
+      algorhythmApiKey: {
+        loaded: !!algorhythmApiKey,
+        length: algorhythmApiKey ? algorhythmApiKey.length : 0,
+        preview: algorhythmApiKey ? `${algorhythmApiKey.substring(0, 8)}...` : 'undefined'
+      },
       timestamp: new Date().toISOString()
     };
   }
@@ -32,6 +39,17 @@ export class AuthController {
     return {
       success: true,
       message: 'JWT fallback authentication successful',
+      user: body.user || 'No user data in body',
+      timestamp: new Date().toISOString()
+    };
+  }
+
+  @Post('test-api-key')
+  @UseGuards(ApiKeyGuard)
+  testApiKey(@Body() body: any) {
+    return {
+      success: true,
+      message: 'API key authentication successful',
       user: body.user || 'No user data in body',
       timestamp: new Date().toISOString()
     };
