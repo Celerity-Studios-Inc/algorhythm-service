@@ -40,42 +40,11 @@ export class OptimizedNnaRegistryService {
     // Batch API call for uncached songs
     const batchResults = new Map<string, any[]>();
     
-    try {
-      // Single optimized API call with multiple song IDs
-      const url = `${this.baseUrl}/api/v1/assets/composites/batch`;
-      const response: AxiosResponse = await firstValueFrom(
-        this.httpService.post(url, {
-          song_ids: uncachedSongs,
-          layer: 'C',
-          composite_type: 'full',
-          limit: 100,
-          include_metadata: true,
-        }, {
-          headers: this.getHeaders(),
-          timeout: 10000, // 10 second timeout for batch
-        })
-      );
-
-      if (response.data?.success && response.data?.data) {
-        // Process batch results
-        const batchData = response.data.data;
-        for (const songId of uncachedSongs) {
-          const songComposites = batchData[songId] || [];
-          batchResults.set(songId, songComposites);
-          
-          // Cache individual song results
-          await this.cacheService.setCompositesForSong(songId, songComposites);
-        }
-      }
-    } catch (error) {
-      this.logger.warn(`Batch API failed, falling back to individual calls: ${error.message}`);
-      
-      // Fallback to individual calls with reduced timeout
-      const individualResults = await this.getIndividualComposites(uncachedSongs);
-      individualResults.forEach((composites, songId) => {
-        batchResults.set(songId, composites);
-      });
-    }
+    // Use individual calls since batch endpoint doesn't exist yet
+    const individualResults = await this.getIndividualComposites(uncachedSongs);
+    individualResults.forEach((composites, songId) => {
+      batchResults.set(songId, composites);
+    });
 
     // Merge cached and batch results
     const finalResults = new Map([...cachedResults, ...batchResults]);
@@ -98,17 +67,15 @@ export class OptimizedNnaRegistryService {
     }
 
     try {
-      // Optimized single API call
-      const url = `${this.baseUrl}/api/v1/assets/composites`;
+      // Optimized single API call - use the correct endpoint
+      const url = `${this.baseUrl}/api/v1/assets/composites/by-song/${songId}`;
       const response: AxiosResponse = await firstValueFrom(
         this.httpService.get(url, {
           headers: this.getHeaders(),
           params: {
-            song_id: songId,
-            layer: 'C',
-            composite_type: 'full',
             limit: 100,
-            include_metadata: true,
+            compositeType: 'full',
+            includeMetadata: true,
           },
           timeout: 5000, // Reduced timeout
         })
