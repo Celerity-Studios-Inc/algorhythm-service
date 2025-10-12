@@ -26,8 +26,8 @@ build
 # Exclude source files since we're using pre-built dist
 src
 *.ts
-# tsconfig.json - NEEDED for Docker build
-# nest-cli.json - NEEDED for Docker build
+tsconfig.json
+nest-cli.json
 # Exclude test files
 test
 *.spec.ts
