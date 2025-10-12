@@ -1,7 +1,7 @@
 # WORKING DOCKERFILE FOR ALGORHYTHM SERVICE
 # This Dockerfile ensures the container starts correctly
 
-FROM node:18-alpine AS builder
+FROM node:20-alpine AS builder
 
 # Set working directory
 WORKDIR /usr/src/app
@@ -11,8 +11,8 @@ COPY package*.json ./
 COPY tsconfig.json ./
 COPY nest-cli.json ./
 
-# Install dependencies
-RUN npm ci --legacy-peer-deps
+# Install dependencies (use npm install to sync package-lock.json)
+RUN npm install --legacy-peer-deps
 
 # Copy source code
 COPY . .
@@ -21,7 +21,7 @@ COPY . .
 RUN npm run build
 
 # Production stage
-FROM node:18-alpine
+FROM node:20-alpine
 
 # Set working directory
 WORKDIR /usr/src/app
@@ -30,7 +30,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install production dependencies only
-RUN npm ci --only=production --legacy-peer-deps && npm cache clean --force
+RUN npm install --only=production --legacy-peer-deps && npm cache clean --force
 
 # Copy built application from builder stage
 COPY --from=builder /usr/src/app/dist ./dist
