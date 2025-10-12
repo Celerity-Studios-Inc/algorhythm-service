@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 
-@Controller('health')
+@Controller('api/health')
 @ApiTags('Health')
 export class HealthController {
   @Get()
@@ -51,8 +51,12 @@ export class HealthController {
 
   private async checkNNARegistry(): Promise<string> {
     try {
-      // Add actual NNA Registry ping here
-      return 'healthy';
+      const response = await fetch('https://registry.dev.reviz.dev/health', {
+        method: 'GET',
+        headers: { 'x-api-key': 'reviz-dev-30390-13220-4896-9516-9001' },
+        signal: AbortSignal.timeout(2000) // 2 second timeout
+      });
+      return response.ok ? 'healthy' : 'unhealthy';
     } catch (error) {
       return 'unhealthy';
     }

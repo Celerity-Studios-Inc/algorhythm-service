@@ -210,11 +210,11 @@ export class OptimizedNnaRegistryService {
     const startTime = Date.now();
     
     try {
-      const url = `${this.baseUrl}/api/v1/health`;
+      const url = `${this.baseUrl}/health`;
       const response: AxiosResponse = await firstValueFrom(
         this.httpService.get(url, {
           headers: this.getHeaders(),
-          timeout: 200, // Very quick health check
+          timeout: 500, // Quick health check
         })
       );
       
