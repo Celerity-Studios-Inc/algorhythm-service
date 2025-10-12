@@ -67,8 +67,16 @@ export class RecommendationsController {
 
     try {
       // 🚀 USE OPTIMIZED SERVICE FOR 15x PERFORMANCE IMPROVEMENT
-      const recommendation = await this.optimizedRecommendationsService
-        .getTemplateRecommendation(request);
+      this.logger.log(`🚀 Using OptimizedRecommendationsService for song: ${request.song_id}`);
+      let recommendation;
+      try {
+        recommendation = await this.optimizedRecommendationsService
+          .getTemplateRecommendation(request);
+      } catch (optimizedError) {
+        this.logger.warn(`⚠️ OptimizedRecommendationsService failed, falling back to RecommendationsService: ${optimizedError.message}`);
+        recommendation = await this.recommendationsService
+          .getTemplateRecommendation(request);
+      }
 
       const responseTime = Date.now() - startTime;
       
