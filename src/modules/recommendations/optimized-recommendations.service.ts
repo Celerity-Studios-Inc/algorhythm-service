@@ -91,9 +91,52 @@ export class OptimizedRecommendationsService {
       };
     }
 
-    // Step 3: 🔧 CRITICAL FIX: Always use fallback to prevent hanging
-    this.logger.warn(`🔄 [CIRCUIT BREAKER] Using fallback for ${request.song_id} (NNA Registry issues)`);
-    return this.getFallbackResponse(request);
+    // Step 3: Fast composite fetch with optimized NNA Registry and circuit breaker
+    const scoreStartTime = Date.now();
+    
+    // 🔧 CIRCUIT BREAKER: Add timeout to prevent hanging
+    const compositePromise = this.optimizedNnaRegistryService.getCompositesForSong(request.song_id);
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error('NNA Registry timeout')), 2000)
+    );
+    
+    let composites: any[] = [];
+    try {
+      composites = await Promise.race([compositePromise, timeoutPromise]) as any[];
+    } catch (error) {
+      this.logger.warn(`🔄 [CIRCUIT BREAKER] NNA Registry failed: ${error.message}`);
+      return this.getFallbackResponse(request);
+    }
+    
+    if (composites.length === 0) {
+      this.logger.warn(`No composites found for song: ${request.song_id}`);
+      return this.getFallbackResponse(request);
+    }
+
+    // Step 4: Batch score computation
+    const scoredTemplates = await this.scoringService.scoreTemplates(
+      { nna_address: request.song_id },
+      composites,
+      request.user_context
+    );
+
+    const scoreComputationTime = Date.now() - scoreStartTime;
+    const responseTime = Date.now() - startTime;
+
+    // Step 5: Format response
+    const result = this.formatRecommendationResult(scoredTemplates, request);
+    
+    // Step 6: Cache the result
+    await this.cacheService.set(cacheKey, result, CACHE_TTL.TEMPLATE_RECOMMENDATION);
+
+    this.logger.debug(`✅ Recommendation completed in ${responseTime}ms (scoring: ${scoreComputationTime}ms)`);
+
+    return {
+      ...result,
+      cache_hit: false,
+      score_computation_time_ms: scoreComputationTime,
+      templates_evaluated: scoredTemplates.length,
+    };
     } catch (error) {
       this.logger.error(`Failed to get optimized recommendation for ${request.song_id}:`, error);
       return this.getFallbackResponse(request);
