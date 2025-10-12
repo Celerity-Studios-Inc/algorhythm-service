@@ -1,10 +1,10 @@
-# DISABLED - Using ci-cd-dev.yml instead (consistent with NNA Registry Service)
-# name: Deploy AlgoRhythm Service
+name: AlgoRhythm Service CI/CD (dev)
 
-# on:
-#   push:
-#     branches:
-#       - dev
+on:
+  push:
+    branches: [dev]
+  pull_request:
+    branches: [dev]
 
 env:
   PROJECT_ID: revize-453014
@@ -76,7 +76,25 @@ jobs:
             --min-instances=0 \
             --project=${{ env.PROJECT_ID }}
 
-      - name: Get Service URL
+      - name: Post-deploy health check
+        run: |
+          SERVICE_URL=$(gcloud run services describe ${{ env.SERVICE_NAME }} \
+            --region ${{ env.REGION }} \
+            --format='value(status.url)' \
+            --project=${{ env.PROJECT_ID }})
+          
+          echo "Checking health endpoint: $SERVICE_URL/api/health"
+          for i in {1..10}; do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$SERVICE_URL/api/health")
+            if [ "$STATUS" = "200" ]; then
+              echo "Health check passed."
+              break
+            fi
+            echo "Waiting for service to become healthy... ($i/10)"
+            sleep 6
+          done
+
+      - name: Output Development URL
         run: |
           SERVICE_URL=$(gcloud run services describe ${{ env.SERVICE_NAME }} \
             --region ${{ env.REGION }} \
