@@ -16,3 +16,4 @@ import { CachingModule } from '../caching/caching.module';
   exports: [NnaRegistryService, OptimizedNnaRegistryService],
 })
 export class NnaIntegrationModule {}
+// Force deployment - conditional import fix
