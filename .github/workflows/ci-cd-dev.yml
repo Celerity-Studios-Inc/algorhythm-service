@@ -26,10 +26,15 @@ jobs:
       - name: Run tests
         run: npm test -- --passWithNoTests
 
+      - name: Use working Dockerfile and dockerignore
+        run: |
+          cp Dockerfile.working Dockerfile
+          cp .dockerignore.working .dockerignore
+          
       - name: Build Docker image
         env:
           IMAGE_TAG: us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/algorhythm-repo/algorhythm-service-dev:${{ github.sha }}-${{ github.run_id }}-dev
-        run: docker build --platform linux/amd64 --no-cache -t $IMAGE_TAG -f Dockerfile.working .
+        run: docker build --platform linux/amd64 --no-cache -t $IMAGE_TAG .
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
