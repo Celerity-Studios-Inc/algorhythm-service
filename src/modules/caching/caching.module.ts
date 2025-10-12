@@ -3,6 +3,7 @@ import { CacheService } from './cache.service';
 import { TemplateCacheStrategy } from './strategies/template-cache.strategy';
 import { ScoreCacheStrategy } from './strategies/score-cache.strategy';
 import { AnalyticsCacheStrategy } from './strategies/analytics-cache.strategy';
+import { CompositeCacheStrategy } from './strategies/composite-cache.strategy';
 import { RedisModule } from '../../config/redis.config';
 
 @Module({
@@ -12,7 +13,8 @@ import { RedisModule } from '../../config/redis.config';
     TemplateCacheStrategy,
     ScoreCacheStrategy,
     AnalyticsCacheStrategy,
+    CompositeCacheStrategy,
   ],
-  exports: [CacheService],
+  exports: [CacheService, CompositeCacheStrategy],
 })
 export class CachingModule {}
