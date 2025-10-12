@@ -1,0 +1,54 @@
+name: AlgoRhythm Service CI/CD (Development) - WORKING
+
+on:
+  push:
+    branches:
+      - dev
+      - main
+
+env:
+  PROJECT_ID: revize-453014
+  SERVICE_NAME: algorhythm-service-dev
+  REGION: us-central1
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Authenticate with Google Cloud using service account key
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      # Set up Cloud SDK
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+
+      # Build and deploy to Cloud Run
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy ${{ env.SERVICE_NAME }} \
+            --source . \
+            --region ${{ env.REGION }} \
+            --platform managed \
+            --allow-unauthenticated \
+            --set-env-vars="NNA_REGISTRY_URL=https://registry.dev.reviz.dev,NNA_API_KEY=reviz-dev-30390-13220-4896-9516-9001,NNA_REGISTRY_TIMEOUT=30000,NODE_ENV=development,PORT=8080,LOG_LEVEL=info" \
+            --timeout=300 \
+            --memory=512Mi \
+            --cpu=1 \
+            --max-instances=10 \
+            --min-instances=0
+
+      # Output service URL
+      - name: Get Service URL
+        run: |
+          SERVICE_URL=$(gcloud run services describe ${{ env.SERVICE_NAME }} --region ${{ env.REGION }} --format='value(status.url)')
+          echo "Service deployed to: $SERVICE_URL"
+          echo "Health check: $SERVICE_URL/api/health"
