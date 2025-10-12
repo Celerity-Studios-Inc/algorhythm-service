@@ -43,6 +43,7 @@ export class RecommendationsService {
     console.error('Service exists:', !!this.optimizedNnaRegistryService);
     console.error('Service type:', this.optimizedNnaRegistryService?.constructor?.name);
     console.error('Has getFullCompositesBySong:', typeof this.optimizedNnaRegistryService?.getFullCompositesBySong);
+    console.error('Method exists:', typeof this.optimizedNnaRegistryService?.getFullCompositesBySong === 'function');
     console.error('=====================================');
     
     // 🔍 ADD DEBUG LOG
@@ -129,7 +130,7 @@ export class RecommendationsService {
     }; // Fallback for now
     
     // Get all available templates (composites) for this song
-    // 🔧 FIX: Use getCompositesForSong for ReViz developers to ensure C.FUL only
+    // 🔧 FIX: Use getFullCompositesBySong for ReViz developers to ensure C.FUL only
     // Use NNA Registry directly (local data query disabled for minimal deployment)
     
     // 🔍 ADD DETAILED LOGGING
