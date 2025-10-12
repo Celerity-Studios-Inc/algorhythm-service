@@ -71,12 +71,9 @@ export class OptimizedNnaRegistryService {
   async getCompositesForSong(songId: string): Promise<any[]> {
     const startTime = Date.now();
     
-    // 🔧 CIRCUIT BREAKER: Check if NNA Registry is healthy first
-    const healthCheck = await this.quickHealthCheck();
-    if (!healthCheck.isHealthy) {
-      this.logger.warn(`🔄 [CIRCUIT BREAKER] NNA Registry unhealthy, using fallback for ${songId}`);
-      return this.getFallbackComposites(songId);
-    }
+    // 🔧 CRITICAL FIX: Always use fallback for now to prevent hanging
+    this.logger.warn(`🔄 [CIRCUIT BREAKER] Using fallback for ${songId} (NNA Registry issues)`);
+    return this.getFallbackComposites(songId);
     
     // Check cache first
     const cached = this.cacheService ? await this.cacheService.getCompositesForSong(songId) : null;
