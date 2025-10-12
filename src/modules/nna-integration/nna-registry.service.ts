@@ -22,7 +22,7 @@ export class NnaRegistryService {
 
   async getAssetByAddress(address: string): Promise<any> {
     try {
-      const url = `${this.baseUrl}/api/assets/address/${address}`;
+      const url = `${this.baseUrl}/api/v1/assets/address/${address}`;
       this.logger.debug(`Fetching asset by address: ${address}`);
 
       const response: AxiosResponse = await firstValueFrom(
@@ -46,7 +46,7 @@ export class NnaRegistryService {
 
   async getAssetsByLayer(layer: string, limit: number = 1000): Promise<any[]> {
     try {
-      const url = `${this.baseUrl}/api/assets`;
+      const url = `${this.baseUrl}/api/v1/assets`;
       this.logger.debug(`Fetching assets for layer: ${layer}`);
 
       const response: AxiosResponse = await firstValueFrom(
@@ -77,7 +77,7 @@ export class NnaRegistryService {
 
   async getCompositesBySong(songId: string, limit: number = 1000): Promise<any[]> {
     try {
-      const url = `${this.baseUrl}/api/assets`;
+      const url = `${this.baseUrl}/api/v1/assets`;
       this.logger.debug(`Fetching composites for song: ${songId}`);
 
       const response: AxiosResponse = await firstValueFrom(
@@ -128,7 +128,7 @@ export class NnaRegistryService {
    */
   async getFullCompositesBySong(songId: string, limit: number = 1000): Promise<any[]> {
     try {
-      const url = `${this.baseUrl}/api/assets`;
+      const url = `${this.baseUrl}/api/v1/assets`;
       this.logger.debug(`🔍 Fetching FULL composites for ReViz developers - song: ${songId}`);
 
       // First try with specific composite_type filter
@@ -272,7 +272,7 @@ export class NnaRegistryService {
     limit?: number;
   }): Promise<any[]> {
     try {
-      const url = `${this.baseUrl}/api/assets/search`;
+      const url = `${this.baseUrl}/api/v1/assets/search`;
       this.logger.debug(`Searching assets with query: ${query}`);
 
       const params: any = {
@@ -307,7 +307,7 @@ export class NnaRegistryService {
 
   async getAssetMetadata(assetId: string): Promise<any> {
     try {
-      const url = `${this.baseUrl}/api/assets/${assetId}/metadata`;
+      const url = `${this.baseUrl}/api/v1/assets/${assetId}/metadata`;
       this.logger.debug(`Fetching metadata for asset: ${assetId}`);
 
       const response: AxiosResponse = await firstValueFrom(
@@ -331,7 +331,7 @@ export class NnaRegistryService {
     if (addresses.length === 0) return [];
 
     try {
-      const url = `${this.baseUrl}/api/assets/batch`;
+      const url = `${this.baseUrl}/api/v1/assets/batch`;
       this.logger.debug(`Batch fetching ${addresses.length} assets`);
 
       const response: AxiosResponse = await firstValueFrom(
@@ -364,7 +364,7 @@ export class NnaRegistryService {
     const startTime = Date.now();
 
     try {
-      const url = `${this.baseUrl}/api/health`;
+      const url = `${this.baseUrl}/api/v1/health`;
       
       const response: AxiosResponse = await firstValueFrom(
         this.httpService.get(url, {
@@ -477,7 +477,7 @@ export class NnaRegistryService {
       const [layer, category, subcategory, sequential] = hfnParts;
       
       // Use efficient filtering API instead of fetching all assets
-      const url = `${this.baseUrl}/api/assets`;
+      const url = `${this.baseUrl}/api/v1/assets`;
       this.logger.debug(`Converting HFN: ${hfn} (Layer: ${layer}, Category: ${category}, Subcategory: ${subcategory})`);
 
       const response: AxiosResponse = await firstValueFrom(
@@ -519,7 +519,7 @@ export class NnaRegistryService {
 
   async getAllSongs(): Promise<any[]> {
     try {
-      const url = `${this.baseUrl}/api/assets`;
+      const url = `${this.baseUrl}/api/v1/assets`;
       this.logger.debug('Fetching all songs');
 
       const response: AxiosResponse = await firstValueFrom(
@@ -550,7 +550,7 @@ export class NnaRegistryService {
 
   async getAllTemplates(): Promise<any[]> {
     try {
-      const url = `${this.baseUrl}/api/assets`;
+      const url = `${this.baseUrl}/api/v1/assets`;
       this.logger.debug('Fetching all templates');
 
       const response: AxiosResponse = await firstValueFrom(

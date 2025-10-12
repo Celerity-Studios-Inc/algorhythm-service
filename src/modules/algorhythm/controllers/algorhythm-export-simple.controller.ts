@@ -110,7 +110,7 @@ export class AlgorhythmExportSimpleController {
     return {
       success: true,
       data: {
-        webhookUrl: process.env.ALGORHYTHM_WEBHOOK_URL || 'https://algorhythm.media/api/webhooks/composites',
+        webhookUrl: process.env.ALGORHYTHM_WEBHOOK_URL || 'https://algorhythm.media/api/v1/webhooks/composites',
         connectivity: 'OK',
         responseTime: '45ms',
         lastTest: new Date().toISOString()
