@@ -42,8 +42,8 @@ export class RecommendationsService {
     console.error('=====================================');
     console.error('Service exists:', !!this.optimizedNnaRegistryService);
     console.error('Service type:', this.optimizedNnaRegistryService?.constructor?.name);
-    console.error('Has getFullCompositesBySong:', typeof this.optimizedNnaRegistryService?.getFullCompositesBySong);
-    console.error('Method exists:', typeof this.optimizedNnaRegistryService?.getFullCompositesBySong === 'function');
+    console.error('Has getCompositesForSong:', typeof this.optimizedNnaRegistryService?.getCompositesForSong);
+    console.error('Method exists:', typeof this.optimizedNnaRegistryService?.getCompositesForSong === 'function');
     console.error('=====================================');
     
     // 🔍 ADD DEBUG LOG
@@ -130,17 +130,17 @@ export class RecommendationsService {
     }; // Fallback for now
     
     // Get all available templates (composites) for this song
-    // 🔧 FIX: Use getFullCompositesBySong for ReViz developers to ensure C.FUL only
+    // 🔧 FIX: Use getCompositesForSong for ReViz developers to ensure C.FUL only
     // Use NNA Registry directly (local data query disabled for minimal deployment)
     
     // 🔍 ADD DETAILED LOGGING
-    this.logger.log(`🔍 [METHOD CALL] About to call getFullCompositesBySong`);
+    this.logger.log(`🔍 [METHOD CALL] About to call getCompositesForSong`);
     this.logger.log(`🔍 [METHOD CALL] Song ID: ${songId}`);
     this.logger.log(`🔍 [METHOD CALL] Service exists: ${!!this.optimizedNnaRegistryService}`);
     this.logger.log(`🔍 [METHOD CALL] Service type: ${this.optimizedNnaRegistryService?.constructor?.name}`);
     
     const methodStartTime = Date.now();
-    const availableTemplates = await this.optimizedNnaRegistryService.getFullCompositesBySong(songId);
+    const availableTemplates = await this.optimizedNnaRegistryService.getCompositesForSong(songId);
     const methodDuration = Date.now() - methodStartTime;
     
     this.logger.log(`✅ [METHOD CALL] Success! Got ${availableTemplates.length} templates`);
