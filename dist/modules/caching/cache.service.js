@@ -212,6 +212,25 @@ let CacheService = CacheService_1 = class CacheService {
         }
         return result;
     }
+    async getCompositesForSong(songId) {
+        const key = `composite:queries:song:${songId}`;
+        return await this.get(key);
+    }
+    async setCompositesForSong(songId, composites) {
+        const key = `composite:queries:song:${songId}`;
+        return await this.set(key, composites, 3600);
+    }
+    async getBatchComposites(songIds) {
+        const keys = songIds.map(songId => `composite:queries:song:${songId}`);
+        const results = await this.mget(keys);
+        const resultMap = new Map();
+        songIds.forEach((songId, index) => {
+            if (results[index]) {
+                resultMap.set(songId, results[index]);
+            }
+        });
+        return resultMap;
+    }
 };
 exports.CacheService = CacheService;
 exports.CacheService = CacheService = CacheService_1 = __decorate([

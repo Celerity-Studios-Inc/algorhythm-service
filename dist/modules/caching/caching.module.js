@@ -12,6 +12,7 @@ const cache_service_1 = require("./cache.service");
 const template_cache_strategy_1 = require("./strategies/template-cache.strategy");
 const score_cache_strategy_1 = require("./strategies/score-cache.strategy");
 const analytics_cache_strategy_1 = require("./strategies/analytics-cache.strategy");
+const composite_cache_strategy_1 = require("./strategies/composite-cache.strategy");
 const redis_config_1 = require("../../config/redis.config");
 let CachingModule = class CachingModule {
 };
@@ -24,8 +25,9 @@ exports.CachingModule = CachingModule = __decorate([
             template_cache_strategy_1.TemplateCacheStrategy,
             score_cache_strategy_1.ScoreCacheStrategy,
             analytics_cache_strategy_1.AnalyticsCacheStrategy,
+            composite_cache_strategy_1.CompositeCacheStrategy,
         ],
-        exports: [cache_service_1.CacheService],
+        exports: [cache_service_1.CacheService, composite_cache_strategy_1.CompositeCacheStrategy],
     })
 ], CachingModule);
 //# sourceMappingURL=caching.module.js.map

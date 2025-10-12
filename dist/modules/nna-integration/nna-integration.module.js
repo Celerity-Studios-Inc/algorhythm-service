@@ -10,6 +10,8 @@ exports.NnaIntegrationModule = void 0;
 const common_1 = require("@nestjs/common");
 const axios_1 = require("@nestjs/axios");
 const nna_registry_service_1 = require("./nna-registry.service");
+const optimized_nna_registry_service_1 = require("./optimized-nna-registry.service");
+const caching_module_1 = require("../caching/caching.module");
 let NnaIntegrationModule = class NnaIntegrationModule {
 };
 exports.NnaIntegrationModule = NnaIntegrationModule;
@@ -20,9 +22,10 @@ exports.NnaIntegrationModule = NnaIntegrationModule = __decorate([
                 timeout: 10000,
                 maxRedirects: 5,
             }),
+            caching_module_1.CachingModule,
         ],
-        providers: [nna_registry_service_1.NnaRegistryService],
-        exports: [nna_registry_service_1.NnaRegistryService],
+        providers: [nna_registry_service_1.NnaRegistryService, optimized_nna_registry_service_1.OptimizedNnaRegistryService],
+        exports: [nna_registry_service_1.NnaRegistryService, optimized_nna_registry_service_1.OptimizedNnaRegistryService],
     })
 ], NnaIntegrationModule);
 //# sourceMappingURL=nna-integration.module.js.map

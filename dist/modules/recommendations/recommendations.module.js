@@ -19,6 +19,9 @@ const reviz_complete_experience_enhanced_controller_1 = require("./reviz-complet
 const reviz_composite_experience_service_1 = require("./reviz-composite-experience.service");
 const reviz_composite_experience_controller_1 = require("./reviz-composite-experience.controller");
 const cache_warming_service_1 = require("./cache-warming.service");
+const optimized_recommendations_service_1 = require("./optimized-recommendations.service");
+const composite_recommendations_service_1 = require("./composite-recommendations.service");
+const optimized_recommendations_controller_1 = require("./optimized-recommendations.controller");
 const scoring_module_1 = require("../scoring/scoring.module");
 const caching_module_1 = require("../caching/caching.module");
 const nna_integration_module_1 = require("../nna-integration/nna-integration.module");
@@ -48,7 +51,8 @@ exports.RecommendationsModule = RecommendationsModule = __decorate([
             recommendations_controller_1.RecommendationsController,
             reviz_complete_experience_production_controller_1.ReVizCompleteExperienceProductionController,
             reviz_complete_experience_enhanced_controller_1.ReVizCompleteExperienceEnhancedController,
-            reviz_composite_experience_controller_1.ReVizCompositeExperienceController
+            reviz_composite_experience_controller_1.ReVizCompositeExperienceController,
+            optimized_recommendations_controller_1.OptimizedRecommendationsController
         ],
         providers: [
             recommendations_service_1.RecommendationsService,
@@ -56,7 +60,9 @@ exports.RecommendationsModule = RecommendationsModule = __decorate([
             reviz_complete_experience_production_service_1.ReVizCompleteExperienceProductionService,
             reviz_complete_experience_enhanced_service_1.ReVizCompleteExperienceEnhancedService,
             reviz_composite_experience_service_1.ReVizCompositeExperienceService,
-            cache_warming_service_1.CacheWarmingService
+            cache_warming_service_1.CacheWarmingService,
+            optimized_recommendations_service_1.OptimizedRecommendationsService,
+            composite_recommendations_service_1.CompositeRecommendationsService
         ],
         exports: [
             recommendations_service_1.RecommendationsService,
@@ -64,7 +70,9 @@ exports.RecommendationsModule = RecommendationsModule = __decorate([
             reviz_complete_experience_production_service_1.ReVizCompleteExperienceProductionService,
             reviz_complete_experience_enhanced_service_1.ReVizCompleteExperienceEnhancedService,
             reviz_composite_experience_service_1.ReVizCompositeExperienceService,
-            cache_warming_service_1.CacheWarmingService
+            cache_warming_service_1.CacheWarmingService,
+            optimized_recommendations_service_1.OptimizedRecommendationsService,
+            composite_recommendations_service_1.CompositeRecommendationsService
         ],
     })
 ], RecommendationsModule);

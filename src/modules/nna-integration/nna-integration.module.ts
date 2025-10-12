@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
 import { NnaRegistryService } from './nna-registry.service';
+import { OptimizedNnaRegistryService } from './optimized-nna-registry.service';
+import { CachingModule } from '../caching/caching.module';
 
 @Module({
   imports: [
@@ -8,8 +10,9 @@ import { NnaRegistryService } from './nna-registry.service';
       timeout: 10000, // 10 second timeout
       maxRedirects: 5,
     }),
+    CachingModule,
   ],
-  providers: [NnaRegistryService],
-  exports: [NnaRegistryService],
+  providers: [NnaRegistryService, OptimizedNnaRegistryService],
+  exports: [NnaRegistryService, OptimizedNnaRegistryService],
 })
 export class NnaIntegrationModule {}

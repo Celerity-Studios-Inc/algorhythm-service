@@ -34,20 +34,21 @@ export class OptimizedRecommendationsService {
     const startTime = Date.now();
     this.logger.debug(`🚀 Optimized recommendation for song: ${request.song_id}`);
 
-    // Step 1: Check cache first
-    const cacheKey = `${CACHE_KEYS.TEMPLATE_RECOMMENDATION}:${request.song_id}:${request.user_context.user_id}`;
-    const cachedResult = await this.cacheService.get(cacheKey);
-    
-    if (cachedResult) {
-      const responseTime = Date.now() - startTime;
-      this.logger.debug(`✅ Cache hit: ${responseTime}ms`);
-      return {
-        ...cachedResult,
-        cache_hit: true,
-        score_computation_time_ms: 0,
-        templates_evaluated: cachedResult.alternatives.length + 1,
-      };
-    }
+    try {
+      // Step 1: Check cache first
+      const cacheKey = `${CACHE_KEYS.TEMPLATE_RECOMMENDATION}:${request.song_id}:${request.user_context.user_id}`;
+      const cachedResult = await this.cacheService.get(cacheKey);
+      
+      if (cachedResult) {
+        const responseTime = Date.now() - startTime;
+        this.logger.debug(`✅ Cache hit: ${responseTime}ms`);
+        return {
+          ...(cachedResult as any),
+          cache_hit: true,
+          score_computation_time_ms: 0,
+          templates_evaluated: (cachedResult as any).alternatives.length + 1,
+        };
+      }
 
     // Step 2: Check pre-computed scores
     const precomputedKey = `${CACHE_KEYS.PRE_COMPUTED_SCORES}:${request.song_id}`;
@@ -95,12 +96,16 @@ export class OptimizedRecommendationsService {
 
     this.logger.debug(`✅ Recommendation completed in ${responseTime}ms (scoring: ${scoreComputationTime}ms)`);
 
-    return {
-      ...result,
-      cache_hit: false,
-      score_computation_time_ms: scoreComputationTime,
-      templates_evaluated: scoredTemplates.length,
-    };
+      return {
+        ...result,
+        cache_hit: false,
+        score_computation_time_ms: scoreComputationTime,
+        templates_evaluated: scoredTemplates.length,
+      };
+    } catch (error) {
+      this.logger.error(`Failed to get optimized recommendation for ${request.song_id}:`, error);
+      return this.getFallbackResponse(request);
+    }
   }
 
   /**
@@ -226,7 +231,13 @@ export class OptimizedRecommendationsService {
         template_name: 'Fallback Template',
         nna_address: 'fallback',
         compatibility_score: 0.5,
-        components: {},
+        components: {
+          song_id: request.song_id,
+          star_id: 'fallback-star',
+          look_id: 'fallback-look',
+          move_id: 'fallback-move',
+          world_id: 'fallback-world',
+        },
         metadata: {
           created_at: new Date().toISOString(),
           tags: ['fallback'],

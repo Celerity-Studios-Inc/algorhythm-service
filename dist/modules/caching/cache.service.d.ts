@@ -24,4 +24,7 @@ export declare class CacheService {
     }>;
     clearExpired(): Promise<number>;
     private parseKeyspaceInfo;
+    getCompositesForSong(songId: string): Promise<any[] | null>;
+    setCompositesForSong(songId: string, composites: any[]): Promise<boolean>;
+    getBatchComposites(songIds: string[]): Promise<Map<string, any[]>>;
 }

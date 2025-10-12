@@ -5,6 +5,10 @@ export declare const CACHE_KEYS: {
     readonly USER_PREFERENCES: "user:preferences";
     readonly POPULAR_TEMPLATES: "popular:templates";
     readonly ANALYTICS_EVENTS: "analytics:events";
+    readonly COMPOSITE_QUERIES: "composite:queries";
+    readonly BATCH_COMPOSITES: "batch:composites";
+    readonly PRE_COMPUTED_SCORES: "precomputed:scores";
+    readonly PERFORMANCE_METRICS: "performance:metrics";
 };
 export declare const CACHE_TTL: {
     readonly TEMPLATE_RECOMMENDATION: 300;
@@ -13,4 +17,8 @@ export declare const CACHE_TTL: {
     readonly USER_PREFERENCES: 3600;
     readonly POPULAR_TEMPLATES: 1800;
     readonly ANALYTICS_EVENTS: 60;
+    readonly COMPOSITE_QUERIES: 3600;
+    readonly BATCH_COMPOSITES: 1800;
+    readonly PRE_COMPUTED_SCORES: 86400;
+    readonly PERFORMANCE_METRICS: 300;
 };
