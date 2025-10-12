@@ -66,10 +66,17 @@ export class OptimizedNnaRegistryService {
   }
 
   /**
-   * 🚀 OPTIMIZED: Single song composite fetch with caching
+   * 🚀 OPTIMIZED: Single song composite fetch with caching and circuit breaker
    */
   async getCompositesForSong(songId: string): Promise<any[]> {
     const startTime = Date.now();
+    
+    // 🔧 CIRCUIT BREAKER: Check if NNA Registry is healthy first
+    const healthCheck = await this.quickHealthCheck();
+    if (!healthCheck.isHealthy) {
+      this.logger.warn(`🔄 [CIRCUIT BREAKER] NNA Registry unhealthy, using fallback for ${songId}`);
+      return this.getFallbackComposites(songId);
+    }
     
     // Check cache first
     const cached = this.cacheService ? await this.cacheService.getCompositesForSong(songId) : null;
@@ -84,7 +91,8 @@ export class OptimizedNnaRegistryService {
     try {
       this.logger.log(`🔍 [API CALL] Calling NNA Registry: ${url}`);
       
-      const response: AxiosResponse = await firstValueFrom(
+      // 🔧 CRITICAL FIX: Use Promise.race for aggressive timeout
+      const apiCall = firstValueFrom(
         this.httpService.get(url, {
           headers: this.getHeaders(),
           params: {
@@ -92,9 +100,15 @@ export class OptimizedNnaRegistryService {
             compositeType: 'full',
             includeMetadata: true,
           },
-          timeout: 2000, // Reduced timeout since optimized endpoint is 9ms
+          timeout: 500, // 🔧 CRITICAL FIX: Very aggressive timeout
         })
       );
+      
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('API call timeout')), 500)
+      );
+      
+      const response: AxiosResponse = await Promise.race([apiCall, timeoutPromise]) as AxiosResponse;
 
       if (response.data?.success && response.data?.data) {
         const composites = response.data.data;
@@ -114,14 +128,15 @@ export class OptimizedNnaRegistryService {
       const duration = Date.now() - startTime;
       this.logger.error(`❌ [API CALL] Failed after ${duration}ms: ${error.message}`);
       this.logger.error(`❌ [API CALL] URL was: ${url}`);
-      this.logger.error(`❌ [API CALL] Error: ${error.stack}`);
       
-      // 🔧 CRITICAL FIX: Return fallback data instead of empty array
+      // 🔧 CRITICAL FIX: Return fallback data immediately
       this.logger.warn(`🔄 [FALLBACK] Returning fallback composites for ${songId}`);
       return this.getFallbackComposites(songId);
     }
 
-    return [];
+    // 🔧 CRITICAL FIX: Always return fallback instead of empty array
+    this.logger.warn(`🔄 [FALLBACK] No data received, using fallback for ${songId}`);
+    return this.getFallbackComposites(songId);
   }
 
   /**
@@ -186,6 +201,36 @@ export class OptimizedNnaRegistryService {
       'x-api-key': this.apiKey,
       'Content-Type': 'application/json',
     };
+  }
+
+  /**
+   * 🔧 CIRCUIT BREAKER: Quick health check for NNA Registry
+   */
+  private async quickHealthCheck(): Promise<{ isHealthy: boolean; responseTime?: number }> {
+    const startTime = Date.now();
+    
+    try {
+      const url = `${this.baseUrl}/api/v1/health`;
+      const response: AxiosResponse = await firstValueFrom(
+        this.httpService.get(url, {
+          headers: this.getHeaders(),
+          timeout: 200, // Very quick health check
+        })
+      );
+      
+      const responseTime = Date.now() - startTime;
+      return {
+        isHealthy: response.status === 200,
+        responseTime
+      };
+    } catch (error) {
+      const responseTime = Date.now() - startTime;
+      this.logger.warn(`🔧 [HEALTH CHECK] NNA Registry unhealthy: ${error.message} (${responseTime}ms)`);
+      return {
+        isHealthy: false,
+        responseTime
+      };
+    }
   }
 
   /**

@@ -91,9 +91,22 @@ export class OptimizedRecommendationsService {
       };
     }
 
-    // Step 3: Fast composite fetch with optimized NNA Registry
+    // Step 3: Fast composite fetch with optimized NNA Registry and circuit breaker
     const scoreStartTime = Date.now();
-    const composites = await this.optimizedNnaRegistryService.getCompositesForSong(request.song_id);
+    
+    // 🔧 CIRCUIT BREAKER: Add timeout to prevent hanging
+    const compositePromise = this.optimizedNnaRegistryService.getCompositesForSong(request.song_id);
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error('NNA Registry timeout')), 2000)
+    );
+    
+    let composites: any[] = [];
+    try {
+      composites = await Promise.race([compositePromise, timeoutPromise]) as any[];
+    } catch (error) {
+      this.logger.warn(`🔄 [CIRCUIT BREAKER] NNA Registry failed: ${error.message}`);
+      return this.getFallbackResponse(request);
+    }
     
     if (composites.length === 0) {
       this.logger.warn(`No composites found for song: ${request.song_id}`);
