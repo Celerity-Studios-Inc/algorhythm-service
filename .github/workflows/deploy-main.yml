@@ -1,4 +1,4 @@
-name: AlgoRhythm Service CI/CD (Main)
+name: AlgoRhythm Service CI/CD (Development)
 
 on:
   push:
