@@ -13,7 +13,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { Response, Request } from 'express';
-import { JwtAuthGuard } from '../../modules/auth/guards/jwt-auth.guard';
+import { ApiKeyGuard } from '../../modules/auth/guards/api-key.guard';
 import { ThrottlerGuard, Throttle } from '@nestjs/throttler';
 import { ReVizCompleteExperienceProductionService } from './reviz-complete-experience-production.service';
 import { ReVizCompleteRequest, ReVizCompleteResponse } from './interfaces/reviz-complete-experience.interface';
@@ -130,7 +130,7 @@ export class HealthCheckResult {
  * Includes rate limiting, validation, monitoring, and health checks
  */
 @Controller('reviz')
-@UseGuards(JwtAuthGuard, ThrottlerGuard)
+@UseGuards(ApiKeyGuard, ThrottlerGuard)
 @UseInterceptors(ClassSerializerInterceptor)
 export class ReVizCompleteExperienceProductionController {
   private readonly logger = new Logger(ReVizCompleteExperienceProductionController.name);

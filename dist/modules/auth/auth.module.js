@@ -13,6 +13,7 @@ const config_1 = require("@nestjs/config");
 const jwt_strategy_1 = require("./strategies/jwt.strategy");
 const jwt_auth_guard_1 = require("./guards/jwt-auth.guard");
 const jwt_fallback_guard_1 = require("./guards/jwt-fallback.guard");
+const api_key_guard_1 = require("./guards/api-key.guard");
 const roles_guard_1 = require("./guards/roles.guard");
 const auth_controller_1 = require("./auth.controller");
 let AuthModule = class AuthModule {
@@ -31,8 +32,8 @@ exports.AuthModule = AuthModule = __decorate([
             }),
         ],
         controllers: [auth_controller_1.AuthController],
-        providers: [jwt_strategy_1.JwtStrategy, jwt_auth_guard_1.JwtAuthGuard, jwt_fallback_guard_1.JwtFallbackGuard, roles_guard_1.RolesGuard],
-        exports: [jwt_strategy_1.JwtStrategy, jwt_auth_guard_1.JwtAuthGuard, jwt_fallback_guard_1.JwtFallbackGuard, roles_guard_1.RolesGuard],
+        providers: [jwt_strategy_1.JwtStrategy, jwt_auth_guard_1.JwtAuthGuard, jwt_fallback_guard_1.JwtFallbackGuard, api_key_guard_1.ApiKeyGuard, roles_guard_1.RolesGuard],
+        exports: [jwt_strategy_1.JwtStrategy, jwt_auth_guard_1.JwtAuthGuard, jwt_fallback_guard_1.JwtFallbackGuard, api_key_guard_1.ApiKeyGuard, roles_guard_1.RolesGuard],
     })
 ], AuthModule);
 //# sourceMappingURL=auth.module.js.map

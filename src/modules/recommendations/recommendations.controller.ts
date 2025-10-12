@@ -14,7 +14,7 @@ import {
   ApiBearerAuth,
   ApiBody 
 } from '@nestjs/swagger';
-import { JwtFallbackGuard } from '../auth/guards/jwt-fallback.guard';
+import { ApiKeyGuard } from '../auth/guards/api-key.guard';
 import { CachingInterceptor } from '../../common/interceptors/caching.interceptor';
 import { RecommendationsService } from './recommendations.service';
 import { TemplateRecommendationDto } from './dto/template-recommendation.dto';
@@ -26,8 +26,7 @@ import {
 
 @ApiTags('recommendations')
 @Controller('recommend')
-@UseGuards(JwtFallbackGuard)
-@ApiBearerAuth()
+@UseGuards(ApiKeyGuard)
 export class RecommendationsController {
   private readonly logger = new Logger(RecommendationsController.name);
 

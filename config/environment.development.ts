@@ -19,6 +19,9 @@ export const developmentConfig = {
   NNA_REGISTRY_BASE_URL: 'https://registry.dev.reviz.dev',
   ALGORHYTHM_BASE_URL: 'https://dev.algorhythm.media',
   NNA_REGISTRY_API_KEY: 'algorhythm-dev-nna-api-key',
+  
+  // Algorhythm API Key Authentication
+  ALGORHYTHM_API_KEY: 'algorhythm-dev-api-key-2025',
 
   // Logging
   LOG_LEVEL: 'debug',

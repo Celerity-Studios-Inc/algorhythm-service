@@ -16,7 +16,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RecommendationsController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
-const jwt_fallback_guard_1 = require("../auth/guards/jwt-fallback.guard");
+const api_key_guard_1 = require("../auth/guards/api-key.guard");
 const caching_interceptor_1 = require("../../common/interceptors/caching.interceptor");
 const recommendations_service_1 = require("./recommendations.service");
 const template_recommendation_dto_1 = require("./dto/template-recommendation.dto");
@@ -151,8 +151,7 @@ __decorate([
 exports.RecommendationsController = RecommendationsController = RecommendationsController_1 = __decorate([
     (0, swagger_1.ApiTags)('recommendations'),
     (0, common_1.Controller)('recommend'),
-    (0, common_1.UseGuards)(jwt_fallback_guard_1.JwtFallbackGuard),
-    (0, swagger_1.ApiBearerAuth)(),
+    (0, common_1.UseGuards)(api_key_guard_1.ApiKeyGuard),
     __metadata("design:paramtypes", [recommendations_service_1.RecommendationsService])
 ], RecommendationsController);
 //# sourceMappingURL=recommendations.controller.js.map

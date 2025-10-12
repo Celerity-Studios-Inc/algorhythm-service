@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { JwtFallbackGuard } from './guards/jwt-fallback.guard';
+import { ApiKeyGuard } from './guards/api-key.guard';
 import { RolesGuard } from './guards/roles.guard';
 import { AuthController } from './auth.controller';
 
@@ -19,7 +20,7 @@ import { AuthController } from './auth.controller';
     }),
   ],
   controllers: [AuthController],
-  providers: [JwtStrategy, JwtAuthGuard, JwtFallbackGuard, RolesGuard],
-  exports: [JwtStrategy, JwtAuthGuard, JwtFallbackGuard, RolesGuard],
+  providers: [JwtStrategy, JwtAuthGuard, JwtFallbackGuard, ApiKeyGuard, RolesGuard],
+  exports: [JwtStrategy, JwtAuthGuard, JwtFallbackGuard, ApiKeyGuard, RolesGuard],
 })
 export class AuthModule {}
