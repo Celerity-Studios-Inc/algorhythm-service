@@ -2,7 +2,7 @@ import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { TemplateRecommendationService } from './template-recommendation.service';
 
-@Controller('api/v1/algorhythm')
+@Controller('algorhythm')
 @ApiTags('Template Recommendations')
 export class TemplateRecommendationController {
   constructor(
