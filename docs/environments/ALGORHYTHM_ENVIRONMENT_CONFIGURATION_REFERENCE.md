@@ -46,6 +46,7 @@ Environment Variables:
   JWT_SECRET: "algorhythm-jwt-secret-dev" (secret)
   NNA_REGISTRY_BASE_URL: "https://registry.dev.reviz.dev"
   NNA_REGISTRY_API_KEY: "algorhythm-nna-api-key-dev" (secret)
+  ALGORHYTHM_API_KEY: "algorhythm-dev-api-key-2025" (secret)
   SENTRY_DSN: "algorhythm-sentry-dsn-dev" (secret)
 ```
 
@@ -59,6 +60,7 @@ Environment Variables:
   JWT_SECRET: "algorhythm-jwt-secret-stg" (secret)
   NNA_REGISTRY_BASE_URL: "https://registry.stg.reviz.dev"
   NNA_REGISTRY_API_KEY: "algorhythm-nna-api-key-stg" (secret)
+  ALGORHYTHM_API_KEY: "algorhythm-stg-api-key-2025" (secret)
   SENTRY_DSN: "algorhythm-sentry-dsn-stg" (secret)
 ```
 
@@ -72,6 +74,7 @@ Environment Variables:
   JWT_SECRET: "algorhythm-jwt-secret" (secret)
   NNA_REGISTRY_BASE_URL: "https://registry.reviz.dev"
   NNA_REGISTRY_API_KEY: "algorhythm-nna-api-key" (secret)
+  ALGORHYTHM_API_KEY: "algorhythm-prod-api-key-2025" (secret)
   SENTRY_DSN: "algorhythm-sentry-dsn" (secret)
 ```
 

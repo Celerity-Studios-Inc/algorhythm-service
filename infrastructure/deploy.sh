@@ -68,6 +68,7 @@ gcloud run deploy $SERVICE_NAME \
   --set-env-vars NNA_REGISTRY_BASE_URL=https://registry.dev.reviz.dev \
   --set-env-vars ALGORHYTHM_BASE_URL=https://dev.algorhythm.media \
   --set-env-vars NNA_REGISTRY_API_KEY=your-api-key \
+  --set-env-vars ALGORHYTHM_API_KEY=algorhythm-dev-api-key-2025 \
   --service-account ci-cd-service-account@revize-453014.iam.gserviceaccount.com
 
 # Get the service URL
