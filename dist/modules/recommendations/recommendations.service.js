@@ -105,7 +105,7 @@ let RecommendationsService = RecommendationsService_1 = class RecommendationsSer
             metadata: {
                 created_at: template.createdAt || new Date().toISOString(),
                 tags: template.tags || [],
-                description: template.description || 'Template description',
+                aiGeneratedDescription: template.description || 'Template description',
                 media: {
                     duration_seconds: template.duration || 30,
                     file_size_mb: template.fileSize || 15.2,
@@ -259,7 +259,7 @@ let RecommendationsService = RecommendationsService_1 = class RecommendationsSer
             compatibility_score: 1.0,
             metadata: {
                 tags: asset.tags || [],
-                description: asset.description,
+                aiGeneratedDescription: asset.description,
             },
         };
     }

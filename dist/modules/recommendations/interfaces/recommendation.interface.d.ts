@@ -26,7 +26,7 @@ export interface TemplateRecommendation {
     metadata: {
         created_at: string;
         tags: string[];
-        description?: string;
+        aiGeneratedDescription?: string;
         media?: {
             duration_seconds?: number;
             file_size_mb?: number;
@@ -44,7 +44,7 @@ export interface LayerVariation {
     compatibility_score: number;
     metadata: {
         tags: string[];
-        description?: string;
+        aiGeneratedDescription?: string;
     };
     scoring_details?: CompatibilityScoreDetails;
 }

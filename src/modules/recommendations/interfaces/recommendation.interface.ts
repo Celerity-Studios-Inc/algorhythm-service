@@ -30,7 +30,7 @@ export interface TemplateRecommendation {
   metadata: {
     created_at: string;
     tags: string[];
-    description?: string;
+    aiGeneratedDescription?: string;
     // 🔧 FIX: Add media metadata for ReViz developers
     media?: {
       duration_seconds?: number;
@@ -50,7 +50,7 @@ export interface LayerVariation {
   compatibility_score: number;
   metadata: {
     tags: string[];
-    description?: string;
+    aiGeneratedDescription?: string;
   };
   scoring_details?: CompatibilityScoreDetails;
 }

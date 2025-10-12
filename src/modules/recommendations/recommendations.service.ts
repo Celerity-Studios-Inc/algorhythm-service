@@ -168,7 +168,7 @@ export class RecommendationsService {
       metadata: {
         created_at: template.createdAt || new Date().toISOString(),
         tags: template.tags || [],
-        description: template.description || 'Template description',
+        aiGeneratedDescription: template.description || 'Template description',
         // 🔧 FIX: Add media metadata for ReViz developers
         media: {
           duration_seconds: template.duration || 30,
@@ -408,7 +408,7 @@ export class RecommendationsService {
       compatibility_score: 1.0, // Will be calculated during scoring
       metadata: {
         tags: asset.tags || [],
-        description: asset.description,
+        aiGeneratedDescription: asset.description,
       },
     };
   }

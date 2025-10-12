@@ -15,8 +15,11 @@ const nest_winston_1 = require("nest-winston");
 const core_1 = require("@nestjs/core");
 const winston = require("winston");
 const auth_module_1 = require("./modules/auth/auth.module");
+const recommendations_module_1 = require("./modules/recommendations/recommendations.module");
+const scoring_module_1 = require("./modules/scoring/scoring.module");
 const nna_integration_module_1 = require("./modules/nna-integration/nna-integration.module");
 const caching_module_1 = require("./modules/caching/caching.module");
+const analytics_module_1 = require("./modules/analytics/analytics.module");
 const health_module_1 = require("./modules/health/health.module");
 const environment_validation_1 = require("./config/environment-validation");
 const redis_config_1 = require("./config/redis.config");
@@ -80,6 +83,9 @@ exports.AppModule = AppModule = __decorate([
             nna_integration_module_1.NnaIntegrationModule,
             algorhythm_module_1.AlgorhythmModule,
             webhook_module_1.WebhookModule,
+            recommendations_module_1.RecommendationsModule,
+            scoring_module_1.ScoringModule,
+            analytics_module_1.AnalyticsModule,
             ...(process.env.REDIS_URL ? [caching_module_1.CachingModule] : []),
         ],
         providers: [

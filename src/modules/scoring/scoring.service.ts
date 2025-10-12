@@ -54,7 +54,7 @@ export class ScoringService {
           metadata: {
             created_at: template.createdAt,
             tags: template.tags || [],
-            description: template.description,
+            aiGeneratedDescription: template.description,
           },
           scoring_details: {
             ...compatibilityScore.score_breakdown,
@@ -104,7 +104,7 @@ export class ScoringService {
           compatibility_score: finalScore,
           metadata: {
             tags: asset.tags || [],
-            description: asset.description,
+            aiGeneratedDescription: asset.description,
           },
           scoring_details: {
             ...compatibilityScore.score_breakdown,

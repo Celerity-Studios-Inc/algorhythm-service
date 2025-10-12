@@ -57,12 +57,18 @@ async function bootstrap() {
             'http://localhost:3000',
             'http://localhost:3001',
             'exp://localhost:8081',
+            'exp://192.168.1.100:8081',
+            'exp://10.0.2.2:8081',
+            'exp://192.168.0.100:8081',
+            'http://localhost:8081',
+            'http://192.168.1.100:8081',
         ];
     }
     else if (nodeEnv === 'staging') {
         allowedOrigins = [
             'https://stg.algorhythm.media',
             'https://registry.stg.reviz.dev',
+            'https://stg.reviz.app',
         ];
     }
     else {
@@ -70,6 +76,7 @@ async function bootstrap() {
             'https://algorhythm.media',
             'https://registry.reviz.dev',
             'https://reviz.app',
+            'https://app.reviz.dev',
         ];
     }
     app.enableCors({
@@ -80,6 +87,7 @@ async function bootstrap() {
             'Authorization',
             'X-User-Context',
             'X-Request-ID',
+            'X-API-Key',
             'Accept',
             'Origin',
             'X-Requested-With',

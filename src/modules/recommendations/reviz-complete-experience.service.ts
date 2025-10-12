@@ -351,7 +351,7 @@ export class ReVizCompleteExperienceService {
       metadata: {
         created_at: template.createdAt || new Date().toISOString(),
         tags: template.tags || ['nna-layer-G', 'nna-layer-S', 'nna-layer-L', 'nna-layer-M', 'nna-layer-W'],
-        description: template.description || `Composite video ${index + 1}`,
+        aiGeneratedDescription: template.description || `Composite video ${index + 1}`,
         viral_potential: 0.7 + (Math.random() * 0.3),
         energy_level: 'high',
         style_category: 'modern',

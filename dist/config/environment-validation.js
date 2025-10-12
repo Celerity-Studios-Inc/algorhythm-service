@@ -28,6 +28,7 @@ let EnvironmentValidationService = class EnvironmentValidationService {
             'REDIS_URL',
             'JWT_SECRET',
             'NNA_REGISTRY_BASE_URL',
+            'REVIZ_API_KEY',
             'NODE_ENV',
         ];
         const missingVars = requiredVars.filter(varName => !this.configService.get(varName));

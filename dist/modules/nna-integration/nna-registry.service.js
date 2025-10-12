@@ -26,7 +26,7 @@ let NnaRegistryService = NnaRegistryService_1 = class NnaRegistryService {
     }
     async getAssetByAddress(address) {
         try {
-            const url = `${this.baseUrl}/api/assets/address/${address}`;
+            const url = `${this.baseUrl}/api/v1/assets/address/${address}`;
             this.logger.debug(`Fetching asset by address: ${address}`);
             const response = await (0, rxjs_1.firstValueFrom)(this.httpService.get(url, {
                 headers: this.getHeaders(),
@@ -47,7 +47,7 @@ let NnaRegistryService = NnaRegistryService_1 = class NnaRegistryService {
     }
     async getAssetsByLayer(layer, limit = 1000) {
         try {
-            const url = `${this.baseUrl}/api/assets`;
+            const url = `${this.baseUrl}/api/v1/assets`;
             this.logger.debug(`Fetching assets for layer: ${layer}`);
             const response = await (0, rxjs_1.firstValueFrom)(this.httpService.get(url, {
                 headers: this.getHeaders(),
@@ -75,7 +75,7 @@ let NnaRegistryService = NnaRegistryService_1 = class NnaRegistryService {
     }
     async getCompositesBySong(songId, limit = 1000) {
         try {
-            const url = `${this.baseUrl}/api/assets`;
+            const url = `${this.baseUrl}/api/v1/assets`;
             this.logger.debug(`Fetching composites for song: ${songId}`);
             const response = await (0, rxjs_1.firstValueFrom)(this.httpService.get(url, {
                 headers: this.getHeaders(),
@@ -112,7 +112,7 @@ let NnaRegistryService = NnaRegistryService_1 = class NnaRegistryService {
     }
     async getFullCompositesBySong(songId, limit = 1000) {
         try {
-            const url = `${this.baseUrl}/api/assets`;
+            const url = `${this.baseUrl}/api/v1/assets`;
             this.logger.debug(`🔍 Fetching FULL composites for ReViz developers - song: ${songId}`);
             let response;
             try {
@@ -228,7 +228,7 @@ let NnaRegistryService = NnaRegistryService_1 = class NnaRegistryService {
     }
     async searchAssets(query, filters) {
         try {
-            const url = `${this.baseUrl}/api/assets/search`;
+            const url = `${this.baseUrl}/api/v1/assets/search`;
             this.logger.debug(`Searching assets with query: ${query}`);
             const params = {
                 q: query,
@@ -261,7 +261,7 @@ let NnaRegistryService = NnaRegistryService_1 = class NnaRegistryService {
     }
     async getAssetMetadata(assetId) {
         try {
-            const url = `${this.baseUrl}/api/assets/${assetId}/metadata`;
+            const url = `${this.baseUrl}/api/v1/assets/${assetId}/metadata`;
             this.logger.debug(`Fetching metadata for asset: ${assetId}`);
             const response = await (0, rxjs_1.firstValueFrom)(this.httpService.get(url, {
                 headers: this.getHeaders(),
@@ -282,7 +282,7 @@ let NnaRegistryService = NnaRegistryService_1 = class NnaRegistryService {
         if (addresses.length === 0)
             return [];
         try {
-            const url = `${this.baseUrl}/api/assets/batch`;
+            const url = `${this.baseUrl}/api/v1/assets/batch`;
             this.logger.debug(`Batch fetching ${addresses.length} assets`);
             const response = await (0, rxjs_1.firstValueFrom)(this.httpService.post(url, {
                 addresses,
@@ -307,7 +307,7 @@ let NnaRegistryService = NnaRegistryService_1 = class NnaRegistryService {
     async healthCheck() {
         const startTime = Date.now();
         try {
-            const url = `${this.baseUrl}/api/health`;
+            const url = `${this.baseUrl}/api/v1/health`;
             const response = await (0, rxjs_1.firstValueFrom)(this.httpService.get(url, {
                 headers: this.getHeaders(),
                 timeout: 5000,
@@ -381,7 +381,7 @@ let NnaRegistryService = NnaRegistryService_1 = class NnaRegistryService {
                 return hfn;
             }
             const [layer, category, subcategory, sequential] = hfnParts;
-            const url = `${this.baseUrl}/api/assets`;
+            const url = `${this.baseUrl}/api/v1/assets`;
             this.logger.debug(`Converting HFN: ${hfn} (Layer: ${layer}, Category: ${category}, Subcategory: ${subcategory})`);
             const response = await (0, rxjs_1.firstValueFrom)(this.httpService.get(url, {
                 headers: this.getHeaders(),
@@ -414,7 +414,7 @@ let NnaRegistryService = NnaRegistryService_1 = class NnaRegistryService {
     }
     async getAllSongs() {
         try {
-            const url = `${this.baseUrl}/api/assets`;
+            const url = `${this.baseUrl}/api/v1/assets`;
             this.logger.debug('Fetching all songs');
             const response = await (0, rxjs_1.firstValueFrom)(this.httpService.get(url, {
                 headers: this.getHeaders(),
@@ -442,7 +442,7 @@ let NnaRegistryService = NnaRegistryService_1 = class NnaRegistryService {
     }
     async getAllTemplates() {
         try {
-            const url = `${this.baseUrl}/api/assets`;
+            const url = `${this.baseUrl}/api/v1/assets`;
             this.logger.debug('Fetching all templates');
             const response = await (0, rxjs_1.firstValueFrom)(this.httpService.get(url, {
                 headers: this.getHeaders(),
