@@ -16,7 +16,13 @@ export class OptimizedRecommendationsService {
     private readonly cacheService: CacheService,
     private readonly compositeCacheStrategy: CompositeCacheStrategy,
     private readonly scoringService: ScoringService,
-  ) {}
+  ) {
+    this.logger.log('🔧 [DEBUG] OptimizedRecommendationsService dependencies:');
+    this.logger.log(`  - NNA Registry: ${!!this.optimizedNnaRegistryService}`);
+    this.logger.log(`  - Cache Service: ${!!this.cacheService}`);
+    this.logger.log(`  - Cache Strategy: ${!!this.compositeCacheStrategy}`);
+    this.logger.log(`  - Scoring Service: ${!!this.scoringService}`);
+  }
 
   /**
    * 🚀 OPTIMIZED: Fast template recommendations with caching and pre-computed scores
@@ -32,6 +38,22 @@ export class OptimizedRecommendationsService {
     templates_evaluated?: number;
   }> {
     const startTime = Date.now();
+    this.logger.log(`🔧 [DEBUG] OptimizedRecommendationsService.getTemplateRecommendation called for: ${request.song_id}`);
+    
+    // Validate dependencies
+    if (!this.optimizedNnaRegistryService) {
+      throw new Error('NNA Registry Service not injected');
+    }
+    if (!this.compositeCacheStrategy) {
+      throw new Error('Cache Strategy not injected');
+    }
+    if (!this.cacheService) {
+      throw new Error('Cache Service not injected');
+    }
+    if (!this.scoringService) {
+      throw new Error('Scoring Service not injected');
+    }
+    
     this.logger.debug(`🚀 Optimized recommendation for song: ${request.song_id}`);
 
     try {

@@ -54,6 +54,60 @@ export class RecommendationsController {
     description: 'Song not found' 
   })
   @ApiBody({ type: TemplateRecommendationDto })
+  @Get('debug/services')
+  async debugServices() {
+    return {
+      optimizedService: {
+        available: !!this.optimizedRecommendationsService,
+        dependencies: {
+          nnaRegistry: !!this.optimizedRecommendationsService?.optimizedNnaRegistryService,
+          cacheStrategy: !!this.optimizedRecommendationsService?.compositeCacheStrategy
+        }
+      },
+      oldService: {
+        available: !!this.recommendationsService
+      },
+      timestamp: new Date().toISOString()
+    };
+  }
+
+  @Post('debug/test-both-services')
+  async testBothServices(@Body() request: TemplateRecommendationDto) {
+    this.logger.log(`🧪 [DEBUG] Testing both services for song: ${request.song_id}`);
+    
+    const results = {
+      optimized: null,
+      old: null,
+      comparison: {}
+    };
+    
+    // Test optimized service
+    try {
+      const optimizedStartTime = Date.now();
+      results.optimized = await this.optimizedRecommendationsService.getTemplateRecommendation(request);
+      const optimizedTime = Date.now() - optimizedStartTime;
+      this.logger.log(`✅ [DEBUG] Optimized service: ${optimizedTime}ms`);
+      results.comparison.optimizedTime = optimizedTime;
+    } catch (error) {
+      this.logger.error(`❌ [DEBUG] Optimized service failed: ${error.message}`);
+      results.comparison.optimizedError = error.message;
+    }
+    
+    // Test old service
+    try {
+      const oldStartTime = Date.now();
+      results.old = await this.recommendationsService.getTemplateRecommendation(request);
+      const oldTime = Date.now() - oldStartTime;
+      this.logger.log(`⚠️ [DEBUG] Old service: ${oldTime}ms`);
+      results.comparison.oldTime = oldTime;
+    } catch (error) {
+      this.logger.error(`❌ [DEBUG] Old service failed: ${error.message}`);
+      results.comparison.oldError = error.message;
+    }
+    
+    return results;
+  }
+
   @Post('template')
   @UseInterceptors(CachingInterceptor)
   async getTemplateRecommendation(
@@ -67,15 +121,30 @@ export class RecommendationsController {
 
     try {
       // 🚀 USE OPTIMIZED SERVICE FOR 15x PERFORMANCE IMPROVEMENT
-      this.logger.log(`🚀 Using OptimizedRecommendationsService for song: ${request.song_id}`);
+      this.logger.log(`🚀 [DEBUG] Starting template recommendation for: ${request.song_id}`);
+      this.logger.log(`🚀 [DEBUG] Using OptimizedRecommendationsService for song: ${request.song_id}`);
+      
       let recommendation;
+      let serviceUsed = 'unknown';
+      const optimizedStartTime = Date.now();
+      
       try {
         recommendation = await this.optimizedRecommendationsService
           .getTemplateRecommendation(request);
+        const optimizedDuration = Date.now() - optimizedStartTime;
+        this.logger.log(`✅ [DEBUG] Optimized service completed in ${optimizedDuration}ms`);
+        serviceUsed = 'optimized';
       } catch (optimizedError) {
-        this.logger.warn(`⚠️ OptimizedRecommendationsService failed, falling back to RecommendationsService: ${optimizedError.message}`);
+        const optimizedDuration = Date.now() - optimizedStartTime;
+        this.logger.error(`❌ [DEBUG] Optimized service failed after ${optimizedDuration}ms: ${optimizedError.message}`);
+        this.logger.log(`🔄 [DEBUG] Falling back to old service...`);
+        
+        const fallbackStartTime = Date.now();
         recommendation = await this.recommendationsService
           .getTemplateRecommendation(request);
+        const fallbackDuration = Date.now() - fallbackStartTime;
+        this.logger.log(`⚠️ [DEBUG] Old service completed in ${fallbackDuration}ms`);
+        serviceUsed = 'fallback';
       }
 
       const responseTime = Date.now() - startTime;
