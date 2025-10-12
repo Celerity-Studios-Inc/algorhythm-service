@@ -2,6 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { NnaRegistryService } from '../nna-integration/nna-registry.service';
+import { OptimizedNnaRegistryService } from '../nna-integration/optimized-nna-registry.service';
 import { CacheService } from '../caching/cache.service';
 import { AnalyticsService } from '../analytics/analytics.service';
 import { ScoringService } from '../scoring/scoring.service';
@@ -45,6 +46,7 @@ export class ReVizCompleteExperienceProductionService {
   constructor(
     private readonly cacheService: CacheService,
     private readonly nnaRegistryService: NnaRegistryService,
+    private readonly optimizedNnaRegistryService: OptimizedNnaRegistryService,
     private readonly scoringService: ScoringService,
     private readonly analyticsService: AnalyticsService,
     @InjectModel('Asset') private assetModel: Model<Asset>,
@@ -57,7 +59,10 @@ export class ReVizCompleteExperienceProductionService {
     let partialResponse = false;
 
     try {
-      this.logger.log(`[REQ-${requestId}] Processing production complete experience for song: ${request.song_id}`);
+      // 🔧 FIX: Support both song_id and composite_id requests
+      const requestType = request.composite_id ? 'composite' : 'song';
+      const requestValue = request.composite_id || request.song_id;
+      this.logger.log(`[REQ-${requestId}] Processing production complete experience (${requestType}): ${requestValue}`);
 
       // Validate request
       this.validateRequest(request);
@@ -154,8 +159,13 @@ export class ReVizCompleteExperienceProductionService {
   }
 
   private validateRequest(request: ReVizCompleteRequest): void {
-    if (!request.song_id) {
-      throw new Error('song_id is required');
+    // 🔧 FIX: Support both song_id and composite_id requests
+    if (!request.song_id && !request.composite_id) {
+      throw new Error('Either song_id or composite_id is required');
+    }
+    
+    if (request.song_id && request.composite_id) {
+      throw new Error('Cannot specify both song_id and composite_id');
     }
     
     if (!request.experience_config) {

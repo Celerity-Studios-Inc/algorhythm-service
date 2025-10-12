@@ -1,5 +1,6 @@
 export interface ReVizCompleteRequest {
-  song_id: string;
+  song_id?: string;  // For song-based requests
+  composite_id?: string;  // For composite-specific requests (ReViz preferred)
   user_context?: {
     user_id?: string;
     device_type?: string;

@@ -85,8 +85,13 @@ export class PerformanceOptimizationDto {
 }
 
 export class ReVizCompleteRequestDto {
+  @IsOptional()
   @IsString()
-  song_id: string;
+  song_id?: string;  // For song-based requests
+  
+  @IsOptional()
+  @IsString()
+  composite_id?: string;  // For composite-specific requests (ReViz preferred)
 
   @IsOptional()
   @ValidateNested()
@@ -164,7 +169,10 @@ export class ReVizCompleteExperienceProductionController {
     this.totalRequests++;
     
     try {
-      this.logger.log(`[REQ-${requestId}] Received production request for complete experience for song: ${request.song_id}`);
+      // 🔧 FIX: Support both song_id and composite_id requests
+      const requestType = request.composite_id ? 'composite' : 'song';
+      const requestValue = request.composite_id || request.song_id;
+      this.logger.log(`[REQ-${requestId}] Received production request for complete experience (${requestType}): ${requestValue}`);
 
       // Add request_id to the request body if not present
       if (!request.request_id) {
