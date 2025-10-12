@@ -1,26 +1,45 @@
-# Use Node.js 18 Alpine as base image
+# Multi-stage build for production
+FROM node:18-alpine AS builder
+
+# Set working directory
+WORKDIR /usr/src/app
+
+# Copy package files
+COPY package*.json ./
+COPY tsconfig.json ./
+
+# Install ALL dependencies (including devDependencies for build)
+RUN npm ci
+
+# Copy source code
+COPY . .
+
+# Build TypeScript → JavaScript
+RUN npm run build
+
+# Production stage
 FROM node:18-alpine
 
 # Set working directory
-WORKDIR /app
+WORKDIR /usr/src/app
 
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci --only=production
+# Install only production dependencies
+RUN npm ci --only=production && npm cache clean --force
 
-# Copy source code
-COPY simple-server.js ./
+# Copy compiled code from builder stage
+COPY --from=builder /usr/src/app/dist ./dist
 
 # Create non-root user
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nestjs -u 1001
-RUN chown -R nestjs:nodejs /app
+RUN chown -R nestjs:nodejs /usr/src/app
 
 USER nestjs
 
-# Expose port (will be overridden by Cloud Run)
+# Expose port
 EXPOSE 8080
 
 # Health check
@@ -28,4 +47,4 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD node -e "require(\"http\").get(\"http://localhost:${PORT:-8080}/api/v1/health\", (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"
 
 # Start the application
-CMD ["node", "simple-server.js"]
+CMD ["node", "dist/main.js"]
