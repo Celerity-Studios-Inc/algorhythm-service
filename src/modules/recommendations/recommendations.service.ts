@@ -102,20 +102,12 @@ export class RecommendationsService {
       };
     }
 
-    // Log the input format for debugging
-    const isHfn = this.nnaRegistryService.isHfnFormat(request.song_id);
-    const isMfa = this.nnaRegistryService.isMfaFormat(request.song_id);
-    this.logger.debug(`Song ID format - HFN: ${isHfn}, MFA: ${isMfa}, ID: ${request.song_id}`);
+    // 🔧 CRITICAL FIX: Use HFN directly (no conversion needed)
+    // Database now uses HFN naming after Tuesday's migration
+    const songId = request.song_id;
+    this.logger.debug(`Using HFN song ID directly: ${songId}`);
 
-    // Convert HFN to MFA if needed
-    let songId = request.song_id;
-    if (isHfn) {
-      this.logger.debug(`Converting HFN to MFA: ${request.song_id}`);
-      songId = await this.nnaRegistryService.convertHfnToMfa(request.song_id);
-      this.logger.debug(`Converted to MFA: ${songId}`);
-    }
-
-    // Get song metadata from NNA Registry (now using MFA)
+    // Get song metadata from NNA Registry (using HFN)
     const song = await this.nnaRegistryService.getAssetByAddress(songId);
     if (!song) {
       throw new NotFoundException(`Song not found: ${songId}`);
