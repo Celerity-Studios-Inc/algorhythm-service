@@ -94,10 +94,10 @@ export class OptimizedRecommendationsService {
     // Step 3: Fast composite fetch with optimized NNA Registry and circuit breaker
     const scoreStartTime = Date.now();
     
-    // 🔧 CRITICAL FIX: Aggressive timeout to prevent hanging
+    // 🔧 CRITICAL FIX: Aggressive 2-second timeout to prevent hanging
     const compositePromise = this.optimizedNnaRegistryService.getCompositesForSong(request.song_id);
     const timeoutPromise = new Promise((_, reject) => 
-      setTimeout(() => reject(new Error('NNA Registry timeout')), 1000) // 1 second timeout
+      setTimeout(() => reject(new Error('NNA Registry timeout')), 2000) // 2 second timeout
     );
     
     let composites: any[] = [];

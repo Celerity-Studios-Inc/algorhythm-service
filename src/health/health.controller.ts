@@ -6,7 +6,7 @@ import { ApiTags, ApiOperation } from '@nestjs/swagger';
 export class HealthController {
   @Get()
   @ApiOperation({ summary: 'Service health check' })
-  check() {
+  async check() {
     return {
       status: 'healthy',
       service: 'algorhythm-service',
@@ -17,18 +17,9 @@ export class HealthController {
       memory: process.memoryUsage(),
       nodeVersion: process.version,
       dependencies: {
-        nna_registry: {
-          status: 'connected',
-          url: process.env.NNA_REGISTRY_URL || 'https://registry.dev.reviz.dev'
-        },
-        redis: {
-          status: 'connected',
-          host: process.env.REDIS_HOST || 'localhost'
-        },
-        mongodb: {
-          status: 'connected',
-          host: process.env.MONGODB_HOST || 'localhost'
-        }
+        nna_registry: await this.checkNNARegistry(),
+        redis: 'healthy',
+        mongodb: 'healthy'
       }
     };
   }

@@ -100,12 +100,12 @@ export class OptimizedNnaRegistryService {
             compositeType: 'full',
             includeMetadata: true,
           },
-          timeout: 500, // 🔧 CRITICAL FIX: Very aggressive timeout
+          timeout: 2000, // 🔧 CRITICAL FIX: 2-second timeout
         })
       );
       
       const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('API call timeout')), 500)
+        setTimeout(() => reject(new Error('API call timeout')), 2000) // 2-second timeout
       );
       
       const response: AxiosResponse = await Promise.race([apiCall, timeoutPromise]) as AxiosResponse;
