@@ -23,6 +23,8 @@ COPY nest-cli.json ./
 
 COPY . .
 RUN npm run build
+RUN ls -la /app/dist || echo "DIST FOLDER NOT FOUND"
+RUN ls -la /app/dist/main* || echo "MAIN FILES NOT FOUND"
 
 # Production image optimized for Cloud Run
 FROM base AS runner
@@ -59,4 +61,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
   req.on('error', () => process.exit(1)); \
   req.end();"
 
-CMD ["node", "dist/main"]
+CMD ["node", "dist/main.js"]
