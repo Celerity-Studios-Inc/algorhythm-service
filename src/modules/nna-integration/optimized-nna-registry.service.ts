@@ -15,7 +15,7 @@ export class OptimizedNnaRegistryService {
   constructor(
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
-    private readonly cacheService: CacheService,
+    private readonly cacheService: CacheService | null,
   ) {
     this.baseUrl = this.configService.get<string>('NNA_REGISTRY_BASE_URL') || 'https://registry.dev.reviz.dev';
     this.apiKey = this.configService.get<string>('REVIZ_API_KEY') || 'reviz-dev-30390-13220-4896-9516-9001';
@@ -33,7 +33,7 @@ export class OptimizedNnaRegistryService {
     this.logger.debug(`🚀 Batch fetching composites for ${songIds.length} songs`);
 
     // Check cache first
-    const cachedResults = await this.cacheService.getBatchComposites(songIds);
+    const cachedResults = this.cacheService ? await this.cacheService.getBatchComposites(songIds) : new Map();
     const uncachedSongs = songIds.filter(songId => !cachedResults.has(songId));
     
     if (uncachedSongs.length === 0) {
@@ -64,7 +64,7 @@ export class OptimizedNnaRegistryService {
     const startTime = Date.now();
     
     // Check cache first
-    const cached = await this.cacheService.getCompositesForSong(songId);
+    const cached = this.cacheService ? await this.cacheService.getCompositesForSong(songId) : null;
     if (cached) {
       this.logger.debug(`✅ Cache hit for song ${songId}: ${Date.now() - startTime}ms`);
       return cached;
@@ -92,8 +92,10 @@ export class OptimizedNnaRegistryService {
         const composites = response.data.data;
         const duration = Date.now() - startTime;
         
-        // Cache the results
-        await this.cacheService.setCompositesForSong(songId, composites);
+        // Cache the results (if cache service available)
+        if (this.cacheService) {
+          await this.cacheService.setCompositesForSong(songId, composites);
+        }
         
         this.logger.log(`✅ [API CALL] Success! ${composites.length} composites in ${duration}ms`);
         return composites;
@@ -162,7 +164,9 @@ export class OptimizedNnaRegistryService {
     // This will be implemented with the scoring service
     // For now, just cache the composites
     const cacheKey = `${CACHE_KEYS.PRE_COMPUTED_SCORES}:${songId}`;
-    await this.cacheService.set(cacheKey, composites, CACHE_TTL.PRE_COMPUTED_SCORES);
+    if (this.cacheService) {
+      await this.cacheService.set(cacheKey, composites, CACHE_TTL.PRE_COMPUTED_SCORES);
+    }
   }
 
   private getHeaders() {
