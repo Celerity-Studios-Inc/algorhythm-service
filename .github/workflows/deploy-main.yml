@@ -33,7 +33,15 @@ jobs:
         project_id: ${{ secrets.GCP_PROJECT_ID }}
         
     - name: Configure Docker for GCR
-      run: gcloud auth configure-docker
+      run: |
+        gcloud auth configure-docker us-central1-docker.pkg.dev
+        gcloud auth configure-docker gcr.io
+        
+    - name: Authenticate Docker
+      run: |
+        echo ${{ secrets.GCP_SA_KEY }} | base64 -d > /tmp/gcp-key.json
+        gcloud auth activate-service-account --key-file=/tmp/gcp-key.json
+        gcloud auth configure-docker us-central1-docker.pkg.dev
       
     - name: Use simple working files
       run: |
