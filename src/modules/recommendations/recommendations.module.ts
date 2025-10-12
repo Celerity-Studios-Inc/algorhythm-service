@@ -9,6 +9,7 @@ import { ReVizCompleteExperienceEnhancedService } from './reviz-complete-experie
 import { ReVizCompleteExperienceEnhancedController } from './reviz-complete-experience-enhanced.controller';
 import { ReVizCompositeExperienceService } from './reviz-composite-experience.service';
 import { ReVizCompositeExperienceController } from './reviz-composite-experience.controller';
+import { DebugController } from './debug.controller';
 import { CacheWarmingService } from './cache-warming.service';
 import { OptimizedRecommendationsService } from './optimized-recommendations.service';
 import { OptimizedRecommendationsController } from './optimized-recommendations.controller';
@@ -46,7 +47,8 @@ import { Composite, CompositeSchema } from '../../models/composite.schema';
     OptimizedRecommendationsController,
     ReVizCompleteExperienceProductionController,
     ReVizCompleteExperienceEnhancedController,
-    ReVizCompositeExperienceController
+    ReVizCompositeExperienceController,
+    DebugController
   ],
   providers: [
     RecommendationsService, 

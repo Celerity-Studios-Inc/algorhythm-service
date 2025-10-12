@@ -90,8 +90,10 @@ export class OptimizedNnaRegistryService {
     
     try {
       this.logger.log(`🔍 [API CALL] Calling NNA Registry: ${url}`);
+      this.logger.log(`🔑 [API CALL] Using API Key: ${this.apiKey ? '***' + this.apiKey.slice(-4) : 'NOT SET'}`);
+      this.logger.log(`⏱️ [API CALL] Timeout: 30000ms`);
       
-      // 🔧 CRITICAL FIX: Use Promise.race for aggressive timeout
+      // 🔧 CRITICAL FIX: Use Promise.race for reasonable timeout
       const apiCall = firstValueFrom(
         this.httpService.get(url, {
           headers: this.getHeaders(),
@@ -100,12 +102,12 @@ export class OptimizedNnaRegistryService {
             compositeType: 'full',
             includeMetadata: true,
           },
-          timeout: 2000, // 🔧 CRITICAL FIX: 2-second timeout
+          timeout: 30000, // 🔧 CRITICAL FIX: 30-second timeout
         })
       );
       
       const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('API call timeout')), 2000) // 2-second timeout
+        setTimeout(() => reject(new Error('API call timeout')), 30000) // 30-second timeout
       );
       
       const response: AxiosResponse = await Promise.race([apiCall, timeoutPromise]) as AxiosResponse;
