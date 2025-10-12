@@ -5,6 +5,7 @@ import { firstValueFrom } from 'rxjs';
 import { AxiosResponse } from 'axios';
 import { CacheService } from '../caching/cache.service';
 import { CACHE_KEYS, CACHE_TTL } from '../../common/constants/cache-keys';
+import { CircuitBreakerService } from './circuit-breaker.service';
 
 @Injectable()
 export class OptimizedNnaRegistryService implements OnModuleInit {
@@ -16,6 +17,7 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
   constructor(
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
+    private readonly circuitBreaker: CircuitBreakerService,
     @Optional() private readonly cacheService: CacheService | null,
   ) {
     // 🔧 CRITICAL FIX: Use the correct environment variable names from Secret Manager
@@ -154,6 +156,61 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
     // 🔧 CRITICAL FIX: Always return fallback instead of empty array
     this.logger.warn(`🔄 [FALLBACK] No data received, using fallback for ${songId}`);
     return this.getFallbackComposites(songId);
+  }
+
+  /**
+   * 🚀 OPTIMIZED: Get composites with circuit breaker (5s timeout)
+   */
+  async getCompositesForSongOptimized(songId: string): Promise<any[]> {
+    const startTime = Date.now();
+    
+    // Check cache first
+    const cached = this.cacheService ? await this.cacheService.getCompositesForSong(songId) : null;
+    if (cached) {
+      this.logger.debug(`✅ Cache hit for song ${songId}: ${Date.now() - startTime}ms`);
+      return cached;
+    }
+
+    // Use circuit breaker for NNA Registry call
+    return await this.circuitBreaker.executeWithCircuitBreaker(
+      async () => {
+        const url = `${this.baseUrl}/api/v1/assets/composites/by-song/${songId}`;
+        
+        this.logger.log(`🔍 [API CALL] Calling NNA Registry: ${url}`);
+        
+        const response: AxiosResponse = await firstValueFrom(
+          this.httpService.get(url, {
+            headers: this.getHeaders(),
+            params: {
+              limit: 100,
+              compositeType: 'full',
+              includeMetadata: true,
+            },
+            timeout: 5000, // 5 second timeout
+          })
+        );
+
+        if (response.data?.success && response.data?.data) {
+          const composites = response.data.data;
+          const duration = Date.now() - startTime;
+          
+          // Cache the results (if cache service available)
+          if (this.cacheService) {
+            await this.cacheService.setCompositesForSong(songId, composites);
+          }
+          
+          this.logger.log(`✅ [API CALL] Success! ${composites.length} composites in ${duration}ms`);
+          return composites;
+        } else {
+          throw new Error('No data in response');
+        }
+      },
+      () => {
+        this.logger.warn(`🔄 [FALLBACK] Using fallback composites for ${songId}`);
+        return this.getFallbackComposites(songId);
+      },
+      `getCompositesForSong-${songId}`
+    );
   }
 
   /**

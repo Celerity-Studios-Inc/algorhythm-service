@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
-import { AlgorhythmExportSimpleController } from './controllers/algorhythm-export-simple.controller';
+import { HttpModule } from '@nestjs/axios';
+import { TemplateRecommendationController } from './template-recommendation.controller';
+import { TemplateRecommendationService } from './template-recommendation.service';
 
 @Module({
-  controllers: [AlgorhythmExportSimpleController],
-  providers: [],
-  exports: [],
+  imports: [HttpModule],
+  controllers: [TemplateRecommendationController],
+  providers: [TemplateRecommendationService],
+  exports: [TemplateRecommendationService],
 })
 export class AlgorhythmModule {}
