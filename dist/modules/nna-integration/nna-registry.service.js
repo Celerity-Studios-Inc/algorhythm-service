@@ -20,8 +20,8 @@ let NnaRegistryService = NnaRegistryService_1 = class NnaRegistryService {
         this.httpService = httpService;
         this.configService = configService;
         this.logger = new common_1.Logger(NnaRegistryService_1.name);
-        this.baseUrl = this.configService.get('NNA_REGISTRY_BASE_URL') || 'https://registry.dev.reviz.dev';
-        this.apiKey = this.configService.get('NNA_REGISTRY_API_KEY') || 'fallback-api-key';
+        this.baseUrl = this.configService.get('NNA_REGISTRY_URL') || 'https://registry.dev.reviz.dev';
+        this.apiKey = this.configService.get('NNA_API_KEY') || 'reviz-dev-30390-13220-4896-9516-9001';
         this.logger.log(`NNA Registry integration configured for: ${this.baseUrl}`);
     }
     async getAssetByAddress(address) {
@@ -344,7 +344,7 @@ let NnaRegistryService = NnaRegistryService_1 = class NnaRegistryService {
             'User-Agent': 'AlgoRhythm/1.0.0',
         };
         if (this.apiKey) {
-            headers['X-API-Key'] = this.apiKey;
+            headers['x-api-key'] = this.apiKey;
         }
         return headers;
     }

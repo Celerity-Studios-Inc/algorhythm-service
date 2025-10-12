@@ -14,8 +14,9 @@ export class NnaRegistryService {
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
   ) {
-    this.baseUrl = this.configService.get<string>('NNA_REGISTRY_BASE_URL') || 'https://registry.dev.reviz.dev';
-    this.apiKey = this.configService.get<string>('NNA_REGISTRY_API_KEY') || 'fallback-api-key';
+    // 🔧 CRITICAL FIX: Use the correct environment variable names from Secret Manager
+    this.baseUrl = this.configService.get<string>('NNA_REGISTRY_URL') || 'https://registry.dev.reviz.dev';
+    this.apiKey = this.configService.get<string>('NNA_API_KEY') || 'reviz-dev-30390-13220-4896-9516-9001';
 
     this.logger.log(`NNA Registry integration configured for: ${this.baseUrl}`);
   }
@@ -409,7 +410,7 @@ export class NnaRegistryService {
 
     // Add API key if available
     if (this.apiKey) {
-      headers['X-API-Key'] = this.apiKey;
+      headers['x-api-key'] = this.apiKey;
     }
 
     // Add JWT token if available in request context

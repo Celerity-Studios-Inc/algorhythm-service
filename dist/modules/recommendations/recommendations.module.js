@@ -5,6 +5,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RecommendationsModule = void 0;
 const common_1 = require("@nestjs/common");
@@ -18,10 +21,11 @@ const reviz_complete_experience_enhanced_service_1 = require("./reviz-complete-e
 const reviz_complete_experience_enhanced_controller_1 = require("./reviz-complete-experience-enhanced.controller");
 const reviz_composite_experience_service_1 = require("./reviz-composite-experience.service");
 const reviz_composite_experience_controller_1 = require("./reviz-composite-experience.controller");
+const debug_controller_1 = require("./debug.controller");
 const cache_warming_service_1 = require("./cache-warming.service");
 const optimized_recommendations_service_1 = require("./optimized-recommendations.service");
-const composite_recommendations_service_1 = require("./composite-recommendations.service");
 const optimized_recommendations_controller_1 = require("./optimized-recommendations.controller");
+const composite_recommendations_service_1 = require("./composite-recommendations.service");
 const scoring_module_1 = require("../scoring/scoring.module");
 const caching_module_1 = require("../caching/caching.module");
 const nna_integration_module_1 = require("../nna-integration/nna-integration.module");
@@ -31,6 +35,13 @@ const recommendation_cache_schema_1 = require("../../models/recommendation-cache
 const asset_schema_1 = require("../../models/asset.schema");
 const composite_schema_1 = require("../../models/composite.schema");
 let RecommendationsModule = class RecommendationsModule {
+    constructor() {
+        console.error('=====================================');
+        console.error('🚀 RECOMMENDATIONS MODULE STARTING');
+        console.error('=====================================');
+        console.error('Module loaded successfully');
+        console.error('=====================================');
+    }
 };
 exports.RecommendationsModule = RecommendationsModule;
 exports.RecommendationsModule = RecommendationsModule = __decorate([
@@ -49,10 +60,11 @@ exports.RecommendationsModule = RecommendationsModule = __decorate([
         ],
         controllers: [
             recommendations_controller_1.RecommendationsController,
+            optimized_recommendations_controller_1.OptimizedRecommendationsController,
             reviz_complete_experience_production_controller_1.ReVizCompleteExperienceProductionController,
             reviz_complete_experience_enhanced_controller_1.ReVizCompleteExperienceEnhancedController,
             reviz_composite_experience_controller_1.ReVizCompositeExperienceController,
-            optimized_recommendations_controller_1.OptimizedRecommendationsController
+            debug_controller_1.DebugController
         ],
         providers: [
             recommendations_service_1.RecommendationsService,
@@ -74,6 +86,7 @@ exports.RecommendationsModule = RecommendationsModule = __decorate([
             optimized_recommendations_service_1.OptimizedRecommendationsService,
             composite_recommendations_service_1.CompositeRecommendationsService
         ],
-    })
+    }),
+    __metadata("design:paramtypes", [])
 ], RecommendationsModule);
 //# sourceMappingURL=recommendations.module.js.map

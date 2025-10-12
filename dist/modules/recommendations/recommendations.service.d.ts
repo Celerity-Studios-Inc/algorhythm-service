@@ -3,7 +3,7 @@ import { CompatibilityScore } from '../../models/compatibility-score.schema';
 import { RecommendationCache } from '../../models/recommendation-cache.schema';
 import { ScoringService } from '../scoring/scoring.service';
 import { CacheService } from '../caching/cache.service';
-import { NnaRegistryService } from '../nna-integration/nna-registry.service';
+import { OptimizedNnaRegistryService } from '../nna-integration/optimized-nna-registry.service';
 import { AnalyticsService } from '../analytics/analytics.service';
 import { InstantRecommendationsService } from './instant-recommendations.service';
 import { TemplateRecommendationDto } from './dto/template-recommendation.dto';
@@ -14,11 +14,11 @@ export declare class RecommendationsService {
     private readonly recommendationCacheModel;
     private readonly scoringService;
     private readonly cacheService;
-    private readonly nnaRegistryService;
+    private readonly optimizedNnaRegistryService;
     private readonly analyticsService;
     private readonly instantRecommendationsService;
     private readonly logger;
-    constructor(compatibilityScoreModel: Model<CompatibilityScore>, recommendationCacheModel: Model<RecommendationCache>, scoringService: ScoringService, cacheService: CacheService, nnaRegistryService: NnaRegistryService, analyticsService: AnalyticsService, instantRecommendationsService: InstantRecommendationsService);
+    constructor(compatibilityScoreModel: Model<CompatibilityScore>, recommendationCacheModel: Model<RecommendationCache>, scoringService: ScoringService, cacheService: CacheService, optimizedNnaRegistryService: OptimizedNnaRegistryService, analyticsService: AnalyticsService, instantRecommendationsService: InstantRecommendationsService);
     getTemplateRecommendation(request: TemplateRecommendationDto): Promise<{
         recommendation: TemplateRecommendation;
         alternatives: TemplateRecommendation[];
@@ -42,4 +42,5 @@ export declare class RecommendationsService {
     private mapAssetToLayerVariation;
     private generateThumbnailUrl;
     private generatePreviewUrl;
+    private getFallbackResponse;
 }

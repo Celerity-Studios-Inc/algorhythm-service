@@ -19,20 +19,90 @@ const swagger_1 = require("@nestjs/swagger");
 const api_key_guard_1 = require("../auth/guards/api-key.guard");
 const caching_interceptor_1 = require("../../common/interceptors/caching.interceptor");
 const recommendations_service_1 = require("./recommendations.service");
+const optimized_recommendations_service_1 = require("./optimized-recommendations.service");
 const template_recommendation_dto_1 = require("./dto/template-recommendation.dto");
 const layer_variation_dto_1 = require("./dto/layer-variation.dto");
 const recommendation_interface_1 = require("./interfaces/recommendation.interface");
 let RecommendationsController = RecommendationsController_1 = class RecommendationsController {
-    constructor(recommendationsService) {
+    constructor(recommendationsService, optimizedRecommendationsService) {
         this.recommendationsService = recommendationsService;
+        this.optimizedRecommendationsService = optimizedRecommendationsService;
         this.logger = new common_1.Logger(RecommendationsController_1.name);
+    }
+    async debugServices() {
+        return {
+            optimizedRecommendationsService: {
+                exists: !!this.optimizedRecommendationsService,
+                type: this.optimizedRecommendationsService?.constructor?.name,
+                methods: this.optimizedRecommendationsService ?
+                    Object.getOwnPropertyNames(Object.getPrototypeOf(this.optimizedRecommendationsService)) : []
+            },
+            recommendationsService: {
+                exists: !!this.recommendationsService,
+                type: this.recommendationsService?.constructor?.name,
+                hasOptimizedNnaRegistryService: !!this.recommendationsService.optimizedNnaRegistryService
+            },
+            timestamp: new Date().toISOString()
+        };
+    }
+    async testBothServices(request) {
+        this.logger.log(`🧪 [DEBUG] Testing both services for song: ${request.song_id}`);
+        const results = {
+            optimized: null,
+            old: null,
+            comparison: {}
+        };
+        try {
+            const optimizedStartTime = Date.now();
+            results.optimized = await this.optimizedRecommendationsService.getTemplateRecommendation(request);
+            const optimizedTime = Date.now() - optimizedStartTime;
+            this.logger.log(`✅ [DEBUG] Optimized service: ${optimizedTime}ms`);
+            results.comparison.optimizedTime = optimizedTime;
+        }
+        catch (error) {
+            this.logger.error(`❌ [DEBUG] Optimized service failed: ${error.message}`);
+            results.comparison.optimizedError = error.message;
+        }
+        try {
+            const oldStartTime = Date.now();
+            results.old = await this.recommendationsService.getTemplateRecommendation(request);
+            const oldTime = Date.now() - oldStartTime;
+            this.logger.log(`⚠️ [DEBUG] Old service: ${oldTime}ms`);
+            results.comparison.oldTime = oldTime;
+        }
+        catch (error) {
+            this.logger.error(`❌ [DEBUG] Old service failed: ${error.message}`);
+            results.comparison.oldError = error.message;
+        }
+        return results;
     }
     async getTemplateRecommendation(request) {
         const startTime = Date.now();
         this.logger.log(`Template recommendation requested for song: ${request.song_id}`);
         try {
-            const recommendation = await this.recommendationsService
-                .getTemplateRecommendation(request);
+            this.logger.log(`🚀 [DEBUG] Starting template recommendation for: ${request.song_id}`);
+            this.logger.log(`🚀 [DEBUG] Using OptimizedRecommendationsService for song: ${request.song_id}`);
+            let recommendation;
+            let serviceUsed = 'unknown';
+            const optimizedStartTime = Date.now();
+            try {
+                recommendation = await this.optimizedRecommendationsService
+                    .getTemplateRecommendation(request);
+                const optimizedDuration = Date.now() - optimizedStartTime;
+                this.logger.log(`✅ [DEBUG] Optimized service completed in ${optimizedDuration}ms`);
+                serviceUsed = 'optimized';
+            }
+            catch (optimizedError) {
+                const optimizedDuration = Date.now() - optimizedStartTime;
+                this.logger.error(`❌ [DEBUG] Optimized service failed after ${optimizedDuration}ms: ${optimizedError.message}`);
+                this.logger.log(`🔄 [DEBUG] Falling back to old service...`);
+                const fallbackStartTime = Date.now();
+                recommendation = await this.recommendationsService
+                    .getTemplateRecommendation(request);
+                const fallbackDuration = Date.now() - fallbackStartTime;
+                this.logger.log(`⚠️ [DEBUG] Old service completed in ${fallbackDuration}ms`);
+                serviceUsed = 'fallback';
+            }
             const responseTime = Date.now() - startTime;
             this.logger.log(`Template recommendation completed in ${responseTime}ms for song: ${request.song_id}`);
             return {
@@ -115,6 +185,19 @@ __decorate([
         description: 'Song not found'
     }),
     (0, swagger_1.ApiBody)({ type: template_recommendation_dto_1.TemplateRecommendationDto }),
+    (0, common_1.Get)('debug/services'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], RecommendationsController.prototype, "debugServices", null);
+__decorate([
+    (0, common_1.Post)('debug/test-both-services'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [template_recommendation_dto_1.TemplateRecommendationDto]),
+    __metadata("design:returntype", Promise)
+], RecommendationsController.prototype, "testBothServices", null);
+__decorate([
     (0, common_1.Post)('template'),
     (0, common_1.UseInterceptors)(caching_interceptor_1.CachingInterceptor),
     __param(0, (0, common_1.Body)()),
@@ -152,6 +235,7 @@ exports.RecommendationsController = RecommendationsController = RecommendationsC
     (0, swagger_1.ApiTags)('recommendations'),
     (0, common_1.Controller)('recommend'),
     (0, common_1.UseGuards)(api_key_guard_1.ApiKeyGuard),
-    __metadata("design:paramtypes", [recommendations_service_1.RecommendationsService])
+    __metadata("design:paramtypes", [recommendations_service_1.RecommendationsService,
+        optimized_recommendations_service_1.OptimizedRecommendationsService])
 ], RecommendationsController);
 //# sourceMappingURL=recommendations.controller.js.map

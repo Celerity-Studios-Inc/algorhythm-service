@@ -11,14 +11,17 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
   private readonly logger = new Logger(OptimizedNnaRegistryService.name);
   private readonly baseUrl: string;
   private readonly apiKey: string;
+  private readonly timeout: number;
 
   constructor(
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
     @Optional() private readonly cacheService: CacheService | null,
   ) {
-    this.baseUrl = this.configService.get<string>('NNA_REGISTRY_BASE_URL') || 'https://registry.dev.reviz.dev';
-    this.apiKey = this.configService.get<string>('REVIZ_API_KEY') || 'reviz-dev-30390-13220-4896-9516-9001';
+    // 🔧 CRITICAL FIX: Use the correct environment variable names from Secret Manager
+    this.baseUrl = this.configService.get<string>('NNA_REGISTRY_URL') || 'https://registry.dev.reviz.dev';
+    this.apiKey = this.configService.get<string>('NNA_API_KEY') || 'reviz-dev-30390-13220-4896-9516-9001';
+    this.timeout = parseInt(this.configService.get<string>('NNA_REGISTRY_TIMEOUT') || '30000', 10);
     
     // 🔍 ADD DEBUG LOG
     console.error('=====================================');
@@ -26,6 +29,7 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
     console.error('=====================================');
     console.error('Base URL:', this.baseUrl);
     console.error('API Key set:', !!this.apiKey);
+    console.error('Timeout:', this.timeout + 'ms');
     console.error('Cache Service available:', !!this.cacheService);
     console.error('=====================================');
     
@@ -95,7 +99,7 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
     try {
       this.logger.log(`🔍 [API CALL] Calling NNA Registry: ${url}`);
       this.logger.log(`🔑 [API CALL] Using API Key: ${this.apiKey ? '***' + this.apiKey.slice(-4) : 'NOT SET'}`);
-      this.logger.log(`⏱️ [API CALL] Timeout: 30000ms`);
+      this.logger.log(`⏱️ [API CALL] Timeout: ${this.timeout}ms`);
       
       // 🔧 CRITICAL FIX: Use Promise.race for reasonable timeout
       const apiCall = firstValueFrom(
@@ -106,12 +110,12 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
             compositeType: 'full',
             includeMetadata: true,
           },
-          timeout: 30000, // 🔧 CRITICAL FIX: 30-second timeout
+          timeout: this.timeout, // 🔧 CRITICAL FIX: Use configurable timeout
         })
       );
       
       const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('API call timeout')), 30000) // 30-second timeout
+        setTimeout(() => reject(new Error('API call timeout')), this.timeout) // Use configurable timeout
       );
       
       const response: AxiosResponse = await Promise.race([apiCall, timeoutPromise]) as AxiosResponse;
@@ -227,7 +231,7 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
       const response: AxiosResponse = await firstValueFrom(
         this.httpService.get(url, {
           headers: this.getHeaders(),
-          timeout: 500, // Quick health check
+          timeout: Math.min(this.timeout, 5000), // Quick health check, but respect max timeout
         })
       );
       
@@ -256,7 +260,7 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
       const response: AxiosResponse = await firstValueFrom(
         this.httpService.get(`${this.baseUrl}/health`, {
           headers: this.getHeaders(),
-          timeout: 5000,
+          timeout: Math.min(this.timeout, 10000), // Use configurable timeout, max 10s for test
         })
       );
       
