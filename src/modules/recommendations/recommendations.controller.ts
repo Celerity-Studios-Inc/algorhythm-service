@@ -58,15 +58,19 @@ export class RecommendationsController {
   @Get('debug/services')
   async debugServices() {
     return {
-      optimizedService: {
-        available: !!this.optimizedRecommendationsService,
-        dependencies: {
-          nnaRegistry: 'checking...',
-          cacheStrategy: 'checking...'
-        }
+      optimizedNnaRegistryService: {
+        exists: !!this.optimizedRecommendationsService,
+        type: this.optimizedRecommendationsService?.constructor?.name,
+        methods: this.optimizedRecommendationsService ? 
+          Object.getOwnPropertyNames(Object.getPrototypeOf(this.optimizedRecommendationsService)) : []
       },
-      oldService: {
-        available: !!this.recommendationsService
+      nnaRegistryService: {
+        exists: !!this.recommendationsService,
+        type: this.recommendationsService?.constructor?.name
+      },
+      recommendationsService: {
+        type: this.recommendationsService?.constructor?.name,
+        hasOptimizedService: !!(this.recommendationsService as any).optimizedNnaRegistryService
       },
       timestamp: new Date().toISOString()
     };

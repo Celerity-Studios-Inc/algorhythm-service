@@ -35,7 +35,11 @@ export class RecommendationsService {
     private readonly instantRecommendationsService: InstantRecommendationsService,
     // private readonly localDataQuery: LocalDataQueryService | null,
     // private readonly cacheWarming: CacheWarmingService | null,
-  ) {}
+  ) {
+    // 🔍 ADD DEBUG LOG
+    this.logger.log(`🔍 [INIT] OptimizedNnaRegistryService available: ${!!this.optimizedNnaRegistryService}`);
+    this.logger.log(`🔍 [INIT] Service type: ${this.optimizedNnaRegistryService?.constructor?.name}`);
+  }
 
   async getTemplateRecommendation(
     request: TemplateRecommendationDto,
@@ -118,7 +122,19 @@ export class RecommendationsService {
     // Get all available templates (composites) for this song
     // 🔧 FIX: Use getCompositesForSong for ReViz developers to ensure C.FUL only
     // Use NNA Registry directly (local data query disabled for minimal deployment)
+    
+    // 🔍 ADD DETAILED LOGGING
+    this.logger.log(`🔍 [METHOD CALL] About to call getCompositesForSong`);
+    this.logger.log(`🔍 [METHOD CALL] Song ID: ${songId}`);
+    this.logger.log(`🔍 [METHOD CALL] Service exists: ${!!this.optimizedNnaRegistryService}`);
+    this.logger.log(`🔍 [METHOD CALL] Service type: ${this.optimizedNnaRegistryService?.constructor?.name}`);
+    
+    const methodStartTime = Date.now();
     const availableTemplates = await this.optimizedNnaRegistryService.getCompositesForSong(songId);
+    const methodDuration = Date.now() - methodStartTime;
+    
+    this.logger.log(`✅ [METHOD CALL] Success! Got ${availableTemplates.length} templates`);
+    this.logger.log(`✅ [METHOD CALL] Time taken: ${methodDuration}ms`);
     
     if (availableTemplates.length === 0) {
       const originalId = request.song_id !== songId ? `${request.song_id} (${songId})` : songId;

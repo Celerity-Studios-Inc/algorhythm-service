@@ -19,10 +19,6 @@ export class OptimizedNnaRegistryService {
   ) {
     this.baseUrl = this.configService.get<string>('NNA_REGISTRY_BASE_URL') || 'https://registry.dev.reviz.dev';
     this.apiKey = this.configService.get<string>('NNA_REGISTRY_API_KEY') || 'fallback-api-key';
-    
-    // 🔍 ADD DEBUG LOG
-    this.logger.log(`🔍 [INIT] NNA Registry URL: ${this.baseUrl}`);
-    this.logger.log(`🔍 [INIT] OptimizedNnaRegistryService initialized`);
   }
 
   /**
@@ -73,9 +69,6 @@ export class OptimizedNnaRegistryService {
     try {
       // 🚀 OPTIMIZED: Use our new optimized endpoint for 9ms response time
       const url = `${this.baseUrl}/api/v1/assets/composites/by-song/${songId}`;
-      
-      this.logger.log(`🔍 [API CALL] Calling NNA Registry: ${url}`);
-      
       const response: AxiosResponse = await firstValueFrom(
         this.httpService.get(url, {
           headers: this.getHeaders(),
@@ -90,21 +83,15 @@ export class OptimizedNnaRegistryService {
 
       if (response.data?.success && response.data?.data) {
         const composites = response.data.data;
-        const duration = Date.now() - startTime;
         
         // Cache the results
         await this.cacheService.setCompositesForSong(songId, composites);
         
-        this.logger.log(`✅ [API CALL] Success! ${composites.length} composites in ${duration}ms`);
+        this.logger.debug(`✅ Fetched ${composites.length} composites for ${songId} in ${Date.now() - startTime}ms`);
         return composites;
-      } else {
-        this.logger.warn(`⚠️ [API CALL] No data in response for ${songId}`);
       }
     } catch (error) {
-      const duration = Date.now() - startTime;
-      this.logger.error(`❌ [API CALL] Failed after ${duration}ms: ${error.message}`);
-      this.logger.error(`❌ [API CALL] URL was: ${url}`);
-      this.logger.error(`❌ [API CALL] Error: ${error.stack}`);
+      this.logger.warn(`Failed to fetch composites for ${songId}: ${error.message}`);
     }
 
     return [];
