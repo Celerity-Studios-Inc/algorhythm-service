@@ -6,4 +6,4 @@ export class ApiKeyGuard implements CanActivate {
     console.error('⚠️ [API KEY] VALIDATION DISABLED FOR TESTING');
     return true;  // Allow all requests temporarily
   }
-}
+}// Force deployment - auth bypass
