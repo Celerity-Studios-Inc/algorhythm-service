@@ -1,4 +1,4 @@
-import { Injectable, Logger, Inject, Optional } from '@nestjs/common';
+import { Injectable, Logger, Inject, Optional, OnModuleInit } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { firstValueFrom } from 'rxjs';
@@ -7,7 +7,7 @@ import { CacheService } from '../caching/cache.service';
 import { CACHE_KEYS, CACHE_TTL } from '../../common/constants/cache-keys';
 
 @Injectable()
-export class OptimizedNnaRegistryService {
+export class OptimizedNnaRegistryService implements OnModuleInit {
   private readonly logger = new Logger(OptimizedNnaRegistryService.name);
   private readonly baseUrl: string;
   private readonly apiKey: string;
@@ -31,6 +31,10 @@ export class OptimizedNnaRegistryService {
     
     this.logger.log(`🔍 [INIT] NNA Registry URL: ${this.baseUrl}`);
     this.logger.log(`🔍 [INIT] OptimizedNnaRegistryService initialized`);
+  }
+
+  async onModuleInit() {
+    await this.testConnection();
   }
 
   /**
@@ -128,8 +132,15 @@ export class OptimizedNnaRegistryService {
       }
     } catch (error) {
       const duration = Date.now() - startTime;
-      this.logger.error(`❌ [API CALL] Failed after ${duration}ms: ${error.message}`);
-      this.logger.error(`❌ [API CALL] URL was: ${url}`);
+      
+      if (error.code === 'ECONNABORTED') {
+        this.logger.error(`❌ [API CALL] Request timeout after ${duration}ms for song ${songId}. Increase timeout or check network connectivity.`);
+      } else if (error.code === 'ENOTFOUND' || error.code === 'ECONNREFUSED') {
+        this.logger.error(`❌ [API CALL] Cannot reach NNA Registry at ${this.baseUrl}. Check URL and network connectivity. Error: ${error.message}`);
+      } else {
+        this.logger.error(`❌ [API CALL] Failed after ${duration}ms: ${error.message}`);
+        this.logger.error(`❌ [API CALL] URL was: ${url}`);
+      }
       
       // 🔧 CRITICAL FIX: Return fallback data immediately
       this.logger.warn(`🔄 [FALLBACK] Returning fallback composites for ${songId}`);
@@ -232,6 +243,33 @@ export class OptimizedNnaRegistryService {
         isHealthy: false,
         responseTime
       };
+    }
+  }
+
+  /**
+   * 🧪 TEST: Test NNA Registry connection
+   */
+  async testConnection(): Promise<boolean> {
+    try {
+      this.logger.log('🧪 Testing NNA Registry connection...');
+      
+      const response: AxiosResponse = await firstValueFrom(
+        this.httpService.get(`${this.baseUrl}/health`, {
+          headers: this.getHeaders(),
+          timeout: 5000,
+        })
+      );
+      
+      if (response.status === 200) {
+        this.logger.log('✅ NNA Registry connection successful');
+        return true;
+      } else {
+        this.logger.error(`❌ NNA Registry returned status ${response.status}`);
+        return false;
+      }
+    } catch (error) {
+      this.logger.error(`❌ Cannot connect to NNA Registry: ${error.message}`);
+      return false;
     }
   }
 

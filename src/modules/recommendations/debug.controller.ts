@@ -83,4 +83,19 @@ export class DebugController {
     log: (message: string) => console.log(`[DEBUG] ${message}`),
     error: (message: string) => console.error(`[DEBUG] ${message}`)
   };
+
+  @Get('environment')
+  @ApiOperation({ summary: 'Check environment variables' })
+  checkEnvironment() {
+    return {
+      status: 'success',
+      environment: {
+        NNA_REGISTRY_URL: process.env.NNA_REGISTRY_URL || 'NOT SET',
+        NNA_API_KEY: process.env.NNA_API_KEY ? '***' + process.env.NNA_API_KEY.slice(-4) : 'NOT SET',
+        NODE_ENV: process.env.NODE_ENV || 'NOT SET',
+        PORT: process.env.PORT || 'NOT SET'
+      },
+      timestamp: new Date().toISOString()
+    };
+  }
 }
