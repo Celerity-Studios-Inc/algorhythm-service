@@ -29,7 +29,7 @@ jobs:
       - name: Build Docker image
         env:
           IMAGE_TAG: us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/algorhythm-repo/algorhythm-service-dev:${{ github.sha }}-${{ github.run_id }}-dev
-        run: docker build --platform linux/amd64 --no-cache -t $IMAGE_TAG -f docker/Dockerfile.cloudrun .
+        run: docker build --platform linux/amd64 --no-cache -t $IMAGE_TAG -f Dockerfile.working .
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
