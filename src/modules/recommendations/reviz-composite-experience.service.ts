@@ -51,7 +51,7 @@ export class ReVizCompositeExperienceService {
 
     // 🔧 CRITICAL FIX: Add timeout mechanism to prevent 35+ second delays
     const timeoutPromise = new Promise<never>((_, reject) => {
-      setTimeout(() => reject(new Error('Request timeout after 5 seconds')), 5000);
+      setTimeout(() => reject(new Error('Request timeout after 2 seconds')), 2000);
     });
 
     try {
