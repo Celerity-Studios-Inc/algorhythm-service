@@ -17,6 +17,7 @@ import { NnaRegistryService } from '../nna-integration/nna-registry.service';
 export class InstantRecommendationsService {
   private readonly logger = new Logger(InstantRecommendationsService.name);
   private readonly cache = new Map<string, any>();
+  private readonly maxCacheSize = 1000; // 🔧 CRITICAL FIX: Prevent memory leaks
 
   constructor(
     private readonly nnaRegistryService: NnaRegistryService,
@@ -138,7 +139,7 @@ export class InstantRecommendationsService {
         total_available: templates.length
       };
 
-      this.cache.set(songId, response);
+      this.setCache(songId, response);
       this.logger.debug(`✅ Pre-computed response for ${songId}`);
     }
 
@@ -282,8 +283,29 @@ export class InstantRecommendationsService {
   getCacheStatus() {
     return {
       cache_size: this.cache.size,
+      max_cache_size: this.maxCacheSize,
       cached_songs: Array.from(this.cache.keys()),
       timestamp: new Date().toISOString()
     };
+  }
+
+  /**
+   * 🔧 CRITICAL FIX: Manage cache size to prevent memory leaks
+   */
+  private manageCacheSize(): void {
+    if (this.cache.size > this.maxCacheSize) {
+      // Remove oldest entries (FIFO)
+      const keysToDelete = Array.from(this.cache.keys()).slice(0, this.cache.size - this.maxCacheSize);
+      keysToDelete.forEach(key => this.cache.delete(key));
+      this.logger.debug(`🧹 Cleaned up ${keysToDelete.length} cache entries to prevent memory leak`);
+    }
+  }
+
+  /**
+   * 🔧 CRITICAL FIX: Safe cache set with size management
+   */
+  private setCache(key: string, value: any): void {
+    this.cache.set(key, value);
+    this.manageCacheSize();
   }
 }

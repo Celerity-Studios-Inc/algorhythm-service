@@ -3,8 +3,8 @@ import { CacheService } from '../caching/cache.service';
 import { CACHE_KEYS, CACHE_TTL } from '../../common/constants/cache-keys';
 
 @Injectable()
-export class PerformanceMonitoringService {
-  private readonly logger = new Logger(PerformanceMonitoringService.name);
+export class ApiPerformanceMonitoringService {
+  private readonly logger = new Logger(ApiPerformanceMonitoringService.name);
 
   constructor(private readonly cacheService: CacheService) {}
 

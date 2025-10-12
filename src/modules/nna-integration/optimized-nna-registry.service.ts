@@ -154,7 +154,7 @@ export class OptimizedNnaRegistryService {
 
   private getHeaders() {
     return {
-      'Authorization': `Bearer ${this.apiKey}`,
+      'x-api-key': this.apiKey,
       'Content-Type': 'application/json',
     };
   }

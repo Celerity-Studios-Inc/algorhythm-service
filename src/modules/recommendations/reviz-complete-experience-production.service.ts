@@ -82,7 +82,11 @@ export class ReVizCompleteExperienceProductionService {
         const response = await requestPromise;
         return response;
       } finally {
+        // 🔧 CRITICAL FIX: Always clean up in-flight requests to prevent memory leaks
         this.inFlightRequests.delete(deduplicationKey);
+        
+        // 🔧 CRITICAL FIX: Clean up old in-flight requests (older than 30 seconds)
+        this.cleanupOldInFlightRequests();
       }
 
     } catch (error) {
@@ -341,6 +345,32 @@ export class ReVizCompleteExperienceProductionService {
 
   private resetCircuitBreaker(circuitKey: string): void {
     this.circuitBreakerState.delete(circuitKey);
+  }
+
+  /**
+   * 🔧 CRITICAL FIX: Clean up old in-flight requests to prevent memory leaks
+   */
+  private cleanupOldInFlightRequests(): void {
+    const now = Date.now();
+    const maxAge = 30000; // 30 seconds
+    
+    for (const [key, promise] of this.inFlightRequests.entries()) {
+      // Check if promise is resolved/rejected (older than 30 seconds)
+      promise.finally(() => {
+        if (now - Date.now() > maxAge) {
+          this.inFlightRequests.delete(key);
+          this.logger.debug(`🧹 Cleaned up old in-flight request: ${key}`);
+        }
+      });
+    }
+    
+    // Also clean up circuit breaker state for old entries
+    for (const [key, state] of this.circuitBreakerState.entries()) {
+      if (now - state.lastFailureTime > this.CIRCUIT_BREAKER_TIMEOUT * 2) {
+        this.circuitBreakerState.delete(key);
+        this.logger.debug(`🧹 Cleaned up old circuit breaker state: ${key}`);
+      }
+    }
   }
 
   private generateDeduplicationKey(request: ReVizCompleteRequest): string {
