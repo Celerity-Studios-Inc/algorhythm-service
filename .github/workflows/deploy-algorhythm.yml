@@ -68,7 +68,7 @@ jobs:
             --region ${{ env.REGION }} \
             --platform managed \
             --allow-unauthenticated \
-            --set-env-vars="NNA_REGISTRY_URL=https://registry.dev.reviz.dev,NNA_API_KEY=reviz-dev-30390-13220-4896-9516-9001,NNA_REGISTRY_TIMEOUT=30000,NODE_ENV=development,PORT=8080,LOG_LEVEL=info" \
+            --set-env-vars="NNA_REGISTRY_URL=https://registry.dev.reviz.dev,NNA_API_KEY=reviz-dev-30390-13220-4896-9516-9001,NNA_REGISTRY_TIMEOUT=30000,NODE_ENV=development,LOG_LEVEL=info" \
             --timeout=300 \
             --memory=1Gi \
             --cpu=1 \
