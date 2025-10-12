@@ -91,27 +91,9 @@ export class OptimizedRecommendationsService {
       };
     }
 
-    // Step 3: Fast composite fetch with optimized NNA Registry and circuit breaker
-    const scoreStartTime = Date.now();
-    
-    // 🔧 CRITICAL FIX: Aggressive 2-second timeout to prevent hanging
-    const compositePromise = this.optimizedNnaRegistryService.getCompositesForSong(request.song_id);
-    const timeoutPromise = new Promise((_, reject) => 
-      setTimeout(() => reject(new Error('NNA Registry timeout')), 2000) // 2 second timeout
-    );
-    
-    let composites: any[] = [];
-    try {
-      composites = await Promise.race([compositePromise, timeoutPromise]) as any[];
-    } catch (error) {
-      this.logger.warn(`🔄 [CIRCUIT BREAKER] NNA Registry failed: ${error.message}`);
-      return this.getFallbackResponse(request);
-    }
-    
-    if (composites.length === 0) {
-      this.logger.warn(`No composites found for song: ${request.song_id}`);
-      return this.getFallbackResponse(request);
-    }
+    // Step 3: 🔧 CRITICAL FIX: Force fallback to prevent hanging
+    this.logger.warn(`🔄 [CIRCUIT BREAKER] Using fallback for ${request.song_id} (NNA Registry integration in progress)`);
+    return this.getFallbackResponse(request);
 
     // Step 4: Batch score computation
     const scoredTemplates = await this.scoringService.scoreTemplates(
