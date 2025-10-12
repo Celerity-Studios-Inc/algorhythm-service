@@ -21,7 +21,7 @@ export const developmentConfig = {
   NNA_REGISTRY_API_KEY: 'algorhythm-dev-nna-api-key',
   
   // ReViz API Key Authentication (used for API key auth)
-  REVIZ_API_KEY: 'algorhythm-dev-api-key-2025',
+  REVIZ_API_KEY: 'reviz-dev-30390-13220-4896-9516-9001',
 
   // Logging
   LOG_LEVEL: 'debug',

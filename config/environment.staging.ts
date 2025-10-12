@@ -19,6 +19,9 @@ export const stagingConfig = {
   NNA_REGISTRY_BASE_URL: 'https://registry.stg.reviz.dev',
   ALGORHYTHM_BASE_URL: 'https://stg.algorhythm.media',
   NNA_REGISTRY_API_KEY: 'algorhythm-stg-nna-api-key',
+  
+  // ReViz API Key Authentication (used for API key auth)
+  REVIZ_API_KEY: 'reviz-stg-22280-20750-3046-22387-16913',
 
   // Logging
   LOG_LEVEL: 'info',

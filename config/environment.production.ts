@@ -19,6 +19,9 @@ export const productionConfig = {
   NNA_REGISTRY_BASE_URL: 'https://registry.reviz.dev',
   ALGORHYTHM_BASE_URL: 'https://prod.algorhythm.media',
   NNA_REGISTRY_API_KEY: 'algorhythm-prod-nna-api-key',
+  
+  // ReViz API Key Authentication (used for API key auth)
+  REVIZ_API_KEY: 'reviz-prod-14816-10560-14098-5656-10119',
 
   // Logging
   LOG_LEVEL: 'warn',
