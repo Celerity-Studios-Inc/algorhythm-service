@@ -1,0 +1,91 @@
+name: Deploy AlgoRhythm Service
+
+on:
+  push:
+    branches:
+      - dev
+
+env:
+  PROJECT_ID: revize-453014
+  SERVICE_NAME: algorhythm-service-dev
+  REGION: us-central1
+  REGISTRY: us-central1-docker.pkg.dev
+  REPOSITORY: algorhythm
+  IMAGE_NAME: service
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker ${{ env.REGISTRY }}
+
+      - name: Create Artifact Registry repository
+        run: |
+          gcloud artifacts repositories create ${{ env.REPOSITORY }} \
+            --repository-format=docker \
+            --location=us-central1 \
+            --description="AlgoRhythm service Docker images" \
+            --project=${{ env.PROJECT_ID }} 2>/dev/null || echo "Repository already exists"
+
+      - name: Build Docker Image
+        run: |
+          echo "Building Docker image..."
+          docker build \
+            --tag ${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
+            --tag ${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:latest \
+            --build-arg NODE_ENV=production \
+            .
+          echo "✅ Docker image built successfully"
+
+      - name: Push Docker Image
+        run: |
+          echo "Pushing Docker image to Artifact Registry..."
+          docker push ${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          docker push ${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:latest
+          echo "✅ Docker image pushed successfully"
+
+      - name: Deploy to Cloud Run
+        run: |
+          echo "Deploying to Cloud Run..."
+          gcloud run deploy ${{ env.SERVICE_NAME }} \
+            --image ${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
+            --region ${{ env.REGION }} \
+            --platform managed \
+            --allow-unauthenticated \
+            --set-env-vars="NNA_REGISTRY_URL=https://registry.dev.reviz.dev,NNA_API_KEY=reviz-dev-30390-13220-4896-9516-9001,NNA_REGISTRY_TIMEOUT=30000,NODE_ENV=development,PORT=8080,LOG_LEVEL=info" \
+            --timeout=300 \
+            --memory=1Gi \
+            --cpu=1 \
+            --max-instances=10 \
+            --min-instances=0 \
+            --project=${{ env.PROJECT_ID }}
+
+      - name: Get Service URL
+        run: |
+          SERVICE_URL=$(gcloud run services describe ${{ env.SERVICE_NAME }} \
+            --region ${{ env.REGION }} \
+            --format='value(status.url)' \
+            --project=${{ env.PROJECT_ID }})
+          
+          echo "================================================"
+          echo "✅ DEPLOYMENT SUCCESSFUL!"
+          echo "================================================"
+          echo "🚀 Service URL: $SERVICE_URL"
+          echo "🏥 Health Check: $SERVICE_URL/api/health"
+          echo "📊 Cloud Console: https://console.cloud.google.com/run/detail/${{ env.REGION }}/${{ env.SERVICE_NAME }}?project=${{ env.PROJECT_ID }}"
+          echo "================================================"

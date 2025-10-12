@@ -1,10 +1,11 @@
-name: AlgoRhythm Service CI/CD (Development) - WORKING
+# DISABLED - Using deploy-algorhythm.yml instead (bypasses Cloud Build)
+# name: AlgoRhythm Service CI/CD (Development) - WORKING
 
-on:
-  push:
-    branches:
-      - dev
-      - main
+# on:
+#   push:
+#     branches:
+#       - dev
+#       - main
 
 env:
   PROJECT_ID: revize-453014
