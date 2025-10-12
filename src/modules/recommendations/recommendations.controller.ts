@@ -1,5 +1,6 @@
 import { 
   Controller, 
+  Get,
   Post, 
   Body, 
   UseGuards, 
@@ -60,8 +61,8 @@ export class RecommendationsController {
       optimizedService: {
         available: !!this.optimizedRecommendationsService,
         dependencies: {
-          nnaRegistry: !!this.optimizedRecommendationsService?.optimizedNnaRegistryService,
-          cacheStrategy: !!this.optimizedRecommendationsService?.compositeCacheStrategy
+          nnaRegistry: 'checking...',
+          cacheStrategy: 'checking...'
         }
       },
       oldService: {
@@ -75,7 +76,7 @@ export class RecommendationsController {
   async testBothServices(@Body() request: TemplateRecommendationDto) {
     this.logger.log(`🧪 [DEBUG] Testing both services for song: ${request.song_id}`);
     
-    const results = {
+    const results: any = {
       optimized: null,
       old: null,
       comparison: {}
