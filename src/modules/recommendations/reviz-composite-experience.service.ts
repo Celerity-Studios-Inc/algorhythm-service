@@ -142,13 +142,33 @@ export class ReVizCompositeExperienceService {
   /**
    * Get composite information with real GCP URLs
    */
-  private async getCompositeInfo(compositeId: string) {
+  private async getCompositeInfo(compositeId: string): Promise<{
+    composite_id: string;
+    composite_name: string;
+    gcp_storage_url: string;
+    thumbnail_url: string;
+    duration_seconds: number;
+    file_size_mb: number;
+    resolution: string;
+    format: string;
+    compatibility_score: number;
+  }> {
     // 🔧 CACHE: Check cache first for composite info
     const cacheKey = `composite_info:${compositeId}`;
     const cachedInfo = await this.cacheService.get(cacheKey);
     if (cachedInfo) {
       this.logger.debug(`✅ Cache hit for composite info: ${compositeId}`);
-      return cachedInfo;
+      return cachedInfo as {
+        composite_id: string;
+        composite_name: string;
+        gcp_storage_url: string;
+        thumbnail_url: string;
+        duration_seconds: number;
+        file_size_mb: number;
+        resolution: string;
+        format: string;
+        compatibility_score: number;
+      };
     }
 
     try {
