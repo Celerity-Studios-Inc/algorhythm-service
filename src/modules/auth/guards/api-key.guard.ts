@@ -14,7 +14,7 @@ export class ApiKeyGuard implements CanActivate {
     }
 
     // Get the expected API key from environment
-    const expectedApiKey = this.configService.get<string>('ALGORHYTHM_API_KEY');
+    const expectedApiKey = this.configService.get<string>('REVIZ_API_KEY');
     
     if (!expectedApiKey) {
       throw new UnauthorizedException('API key not configured');

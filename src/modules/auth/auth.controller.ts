@@ -11,7 +11,7 @@ export class AuthController {
   debugEnvironmentVariables() {
     const jwtSecret = this.configService.get<string>('JWT_SECRET');
     const nnaJwtSecret = this.configService.get<string>('NNA_REGISTRY_JWT_SECRET');
-    const algorhythmApiKey = this.configService.get<string>('ALGORHYTHM_API_KEY');
+    const revizApiKey = this.configService.get<string>('REVIZ_API_KEY');
     
     return {
       jwtSecret: {
@@ -24,10 +24,10 @@ export class AuthController {
         length: nnaJwtSecret ? nnaJwtSecret.length : 0,
         preview: nnaJwtSecret ? `${nnaJwtSecret.substring(0, 8)}...` : 'undefined'
       },
-      algorhythmApiKey: {
-        loaded: !!algorhythmApiKey,
-        length: algorhythmApiKey ? algorhythmApiKey.length : 0,
-        preview: algorhythmApiKey ? `${algorhythmApiKey.substring(0, 8)}...` : 'undefined'
+      revizApiKey: {
+        loaded: !!revizApiKey,
+        length: revizApiKey ? revizApiKey.length : 0,
+        preview: revizApiKey ? `${revizApiKey.substring(0, 8)}...` : 'undefined'
       },
       timestamp: new Date().toISOString()
     };
