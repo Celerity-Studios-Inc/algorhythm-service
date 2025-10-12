@@ -109,7 +109,11 @@ export class RecommendationsService {
 
     // Get song metadata from NNA Registry (using HFN)
     // Note: OptimizedNnaRegistryService doesn't have getAssetByAddress, using fallback
-    const song = { id: songId, name: `Song ${songId}` }; // Fallback for now
+    const song = { 
+      id: songId, 
+      name: `Song ${songId}`,
+      nna_address: songId // Add nna_address property for compatibility
+    }; // Fallback for now
     
     // Get all available templates (composites) for this song
     // 🔧 FIX: Use getCompositesForSong for ReViz developers to ensure C.FUL only
@@ -284,7 +288,11 @@ export class RecommendationsService {
 
     // Get song metadata (using optimized service)
     // Note: Using fallback since OptimizedNnaRegistryService doesn't have getAssetByAddress
-    const song = { id: songId, name: `Song ${songId}` };
+    const song = { 
+      id: songId, 
+      name: `Song ${songId}`,
+      nna_address: songId // Add nna_address property for compatibility
+    };
     
     // Get all available assets for the specified layer
     // Note: Using fallback since OptimizedNnaRegistryService doesn't have getAssetsByLayer
