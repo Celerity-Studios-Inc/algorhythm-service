@@ -1,0 +1,53 @@
+# Cloud Build configuration for pre-built deployment
+# This bypasses Docker build issues by using pre-built code
+
+steps:
+  # Step 1: Install dependencies
+  - name: 'node:18-alpine'
+    entrypoint: 'npm'
+    args: ['install', '--legacy-peer-deps']
+    
+  # Step 2: Build TypeScript
+  - name: 'node:18-alpine'
+    entrypoint: 'npm'
+    args: ['run', 'build']
+    
+  # Step 3: Prepare dockerignore for pre-built deployment
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args: 
+      - '-c'
+      - 'cp .dockerignore.prebuilt .dockerignore'
+  
+  # Step 4: Build Docker image with pre-built code
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '--platform', 'linux/amd64', '-f', 'Dockerfile.prebuilt', '-t', 'gcr.io/$PROJECT_ID/algorhythm-service-dev', '.']
+    
+  # Step 5: Push image to registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/algorhythm-service-dev']
+    
+  # Step 6: Deploy to Cloud Run
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: 
+      - 'run'
+      - 'deploy'
+      - 'algorhythm-service-dev'
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/algorhythm-service-dev'
+      - '--region'
+      - 'us-central1'
+      - '--set-secrets'
+      - 'NNA_REGISTRY_URL=algorhythm-nna-registry-url-dev:latest,NNA_API_KEY=algorhythm-nna-api-key-dev:latest,NNA_REGISTRY_TIMEOUT=algorhythm-nna-registry-timeout-dev:latest,NODE_ENV=algorhythm-node-env-dev:latest'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+
+# Build options
+options:
+  machineType: 'E2_HIGHCPU_8'
+  diskSizeGb: 100
+  logging: CLOUD_LOGGING_ONLY
+
+# Timeout
+timeout: '1200s'
