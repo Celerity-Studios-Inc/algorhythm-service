@@ -10,7 +10,7 @@ export const developmentConfig = {
   REDIS_URL: 'redis://10.0.0.3:6379',
 
   // Authentication (AlgoRhythm-specific JWT)
-  JWT_SECRET: 'algorhythm-dev-jwt-secret-key',
+  JWT_SECRET: 'a0cdf9eff0b7393cf499c2db888638f71362615fe63599ec78cf7095d1973f39',
   
   // NNA Registry JWT Secret (for fallback verification)
   NNA_REGISTRY_JWT_SECRET: 'a0cdf9eff0b7393cf499c2db888638f71362615fe63599ec78cf7095d1973f39',
