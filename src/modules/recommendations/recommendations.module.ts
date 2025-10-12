@@ -11,6 +11,7 @@ import { ReVizCompositeExperienceService } from './reviz-composite-experience.se
 import { ReVizCompositeExperienceController } from './reviz-composite-experience.controller';
 import { CacheWarmingService } from './cache-warming.service';
 import { OptimizedRecommendationsService } from './optimized-recommendations.service';
+import { OptimizedRecommendationsController } from './optimized-recommendations.controller';
 import { CompositeRecommendationsService } from './composite-recommendations.service';
 import { ScoringModule } from '../scoring/scoring.module';
 import { CachingModule } from '../caching/caching.module';
@@ -42,6 +43,7 @@ import { Composite, CompositeSchema } from '../../models/composite.schema';
   ],
   controllers: [
     RecommendationsController, 
+    OptimizedRecommendationsController,
     ReVizCompleteExperienceProductionController,
     ReVizCompleteExperienceEnhancedController,
     ReVizCompositeExperienceController
@@ -67,4 +69,13 @@ import { Composite, CompositeSchema } from '../../models/composite.schema';
     CompositeRecommendationsService
   ],
 })
-export class RecommendationsModule {}
+export class RecommendationsModule {
+  constructor() {
+    // 🔍 STARTUP LOGGING - WILL SHOW IN CLOUD RUN
+    console.error('=====================================');
+    console.error('🚀 RECOMMENDATIONS MODULE STARTING');
+    console.error('=====================================');
+    console.error('Module loaded successfully');
+    console.error('=====================================');
+  }
+}
