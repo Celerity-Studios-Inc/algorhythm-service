@@ -70,10 +70,10 @@ export class OptimizedNnaRegistryService {
       return cached;
     }
 
+    // 🚀 OPTIMIZED: Use our new optimized endpoint for 9ms response time
+    const url = `${this.baseUrl}/api/v1/assets/composites/by-song/${songId}`;
+    
     try {
-      // 🚀 OPTIMIZED: Use our new optimized endpoint for 9ms response time
-      const url = `${this.baseUrl}/api/v1/assets/composites/by-song/${songId}`;
-      
       this.logger.log(`🔍 [API CALL] Calling NNA Registry: ${url}`);
       
       const response: AxiosResponse = await firstValueFrom(
