@@ -2,6 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { NnaRegistryService } from '../nna-integration/nna-registry.service';
+import { OptimizedNnaRegistryService } from '../nna-integration/optimized-nna-registry.service';
 import { CacheService } from '../caching/cache.service';
 import { AnalyticsService } from '../analytics/analytics.service';
 import { ScoringService } from '../scoring/scoring.service';
@@ -31,6 +32,7 @@ export class ReVizCompositeExperienceService {
   constructor(
     private readonly cacheService: CacheService,
     private readonly nnaRegistryService: NnaRegistryService,
+    private readonly optimizedNnaRegistryService: OptimizedNnaRegistryService,
     private readonly scoringService: ScoringService,
     private readonly analyticsService: AnalyticsService,
     @InjectModel('Asset') private assetModel: Model<Asset>,
@@ -49,9 +51,9 @@ export class ReVizCompositeExperienceService {
     
     this.logger.log(`🚀 Processing ReViz composite experience request for composite: ${request.composite_id}`);
 
-    // 🔧 CRITICAL FIX: Add timeout mechanism to prevent 35+ second delays
+    // 🔧 CRITICAL FIX: Add timeout mechanism to prevent delays (reduced from 30s to 5s)
     const timeoutPromise = new Promise<never>((_, reject) => {
-      setTimeout(() => reject(new Error('Request timeout after 30 seconds')), 30000);
+      setTimeout(() => reject(new Error('Request timeout after 5 seconds')), 5000);
     });
 
     try {
@@ -141,14 +143,21 @@ export class ReVizCompositeExperienceService {
    * Get composite information with real GCP URLs
    */
   private async getCompositeInfo(compositeId: string) {
+    // 🔧 CACHE: Check cache first for composite info
+    const cacheKey = `composite_info:${compositeId}`;
+    const cachedInfo = await this.cacheService.get(cacheKey);
+    if (cachedInfo) {
+      this.logger.debug(`✅ Cache hit for composite info: ${compositeId}`);
+      return cachedInfo;
+    }
+
     try {
-      // Try to get from NNA Registry first (using song-based approach as fallback)
-      // Note: This is a simplified approach since we don't have direct composite lookup
-      const composites = await this.nnaRegistryService.getFullCompositesBySong(compositeId, 1);
+      // 🔧 OPTIMIZED: Use optimized NNA Registry service with circuit breaker
+      const composites = await this.optimizedNnaRegistryService.getCompositesForSongOptimized(compositeId);
       
       if (composites && composites.length > 0) {
         const composite = composites[0];
-        return {
+        const compositeInfo = {
           composite_id: compositeId,
           composite_name: composite.name || `Composite ${compositeId}`,
           gcp_storage_url: composite.gcpStorageUrl || `https://storage.googleapis.com/algorhythm-assets/composites/${compositeId}.mp4`,
@@ -159,6 +168,10 @@ export class ReVizCompositeExperienceService {
           format: composite.format || 'mp4',
           compatibility_score: composite.compatibilityScore || 0.8,
         };
+        
+        // 🔧 CACHE: Store composite info in cache
+        await this.cacheService.set(cacheKey, compositeInfo, 300); // 5 minute cache
+        return compositeInfo;
       }
     } catch (error) {
       this.logger.warn(`⚠️ Could not fetch composite from NNA Registry: ${error.message}`);
