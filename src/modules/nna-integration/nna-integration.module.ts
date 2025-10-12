@@ -10,8 +10,7 @@ import { CachingModule } from '../caching/caching.module';
       timeout: 10000, // 10 second timeout
       maxRedirects: 5,
     }),
-    // 🔧 FIX: Make CachingModule optional to prevent dependency injection failure
-    ...(process.env.REDIS_URL ? [CachingModule] : []),
+    CachingModule, // 🔧 FIX: Always import CachingModule to prevent dependency injection failure
   ],
   providers: [NnaRegistryService, OptimizedNnaRegistryService],
   exports: [NnaRegistryService, OptimizedNnaRegistryService],
