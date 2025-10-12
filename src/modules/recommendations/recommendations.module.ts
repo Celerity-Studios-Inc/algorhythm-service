@@ -12,7 +12,6 @@ import { ReVizCompositeExperienceController } from './reviz-composite-experience
 import { CacheWarmingService } from './cache-warming.service';
 import { OptimizedRecommendationsService } from './optimized-recommendations.service';
 import { CompositeRecommendationsService } from './composite-recommendations.service';
-import { OptimizedRecommendationsController } from './optimized-recommendations.controller';
 import { ScoringModule } from '../scoring/scoring.module';
 import { CachingModule } from '../caching/caching.module';
 import { NnaIntegrationModule } from '../nna-integration/nna-integration.module';
@@ -45,8 +44,7 @@ import { Composite, CompositeSchema } from '../../models/composite.schema';
     RecommendationsController, 
     ReVizCompleteExperienceProductionController,
     ReVizCompleteExperienceEnhancedController,
-    ReVizCompositeExperienceController,
-    OptimizedRecommendationsController
+    ReVizCompositeExperienceController
   ],
   providers: [
     RecommendationsService, 
