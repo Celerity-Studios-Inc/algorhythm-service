@@ -18,7 +18,7 @@ export class OptimizedNnaRegistryService {
     private readonly cacheService: CacheService,
   ) {
     this.baseUrl = this.configService.get<string>('NNA_REGISTRY_BASE_URL') || 'https://registry.dev.reviz.dev';
-    this.apiKey = this.configService.get<string>('NNA_REGISTRY_API_KEY') || 'fallback-api-key';
+    this.apiKey = this.configService.get<string>('REVIZ_API_KEY') || 'reviz-dev-30390-13220-4896-9516-9001';
     
     // 🔍 ADD DEBUG LOG
     this.logger.log(`🔍 [INIT] NNA Registry URL: ${this.baseUrl}`);
