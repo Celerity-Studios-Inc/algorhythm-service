@@ -36,6 +36,15 @@ export class RecommendationsService {
     // private readonly localDataQuery: LocalDataQueryService | null,
     // private readonly cacheWarming: CacheWarmingService | null,
   ) {
+    // 🔍 STARTUP LOGGING - WILL SHOW IN CLOUD RUN
+    console.error('=====================================');
+    console.error('🚀 RECOMMENDATIONS SERVICE STARTING');
+    console.error('=====================================');
+    console.error('Service exists:', !!this.optimizedNnaRegistryService);
+    console.error('Service type:', this.optimizedNnaRegistryService?.constructor?.name);
+    console.error('Has getFullCompositesBySong:', typeof this.optimizedNnaRegistryService?.getFullCompositesBySong);
+    console.error('=====================================');
+    
     // 🔍 ADD DEBUG LOG
     this.logger.log(`🔍 [INIT] OptimizedNnaRegistryService available: ${!!this.optimizedNnaRegistryService}`);
     this.logger.log(`🔍 [INIT] Service type: ${this.optimizedNnaRegistryService?.constructor?.name}`);
@@ -124,13 +133,13 @@ export class RecommendationsService {
     // Use NNA Registry directly (local data query disabled for minimal deployment)
     
     // 🔍 ADD DETAILED LOGGING
-    this.logger.log(`🔍 [METHOD CALL] About to call getCompositesForSong`);
+    this.logger.log(`🔍 [METHOD CALL] About to call getFullCompositesBySong`);
     this.logger.log(`🔍 [METHOD CALL] Song ID: ${songId}`);
     this.logger.log(`🔍 [METHOD CALL] Service exists: ${!!this.optimizedNnaRegistryService}`);
     this.logger.log(`🔍 [METHOD CALL] Service type: ${this.optimizedNnaRegistryService?.constructor?.name}`);
     
     const methodStartTime = Date.now();
-    const availableTemplates = await this.optimizedNnaRegistryService.getCompositesForSong(songId);
+    const availableTemplates = await this.optimizedNnaRegistryService.getFullCompositesBySong(songId);
     const methodDuration = Date.now() - methodStartTime;
     
     this.logger.log(`✅ [METHOD CALL] Success! Got ${availableTemplates.length} templates`);
