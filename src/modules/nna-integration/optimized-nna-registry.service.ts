@@ -12,7 +12,7 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
   private readonly logger = new Logger(OptimizedNnaRegistryService.name);
   private readonly baseUrl: string;
   private readonly apiKey: string;
-  private readonly timeout: number;
+  public readonly timeout: number;
 
   constructor(
     private readonly httpService: HttpService,
