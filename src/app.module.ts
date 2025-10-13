@@ -14,6 +14,7 @@ import { NnaIntegrationModule } from './modules/nna-integration/nna-integration.
 import { CachingModule } from './modules/caching/caching.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { HealthModule } from './modules/health/health.module';
+import { HealthController } from './health/health.controller';
 import { SeedingModule } from './modules/seeding/seeding.module';
 import { DaemonModule } from './modules/daemon/daemon.module';
 
@@ -115,7 +116,9 @@ import { IndexingModule } from './modules/indexing/indexing.module';
     // Cache module (optional)
     ...(process.env.REDIS_URL ? [CachingModule] : []),
   ],
-  controllers: [],
+  controllers: [
+    HealthController, // ✅ CRITICAL FIX: Add health controller
+  ],
   providers: [
     EnvironmentValidationService,
     HealthMonitorService,

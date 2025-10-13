@@ -21,6 +21,7 @@ const nna_integration_module_1 = require("./modules/nna-integration/nna-integrat
 const caching_module_1 = require("./modules/caching/caching.module");
 const analytics_module_1 = require("./modules/analytics/analytics.module");
 const health_module_1 = require("./modules/health/health.module");
+const health_controller_1 = require("./health/health.controller");
 const environment_validation_1 = require("./config/environment-validation");
 const redis_config_1 = require("./config/redis.config");
 const global_exception_filter_1 = require("./common/filters/global-exception.filter");
@@ -86,7 +87,9 @@ exports.AppModule = AppModule = __decorate([
             analytics_module_1.AnalyticsModule,
             ...(process.env.REDIS_URL ? [caching_module_1.CachingModule] : []),
         ],
-        controllers: [],
+        controllers: [
+            health_controller_1.HealthController,
+        ],
         providers: [
             environment_validation_1.EnvironmentValidationService,
             health_monitor_service_1.HealthMonitorService,
