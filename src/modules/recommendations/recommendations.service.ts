@@ -137,6 +137,11 @@ export class RecommendationsService {
   }> {
     const startTime = Date.now();
     
+    // 🔧 CRITICAL DEBUG: Log that we're entering the template endpoint
+    this.logger.log(`🔧 [TEMPLATE ENDPOINT] Starting template recommendation for song: ${request.song_id}`);
+    this.logger.log(`🔧 [TEMPLATE ENDPOINT] Service is using latest code with emergency bypass`);
+    this.logger.log(`🔧 [TEMPLATE ENDPOINT] Request: ${JSON.stringify(request)}`);
+    
     // 🔧 MFA→HFN NORMALIZATION: Convert input to canonical format
     const originalSongId = request.song_id;
     const normalizedSongId = this.normalizeSongId(request.song_id);
