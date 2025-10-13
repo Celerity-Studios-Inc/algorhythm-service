@@ -103,7 +103,7 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
       this.logger.log(`🔑 [API CALL] Using API Key: ${this.apiKey ? '***' + this.apiKey.slice(-4) : 'NOT SET'}`);
       this.logger.log(`⏱️ [API CALL] Timeout: ${this.timeout}ms`);
       
-      // 🔧 CRITICAL FIX: Use Promise.race for reasonable timeout
+      // 🔧 CRITICAL FIX: Use Promise.race with aggressive timeout
       const apiCall = firstValueFrom(
         this.httpService.get(url, {
           headers: this.getHeaders(),
@@ -116,9 +116,15 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
         })
       );
       
-      const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('API call timeout')), this.timeout) // Use configurable timeout
+      // 🔧 CRITICAL FIX: Aggressive timeout with proper error handling
+      const timeoutPromise = new Promise<never>((_, reject) => 
+        setTimeout(() => {
+          this.logger.warn(`⏰ [TIMEOUT] NNA Registry call timed out after ${this.timeout}ms for song ${songId}`);
+          reject(new Error(`NNA Registry timeout after ${this.timeout}ms`));
+        }, this.timeout)
       );
+      
+      this.logger.log(`🚀 [CIRCUIT BREAKER] Starting race between API call and ${this.timeout}ms timeout`);
       
       const response: AxiosResponse = await Promise.race([apiCall, timeoutPromise]) as AxiosResponse;
 
@@ -139,17 +145,19 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
     } catch (error) {
       const duration = Date.now() - startTime;
       
-      if (error.code === 'ECONNABORTED') {
-        this.logger.error(`❌ [API CALL] Request timeout after ${duration}ms for song ${songId}. Increase timeout or check network connectivity.`);
+      // 🔧 CRITICAL FIX: Enhanced error handling with circuit breaker logging
+      if (error.message?.includes('timeout')) {
+        this.logger.warn(`⏰ [CIRCUIT BREAKER] NNA Registry timeout after ${duration}ms for song ${songId} - using fallback`);
+      } else if (error.code === 'ECONNABORTED') {
+        this.logger.warn(`⏰ [CIRCUIT BREAKER] Request aborted after ${duration}ms for song ${songId} - using fallback`);
       } else if (error.code === 'ENOTFOUND' || error.code === 'ECONNREFUSED') {
-        this.logger.error(`❌ [API CALL] Cannot reach NNA Registry at ${this.baseUrl}. Check URL and network connectivity. Error: ${error.message}`);
+        this.logger.warn(`🔌 [CIRCUIT BREAKER] Cannot reach NNA Registry at ${this.baseUrl} for song ${songId} - using fallback`);
       } else {
-        this.logger.error(`❌ [API CALL] Failed after ${duration}ms: ${error.message}`);
-        this.logger.error(`❌ [API CALL] URL was: ${url}`);
+        this.logger.warn(`❌ [CIRCUIT BREAKER] API call failed after ${duration}ms for song ${songId}: ${error.message} - using fallback`);
       }
       
-      // 🔧 CRITICAL FIX: Return fallback data immediately
-      this.logger.warn(`🔄 [FALLBACK] Returning fallback composites for ${songId}`);
+      // 🔧 CRITICAL FIX: Always return fallback data immediately
+      this.logger.log(`🔄 [FALLBACK] Circuit breaker triggered - returning fallback composites for ${songId}`);
       return this.getFallbackComposites(songId);
     }
 

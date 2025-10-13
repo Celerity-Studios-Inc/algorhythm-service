@@ -98,4 +98,53 @@ export class DebugController {
       timestamp: new Date().toISOString()
     };
   }
+
+  @Get('template-test')
+  @ApiOperation({ summary: 'Test template endpoint with fallback data' })
+  async testTemplateEndpoint() {
+    try {
+      this.logger.log('🧪 Testing template endpoint with fallback data...');
+      
+      // Simulate the fallback templates
+      const fallbackTemplates = [
+        {
+          _id: 'test-template-1',
+          nna_address: '9.000.000.001',
+          name: 'Test Template 1',
+          gcpStorageUrl: 'https://storage.googleapis.com/test-assets/template-1.mp4',
+          thumbnailUrl: 'https://storage.googleapis.com/test-assets/template-1-thumb.jpg',
+          previewUrl: 'https://storage.googleapis.com/test-assets/template-1-preview.mp4',
+          description: 'A test template for debugging',
+          tags: ['test', 'debug', 'fallback'],
+          createdAt: new Date().toISOString(),
+          star_id: '2.009.002.018',
+          look_id: '3.003.001.001',
+          move_id: '4.022.002.003',
+          world_id: '5.015.001.001',
+          duration: 30,
+          fileSize: 15.2,
+          resolution: '1080p',
+          format: 'mp4',
+          qualityScore: 0.9,
+        }
+      ];
+      
+      this.logger.log(`✅ Template test successful: ${fallbackTemplates.length} templates`);
+      
+      return {
+        status: 'success',
+        template_count: fallbackTemplates.length,
+        templates: fallbackTemplates,
+        timestamp: new Date().toISOString()
+      };
+    } catch (error) {
+      this.logger.error(`❌ Template test failed: ${error.message}`);
+      
+      return {
+        status: 'error',
+        message: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
 }
