@@ -8,6 +8,7 @@ const swagger_config_1 = require("./config/swagger.config");
 const http_exception_filter_1 = require("./common/filters/http-exception.filter");
 const logging_interceptor_1 = require("./common/interceptors/logging.interceptor");
 const environment_validation_1 = require("./config/environment-validation");
+const crypto_1 = require("crypto");
 console.log('🚀 AlgoRhythm Recommendation Engine: Starting application...');
 console.log('📅 Timestamp:', new Date().toISOString());
 console.log('🔧 Node version:', process.version);
@@ -111,6 +112,34 @@ async function bootstrap() {
         customfavIcon: '/favicon.ico',
         customCssUrl: '/swagger-ui.css',
     });
+    try {
+        const documentJson = JSON.stringify(document);
+        const etag = (0, crypto_1.createHash)('sha256').update(documentJson).digest('hex').substring(0, 16);
+        app.use('/.well-known/openapi.json', (req, res) => {
+            const clientEtag = req.headers['if-none-match'];
+            if (clientEtag === `"${etag}"`) {
+                return res
+                    .status(304)
+                    .setHeader('ETag', `"${etag}"`)
+                    .setHeader('Cache-Control', 'public, max-age=300, must-revalidate')
+                    .end();
+            }
+            res
+                .status(200)
+                .setHeader('Content-Type', 'application/json; charset=utf-8')
+                .setHeader('ETag', `"${etag}"`)
+                .setHeader('Cache-Control', 'public, max-age=300, must-revalidate')
+                .setHeader('Access-Control-Allow-Origin', '*')
+                .setHeader('Access-Control-Expose-Headers', 'ETag')
+                .setHeader('X-API-Version', '1.0.0')
+                .setHeader('X-Contract-Hash', etag)
+                .send(documentJson);
+        });
+        console.log(`📋 OpenAPI spec will be served at /.well-known/openapi.json (ETag: "${etag}")`);
+    }
+    catch (err) {
+        console.warn('⚠️ Failed to initialize OpenAPI well-known handler:', err instanceof Error ? err.message : err);
+    }
     const port = process.env.PORT || 3000;
     await app.listen(port, '0.0.0.0');
     console.log(`🎵 AlgoRhythm Recommendation Engine running on port ${port}`);

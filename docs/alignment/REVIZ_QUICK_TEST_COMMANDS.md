@@ -13,48 +13,49 @@ echo "Token: $TOKEN"
 
 ### **2. Test Enhanced Template Recommendations**
 ```bash
-curl -X POST "https://dev.algorhythm.media/api/v1/recommend/template" \
+curl -X POST "https://dev.algorhythm.media/api/v1/algorhythm/recommend/template" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $TOKEN" \
   -d '{
-    "song_id": "1.018.003.002",
+    "song_id": "G.POP.TEE.002",
     "user_context": {
       "user_id": "test_reviz"
     }
   }' \
-  --max-time 15 | jq '.data.recommendation | {
-    template_name,
+  --max-time 15 | jq '.data.recommendations[0] | {
+    template_id,
+    name,
+    confidence_score,
     gcp_storage_url,
     thumbnail_url,
-    preview_url,
-    synergyScore: .metadata.aggregatedMetadata.synergyScore
+    description,
+    components: (.components | length)
   }'
 ```
 
-### **3. Test Complete Experience - Song-Based**
+### **3. Test Complete Experience - Composite-Specific**
 ```bash
-curl -X POST "https://dev.algorhythm.media/api/v1/reviz/complete-experience" \
+curl -X POST "https://dev.algorhythm.media/api/v1/reviz/composite/complete-experience" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $TOKEN" \
+  -H "x-api-key: reviz-dev-30390-13220-4896-9516-9001" \
   -d '{
-    "song_id": "1.018.003.002",
+    "composite_id": "G.POP.TEE.002",
     "user_context": {
-      "user_id": "test_song",
-      "device_info": {
-        "type": "mobile",
-        "connection_speed": "medium"
-      }
+      "user_id": "test_composite"
     },
     "experience_config": {
-      "max_assets_per_layer": 4,
-      "include_variants": true,
-      "variant_depth": 4
+      "quality": "high"
     }
   }' \
-  --max-time 15 | jq '.data | {
-    song_metadata: .song_metadata,
-    composite_count: (.composite_videos | length),
-    layer_assets: (.layer_assets | keys)
+  --max-time 15 | jq '.data.composite_info | {
+    composite_id,
+    composite_name,
+    gcp_storage_url,
+    thumbnail_url,
+    duration_seconds,
+    file_size_mb,
+    resolution,
+    format,
+    compatibility_score
   }'
 ```
 

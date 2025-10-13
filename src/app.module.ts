@@ -26,7 +26,6 @@ import { GlobalExceptionFilter } from './common/filters/global-exception.filter'
 import { ErrorLoggingInterceptor } from './common/interceptors/error-logging.interceptor';
 import { RateLimitingGuard } from './common/guards/rate-limiting.guard';
 import { HealthMonitorService } from './common/services/health-monitor.service';
-import { AlgorhythmModule } from './modules/algorhythm/algorhythm.module';
 import { WebhookModule } from './modules/webhooks/webhook.module';
 import { IndexingModule } from './modules/indexing/indexing.module';
 
@@ -100,7 +99,6 @@ import { IndexingModule } from './modules/indexing/indexing.module';
     AuthModule,
     HealthModule, // ✅ FIX: Add health check endpoint
     NnaIntegrationModule, // ✅ RE-ENABLED: NNA Registry API integration
-    AlgorhythmModule,
     WebhookModule, // ✅ RE-ENABLED: Webhook endpoints for NNA Registry
     
     // Database-dependent modules (ENABLED for ReViz API)
@@ -117,6 +115,7 @@ import { IndexingModule } from './modules/indexing/indexing.module';
     // Cache module (optional)
     ...(process.env.REDIS_URL ? [CachingModule] : []),
   ],
+  controllers: [],
   providers: [
     EnvironmentValidationService,
     HealthMonitorService,

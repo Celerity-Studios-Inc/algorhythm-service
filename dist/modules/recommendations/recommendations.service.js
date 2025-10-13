@@ -47,17 +47,33 @@ let RecommendationsService = RecommendationsService_1 = class RecommendationsSer
         this.logger.log(`🔍 [INIT] OptimizedNnaRegistryService available: ${!!this.optimizedNnaRegistryService}`);
         this.logger.log(`🔍 [INIT] Service type: ${this.optimizedNnaRegistryService?.constructor?.name}`);
     }
+    normalizeSongId(songId) {
+        if (songId.includes('.')) {
+            return songId;
+        }
+        if (/^\d+$/.test(songId)) {
+            const parts = songId.match(/.{1,3}/g) || [];
+            return parts.join('.');
+        }
+        return songId;
+    }
     async getTemplateRecommendation(request) {
         const startTime = Date.now();
+        const originalSongId = request.song_id;
+        const normalizedSongId = this.normalizeSongId(request.song_id);
+        if (originalSongId !== normalizedSongId) {
+            this.logger.log(`🔄 [NORMALIZATION] MFA→HFN: ${originalSongId} → ${normalizedSongId}`);
+        }
+        const normalizedRequest = { ...request, song_id: normalizedSongId };
         this.logger.debug('🚀 Using OptimizedNnaRegistryService for 43x performance improvement');
-        const primaryCacheKey = `${cache_keys_1.CACHE_KEYS.TEMPLATE_RECOMMENDATION}:${request.song_id}:${JSON.stringify(request.user_context)}`;
+        const primaryCacheKey = `${cache_keys_1.CACHE_KEYS.TEMPLATE_RECOMMENDATION}:${normalizedSongId}:${JSON.stringify(normalizedRequest.user_context)}`;
         const primaryCachedResult = await this.cacheService.get(primaryCacheKey);
         if (primaryCachedResult) {
-            this.logger.debug(`Cache hit for template recommendation: ${request.song_id}`);
+            this.logger.debug(`Cache hit for template recommendation: ${normalizedSongId}`);
             await this.analyticsService.trackEvent({
                 event_type: 'template_recommendation_served',
-                user_id: request.user_context.user_id,
-                song_id: request.song_id,
+                user_id: normalizedRequest.user_context.user_id,
+                song_id: normalizedSongId,
                 template_id: primaryCachedResult.recommendation?.template_id || 'unknown',
                 cache_hit: true,
                 response_time_ms: Date.now() - startTime,
@@ -67,8 +83,8 @@ let RecommendationsService = RecommendationsService_1 = class RecommendationsSer
                 cache_hit: true,
             };
         }
-        const songId = request.song_id;
-        this.logger.debug(`Using HFN song ID directly: ${songId}`);
+        const songId = normalizedSongId;
+        this.logger.debug(`Using normalized HFN song ID: ${songId}`);
         const song = {
             id: songId,
             name: `Song ${songId}`,
@@ -86,9 +102,9 @@ let RecommendationsService = RecommendationsService_1 = class RecommendationsSer
         if (availableTemplates.length === 0) {
             this.logger.warn(`No templates found for song: ${songId}`);
             this.logger.warn(`🔄 [FALLBACK] Using fallback response for ${songId}`);
-            return this.getFallbackResponse(request);
+            return this.getFallbackResponse(normalizedRequest);
         }
-        const secondaryCacheKey = `recommendations:${songId}:${JSON.stringify(request.user_context.preferences)}`;
+        const secondaryCacheKey = `recommendations:${songId}:${JSON.stringify(normalizedRequest.user_context.preferences)}`;
         const secondaryCachedResult = await this.cacheService.get(secondaryCacheKey);
         if (secondaryCachedResult) {
             this.logger.debug(`Cache hit for song: ${songId}`);
@@ -142,7 +158,7 @@ let RecommendationsService = RecommendationsService_1 = class RecommendationsSer
         const eligibleTemplates = scoredTemplates;
         const sortedTemplates = this.applyDiversityAndSort(eligibleTemplates);
         const recommendation = sortedTemplates[0];
-        const alternatives = sortedTemplates.slice(1, (request.max_alternatives || 5) + 1);
+        const alternatives = sortedTemplates.slice(1, (normalizedRequest.max_alternatives || 5) + 1);
         const result = {
             recommendation,
             alternatives,
@@ -153,11 +169,11 @@ let RecommendationsService = RecommendationsService_1 = class RecommendationsSer
         await this.cacheService.set(secondaryCacheKey, result, cache_keys_1.CACHE_TTL.TEMPLATE_RECOMMENDATION);
         const instantCacheKey = `instant:${songId}`;
         await this.cacheService.set(instantCacheKey, result, 3600);
-        await this.storeRecommendationCache(request, result);
+        await this.storeRecommendationCache(normalizedRequest, result);
         await this.analyticsService.trackEvent({
             event_type: 'template_recommendation_served',
-            user_id: request.user_context.user_id,
-            song_id: request.song_id,
+            user_id: normalizedRequest.user_context.user_id,
+            song_id: normalizedSongId,
             template_id: recommendation?.template_id || 'unknown',
             compatibility_score: recommendation?.compatibility_score || 0,
             alternatives_count: alternatives.length,

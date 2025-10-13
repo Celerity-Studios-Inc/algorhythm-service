@@ -44,17 +44,17 @@ curl -H "x-api-key: reviz-dev-30390-13220-4896-9516-9001" \
   -H "Content-Type: application/json" \
   -d '{"user": "test_user"}'
 
-# Test recommendation API
+# Test template recommendation API
 curl -H "x-api-key: reviz-dev-30390-13220-4896-9516-9001" \
-  -X POST "https://dev.algorhythm.media/api/v1/recommend/template" \
+  -X POST "https://dev.algorhythm.media/api/v1/algorhythm/recommend/template" \
   -H "Content-Type: application/json" \
-  -d '{"song_id": "1.001.003.001", "user_context": {"user_id": "test_user"}}'
+  -d '{"song_id": "G.POP.TEE.002", "user_context": {"user_id": "test_user"}}'
 
-# Test ReViz complete experience
+# Test ReViz composite complete experience
 curl -H "x-api-key: reviz-dev-30390-13220-4896-9516-9001" \
-  -X POST "https://dev.algorhythm.media/api/v1/reviz/complete-experience" \
+  -X POST "https://dev.algorhythm.media/api/v1/reviz/composite/complete-experience" \
   -H "Content-Type: application/json" \
-  -d '{"song_id": "1.001.003.001", "user_context": {"user_id": "test_user"}, "experience_config": {"max_assets_per_layer": 4}}'
+  -d '{"composite_id": "G.POP.TEE.002", "user_context": {"user_id": "test_user"}, "experience_config": {"quality": "high"}}'
 ```
 
 ### **Staging Environment**

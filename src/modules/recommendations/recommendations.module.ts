@@ -12,7 +12,7 @@ import { ReVizCompositeExperienceController } from './reviz-composite-experience
 import { DebugController } from './debug.controller';
 import { CacheWarmingService } from './cache-warming.service';
 import { OptimizedRecommendationsService } from './optimized-recommendations.service';
-import { OptimizedRecommendationsController } from './optimized-recommendations.controller';
+import { LegacyRedirectController } from '../legacy/legacy-redirect.controller';
 import { CompositeRecommendationsService } from './composite-recommendations.service';
 import { ScoringModule } from '../scoring/scoring.module';
 import { CachingModule } from '../caching/caching.module';
@@ -44,11 +44,11 @@ import { Composite, CompositeSchema } from '../../models/composite.schema';
   ],
   controllers: [
     RecommendationsController, 
-    OptimizedRecommendationsController,
     ReVizCompleteExperienceProductionController,
     ReVizCompleteExperienceEnhancedController,
     ReVizCompositeExperienceController,
-    DebugController
+    DebugController,
+    LegacyRedirectController  // Must be last to catch legacy routes
   ],
   providers: [
     RecommendationsService, 

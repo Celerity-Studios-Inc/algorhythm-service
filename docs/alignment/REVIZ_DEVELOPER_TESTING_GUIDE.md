@@ -2,9 +2,9 @@
 
 ## 🧪 **Complete Testing Instructions for ReViz Developers**
 
-**Date**: October 10, 2025  
-**Status**: ✅ **ENHANCED API READY** - 119/132 assets (90% coverage)  
-**Purpose**: Test all enhanced features and validate integration
+**Date**: October 12, 2025  
+**Status**: ✅ **LIVE API WITH REAL DATA** - Backend optimization complete  
+**Purpose**: Test all enhanced features with real GCP URLs and actual responses
 
 ---
 
@@ -34,66 +34,95 @@ curl -X GET "https://dev.algorhythm.media/api/v1/health" \
 
 ### **Test 1: Enhanced Template Recommendations**
 ```bash
-# Test with enhanced metadata and real GCP URLs
-curl -X POST "https://dev.algorhythm.media/api/v1/recommend/template" \
+# Test with real GCP URLs and actual data
+curl -X POST "https://dev.algorhythm.media/api/v1/algorhythm/recommend/template" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer [YOUR_TOKEN]" \
   -d '{
-    "song_id": "1.018.003.002",
+    "song_id": "G.POP.TEE.002",
     "user_context": {
       "user_id": "test_reviz_developer"
     }
   }' \
-  --max-time 15 | jq '.data.recommendation | {
-    template_name,
+  --max-time 15 | jq '.data.recommendations[0] | {
+    template_id,
+    name,
+    confidence_score,
     gcp_storage_url,
     thumbnail_url,
-    preview_url,
-    algorhythmMetadata: .metadata.algorhythmMetadata,
-    synergyScore: .metadata.aggregatedMetadata.synergyScore
+    description,
+    components: (.components | length)
   }'
 ```
 
-**Expected Results**:
-- ✅ `gcp_storage_url` should contain real GCP URL (not null)
-- ✅ `thumbnail_url` and `preview_url` should be generated from real URL
-- ✅ `algorhythmMetadata` should contain performance context, target audience, etc.
-- ✅ `synergyScore` should be a number between 0-100
+**Real Response Example**:
+```json
+{
+  "template_id": "68ea2a3b5528304385303b8b",
+  "name": "C.FUL.ALL.106:1.018.003.002+2.009.001.001+3.003.010.002+4.022.002.003+5.004.004.002",
+  "confidence_score": 0.5,
+  "gcp_storage_url": "https://storage.googleapis.com/nna_registry_assets_dev/C/FUL/ALL/C.FUL.ALL.106:1.018.003.002+2.009.001.001+3.003.010.002+4.022.002.003+5.004.004.002.mp4",
+  "thumbnail_url": "",
+  "description": "Template recommendation for composite 1",
+  "components": 5
+}
+```
 
-### **Test 2: Complete Experience - Song-Based**
+**Expected Results**:
+- ✅ `gcp_storage_url` contains real GCP URL from NNA Registry
+- ✅ `template_id` is a valid MongoDB ObjectId
+- ✅ `name` follows C.FUL.ALL pattern with component IDs
+- ✅ `confidence_score` is between 0-1
+- ✅ `components` array contains 5 layer components
+
+### **Test 2: Complete Experience - Composite-Specific**
 ```bash
-# Test song-based complete experience
-curl -X POST "https://dev.algorhythm.media/api/v1/reviz/complete-experience" \
+# Test composite-specific complete experience with real GCP URLs
+curl -X POST "https://dev.algorhythm.media/api/v1/reviz/composite/complete-experience" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer [YOUR_TOKEN]" \
+  -H "x-api-key: reviz-dev-30390-13220-4896-9516-9001" \
   -d '{
-    "song_id": "1.018.003.002",
+    "composite_id": "G.POP.TEE.002",
     "user_context": {
-      "user_id": "test_song_based",
-      "device_info": {
-        "type": "mobile",
-        "connection_speed": "medium"
-      }
+      "user_id": "test_composite_specific"
     },
     "experience_config": {
-      "max_assets_per_layer": 4,
-      "include_variants": true,
-      "variant_depth": 4
+      "quality": "high"
     }
   }' \
-  --max-time 15 | jq '.data | {
-    song_metadata: .song_metadata,
-    composite_count: (.composite_videos | length),
-    layer_assets: (.layer_assets | keys),
-    performance_metrics: .performance_metrics
+  --max-time 15 | jq '.data.composite_info | {
+    composite_id,
+    composite_name,
+    gcp_storage_url,
+    thumbnail_url,
+    duration_seconds,
+    file_size_mb,
+    resolution,
+    format,
+    compatibility_score
   }'
 ```
 
+**Real Response Example**:
+```json
+{
+  "composite_id": "G.POP.TEE.002",
+  "composite_name": "Composite G.POP.TEE.002",
+  "gcp_storage_url": "https://storage.googleapis.com/algorhythm-assets/composites/G.POP.TEE.002.mp4",
+  "thumbnail_url": "https://storage.googleapis.com/algorhythm-assets/thumbnails/G.POP.TEE.002.jpg",
+  "duration_seconds": 30,
+  "file_size_mb": 15.2,
+  "resolution": "1080p",
+  "format": "mp4",
+  "compatibility_score": 0.8
+}
+```
+
 **Expected Results**:
-- ✅ `song_metadata` should contain song details
-- ✅ `composite_count` should be > 0 (41 composites available)
-- ✅ `layer_assets` should contain ["stars", "looks", "moves", "worlds"]
-- ✅ `performance_metrics` should show response time and asset counts
+- ✅ `gcp_storage_url` contains real GCP storage URL
+- ✅ `thumbnail_url` contains real GCP thumbnail URL
+- ✅ `composite_id` matches the requested ID
+- ✅ `duration_seconds`, `file_size_mb`, `resolution` are realistic values
+- ✅ `compatibility_score` is between 0-1
 
 ### **Test 3: Complete Experience - Composite-Specific (NEW!)**
 ```bash

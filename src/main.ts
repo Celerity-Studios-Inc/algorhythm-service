@@ -10,6 +10,7 @@ import { AnalyticsInterceptor } from './common/interceptors/analytics.intercepto
 // import { AnalyticsService } from './modules/analytics/analytics.service'; // Disabled for minimal deployment
 import { EnvironmentValidationService } from './config/environment-validation';
 import { Request, Response, Application } from 'express';
+import { createHash } from 'crypto';
 
 console.log('🚀 AlgoRhythm Recommendation Engine: Starting application...');
 console.log('📅 Timestamp:', new Date().toISOString());
@@ -135,6 +136,39 @@ async function bootstrap() {
     customfavIcon: '/favicon.ico',
     customCssUrl: '/swagger-ui.css',
   });
+
+  // Serve OpenAPI JSON at well-known path with caching and ETag support
+  try {
+    const documentJson = JSON.stringify(document);
+    const etag = createHash('sha256').update(documentJson).digest('hex').substring(0, 16);
+
+    app.use('/.well-known/openapi.json', (req: Request, res: Response) => {
+      const clientEtag = req.headers['if-none-match'];
+
+      if (clientEtag === `"${etag}"`) {
+        return res
+          .status(304)
+          .setHeader('ETag', `"${etag}"`)
+          .setHeader('Cache-Control', 'public, max-age=300, must-revalidate')
+          .end();
+      }
+
+      res
+        .status(200)
+        .setHeader('Content-Type', 'application/json; charset=utf-8')
+        .setHeader('ETag', `"${etag}"`)
+        .setHeader('Cache-Control', 'public, max-age=300, must-revalidate')
+        .setHeader('Access-Control-Allow-Origin', '*')
+        .setHeader('Access-Control-Expose-Headers', 'ETag')
+        .setHeader('X-API-Version', '1.0.0')
+        .setHeader('X-Contract-Hash', etag)
+        .send(documentJson);
+    });
+
+    console.log(`📋 OpenAPI spec will be served at /.well-known/openapi.json (ETag: "${etag}")`);
+  } catch (err) {
+    console.warn('⚠️ Failed to initialize OpenAPI well-known handler:', err instanceof Error ? err.message : err);
+  }
 
   const port = process.env.PORT || 3000;
   

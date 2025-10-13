@@ -19,6 +19,7 @@ export declare class RecommendationsService {
     private readonly instantRecommendationsService;
     private readonly logger;
     constructor(compatibilityScoreModel: Model<CompatibilityScore>, recommendationCacheModel: Model<RecommendationCache>, scoringService: ScoringService, cacheService: CacheService, optimizedNnaRegistryService: OptimizedNnaRegistryService, analyticsService: AnalyticsService, instantRecommendationsService: InstantRecommendationsService);
+    private normalizeSongId;
     getTemplateRecommendation(request: TemplateRecommendationDto): Promise<{
         recommendation: TemplateRecommendation;
         alternatives: TemplateRecommendation[];

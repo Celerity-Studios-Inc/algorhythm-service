@@ -24,7 +24,7 @@ const reviz_composite_experience_controller_1 = require("./reviz-composite-exper
 const debug_controller_1 = require("./debug.controller");
 const cache_warming_service_1 = require("./cache-warming.service");
 const optimized_recommendations_service_1 = require("./optimized-recommendations.service");
-const optimized_recommendations_controller_1 = require("./optimized-recommendations.controller");
+const legacy_redirect_controller_1 = require("../legacy/legacy-redirect.controller");
 const composite_recommendations_service_1 = require("./composite-recommendations.service");
 const scoring_module_1 = require("../scoring/scoring.module");
 const caching_module_1 = require("../caching/caching.module");
@@ -60,11 +60,11 @@ exports.RecommendationsModule = RecommendationsModule = __decorate([
         ],
         controllers: [
             recommendations_controller_1.RecommendationsController,
-            optimized_recommendations_controller_1.OptimizedRecommendationsController,
             reviz_complete_experience_production_controller_1.ReVizCompleteExperienceProductionController,
             reviz_complete_experience_enhanced_controller_1.ReVizCompleteExperienceEnhancedController,
             reviz_composite_experience_controller_1.ReVizCompositeExperienceController,
-            debug_controller_1.DebugController
+            debug_controller_1.DebugController,
+            legacy_redirect_controller_1.LegacyRedirectController
         ],
         providers: [
             recommendations_service_1.RecommendationsService,
