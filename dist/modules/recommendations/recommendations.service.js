@@ -105,6 +105,9 @@ let RecommendationsService = RecommendationsService_1 = class RecommendationsSer
     }
     async getTemplateRecommendation(request) {
         const startTime = Date.now();
+        this.logger.log(`🔧 [TEMPLATE ENDPOINT] Starting template recommendation for song: ${request.song_id}`);
+        this.logger.log(`🔧 [TEMPLATE ENDPOINT] Service is using latest code with emergency bypass`);
+        this.logger.log(`🔧 [TEMPLATE ENDPOINT] Request: ${JSON.stringify(request)}`);
         const originalSongId = request.song_id;
         const normalizedSongId = this.normalizeSongId(request.song_id);
         if (originalSongId !== normalizedSongId) {
@@ -140,9 +143,18 @@ let RecommendationsService = RecommendationsService_1 = class RecommendationsSer
         this.logger.log(`🔍 [METHOD CALL] Song ID: ${songId}`);
         this.logger.log(`🔍 [METHOD CALL] Service exists: ${!!this.optimizedNnaRegistryService}`);
         this.logger.log(`🔍 [METHOD CALL] Service type: ${this.optimizedNnaRegistryService?.constructor?.name}`);
-        this.logger.log(`🔧 [EMERGENCY FIX] Bypassing NNA Registry for immediate testing`);
-        const availableTemplates = this.getFallbackTemplates(songId);
-        this.logger.log(`✅ [EMERGENCY FIX] Using fallback templates: ${availableTemplates.length} templates`);
+        this.logger.log(`🚀 [INTEGRATION] Calling NNA Registry with circuit breaker for song: ${songId}`);
+        let availableTemplates = [];
+        try {
+            this.logger.log(`🔍 [NNA REGISTRY] Fetching composites for song: ${songId}`);
+            availableTemplates = await this.optimizedNnaRegistryService.getCompositesForSong(songId);
+            this.logger.log(`✅ [NNA REGISTRY] Retrieved ${availableTemplates.length} composites from NNA Registry`);
+        }
+        catch (error) {
+            this.logger.warn(`⚠️ [NNA REGISTRY] Failed to fetch composites: ${error.message}`);
+            this.logger.log(`🔄 [FALLBACK] Using fallback templates for song: ${songId}`);
+            availableTemplates = this.getFallbackTemplates(songId);
+        }
         if (availableTemplates.length === 0) {
             this.logger.warn(`No templates found for song: ${songId}`);
             this.logger.warn(`🔄 [FALLBACK] Using fallback response for ${songId}`);
