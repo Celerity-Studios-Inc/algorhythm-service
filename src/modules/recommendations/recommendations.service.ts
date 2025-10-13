@@ -22,6 +22,14 @@ import { SCORING_THRESHOLDS } from '../../common/constants/compatibility-weights
 @Injectable()
 export class RecommendationsService {
   private readonly logger = new Logger(RecommendationsService.name);
+  
+  // 📊 CACHE MONITORING - Track cache performance
+  private cacheStats = {
+    hits: 0,
+    misses: 0,
+    sets: 0,
+    totalRequests: 0,
+  };
 
   constructor(
     @InjectModel(CompatibilityScore.name)
@@ -618,5 +626,33 @@ export class RecommendationsService {
       alternatives: fallbackTemplates.slice(1),
       total_available: fallbackTemplates.length,
     };
+  }
+
+  // 📊 CACHE MONITORING METHODS
+  private getCacheHitRate(): number {
+    const total = this.cacheStats.hits + this.cacheStats.misses;
+    return total > 0 ? (this.cacheStats.hits / total) * 100 : 0;
+  }
+
+  public getCacheStats() {
+    return {
+      ...this.cacheStats,
+      hitRate: this.getCacheHitRate(),
+      totalRequests: this.cacheStats.totalRequests,
+    };
+  }
+
+  private trackCacheHit() {
+    this.cacheStats.hits++;
+    this.cacheStats.totalRequests++;
+  }
+
+  private trackCacheMiss() {
+    this.cacheStats.misses++;
+    this.cacheStats.totalRequests++;
+  }
+
+  private trackCacheSet() {
+    this.cacheStats.sets++;
   }
 }

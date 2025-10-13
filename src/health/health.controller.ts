@@ -1,26 +1,40 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Inject } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { RecommendationsService } from '../modules/recommendations/recommendations.service';
 
 @Controller('health')
 @ApiTags('Health')
 export class HealthController {
+  constructor(
+    @Inject(RecommendationsService)
+    private readonly recommendationsService: RecommendationsService,
+  ) {}
   @Get()
   @ApiOperation({ summary: 'Service health check' })
   @ApiResponse({ status: 200, description: 'Service is healthy' })
   check() {
+    // 📊 CACHE MONITORING - Get cache statistics
+    const cacheStats = this.recommendationsService.getCacheStats();
+    
     return {
       status: 'ok',
       service: 'algorhythm-service',
       timestamp: new Date().toISOString(),
       version: process.env.npm_package_version || '1.0.0',
       environment: process.env.NODE_ENV || 'development',
+      cache: {
+        type: 'memory',
+        ...cacheStats,
+        maxSize: 100,
+        ttl: 600, // 10 minutes
+      },
       dependencies: {
         nna_registry: {
           status: 'connected',
           url: process.env.NNA_REGISTRY_URL || 'https://registry.dev.reviz.dev'
         },
         redis: {
-          status: 'connected',
+          status: process.env.REDIS_ENABLED === 'false' ? 'disabled' : 'connected',
           host: process.env.REDIS_HOST || 'localhost'
         },
         mongodb: {
