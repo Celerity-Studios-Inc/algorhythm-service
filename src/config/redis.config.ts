@@ -9,6 +9,13 @@ export const REDIS_CLIENT = 'REDIS_CLIENT';
     {
       provide: REDIS_CLIENT,
       useFactory: (configService: ConfigService) => {
+        // Check if Redis is disabled
+        const redisEnabled = configService.get<string>('REDIS_ENABLED');
+        if (redisEnabled === 'false') {
+          console.log('🔴 Redis is disabled via REDIS_ENABLED=false');
+          return null;
+        }
+        
         const redisUrl = configService.get<string>('REDIS_URL');
         
         if (!redisUrl) {
