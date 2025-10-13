@@ -1,66 +1,55 @@
-name: AlgoRhythm Service CI/CD (Working)
+# DISABLED - Using deploy-algorhythm.yml instead (bypasses Cloud Build)
+# name: AlgoRhythm Service CI/CD (Development) - WORKING
 
-on:
-  push:
-    branches: [ dev ]
-  pull_request:
-    branches: [ dev ]
+# on:
+#   push:
+#     branches:
+#       - dev
+#       - main
+
+env:
+  PROJECT_ID: revize-453014
+  SERVICE_NAME: algorhythm-service-dev
+  REGION: us-central1
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-        
-    - name: Install dependencies
-      run: npm ci --legacy-peer-deps
-      
-    - name: Build application
-      run: npm run build
-      
-    - name: Set up Cloud SDK
-      uses: google-github-actions/setup-gcloud@v2
-      with:
-        service_account_key: ${{ secrets.GCP_SA_KEY }}
-        project_id: ${{ secrets.GCP_PROJECT_ID }}
-        
-    - name: Configure Docker for GCR
-      run: gcloud auth configure-docker
-      
-    - name: Use working Dockerfile
-      run: |
-        cp Dockerfile.working Dockerfile
-        cp .dockerignore.working .dockerignore
-        
-    - name: Build Docker image
-      run: |
-        IMAGE_TAG="us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/algorhythm-repo/algorhythm-service-dev:${{ github.sha }}"
-        docker build --platform linux/amd64 --no-cache -t $IMAGE_TAG .
-        echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
-        
-    - name: Push Docker image
-      run: |
-        docker push ${{ env.IMAGE_TAG }}
-        
-    - name: Deploy to Cloud Run
-      run: |
-        gcloud run deploy algorhythm-service-dev \
-          --image ${{ env.IMAGE_TAG }} \
-          --platform managed \
-          --region us-central1 \
-          --allow-unauthenticated \
-          --port 8080 \
-          --memory 2Gi \
-          --cpu 2 \
-          --timeout 300 \
-          --concurrency 100 \
-          --max-instances 10 \
-          --min-instances 0
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Authenticate with Google Cloud using service account key
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      # Set up Cloud SDK
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+
+      # Build and deploy to Cloud Run
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy ${{ env.SERVICE_NAME }} \
+            --source . \
+            --region ${{ env.REGION }} \
+            --platform managed \
+            --allow-unauthenticated \
+            --set-env-vars="NNA_REGISTRY_URL=https://registry.dev.reviz.dev,NNA_API_KEY=reviz-dev-30390-13220-4896-9516-9001,NNA_REGISTRY_TIMEOUT=30000,NODE_ENV=development,PORT=8080,LOG_LEVEL=info" \
+            --timeout=300 \
+            --memory=512Mi \
+            --cpu=1 \
+            --max-instances=10 \
+            --min-instances=0
+
+      # Output service URL
+      - name: Get Service URL
+        run: |
+          SERVICE_URL=$(gcloud run services describe ${{ env.SERVICE_NAME }} --region ${{ env.REGION }} --format='value(status.url)')
+          echo "Service deployed to: $SERVICE_URL"
+          echo "Health check: $SERVICE_URL/api/health"
