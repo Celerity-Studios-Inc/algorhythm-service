@@ -57,6 +57,20 @@ async function bootstrap() {
     });
   });
 
+  // Add health endpoint at /api/health for compatibility
+  app.use('/api/health', (req, res) => {
+    res.json({
+      status: 'ok',
+      timestamp: new Date().toISOString(),
+      service: 'algorhythm-service',
+      version: '1.0.0',
+      environment: process.env.NODE_ENV || 'production',
+      port: parseInt(process.env.PORT || '3000'),
+      uptime: process.uptime(),
+      nodeVersion: process.version
+    });
+  });
+
   // Set global prefix for all routes
   app.setGlobalPrefix('api/v1');
 

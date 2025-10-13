@@ -91,7 +91,7 @@ export class NnaRegistryService {
             sort: 'createdAt',
             order: 'desc',
           },
-          timeout: 15000, // Longer timeout for composite queries
+          timeout: 2000, // 2 second timeout for P95 < 2s
         })
       );
 
@@ -340,7 +340,7 @@ export class NnaRegistryService {
           addresses,
         }, {
           headers: this.getHeaders(),
-          timeout: 15000,
+          timeout: 2000, // 2 second timeout for P95 < 2s
         })
       );
 
@@ -532,7 +532,7 @@ export class NnaRegistryService {
             sort: 'createdAt',
             order: 'desc',
           },
-          timeout: 30000,
+          timeout: 2000, // 2 second timeout for P95 < 2s
         })
       );
 
@@ -563,7 +563,7 @@ export class NnaRegistryService {
             sort: 'createdAt',
             order: 'desc',
           },
-          timeout: 30000,
+          timeout: 2000, // 2 second timeout for P95 < 2s
         })
       );
 
