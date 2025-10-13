@@ -23,7 +23,7 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
     // 🔧 CRITICAL FIX: Use the correct environment variable names from Secret Manager
     this.baseUrl = this.configService.get<string>('NNA_REGISTRY_URL') || 'https://registry.dev.reviz.dev';
     this.apiKey = this.configService.get<string>('NNA_API_KEY') || 'reviz-dev-30390-13220-4896-9516-9001';
-    this.timeout = parseInt(this.configService.get<string>('NNA_REGISTRY_TIMEOUT') || '2000', 10); // 2 second timeout for P95 < 2s
+    this.timeout = 2000; // HARDCODED: 2 second timeout for P95 < 2s - bypassing environment variable
     
     // 🔍 ADD DEBUG LOG
     console.error('=====================================');
