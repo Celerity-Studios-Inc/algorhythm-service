@@ -30,7 +30,7 @@ let NnaRegistryService = NnaRegistryService_1 = class NnaRegistryService {
             this.logger.debug(`Fetching asset by address: ${address}`);
             const response = await (0, rxjs_1.firstValueFrom)(this.httpService.get(url, {
                 headers: this.getHeaders(),
-                timeout: 5000,
+                timeout: 2000,
             }));
             if (response.data?.success && response.data?.data) {
                 this.logger.debug(`Successfully retrieved asset: ${address}`);
@@ -57,7 +57,7 @@ let NnaRegistryService = NnaRegistryService_1 = class NnaRegistryService {
                     sort: 'createdAt',
                     order: 'desc',
                 },
-                timeout: 10000,
+                timeout: 2000,
             }));
             if (response.data?.success && response.data?.data) {
                 const assets = response.data.data;
@@ -126,7 +126,7 @@ let NnaRegistryService = NnaRegistryService_1 = class NnaRegistryService {
                         order: 'desc',
                         composite_type: 'full',
                     },
-                    timeout: 5000,
+                    timeout: 2000,
                 }));
             }
             catch (error) {
@@ -140,7 +140,7 @@ let NnaRegistryService = NnaRegistryService_1 = class NnaRegistryService {
                         sort: 'createdAt',
                         order: 'desc',
                     },
-                    timeout: 5000,
+                    timeout: 2000,
                 }));
             }
             if (response.data?.success && response.data?.data) {
@@ -243,7 +243,7 @@ let NnaRegistryService = NnaRegistryService_1 = class NnaRegistryService {
             const response = await (0, rxjs_1.firstValueFrom)(this.httpService.get(url, {
                 headers: this.getHeaders(),
                 params,
-                timeout: 10000,
+                timeout: 2000,
             }));
             if (response.data?.success && response.data?.data) {
                 const results = response.data.data;
@@ -265,7 +265,7 @@ let NnaRegistryService = NnaRegistryService_1 = class NnaRegistryService {
             this.logger.debug(`Fetching metadata for asset: ${assetId}`);
             const response = await (0, rxjs_1.firstValueFrom)(this.httpService.get(url, {
                 headers: this.getHeaders(),
-                timeout: 5000,
+                timeout: 2000,
             }));
             if (response.data?.success && response.data?.data) {
                 return response.data.data;
@@ -310,7 +310,7 @@ let NnaRegistryService = NnaRegistryService_1 = class NnaRegistryService {
             const url = `${this.baseUrl}/api/v1/health`;
             const response = await (0, rxjs_1.firstValueFrom)(this.httpService.get(url, {
                 headers: this.getHeaders(),
-                timeout: 5000,
+                timeout: 2000,
             }));
             const responseTime = Date.now() - startTime;
             if (response.status === 200) {
@@ -393,7 +393,7 @@ let NnaRegistryService = NnaRegistryService_1 = class NnaRegistryService {
                     sort: 'createdAt',
                     order: 'desc',
                 },
-                timeout: 5000,
+                timeout: 2000,
             }));
             if (response.data?.success && response.data?.data) {
                 const assets = response.data.data;

@@ -20,7 +20,7 @@ exports.NnaIntegrationModule = NnaIntegrationModule = __decorate([
     (0, common_1.Module)({
         imports: [
             axios_1.HttpModule.register({
-                timeout: 10000,
+                timeout: 2000,
                 maxRedirects: 5,
             }),
             caching_module_1.CachingModule,
