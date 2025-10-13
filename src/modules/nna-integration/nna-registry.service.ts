@@ -29,7 +29,7 @@ export class NnaRegistryService {
       const response: AxiosResponse = await firstValueFrom(
         this.httpService.get(url, {
           headers: this.getHeaders(),
-          timeout: 5000,
+          timeout: 2000, // 2 second timeout for P95 < 2s
         })
       );
 
@@ -59,7 +59,7 @@ export class NnaRegistryService {
             sort: 'createdAt',
             order: 'desc',
           },
-          timeout: 10000,
+          timeout: 2000, // 2 second timeout for P95 < 2s
         })
       );
 
@@ -146,7 +146,7 @@ export class NnaRegistryService {
               order: 'desc',
               composite_type: 'full',
             },
-            timeout: 5000,
+            timeout: 2000, // 2 second timeout for P95 < 2s
           })
         );
       } catch (error) {
@@ -162,7 +162,7 @@ export class NnaRegistryService {
               sort: 'createdAt',
               order: 'desc',
             },
-            timeout: 5000,
+            timeout: 2000, // 2 second timeout for P95 < 2s
           })
         );
       }
@@ -289,7 +289,7 @@ export class NnaRegistryService {
         this.httpService.get(url, {
           headers: this.getHeaders(),
           params,
-          timeout: 10000,
+          timeout: 2000, // 2 second timeout for P95 < 2s
         })
       );
 
@@ -314,7 +314,7 @@ export class NnaRegistryService {
       const response: AxiosResponse = await firstValueFrom(
         this.httpService.get(url, {
           headers: this.getHeaders(),
-          timeout: 5000,
+          timeout: 2000, // 2 second timeout for P95 < 2s
         })
       );
 
@@ -370,7 +370,7 @@ export class NnaRegistryService {
       const response: AxiosResponse = await firstValueFrom(
         this.httpService.get(url, {
           headers: this.getHeaders(),
-          timeout: 5000,
+          timeout: 2000, // 2 second timeout for P95 < 2s
         })
       );
 
@@ -492,7 +492,7 @@ export class NnaRegistryService {
             sort: 'createdAt',
             order: 'desc',
           },
-          timeout: 5000,
+          timeout: 2000, // 2 second timeout for P95 < 2s
         })
       );
 

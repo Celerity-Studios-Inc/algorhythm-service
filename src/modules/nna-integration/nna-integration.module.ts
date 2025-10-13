@@ -8,7 +8,7 @@ import { CachingModule } from '../caching/caching.module';
 @Module({
   imports: [
     HttpModule.register({
-      timeout: 10000, // 10 second timeout
+      timeout: 2000, // 2 second timeout for P95 < 2s
       maxRedirects: 5,
     }),
     CachingModule, // 🔧 FIX: Always import CachingModule to prevent dependency injection failure
