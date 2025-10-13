@@ -20,8 +20,24 @@ exports.RedisModule = RedisModule = __decorate([
             {
                 provide: exports.REDIS_CLIENT,
                 useFactory: (configService) => {
-                    const redisUrl = configService.get('REDIS_URL') || 'redis://localhost:6379';
+                    const redisUrl = configService.get('REDIS_URL');
+                    if (!redisUrl) {
+                        console.error('❌ REDIS_URL environment variable is not set!');
+                        console.error('❌ Please ensure REDIS_URL is loaded from Secret Manager');
+                        if (process.env.NODE_ENV === 'development' && process.env.ALLOW_LOCALHOST_REDIS === 'true') {
+                            console.warn('⚠️ Using localhost Redis fallback for development');
+                            const fallbackUrl = 'redis://localhost:6379';
+                            console.log('🔴 Redis URL (fallback):', fallbackUrl);
+                            return new ioredis_1.default(fallbackUrl, {
+                                maxRetriesPerRequest: 3,
+                                keyPrefix: 'algorhythm:',
+                                lazyConnect: true,
+                            });
+                        }
+                        throw new Error('REDIS_URL environment variable is required');
+                    }
                     console.log('🔴 Redis URL:', redisUrl.includes('localhost') ? 'fallback-local' : 'cloud-redis');
+                    console.log('🔴 Redis URL (masked):', redisUrl.replace(/:[^@]*@/, ':***@'));
                     const redis = new ioredis_1.default(redisUrl, {
                         maxRetriesPerRequest: 3,
                         keyPrefix: 'algorhythm:',
@@ -32,6 +48,13 @@ exports.RedisModule = RedisModule = __decorate([
                     });
                     redis.on('error', (error) => {
                         console.error('❌ Redis connection error:', error);
+                        console.error('❌ Redis URL (masked):', redisUrl.replace(/:[^@]*@/, ':***@'));
+                    });
+                    redis.on('ready', () => {
+                        console.log('✅ Redis is ready for commands');
+                    });
+                    redis.on('close', () => {
+                        console.log('⚠️ Redis connection closed');
                     });
                     return redis;
                 },

@@ -68,7 +68,8 @@ jobs:
             --region ${{ env.REGION }} \
             --platform managed \
             --allow-unauthenticated \
-            --set-env-vars="NNA_REGISTRY_URL=https://registry.dev.reviz.dev,NNA_API_KEY=reviz-dev-30390-13220-4896-9516-9001,NNA_REGISTRY_TIMEOUT=30000,NODE_ENV=development,LOG_LEVEL=info" \
+            --set-secrets="MONGODB_URI=algorhythm-mongodb-uri-dev:latest,REDIS_URL=algorhythm-redis-url-dev:latest,JWT_SECRET=algorhythm-jwt-secret-dev:latest,NNA_REGISTRY_URL=algorhythm-nna-registry-url-dev:latest,NNA_API_KEY=algorhythm-nna-api-key-dev:latest,NNA_REGISTRY_TIMEOUT=algorhythm-nna-registry-timeout-dev:latest" \
+            --set-env-vars="NODE_ENV=development,LOG_LEVEL=info" \
             --timeout=300 \
             --memory=1Gi \
             --cpu=1 \

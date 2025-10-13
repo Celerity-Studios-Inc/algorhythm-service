@@ -86,7 +86,7 @@ let NnaRegistryService = NnaRegistryService_1 = class NnaRegistryService {
                     sort: 'createdAt',
                     order: 'desc',
                 },
-                timeout: 15000,
+                timeout: 2000,
             }));
             if (response.data?.success && response.data?.data) {
                 const allComposites = response.data.data;
@@ -288,7 +288,7 @@ let NnaRegistryService = NnaRegistryService_1 = class NnaRegistryService {
                 addresses,
             }, {
                 headers: this.getHeaders(),
-                timeout: 15000,
+                timeout: 2000,
             }));
             if (response.data?.success && response.data?.data) {
                 const assets = response.data.data;
@@ -424,7 +424,7 @@ let NnaRegistryService = NnaRegistryService_1 = class NnaRegistryService {
                     sort: 'createdAt',
                     order: 'desc',
                 },
-                timeout: 30000,
+                timeout: 2000,
             }));
             if (response.data?.success && response.data?.data) {
                 const songs = response.data.data;
@@ -452,7 +452,7 @@ let NnaRegistryService = NnaRegistryService_1 = class NnaRegistryService {
                     sort: 'createdAt',
                     order: 'desc',
                 },
-                timeout: 30000,
+                timeout: 2000,
             }));
             if (response.data?.success && response.data?.data) {
                 const templates = response.data.data;
