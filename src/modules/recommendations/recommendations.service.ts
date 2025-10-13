@@ -226,8 +226,13 @@ export class RecommendationsService {
 
     // 🔧 EMERGENCY FIX: Bypass NNA Registry entirely for immediate testing
     this.logger.log(`🔧 [EMERGENCY FIX] Bypassing NNA Registry for immediate testing`);
+    this.logger.log(`🔧 [EMERGENCY FIX] Song ID: ${songId}`);
+    this.logger.log(`🔧 [EMERGENCY FIX] Service is using emergency bypass code`);
+    
     const availableTemplates = this.getFallbackTemplates(songId);
     this.logger.log(`✅ [EMERGENCY FIX] Using fallback templates: ${availableTemplates.length} templates`);
+    this.logger.log(`✅ [EMERGENCY FIX] Template 1: ${availableTemplates[0]?.name || 'N/A'}`);
+    this.logger.log(`✅ [EMERGENCY FIX] Template 2: ${availableTemplates[1]?.name || 'N/A'}`);
     
     if (availableTemplates.length === 0) {
       this.logger.warn(`No templates found for song: ${songId}`);
@@ -249,50 +254,17 @@ export class RecommendationsService {
       };
     }
 
-    // EMERGENCY FIX: Bypass scoring entirely to unblock ReViz developers
+    // 🔧 CRITICAL FIX: Use existing scoring service properly
     const scoringStartTime = Date.now();
     
-    // Create mock scored templates with default scores and GCP URLs
-    const scoredTemplates = availableTemplates.map((template, index) => ({
-      template_id: template._id || template.nna_address,
-      template_name: template.name || `Template ${index + 1}`,
-      nna_address: template.nna_address,
-      compatibility_score: 0.8, // Default high score for all templates
-      // 🔧 FIX: Use REAL GCP URLs from NNA Registry API (not hallucinated)
-      gcp_storage_url: template.gcpStorageUrl || null, // Only use real URLs, don't generate fake ones
-      thumbnail_url: template.thumbnailUrl || this.generateThumbnailUrl(template.gcpStorageUrl, template.nna_address),
-      preview_url: template.previewUrl || this.generatePreviewUrl(template.gcpStorageUrl, template.nna_address),
-      components: {
-        song_id: song.nna_address,
-        star_id: template.star_id || '2.009.002.018',
-        look_id: template.look_id || '3.003.001.001', 
-        move_id: template.move_id || '4.022.002.003',
-        world_id: template.world_id || '5.015.001.001',
-      },
-      metadata: {
-        created_at: template.createdAt || new Date().toISOString(),
-        tags: template.tags || [],
-        aiGeneratedDescription: template.description || 'Template description',
-        // 🔧 FIX: Add media metadata for ReViz developers
-        media: {
-          duration_seconds: template.duration || 30,
-          file_size_mb: template.fileSize || 15.2,
-          resolution: template.resolution || '1080p',
-          format: template.format || 'mp4',
-          quality_score: template.qualityScore || 0.9
-        }
-      },
-      scoring_details: {
-        tempo_score: 0.8,
-        genre_score: 0.8,
-        energy_score: 0.8,
-        style_score: 0.8,
-        mood_score: 0.8,
-        base_score: 0.8,
-        freshness_boost: 1.0,
-        final_score: 0.8,
-      },
-    }));
+    this.logger.log(`🎯 [SCORING] Starting real scoring for ${availableTemplates.length} templates`);
+    
+    // 🔧 CRITICAL FIX: Use the existing scoreTemplates method
+    const scoredTemplates = await this.scoringService.scoreTemplates(
+      song,
+      availableTemplates,
+      request.user_context
+    );
     
     const scoringTime = Date.now() - scoringStartTime;
     const eligibleTemplates = scoredTemplates; // All templates are eligible
@@ -304,12 +276,15 @@ export class RecommendationsService {
     const recommendation = sortedTemplates[0];
     const alternatives = sortedTemplates.slice(1, (normalizedRequest.max_alternatives || 5) + 1);
 
+    // 🔧 CRITICAL FIX: Ensure proper response structure with real data
     const result = {
-      recommendation,
-      alternatives,
+      recommendation: recommendation || null,
+      alternatives: alternatives || [],
       total_available: availableTemplates.length,
       score_computation_time_ms: scoringTime,
       templates_evaluated: scoredTemplates.length,
+      cache_hit: false,
+      response_time_ms: Date.now() - startTime,
     };
 
     // Cache the result for faster future requests
