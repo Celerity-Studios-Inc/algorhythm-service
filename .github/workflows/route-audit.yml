@@ -1,0 +1,62 @@
+name: Route Audit
+on:
+  pull_request:
+    paths:
+      - 'src/**/*.controller.ts'
+      - 'src/**/*.module.ts'
+      - 'src/app.module.ts'
+
+jobs:
+  route-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Audit Routes for Conflicts
+        run: |
+          echo "🔍 Auditing routes for conflicts..."
+          
+          # Check for duplicate route patterns
+          echo "Checking for duplicate @Controller paths..."
+          CONTROLLERS=$(find src -name "*.controller.ts" -exec grep -l "@Controller" {} \;)
+          
+          for controller in $CONTROLLERS; do
+            echo "📁 Checking $controller"
+            grep -n "@Controller" "$controller" || echo "  No @Controller found"
+          done
+          
+          # Check for legacy paths
+          echo "Checking for legacy /api/v1/algorhythm paths..."
+          if grep -r "algorhythm" src/ --include="*.ts" | grep -v "legacy-redirect.controller.ts" | grep -v "algorhythm-export"; then
+            echo "❌ Found legacy paths outside of LegacyRedirectController!"
+            exit 1
+          fi
+          
+          # Check for canonical route consistency
+          echo "Checking canonical route /api/v1/recommend/template..."
+          if ! grep -r "recommend.*template" src/ --include="*.ts" | grep -q "recommendations.controller.ts"; then
+            echo "❌ Canonical route not found in recommendations.controller.ts!"
+            exit 1
+          fi
+          
+          echo "✅ Route audit passed - no conflicts detected"
+          
+      - name: Check for Deprecated Endpoints
+        run: |
+          echo "🔍 Checking for deprecated endpoints..."
+          
+          # Ensure no new /api/v1/algorhythm routes are added
+          if grep -r "api/v1/algorhythm" src/ --include="*.ts" | grep -v "legacy-redirect.controller.ts"; then
+            echo "❌ Found new /api/v1/algorhythm routes! Use /api/v1/recommend instead."
+            exit 1
+          fi
+          
+          echo "✅ No deprecated endpoints found"

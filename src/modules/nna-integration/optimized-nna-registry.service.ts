@@ -23,7 +23,7 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
     // 🔧 CRITICAL FIX: Use the correct environment variable names from Secret Manager
     this.baseUrl = this.configService.get<string>('NNA_REGISTRY_URL') || 'https://registry.dev.reviz.dev';
     this.apiKey = this.configService.get<string>('NNA_API_KEY') || 'reviz-dev-30390-13220-4896-9516-9001';
-    this.timeout = parseInt(this.configService.get<string>('NNA_REGISTRY_TIMEOUT') || '30000', 10);
+    this.timeout = parseInt(this.configService.get<string>('NNA_REGISTRY_TIMEOUT') || '2000', 10); // 2 second timeout for P95 < 2s
     
     // 🔍 ADD DEBUG LOG
     console.error('=====================================');
@@ -159,7 +159,7 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
   }
 
   /**
-   * 🚀 OPTIMIZED: Get composites with circuit breaker (5s timeout)
+   * 🚀 OPTIMIZED: Get composites with circuit breaker (2s timeout with Promise.race)
    */
   async getCompositesForSongOptimized(songId: string): Promise<any[]> {
     const startTime = Date.now();
@@ -171,14 +171,15 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
       return cached;
     }
 
-    // Use circuit breaker for NNA Registry call
+    // Use circuit breaker for NNA Registry call with Promise.race for aggressive timeout
     return await this.circuitBreaker.executeWithCircuitBreaker(
       async () => {
         const url = `${this.baseUrl}/api/v1/assets/composites/by-song/${songId}`;
         
         this.logger.log(`🔍 [API CALL] Calling NNA Registry: ${url}`);
         
-        const response: AxiosResponse = await firstValueFrom(
+        // 🚀 AGGRESSIVE TIMEOUT: Promise.race with 2s timeout for P95 < 2s
+        const apiCall = firstValueFrom(
           this.httpService.get(url, {
             headers: this.getHeaders(),
             params: {
@@ -186,9 +187,15 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
               compositeType: 'full',
               includeMetadata: true,
             },
-            timeout: 5000, // 5 second timeout
+            timeout: 2000, // 2 second timeout for P95 < 2s
           })
         );
+
+        const timeoutPromise = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('NNA Registry timeout after 2s')), 2000)
+        );
+
+        const response: AxiosResponse = await Promise.race([apiCall, timeoutPromise]) as AxiosResponse;
 
         if (response.data?.success && response.data?.data) {
           const composites = response.data.data;
@@ -288,7 +295,7 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
       const response: AxiosResponse = await firstValueFrom(
         this.httpService.get(url, {
           headers: this.getHeaders(),
-          timeout: Math.min(this.timeout, 5000), // Quick health check, but respect max timeout
+          timeout: Math.min(this.timeout, 2000), // Quick health check, 2s max for P95 < 2s
         })
       );
       
@@ -317,7 +324,7 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
       const response: AxiosResponse = await firstValueFrom(
         this.httpService.get(`${this.baseUrl}/health`, {
           headers: this.getHeaders(),
-          timeout: Math.min(this.timeout, 10000), // Use configurable timeout, max 10s for test
+          timeout: Math.min(this.timeout, 2000), // Use configurable timeout, max 2s for P95 < 2s
         })
       );
       

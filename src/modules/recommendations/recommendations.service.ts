@@ -294,15 +294,32 @@ export class RecommendationsService {
       templates_evaluated: scoredTemplates.length,
     });
 
-    const totalTime = Date.now() - startTime;
-    this.logger.debug(`✅ OPTIMIZED Template recommendation completed in ${totalTime}ms for song: ${songId}`);
-    
-    // 🚀 PERFORMANCE MONITORING: Track metrics
-    if (totalTime > 500) {
-      this.logger.warn(`⚠️ Slow template recommendation: ${totalTime}ms for song ${songId}`);
-    } else {
-      this.logger.log(`🚀 FAST template recommendation: ${totalTime}ms for song ${songId}`);
-    }
+        const totalTime = Date.now() - startTime;
+        this.logger.debug(`✅ OPTIMIZED Template recommendation completed in ${totalTime}ms for song: ${songId}`);
+        
+        // 🚀 PERFORMANCE MONITORING: Track metrics with structured logging
+        const performanceMetrics = {
+          event: 'template_recommendation_performance',
+          song_id: songId,
+          response_time_ms: totalTime,
+          scoring_time_ms: scoringTime,
+          templates_evaluated: scoredTemplates.length,
+          cache_hit: false,
+          performance_tier: totalTime < 2000 ? 'excellent' : totalTime < 5000 ? 'good' : 'needs_optimization',
+          timestamp: new Date().toISOString()
+        };
+        
+        if (totalTime > 2000) {
+          this.logger.warn({
+            message: `⚠️ Slow template recommendation: ${totalTime}ms for song ${songId}`,
+            ...performanceMetrics
+          });
+        } else {
+          this.logger.log({
+            message: `🚀 FAST template recommendation: ${totalTime}ms for song ${songId}`,
+            ...performanceMetrics
+          });
+        }
 
     return result;
   }
