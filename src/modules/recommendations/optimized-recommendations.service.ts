@@ -95,9 +95,9 @@ export class OptimizedRecommendationsService {
     const scoreStartTime = Date.now();
     
     // 🔧 CIRCUIT BREAKER: Add timeout to prevent hanging
-    const compositePromise = this.optimizedNnaRegistryService.getCompositesForSong(request.song_id);
+    const compositePromise = this.optimizedNnaRegistryService.getCompositesForSongOptimized(request.song_id);
     const timeoutPromise = new Promise((_, reject) => 
-      setTimeout(() => reject(new Error('NNA Registry timeout')), 2000) // 2 second timeout for P95 < 2s
+      setTimeout(() => reject(new Error('NNA Registry timeout')), this.optimizedNnaRegistryService.timeout) // Use configurable timeout
     );
     
     let composites: any[] = [];

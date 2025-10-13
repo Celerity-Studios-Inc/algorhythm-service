@@ -195,12 +195,12 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
               compositeType: 'full',
               includeMetadata: true,
             },
-            timeout: 2000, // 2 second timeout for P95 < 2s
+            timeout: this.timeout, // Use configurable timeout
           })
         );
 
         const timeoutPromise = new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('NNA Registry timeout after 2s')), 2000)
+          setTimeout(() => reject(new Error(`NNA Registry timeout after ${this.timeout}ms`)), this.timeout)
         );
 
         const response: AxiosResponse = await Promise.race([apiCall, timeoutPromise]) as AxiosResponse;
