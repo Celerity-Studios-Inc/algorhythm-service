@@ -2,6 +2,7 @@ import { Injectable, Logger, Inject, Optional, OnModuleInit } from '@nestjs/comm
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { firstValueFrom } from 'rxjs';
+import { timeout, catchError } from 'rxjs/operators';
 import { AxiosResponse } from 'axios';
 import { CacheService } from '../caching/cache.service';
 import { CACHE_KEYS, CACHE_TTL } from '../../common/constants/cache-keys';
