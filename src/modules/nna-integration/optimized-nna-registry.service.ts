@@ -20,9 +20,9 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
     private readonly circuitBreaker: CircuitBreakerService,
     @Optional() private readonly cacheService: CacheService | null,
   ) {
-    // 🔧 CRITICAL FIX: Use the correct environment variable names from Secret Manager
-    this.baseUrl = this.configService.get<string>('NNA_REGISTRY_URL') || 'https://registry.dev.reviz.dev';
-    this.apiKey = this.configService.get<string>('NNA_API_KEY') || 'reviz-dev-30390-13220-4896-9516-9001';
+    // 🔧 CRITICAL FIX: Use the correct environment variable names from Secret Manager and trim newlines
+    this.baseUrl = (this.configService.get<string>('NNA_REGISTRY_URL') || 'https://registry.dev.reviz.dev').trim();
+    this.apiKey = (this.configService.get<string>('NNA_API_KEY') || 'reviz-dev-30390-13220-4896-9516-9001').trim();
     this.timeout = parseInt(this.configService.get<string>('NNA_REGISTRY_TIMEOUT') || '5000', 10); // 5 second timeout to allow NNA Registry processing
     
     // 🔍 ADD DEBUG LOG
