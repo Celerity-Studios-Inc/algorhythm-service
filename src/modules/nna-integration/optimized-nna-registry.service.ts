@@ -88,8 +88,8 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
     // 🔧 CIRCUIT BREAKER: Check if NNA Registry is healthy first
     const healthCheck = await this.quickHealthCheck();
     if (!healthCheck.isHealthy) {
-      this.logger.warn(`🔄 [CIRCUIT BREAKER] NNA Registry unhealthy, using fallback for ${songId}`);
-      return this.getFallbackComposites(songId);
+      this.logger.warn(`🔄 [CIRCUIT BREAKER] NNA Registry unhealthy for ${songId}`);
+      throw new Error(`NNA Registry service unavailable: ${healthCheck.error}`);
     }
     
     // Check cache first
@@ -141,29 +141,25 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
     } catch (error) {
       const duration = Date.now() - startTime;
       
-      // 🔧 CRITICAL FIX: Enhanced error handling with circuit breaker logging
-      if (error.message?.includes('timeout')) {
-        this.logger.warn(`⏰ [CIRCUIT BREAKER] NNA Registry timeout after ${duration}ms for song ${songId} - using fallback`);
-      } else if (error.code === 'ECONNABORTED') {
-        this.logger.warn(`⏰ [CIRCUIT BREAKER] Request aborted after ${duration}ms for song ${songId} - using fallback`);
-      } else if (error.code === 'ENOTFOUND' || error.code === 'ECONNREFUSED') {
-        this.logger.warn(`🔌 [CIRCUIT BREAKER] Cannot reach NNA Registry at ${this.baseUrl} for song ${songId} - using fallback`);
-      } else if (error.response?.status === 404) {
-        this.logger.warn(`🔍 [NOT FOUND] No composites found for song ${songId} - using fallback`);
+      // 🔧 CRITICAL FIX: Remove all fallback logic - throw proper errors
+      if (error.response?.status === 404) {
+        this.logger.warn(`🔍 [NOT FOUND] No composites found for song ${songId}`);
+        throw new Error(`No composites found for song: ${songId}`);
       } else if (error.response?.status >= 500) {
-        this.logger.warn(`🚨 [SERVER ERROR] NNA Registry server error ${error.response.status} for song ${songId} - using fallback`);
+        this.logger.warn(`🚨 [SERVER ERROR] NNA Registry server error ${error.response.status} for song ${songId}`);
+        throw new Error(`NNA Registry server error: ${error.response.status}`);
+      } else if (error.code === 'ENOTFOUND' || error.code === 'ECONNREFUSED') {
+        this.logger.warn(`🔌 [CONNECTION ERROR] Cannot reach NNA Registry at ${this.baseUrl} for song ${songId}`);
+        throw new Error(`Cannot reach NNA Registry: ${error.message}`);
       } else {
-        this.logger.warn(`❌ [CIRCUIT BREAKER] API call failed after ${duration}ms for song ${songId}: ${error.message} - using fallback`);
+        this.logger.warn(`❌ [ERROR] NNA Registry error for ${songId}: ${error.message}`);
+        throw new Error(`NNA Registry error: ${error.message}`);
       }
-      
-      // 🔧 CRITICAL FIX: Always return fallback data immediately
-      this.logger.log(`🔄 [FALLBACK] Circuit breaker triggered - returning fallback composites for ${songId}`);
-      return this.getFallbackComposites(songId);
     }
 
-    // 🔧 CRITICAL FIX: Always return fallback instead of empty array
-    this.logger.warn(`🔄 [FALLBACK] No data received, using fallback for ${songId}`);
-    return this.getFallbackComposites(songId);
+    // 🔧 CRITICAL FIX: No data received - this should not happen
+    this.logger.warn(`⚠️ [NO DATA] No data received for ${songId}`);
+    throw new Error(`No data received from NNA Registry for song: ${songId}`);
   }
 
   /**
