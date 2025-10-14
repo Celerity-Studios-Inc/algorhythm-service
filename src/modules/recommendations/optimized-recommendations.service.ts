@@ -94,15 +94,10 @@ export class OptimizedRecommendationsService {
     // Step 3: Fast composite fetch with optimized NNA Registry and circuit breaker
     const scoreStartTime = Date.now();
     
-    // 🔧 CIRCUIT BREAKER: Add timeout to prevent hanging
-    const compositePromise = this.optimizedNnaRegistryService.getCompositesForSongOptimized(request.song_id);
-    const timeoutPromise = new Promise((_, reject) => 
-      setTimeout(() => reject(new Error('NNA Registry timeout')), this.optimizedNnaRegistryService.timeout) // Use configurable timeout
-    );
-    
+    // 🔧 CIRCUIT BREAKER: Use NNA Registry with built-in timeout
     let composites: any[] = [];
     try {
-      composites = await Promise.race([compositePromise, timeoutPromise]) as any[];
+      composites = await this.optimizedNnaRegistryService.getCompositesForSongOptimized(request.song_id);
     } catch (error) {
       this.logger.warn(`🔄 [CIRCUIT BREAKER] NNA Registry failed: ${error.message}`);
       return this.getFallbackResponse(request);
