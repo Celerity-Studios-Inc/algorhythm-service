@@ -462,4 +462,63 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
     }
     return chunks;
   }
+
+  /**
+   * Convert HFN to MFA format for NNA Registry calls
+   * @param hfn - Human-Friendly Name (e.g., G.POP.TEE.002)
+   * @returns Machine-Friendly Address (e.g., 1.018.003.002)
+   */
+  async convertHfnToMfa(hfn: string): Promise<string> {
+    try {
+      this.logger.log(`🔄 [HFN→MFA] Converting HFN to MFA: ${hfn}`);
+      
+      // Parse HFN format: L.CAT.SUB.XXX (e.g., G.POP.TEE.002)
+      const hfnParts = hfn.split('.');
+      if (hfnParts.length !== 4) {
+        this.logger.warn(`Invalid HFN format: ${hfn}`);
+        return hfn;
+      }
+
+      const [layer, category, subcategory, sequential] = hfnParts;
+      
+      // Use efficient filtering API to find matching asset
+      const url = `${this.baseUrl}/api/v1/assets`;
+      this.logger.debug(`Converting HFN: ${hfn} (Layer: ${layer}, Category: ${category}, Subcategory: ${subcategory})`);
+
+      const response: AxiosResponse = await firstValueFrom(
+        this.httpService.get(url, {
+          headers: this.getHeaders(),
+          params: {
+            layer,
+            category,
+            subcategory,
+            limit: 100,
+            sort: 'createdAt',
+            order: 'desc',
+          },
+          timeout: this.timeout,
+        })
+      );
+
+      if (response.data?.data && Array.isArray(response.data.data)) {
+        const assets = response.data.data;
+        // Look for an asset with matching name/friendlyName
+        const matchingAsset = assets.find(asset => 
+          asset.name === hfn || 
+          asset.friendlyName === hfn
+        );
+
+        if (matchingAsset && matchingAsset.nna_address) {
+          this.logger.log(`✅ [HFN→MFA] Found MFA for HFN ${hfn}: ${matchingAsset.nna_address}`);
+          return matchingAsset.nna_address;
+        }
+      }
+
+      this.logger.warn(`No MFA found for HFN: ${hfn}`);
+      return hfn; // Return original if no conversion found
+    } catch (error) {
+      this.logger.warn(`HFN conversion error for ${hfn}:`, error.message);
+      return hfn; // Return original if conversion fails
+    }
+  }
 }

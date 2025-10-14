@@ -112,21 +112,27 @@ export class RecommendationsService {
   }
 
   /**
-   * Normalize song ID from MFA to HFN format
+   * Normalize song ID - convert HFN to MFA format for NNA Registry calls
    * @param songId - Input song ID (MFA or HFN format)
-   * @returns Normalized HFN format song ID
+   * @returns MFA format song ID for NNA Registry
    */
-  private normalizeSongId(songId: string): string {
-    // If already HFN format (contains dots), return as-is
-    if (songId.includes('.')) {
+  private async normalizeSongId(songId: string): Promise<string> {
+    // If already MFA format (contains dots and numbers), return as-is
+    if (/^\d+\.\d+\.\d+\.\d+$/.test(songId)) {
       return songId;
     }
     
-    // If MFA format (all digits), convert to HFN
-    if (/^\d+$/.test(songId)) {
-      // Example: "1018003002" → "1.018.003.002"
-      const parts = songId.match(/.{1,3}/g) || [];
-      return parts.join('.');
+    // If HFN format (contains letters and dots), convert to MFA
+    if (/^[A-Z]\./.test(songId)) {
+      this.logger.log(`🔄 [HFN→MFA] Converting HFN to MFA: ${songId}`);
+      try {
+        const mfaId = await this.optimizedNnaRegistryService.convertHfnToMfa(songId);
+        this.logger.log(`✅ [HFN→MFA] Converted ${songId} → ${mfaId}`);
+        return mfaId;
+      } catch (error) {
+        this.logger.warn(`⚠️ [HFN→MFA] Conversion failed for ${songId}: ${error.message}`);
+        return songId; // Return original if conversion fails
+      }
     }
     
     // Unknown format, return as-is
@@ -150,13 +156,13 @@ export class RecommendationsService {
     this.logger.log(`🔧 [TEMPLATE ENDPOINT] Service is using latest code with emergency bypass`);
     this.logger.log(`🔧 [TEMPLATE ENDPOINT] Request: ${JSON.stringify(request)}`);
     
-    // 🔧 MFA→HFN NORMALIZATION: Convert input to canonical format
+    // 🔧 HFN→MFA NORMALIZATION: Convert input to MFA format for NNA Registry
     const originalSongId = request.song_id;
-    const normalizedSongId = this.normalizeSongId(request.song_id);
+    const normalizedSongId = await this.normalizeSongId(request.song_id);
     
     // Log normalization for observability
     if (originalSongId !== normalizedSongId) {
-      this.logger.log(`🔄 [NORMALIZATION] MFA→HFN: ${originalSongId} → ${normalizedSongId}`);
+      this.logger.log(`🔄 [NORMALIZATION] HFN→MFA: ${originalSongId} → ${normalizedSongId}`);
     }
     
     // Use normalized ID for processing
@@ -266,8 +272,7 @@ export class RecommendationsService {
     
     if (availableTemplates.length === 0) {
       this.logger.warn(`No templates found for song: ${songId}`);
-      this.logger.warn(`🔄 [FALLBACK] Using fallback response for ${songId}`);
-      return this.getFallbackResponse(normalizedRequest);
+      throw new NotFoundException(`No templates available for song: ${songId}`);
     }
 
     // PERFORMANCE OPTIMIZATION: Check cache first for instant responses

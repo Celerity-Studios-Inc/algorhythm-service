@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { TemplateRecommendationDto } from './dto/template-recommendation.dto';
 import { TemplateRecommendation } from './interfaces/recommendation.interface';
 import { OptimizedNnaRegistryService } from '../nna-integration/optimized-nna-registry.service';
@@ -118,7 +118,7 @@ export class OptimizedRecommendationsService {
     
     if (composites.length === 0) {
       this.logger.warn(`No composites found for song: ${request.song_id}`);
-      return this.getFallbackResponse(request);
+      throw new NotFoundException(`No templates available for song: ${request.song_id}`);
     }
 
     // Step 4: Batch score computation
