@@ -147,7 +147,7 @@ export class OptimizedRecommendationsService {
     };
     } catch (error) {
       this.logger.error(`Failed to get optimized recommendation for ${request.song_id}:`, error);
-      return this.getFallbackResponse(request);
+      throw new NotFoundException(`Failed to get recommendation: ${error.message}`);
     }
   }
 
@@ -207,7 +207,7 @@ export class OptimizedRecommendationsService {
             templates_evaluated: scoredTemplates.length,
           });
         } else {
-          results.set(request.song_id, this.getFallbackResponse(request));
+          results.set(request.song_id, { error: `No templates available for song: ${request.song_id}` });
         }
       }
     }
@@ -254,7 +254,7 @@ export class OptimizedRecommendationsService {
 
   private formatRecommendationResult(scoredTemplates: TemplateRecommendation[], request: TemplateRecommendationDto) {
     if (scoredTemplates.length === 0) {
-      return this.getFallbackResponse(request);
+      throw new NotFoundException(`No templates available for song: ${request.song_id}`);
     }
 
     // Sort by compatibility score
