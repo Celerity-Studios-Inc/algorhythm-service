@@ -41,12 +41,12 @@ import { IndexingModule } from './modules/indexing/indexing.module';
       ],
     }),
 
-    // Database connection (optional for development)
-    ...(process.env.MONGODB_URI ? [MongooseModule.forRootAsync({
+    // Database connection (required for RecommendationsModule)
+    MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => {
-        const mongoUri = configService.get<string>('MONGODB_URI');
-        console.log('🗄️  MongoDB URI: cloud-database');
+        const mongoUri = configService.get<string>('MONGODB_URI') || 'mongodb://localhost:27017/algorhythm-dev';
+        console.log('🗄️  MongoDB URI:', mongoUri);
         
         return {
           uri: mongoUri,
@@ -55,7 +55,7 @@ import { IndexingModule } from './modules/indexing/indexing.module';
         };
       },
       inject: [ConfigService],
-    })] : []),
+    }),
 
     // Redis connection (optional for development)
     ...(process.env.REDIS_URL ? [RedisModule] : []),
@@ -98,7 +98,6 @@ import { IndexingModule } from './modules/indexing/indexing.module';
 
     // Feature modules (PHASE 2: Re-enable core functionality)
     AuthModule,
-    AlgorhythmModule, // 🚨 CRITICAL FIX: Add missing Algorhythm module
     HealthModule, // ✅ FIX: Add health check endpoint
     NnaIntegrationModule, // ✅ RE-ENABLED: NNA Registry API integration
     WebhookModule, // ✅ RE-ENABLED: Webhook endpoints for NNA Registry
