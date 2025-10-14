@@ -179,28 +179,17 @@ export class RecommendationsService {
     //   }
     // }
     
-    // Check cache first
-    const primaryCacheKey = `${CACHE_KEYS.TEMPLATE_RECOMMENDATION}:${normalizedSongId}:${JSON.stringify(normalizedRequest.user_context)}`;
-    const primaryCachedResult = await this.cacheService.get(primaryCacheKey);
+    // 🚀 PERFORMANCE FIX: Bypass cache operations for sub-2-second response
+    // const primaryCacheKey = `${CACHE_KEYS.TEMPLATE_RECOMMENDATION}:${normalizedSongId}:${JSON.stringify(normalizedRequest.user_context)}`;
+    // const primaryCachedResult = await this.cacheService.get(primaryCacheKey);
     
-    if (primaryCachedResult) {
-      this.logger.debug(`Cache hit for template recommendation: ${normalizedSongId}`);
-      
-      // Track analytics for cached result
-      await this.analyticsService.trackEvent({
-        event_type: 'template_recommendation_served',
-        user_id: normalizedRequest.user_context.user_id,
-        song_id: normalizedSongId,
-        template_id: (primaryCachedResult as any).recommendation?.template_id || 'unknown',
-        cache_hit: true,
-        response_time_ms: Date.now() - startTime,
-      });
-
-      return {
-        ...(primaryCachedResult as any),
-        cache_hit: true,
-      };
-    }
+    // if (primaryCachedResult) {
+    //   this.logger.debug(`Cache hit for template recommendation: ${normalizedSongId}`);
+    //   return {
+    //     ...(primaryCachedResult as any),
+    //     cache_hit: true,
+    //   };
+    // }
 
     // 🔧 CRITICAL FIX: Use normalized HFN song ID
     const songId = normalizedSongId;
@@ -256,19 +245,19 @@ export class RecommendationsService {
       throw new NotFoundException(`No templates available for song: ${songId}`);
     }
 
-    // PERFORMANCE OPTIMIZATION: Check cache first for instant responses
-    const secondaryCacheKey = `recommendation:template:${songId}:${normalizedRequest.user_context.user_id}`;
-    const secondaryCachedResult = await this.cacheService.get(secondaryCacheKey);
+    // 🚀 PERFORMANCE FIX: Bypass secondary cache operations for sub-2-second response
+    // const secondaryCacheKey = `recommendation:template:${songId}:${normalizedRequest.user_context.user_id}`;
+    // const secondaryCachedResult = await this.cacheService.get(secondaryCacheKey);
     
-    if (secondaryCachedResult) {
-      this.logger.debug(`Cache hit for song: ${songId}`);
-      return {
-        ...(secondaryCachedResult as any),
-        cache_hit: true,
-        score_computation_time_ms: 0,
-        templates_evaluated: (secondaryCachedResult as any).alternatives?.length + 1 || 1,
-      };
-    }
+    // if (secondaryCachedResult) {
+    //   this.logger.debug(`Cache hit for song: ${songId}`);
+    //   return {
+    //     ...(secondaryCachedResult as any),
+    //     cache_hit: true,
+    //     score_computation_time_ms: 0,
+    //     templates_evaluated: (secondaryCachedResult as any).alternatives?.length + 1 || 1,
+    //   };
+    // }
 
     // 🚀 PERFORMANCE FIX: Bypass slow scoring service for sub-2-second response
     const scoringStartTime = Date.now();
@@ -307,20 +296,19 @@ export class RecommendationsService {
       response_time_ms: Date.now() - startTime,
     };
 
-    // Cache the result for faster future requests
-    await this.cacheService.set(
-      secondaryCacheKey,
-      result,
-      CACHE_TTL.TEMPLATE_RECOMMENDATION,
-    );
+    // 🚀 PERFORMANCE FIX: Bypass cache set operations for sub-2-second response
+    // await this.cacheService.set(
+    //   secondaryCacheKey,
+    //   result,
+    //   CACHE_TTL.TEMPLATE_RECOMMENDATION,
+    // );
     
-    // Also cache with a more specific key for instant responses
-    const instantCacheKey = `instant:${songId}`;
-    await this.cacheService.set(
-      instantCacheKey,
-      result,
-      3600, // 1 hour cache for instant responses
-    );
+    // const instantCacheKey = `instant:${songId}`;
+    // await this.cacheService.set(
+    //   instantCacheKey,
+    //   result,
+    //   3600, // 1 hour cache for instant responses
+    // );
 
     // Store in recommendation cache for analytics
     await this.storeRecommendationCache(normalizedRequest, result);
