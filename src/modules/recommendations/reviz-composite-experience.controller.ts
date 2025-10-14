@@ -274,9 +274,20 @@ export class ReVizCompositeExperienceController {
     @Body() request: ReVizCompositeRequest,
     @Headers('x-api-key') apiKey?: string
   ): Promise<ReVizCompositeResponse> {
-    // 🔧 FIX: Add API key validation for ReViz mobile app
-    if (!apiKey || apiKey !== process.env.REVIZ_API_KEY) {
-      throw new UnauthorizedException('Invalid or missing API key');
+    // 🔧 FIX: Use same API key validation as template recommendations
+    if (!apiKey) {
+      throw new UnauthorizedException('API key is required');
+    }
+    
+    // Accept the same API keys as template recommendations
+    const validApiKeys = [
+      'reviz-dev-30390-13220-4896-9516-9001', // Template recommendations key
+      process.env.REVIZ_API_KEY, // ReViz specific key
+      process.env.ALGORHYTHM_API_KEY // AlgoRhythm key
+    ].filter(Boolean);
+    
+    if (!validApiKeys.includes(apiKey)) {
+      throw new UnauthorizedException('Invalid API key');
     }
     
     this.logger.log(`🎬 ReViz composite experience request for composite: ${request.composite_id}`);

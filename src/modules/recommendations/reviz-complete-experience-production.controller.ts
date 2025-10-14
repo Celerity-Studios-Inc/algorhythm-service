@@ -98,9 +98,10 @@ export class ReVizCompleteRequestDto {
   @Type(() => UserContextDto)
   user_context?: UserContextDto;
 
+  @IsOptional()
   @ValidateNested()
   @Type(() => ExperienceConfigDto)
-  experience_config: ExperienceConfigDto;
+  experience_config?: ExperienceConfigDto;
 
   @IsOptional()
   @ValidateNested()
