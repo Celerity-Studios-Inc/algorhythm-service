@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { NnaRegistryService } from '../nna-integration/nna-registry.service';
+import { OptimizedNnaRegistryService } from '../nna-integration/optimized-nna-registry.service';
 import { CacheService } from '../caching/cache.service';
 import { AnalyticsService } from '../analytics/analytics.service';
 import { ScoringService } from '../scoring/scoring.service';
@@ -138,7 +138,7 @@ export class ReVizCompleteExperienceService {
   private readonly logger = new Logger(ReVizCompleteExperienceService.name);
 
   constructor(
-    private readonly nnaRegistryService: NnaRegistryService,
+    private readonly optimizedNnaRegistryService: OptimizedNnaRegistryService,
     private readonly cacheService: CacheService,
     private readonly analyticsService: AnalyticsService,
   ) {}
@@ -293,7 +293,7 @@ export class ReVizCompleteExperienceService {
   private async getCompositeById(compositeId: string): Promise<CompositeVideo | null> {
     try {
       // Get composite from NNA Registry API using address lookup
-      const composite = await this.nnaRegistryService.getAssetByAddress(compositeId);
+      const composite = await this.optimizedNnaRegistryService.getCompositeById(compositeId);
       
       if (!composite) {
         return null;
@@ -333,8 +333,8 @@ export class ReVizCompleteExperienceService {
   }
 
   private async getCompositeVideos(songId: string, maxComposites: number) {
-    // 🔧 FIX: Use getFullCompositesBySong for ReViz developers to ensure C.FUL only
-    const templates = await this.nnaRegistryService.getFullCompositesBySong(songId);
+    // 🔧 FIX: Use enhanced NNA Registry endpoint for AlgoRhythm format
+    const templates = await this.optimizedNnaRegistryService.getCompositesBySongAlgoRhythmFormat(songId);
     
     return templates.slice(0, maxComposites).map((template, index) => ({
       composite_id: template._id || template.nna_address,
@@ -372,8 +372,11 @@ export class ReVizCompleteExperienceService {
   ) {
     const result: any = {};
 
+    // Get layer assets for all layers at once
+    const layerAssetsData = await this.optimizedNnaRegistryService.getLayerAssetsAlgoRhythmFormat('1.018.003.002'); // Use a default song ID for now
+
     for (const layer of layers) {
-      const assets = await this.nnaRegistryService.getAssetsByLayer(layer);
+      const assets = layerAssetsData[layer]?.assets || [];
       const selectedAssets = assets.slice(0, maxAssetsPerLayer);
 
       result[layer] = {

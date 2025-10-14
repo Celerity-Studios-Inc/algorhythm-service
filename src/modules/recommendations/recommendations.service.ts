@@ -276,7 +276,7 @@ export class RecommendationsService {
       alternatives: alternatives || [],
       total_available: availableTemplates.length,
       score_computation_time_ms: scoringTime,
-      templates_evaluated: scoredTemplates.length,
+      templates_evaluated: availableTemplates.length,
       cache_hit: false,
       response_time_ms: Date.now() - startTime,
     };
@@ -309,7 +309,7 @@ export class RecommendationsService {
       cache_hit: false,
       response_time_ms: Date.now() - startTime,
       scoring_time_ms: scoringTime,
-      templates_evaluated: scoredTemplates.length,
+      templates_evaluated: availableTemplates.length,
     });
 
         const totalTime = Date.now() - startTime;
@@ -321,7 +321,7 @@ export class RecommendationsService {
           song_id: songId,
           response_time_ms: totalTime,
           scoring_time_ms: scoringTime,
-          templates_evaluated: scoredTemplates.length,
+          templates_evaluated: availableTemplates.length,
           cache_hit: false,
           performance_tier: totalTime < 2000 ? 'excellent' : totalTime < 5000 ? 'good' : 'needs_optimization',
           timestamp: new Date().toISOString()
