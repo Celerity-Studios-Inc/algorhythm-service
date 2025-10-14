@@ -96,7 +96,7 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
     }
 
     // 🚀 OPTIMIZED: Use our new optimized endpoint for 9ms response time
-    const url = `${this.baseUrl}/api/v1/assets/composites/by-song/${songId}`;
+    const url = `${this.baseUrl}/api/v1/algorhythm-export/composites/by-song/${songId}`;
     
     try {
       this.logger.log(`🔍 [API CALL] Calling NNA Registry: ${url}`);
@@ -182,7 +182,7 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
     // Use circuit breaker for NNA Registry call with Promise.race for aggressive timeout
     return await this.circuitBreaker.executeWithCircuitBreaker(
       async () => {
-        const url = `${this.baseUrl}/api/v1/assets/composites/by-song/${songId}`;
+        const url = `${this.baseUrl}/api/v1/algorhythm-export/composites/by-song/${songId}`;
         
         this.logger.log(`🔍 [API CALL] Calling NNA Registry: ${url}`);
         
