@@ -17,16 +17,33 @@ RUN npm install --legacy-peer-deps
 # Copy source code
 COPY . .
 
-# 🔧 CRITICAL: Build the application
-RUN echo "🔨 Building TypeScript..." && \
-    npm run build && \
-    echo "✅ Build completed"
+# 🔧 CRITICAL: Clean any existing dist directory
+RUN rm -rf dist/ || true
 
-# 🔧 CRITICAL: Verify dist/main.js exists
+# 🔧 CRITICAL: Build the application with error handling
+RUN echo "🔨 Building TypeScript..." && \
+    npm run build 2>&1 | tee build.log && \
+    if [ $? -ne 0 ]; then \
+        echo "❌ Build failed! Build log:"; \
+        cat build.log; \
+        exit 1; \
+    fi && \
+    echo "✅ Build completed successfully"
+
+# 🔧 CRITICAL: Verify dist/main.js exists and is executable
 RUN echo "🔍 Verifying build output..." && \
     ls -la dist/ && \
-    test -f dist/main.js || (echo "❌ dist/main.js not found after build!" && exit 1) && \
-    echo "✅ dist/main.js exists"
+    if [ ! -f dist/main.js ]; then \
+        echo "❌ dist/main.js not found after build!"; \
+        echo "📁 Contents of dist/:"; \
+        ls -la dist/; \
+        echo "📄 Build log:"; \
+        cat build.log 2>/dev/null || echo "No build log found"; \
+        exit 1; \
+    fi && \
+    echo "✅ dist/main.js exists" && \
+    echo "🔍 File size:" && \
+    ls -lh dist/main.js
 
 # Create non-root user
 RUN addgroup -g 1001 -S nodejs && adduser -S algorhythm -u 1001
