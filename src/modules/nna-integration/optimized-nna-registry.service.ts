@@ -95,8 +95,8 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
       return cached;
     }
 
-    // 🚀 OPTIMIZED: Use our new optimized endpoint for 9ms response time
-    const url = `${this.baseUrl}/api/v1/algorhythm-export/composites/by-song/${songId}`;
+    // 🚀 OPTIMIZED: Use the actual available NNA Registry endpoint
+    const url = `${this.baseUrl}/api/v1/assets?layer=G&name=${songId}`;
     
     try {
       this.logger.log(`🔍 [API CALL] Calling NNA Registry: ${url}`);
@@ -109,8 +109,6 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
           headers: this.getHeaders(),
           params: {
             limit: 100,
-            compositeType: 'full',
-            includeMetadata: true,
           },
           timeout: this.timeout, // 🔧 CRITICAL FIX: Use configurable timeout
         })
@@ -128,8 +126,22 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
       
       const response: AxiosResponse = await Promise.race([apiCall, timeoutPromise]) as AxiosResponse;
 
-      if (response.data?.success && response.data?.data) {
-        const composites = response.data.data;
+      if (response.data?.data && Array.isArray(response.data.data)) {
+        // Convert NNA Registry assets to composite format
+        const assets = response.data.data;
+        const composites = assets.map(asset => ({
+          id: asset._id,
+          name: asset.name,
+          nna_address: asset.nna_address,
+          layer: asset.layer,
+          gcpStorageUrl: asset.gcpStorageUrl,
+          description: asset.description,
+          tags: asset.tags,
+          metadata: asset.aiMetadata,
+          createdAt: asset.createdAt,
+          updatedAt: asset.updatedAt
+        }));
+        
         const duration = Date.now() - startTime;
         
         // Cache the results (if cache service available)
