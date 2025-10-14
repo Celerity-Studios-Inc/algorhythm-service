@@ -227,41 +227,19 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
       this.logger.error(`❌ [DIRECT API CALL] NNA Registry call failed: ${error.message}`);
       this.logger.error(`❌ [DIRECT API CALL] Error details:`, error);
       
-      // 🔧 CRITICAL FIX: For timeouts and connection issues, try circuit breaker approach
-      if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
-        this.logger.warn(`⏰ [TIMEOUT] NNA Registry timeout for ${songId}: ${error.message}`);
-        this.logger.warn(`🔄 [CIRCUIT BREAKER] Using circuit breaker approach for ${songId}`);
-        
-        // Try circuit breaker approach instead of immediate fallback
-        try {
-          return await this.getCompositesForSong(songId);
-        } catch (circuitError) {
-          this.logger.warn(`🔄 [CIRCUIT BREAKER FAILED] Circuit breaker also failed, using fallback for ${songId}`);
-          return this.getFallbackComposites(songId);
-        }
-      } else if (error.code === 'ENOTFOUND' || error.code === 'ECONNREFUSED') {
-        this.logger.warn(`🔌 [CONNECTION ERROR] Cannot reach NNA Registry: ${error.message}`);
-        this.logger.warn(`🔄 [FALLBACK] Using fallback composites for ${songId}`);
-        return this.getFallbackComposites(songId);
-      } else if (error.response?.status === 404) {
+      // 🔧 CRITICAL FIX: Remove all fallback logic - throw proper errors
+      if (error.response?.status === 404) {
         this.logger.warn(`🔍 [NOT FOUND] No composites found for song ${songId}`);
-        this.logger.warn(`🔄 [FALLBACK] Using fallback composites for ${songId}`);
-        return this.getFallbackComposites(songId);
+        throw new Error(`No composites found for song: ${songId}`);
       } else if (error.response?.status >= 500) {
         this.logger.warn(`🚨 [SERVER ERROR] NNA Registry server error: ${error.response.status}`);
-        this.logger.warn(`🔄 [FALLBACK] Using fallback composites for ${songId}`);
-        return this.getFallbackComposites(songId);
+        throw new Error(`NNA Registry server error: ${error.response.status}`);
+      } else if (error.code === 'ENOTFOUND' || error.code === 'ECONNREFUSED') {
+        this.logger.warn(`🔌 [CONNECTION ERROR] Cannot reach NNA Registry: ${error.message}`);
+        throw new Error(`Cannot reach NNA Registry: ${error.message}`);
       } else {
-        // For other errors, try circuit breaker approach
-        this.logger.warn(`❌ [OTHER ERROR] NNA Registry error for ${songId}: ${error.message}`);
-        this.logger.warn(`🔄 [CIRCUIT BREAKER] Trying circuit breaker approach for ${songId}`);
-        
-        try {
-          return await this.getCompositesForSong(songId);
-        } catch (circuitError) {
-          this.logger.warn(`🔄 [CIRCUIT BREAKER FAILED] Circuit breaker also failed, using fallback for ${songId}`);
-          return this.getFallbackComposites(songId);
-        }
+        this.logger.warn(`❌ [ERROR] NNA Registry error for ${songId}: ${error.message}`);
+        throw new Error(`NNA Registry error: ${error.message}`);
       }
     }
   }
