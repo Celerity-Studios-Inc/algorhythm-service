@@ -114,17 +114,9 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
         })
       );
       
-      // 🔧 CRITICAL FIX: Aggressive timeout with proper error handling
-      const timeoutPromise = new Promise<never>((_, reject) => 
-        setTimeout(() => {
-          this.logger.warn(`⏰ [TIMEOUT] NNA Registry call timed out after ${this.timeout}ms for song ${songId}`);
-          reject(new Error(`NNA Registry timeout after ${this.timeout}ms`));
-        }, this.timeout)
-      );
+      this.logger.log(`🚀 [CIRCUIT BREAKER] Starting API call with ${this.timeout}ms timeout`);
       
-      this.logger.log(`🚀 [CIRCUIT BREAKER] Starting race between API call and ${this.timeout}ms timeout`);
-      
-      const response: AxiosResponse = await Promise.race([apiCall, timeoutPromise]) as AxiosResponse;
+      const response: AxiosResponse = await apiCall;
 
       if (response.data?.success && response.data?.data) {
         // Use the composite data directly from the composite endpoint
