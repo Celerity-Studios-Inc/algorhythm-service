@@ -94,7 +94,7 @@ export class DebugController {
     try {
       this.logger.log('🧪 Testing NNA Registry service directly...');
       
-      const composites = await this.optimizedNnaRegistryService.getCompositesForSongOptimized('1.018.003.002');
+      const composites = await this.optimizedNnaRegistryService.getCompositesForSongAlgoRhythmFormat('1.018.003.002');
       
       this.logger.log(`✅ NNA Registry service test successful: ${composites.length} composites`);
       

@@ -101,7 +101,7 @@ export class OptimizedRecommendationsService {
       this.logger.log(`🔍 [OPTIMIZED SERVICE] Service exists: ${!!this.optimizedNnaRegistryService}`);
       this.logger.log(`🔍 [OPTIMIZED SERVICE] Service type: ${this.optimizedNnaRegistryService?.constructor?.name}`);
       
-      composites = await this.optimizedNnaRegistryService.getCompositesForSongOptimized(request.song_id);
+      composites = await this.optimizedNnaRegistryService.getCompositesForSongAlgoRhythmFormat(request.song_id);
       this.logger.log(`✅ [OPTIMIZED SERVICE] Retrieved ${composites.length} composites from NNA Registry`);
       
       if (composites.length > 0) {
