@@ -30,7 +30,7 @@ export interface ReVizCompleteRequest {
       platform?: string;
     };
   };
-  experience_config: {
+  experience_config?: {
     max_composites?: number;
     max_assets_per_layer?: number;
     include_variants?: boolean;
@@ -191,6 +191,17 @@ export class ReVizCompleteExperienceEnhancedService {
   async getCompleteExperience(request: ReVizCompleteRequest): Promise<ReVizCompleteResponse> {
     const startTime = Date.now();
     const requestId = request.request_id || this.generateRequestId();
+    
+    // 🔧 FIX: Apply default configuration if not provided
+    if (!request.experience_config) {
+      request.experience_config = {
+        max_composites: 5,
+        max_assets_per_layer: 4,
+        include_variants: true,
+        variant_depth: 4,
+        layers: ['stars', 'looks', 'moves', 'worlds']
+      };
+    }
     
     this.logger.log(`[${requestId}] Processing complete experience for song: ${request.song_id}`);
     
