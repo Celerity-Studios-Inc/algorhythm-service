@@ -2,9 +2,12 @@
 
 ## 🎯 **Complete API Integration Guide with Real Responses**
 
-**Date**: October 12, 2025  
-**Status**: ✅ **LIVE API WITH REAL GCP URLs**  
+**Date**: October 13, 2025  
+**Status**: ⚠️ **SERVICE PERFORMANCE ISSUES DETECTED**  
 **Purpose**: Complete integration guide with actual API responses and real data
+
+**⚠️ CURRENT STATUS**: Template endpoint timing out (5+ seconds) - Performance optimization needed
+**✅ HEALTH ENDPOINT**: Working (0.22s response time)
 
 OpenAPI Contract (well-known): `GET https://dev.algorhythm.media/.well-known/openapi.json`  
 Swagger UI: `https://dev.algorhythm.media/api/docs`

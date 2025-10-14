@@ -2,10 +2,13 @@
 
 ## 🎯 **SERVICE OVERVIEW**
 
-**Service URL**: `https://algorhythm-service-dev-5jm4duk5oa-uc.a.run.app`  
+**Service URL**: `https://dev.algorhythm.media`  
 **Environment**: Development  
-**Status**: ✅ CRITICAL ROUTING FIX DEPLOYED  
-**Last Update**: October 13, 2025 - 18:30 UTC  
+**Status**: ⚠️ **SERVICE PERFORMANCE ISSUES DETECTED**  
+**Last Update**: October 13, 2025 - 23:59 UTC
+
+**⚠️ CRITICAL ISSUE**: Template endpoint timing out (5+ seconds) - Performance optimization needed
+**✅ HEALTH ENDPOINT**: Working (0.22s response time)  
 
 ---
 
@@ -13,7 +16,7 @@
 
 ### **1. Health Check (Should Work)**
 ```bash
-curl -s https://algorhythm-service-dev-5jm4duk5oa-uc.a.run.app/api/v1/health
+curl -s https://dev.algorhythm.media/api/health
 ```
 
 **Expected Response:**
@@ -35,14 +38,15 @@ curl -s https://algorhythm-service-dev-5jm4duk5oa-uc.a.run.app/api/v1/health
 }
 ```
 
-### **2. Template Endpoint Test (Should Now Work)**
+### **2. Template Endpoint Test (⚠️ CURRENTLY TIMING OUT)**
 ```bash
-curl -X POST https://algorhythm-service-dev-5jm4duk5oa-uc.a.run.app/api/v1/recommend/template \
+curl -X POST https://dev.algorhythm.media/api/v1/recommend/template \
   -H "Content-Type: application/json" \
-  -H "x-api-key: reviz-dev-30390-13220-4896-9516-9001" \
-  -d '{"song_id": "1.018.003.002", "user_context": {"user_id": "test_user"}, "max_alternatives": 5}' \
+  -d '{"song_id": "1.018.003.002", "user_context": {"user_id": "test_user"}}' \
   --max-time 5
 ```
+
+**⚠️ CURRENT STATUS**: This endpoint is timing out (5+ seconds) - Performance optimization needed
 
 **Expected Response:**
 ```json
@@ -87,28 +91,34 @@ curl -X POST https://algorhythm-service-dev-5jm4duk5oa-uc.a.run.app/api/v1/recom
 
 ### **NNA Registry Connectivity Test**
 ```bash
-curl -s https://algorhythm-service-dev-5jm4duk5oa-uc.a.run.app/api/v1/debug/nna-test
+curl -s https://dev.algorhythm.media/api/v1/debug/nna-test
 ```
 
 ### **Template Test (Fallback Data)**
 ```bash
-curl -s https://algorhythm-service-dev-5jm4duk5oa-uc.a.run.app/api/v1/debug/template-test
+curl -s https://dev.algorhythm.media/api/v1/debug/template-test
 ```
 
 ### **Environment Variables Check**
 ```bash
-curl -s https://algorhythm-service-dev-5jm4duk5oa-uc.a.run.app/api/v1/debug/environment
+curl -s https://dev.algorhythm.media/api/v1/debug/environment
 ```
 
 ---
 
-## 📊 **PERFORMANCE BENCHMARKS**
+## 📊 **PERFORMANCE BENCHMARKS - ISSUES DETECTED**
 
-### **Target Performance:**
-- **Template Endpoint**: <2 seconds (P95)
-- **Health Endpoint**: <100ms
-- **Circuit Breaker**: 2-second timeout
-- **NNA Registry**: <3 seconds
+### **⚠️ CURRENT PERFORMANCE (October 13, 2025):**
+- **Template Endpoint**: **TIMING OUT** (5+ seconds) - **NEEDS OPTIMIZATION**
+- **Health Endpoint**: **0.22 seconds** (target: <100ms) - **ACCEPTABLE**
+- **Circuit Breaker**: **Not functioning properly** - **NEEDS FIX**
+- **NNA Registry**: **Unknown** (endpoint timing out) - **NEEDS INVESTIGATION**
+
+### **🚨 PERFORMANCE ISSUES:**
+- **Template endpoint**: Timing out at 5+ seconds
+- **Health endpoint**: Working but slower than expected
+- **Service stability**: Needs performance optimization
+- **Action required**: Performance optimization and timeout fixes needed
 
 ### **Performance Test Script:**
 ```bash
@@ -118,14 +128,13 @@ echo "======================================"
 
 # Health endpoint test
 echo "1. Testing Health Endpoint..."
-time curl -s https://algorhythm-service-dev-5jm4duk5oa-uc.a.run.app/api/v1/health > /dev/null
+time curl -s https://dev.algorhythm.media/api/health > /dev/null
 
 # Template endpoint test
 echo "2. Testing Template Endpoint..."
-time curl -X POST https://algorhythm-service-dev-5jm4duk5oa-uc.a.run.app/api/v1/recommend/template \
+time curl -X POST https://dev.algorhythm.media/api/v1/recommend/template \
   -H "Content-Type: application/json" \
-  -H "x-api-key: reviz-dev-30390-13220-4896-9516-9001" \
-  -d '{"song_id": "1.018.003.002", "user_context": {"user_id": "test_user"}, "max_alternatives": 5}' \
+  -d '{"song_id": "1.018.003.002", "user_context": {"user_id": "test_user"}}' \
   --max-time 5
 
 echo "✅ Performance test completed"
@@ -187,17 +196,17 @@ Use `--max-time 5` for testing to avoid long waits.
 - Memory usage reasonable
 - Node.js version v20.19.5
 
-### **✅ Template Endpoint:**
-- Response time < 2 seconds
-- Returns valid recommendations (not null)
-- NNA Registry integration working
-- Circuit breaker functioning
+### **⚠️ Template Endpoint - PERFORMANCE ISSUES:**
+- Response time **TIMING OUT** (5+ seconds) - **NEEDS OPTIMIZATION**
+- Returns no response due to timeout - **NOT WORKING**
+- NNA Registry integration unknown - **NEEDS INVESTIGATION**
+- Circuit breaker not functioning - **NEEDS FIX**
 
-### **✅ Performance:**
-- No timeouts on health endpoint
-- Template endpoint responds within 2 seconds
-- Debug endpoints working
-- NNA Registry accessible
+### **⚠️ Performance - ISSUES DETECTED:**
+- Health endpoint working - **0.22s response time** (slower than expected)
+- Template endpoint timing out - **5+ seconds** (needs optimization)
+- Debug endpoints unknown - **NEEDS TESTING**
+- NNA Registry status unknown - **NEEDS INVESTIGATION**
 
 ---
 
@@ -209,4 +218,22 @@ Use `--max-time 5` for testing to avoid long waits.
 4. **Validate Integration**: Confirm NNA Registry connectivity
 5. **Report Results**: Document any issues or successes
 
-**Ready for comprehensive testing!** 🎉
+**⚠️ SERVICE PERFORMANCE ISSUES DETECTED - OPTIMIZATION NEEDED** ⚠️
+
+## 🎯 **REVIZ DEVELOPER NOTIFICATION**
+
+**The AlgoRhythm service is experiencing performance issues that need immediate attention!**
+
+### **📊 CURRENT STATUS:**
+- **Template Endpoint**: TIMING OUT (5+ seconds) - **NEEDS OPTIMIZATION**
+- **Health Endpoint**: 0.22 seconds - **ACCEPTABLE BUT SLOW**
+- **NNA Registry**: Unknown (endpoint timing out) - **NEEDS INVESTIGATION**
+- **Service Stability**: Performance issues detected - **NEEDS FIX**
+
+### **🚨 CRITICAL ISSUES:**
+- ❌ **Template endpoint timing out** - 5+ seconds (target: <2s)
+- ❌ **Circuit breaker not functioning** - Timeouts not working properly
+- ❌ **NNA Registry integration unknown** - Needs investigation
+- ❌ **Performance optimization needed** - Service needs fixes
+
+**The service needs immediate performance optimization before it can be used in production!** 🚨
