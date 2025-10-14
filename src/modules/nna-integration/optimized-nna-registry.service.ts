@@ -95,8 +95,8 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
       return cached;
     }
 
-    // 🚀 OPTIMIZED: Use the actual available NNA Registry endpoint
-    const url = `${this.baseUrl}/api/v1/assets?layer=G&name=${songId}`;
+    // 🚀 OPTIMIZED: Use the correct NNA Registry composite endpoint
+    const url = `${this.baseUrl}/api/v1/assets/composites/by-song/${songId}`;
     
     try {
       this.logger.log(`🔍 [API CALL] Calling NNA Registry: ${url}`);
@@ -126,21 +126,9 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
       
       const response: AxiosResponse = await Promise.race([apiCall, timeoutPromise]) as AxiosResponse;
 
-      if (response.data?.data && Array.isArray(response.data.data)) {
-        // Convert NNA Registry assets to composite format
-        const assets = response.data.data;
-        const composites = assets.map(asset => ({
-          id: asset._id,
-          name: asset.name,
-          nna_address: asset.nna_address,
-          layer: asset.layer,
-          gcpStorageUrl: asset.gcpStorageUrl,
-          description: asset.description,
-          tags: asset.tags,
-          metadata: asset.aiMetadata,
-          createdAt: asset.createdAt,
-          updatedAt: asset.updatedAt
-        }));
+      if (response.data?.success && response.data?.data) {
+        // Use the composite data directly from the composite endpoint
+        const composites = response.data.data;
         
         const duration = Date.now() - startTime;
         
