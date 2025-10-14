@@ -19,7 +19,7 @@ export class EnvironmentValidationService {
       'MONGODB_URI',
       'REDIS_URL', 
       'JWT_SECRET',
-      'NNA_REGISTRY_BASE_URL',
+      'NNA_REGISTRY_URL',
       'REVIZ_API_KEY', // 🔧 FIX: Add ReViz API key validation
       'NODE_ENV',
     ];
