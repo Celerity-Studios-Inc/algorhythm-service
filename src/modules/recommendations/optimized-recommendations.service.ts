@@ -97,9 +97,22 @@ export class OptimizedRecommendationsService {
     // 🔧 CIRCUIT BREAKER: Use NNA Registry with built-in timeout
     let composites: any[] = [];
     try {
+      this.logger.log(`🔍 [OPTIMIZED SERVICE] Calling NNA Registry for song: ${request.song_id}`);
+      this.logger.log(`🔍 [OPTIMIZED SERVICE] Service exists: ${!!this.optimizedNnaRegistryService}`);
+      this.logger.log(`🔍 [OPTIMIZED SERVICE] Service type: ${this.optimizedNnaRegistryService?.constructor?.name}`);
+      
       composites = await this.optimizedNnaRegistryService.getCompositesForSongOptimized(request.song_id);
+      this.logger.log(`✅ [OPTIMIZED SERVICE] Retrieved ${composites.length} composites from NNA Registry`);
+      
+      if (composites.length > 0) {
+        const firstComposite = composites[0];
+        this.logger.log(`🔍 [OPTIMIZED SERVICE] First composite ID: ${firstComposite._id || firstComposite.nna_address || 'NO_ID'}`);
+        this.logger.log(`🔍 [OPTIMIZED SERVICE] First composite name: ${firstComposite.name || 'NO_NAME'}`);
+      }
     } catch (error) {
-      this.logger.warn(`🔄 [CIRCUIT BREAKER] NNA Registry failed: ${error.message}`);
+      this.logger.error(`❌ [OPTIMIZED SERVICE] NNA Registry failed: ${error.message}`);
+      this.logger.error(`❌ [OPTIMIZED SERVICE] Error details:`, error);
+      this.logger.warn(`🔄 [OPTIMIZED SERVICE] Falling back to mock data for song: ${request.song_id}`);
       return this.getFallbackResponse(request);
     }
     
