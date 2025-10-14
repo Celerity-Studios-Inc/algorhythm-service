@@ -33,6 +33,10 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
     console.error('API Key set:', !!this.apiKey);
     console.error('Timeout:', this.timeout + 'ms');
     console.error('Cache Service available:', !!this.cacheService);
+    console.error('Environment Variables:');
+    console.error('NNA_REGISTRY_URL:', process.env.NNA_REGISTRY_URL || 'NOT SET');
+    console.error('NNA_API_KEY:', process.env.NNA_API_KEY ? '***' + process.env.NNA_API_KEY.slice(-4) : 'NOT SET');
+    console.error('NNA_REGISTRY_TIMEOUT:', process.env.NNA_REGISTRY_TIMEOUT || 'NOT SET');
     console.error('=====================================');
     
     this.logger.log(`🔍 [INIT] NNA Registry URL: ${this.baseUrl}`);
