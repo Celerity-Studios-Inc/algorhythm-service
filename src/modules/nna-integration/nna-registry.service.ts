@@ -29,7 +29,7 @@ export class NnaRegistryService {
       const response: AxiosResponse = await firstValueFrom(
         this.httpService.get(url, {
           headers: this.getHeaders(),
-          timeout: 2000, // 2 second timeout for P95 < 2s
+          timeout: 10000, // 10 second timeout to match NNA Registry performance
         })
       );
 
@@ -59,7 +59,7 @@ export class NnaRegistryService {
             sort: 'createdAt',
             order: 'desc',
           },
-          timeout: 2000, // 2 second timeout for P95 < 2s
+          timeout: 10000, // 10 second timeout to match NNA Registry performance
         })
       );
 
@@ -91,7 +91,7 @@ export class NnaRegistryService {
             sort: 'createdAt',
             order: 'desc',
           },
-          timeout: 2000, // 2 second timeout for P95 < 2s
+          timeout: 10000, // 10 second timeout to match NNA Registry performance
         })
       );
 
@@ -146,7 +146,7 @@ export class NnaRegistryService {
               order: 'desc',
               composite_type: 'full',
             },
-            timeout: 2000, // 2 second timeout for P95 < 2s
+            timeout: 10000, // 10 second timeout to match NNA Registry performance
           })
         );
       } catch (error) {
@@ -162,7 +162,7 @@ export class NnaRegistryService {
               sort: 'createdAt',
               order: 'desc',
             },
-            timeout: 2000, // 2 second timeout for P95 < 2s
+            timeout: 10000, // 10 second timeout to match NNA Registry performance
           })
         );
       }
@@ -289,7 +289,7 @@ export class NnaRegistryService {
         this.httpService.get(url, {
           headers: this.getHeaders(),
           params,
-          timeout: 2000, // 2 second timeout for P95 < 2s
+          timeout: 10000, // 10 second timeout to match NNA Registry performance
         })
       );
 
@@ -314,7 +314,7 @@ export class NnaRegistryService {
       const response: AxiosResponse = await firstValueFrom(
         this.httpService.get(url, {
           headers: this.getHeaders(),
-          timeout: 2000, // 2 second timeout for P95 < 2s
+          timeout: 10000, // 10 second timeout to match NNA Registry performance
         })
       );
 
@@ -340,7 +340,7 @@ export class NnaRegistryService {
           addresses,
         }, {
           headers: this.getHeaders(),
-          timeout: 2000, // 2 second timeout for P95 < 2s
+          timeout: 10000, // 10 second timeout to match NNA Registry performance
         })
       );
 
@@ -370,7 +370,7 @@ export class NnaRegistryService {
       const response: AxiosResponse = await firstValueFrom(
         this.httpService.get(url, {
           headers: this.getHeaders(),
-          timeout: 2000, // 2 second timeout for P95 < 2s
+          timeout: 10000, // 10 second timeout to match NNA Registry performance
         })
       );
 
@@ -492,7 +492,7 @@ export class NnaRegistryService {
             sort: 'createdAt',
             order: 'desc',
           },
-          timeout: 2000, // 2 second timeout for P95 < 2s
+          timeout: 10000, // 10 second timeout to match NNA Registry performance
         })
       );
 
@@ -532,7 +532,7 @@ export class NnaRegistryService {
             sort: 'createdAt',
             order: 'desc',
           },
-          timeout: 2000, // 2 second timeout for P95 < 2s
+          timeout: 10000, // 10 second timeout to match NNA Registry performance
         })
       );
 
@@ -563,7 +563,7 @@ export class NnaRegistryService {
             sort: 'createdAt',
             order: 'desc',
           },
-          timeout: 2000, // 2 second timeout for P95 < 2s
+          timeout: 10000, // 10 second timeout to match NNA Registry performance
         })
       );
 

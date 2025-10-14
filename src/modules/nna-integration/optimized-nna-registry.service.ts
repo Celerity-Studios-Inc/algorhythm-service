@@ -24,7 +24,7 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
     // 🔧 CRITICAL FIX: Use the correct environment variable names from Secret Manager and trim newlines
     this.baseUrl = (this.configService.get<string>('NNA_REGISTRY_URL') || 'https://registry.dev.reviz.dev').trim();
     this.apiKey = (this.configService.get<string>('NNA_API_KEY') || 'reviz-dev-30390-13220-4896-9516-9001').trim();
-    this.timeout = parseInt(this.configService.get<string>('NNA_REGISTRY_TIMEOUT') || '2000', 10); // 2 second timeout for sub-2-second response times
+    this.timeout = parseInt(this.configService.get<string>('NNA_REGISTRY_TIMEOUT') || '10000', 10); // 10 second timeout to match NNA Registry performance
     
     // 🔍 ADD DEBUG LOG
     console.error('=====================================');
@@ -470,7 +470,7 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
       const response: AxiosResponse = await firstValueFrom(
         this.httpService.get(url, {
           headers: this.getHeaders(),
-          timeout: Math.min(this.timeout, 2000), // Quick health check, 2s max for P95 < 2s
+          timeout: Math.min(this.timeout, 10000), // Quick health check, 10s max to match NNA Registry performance
         })
       );
       
@@ -499,7 +499,7 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
       const response: AxiosResponse = await firstValueFrom(
         this.httpService.get(`${this.baseUrl}/health`, {
           headers: this.getHeaders(),
-          timeout: Math.min(this.timeout, 2000), // Use configurable timeout, max 2s for P95 < 2s
+          timeout: Math.min(this.timeout, 10000), // Use configurable timeout, max 10s to match NNA Registry performance
         })
       );
       
