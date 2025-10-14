@@ -112,30 +112,13 @@ export class RecommendationsService {
   }
 
   /**
-   * Normalize song ID - convert HFN to MFA format for NNA Registry calls
+   * Normalize song ID - NNA Registry supports dual addressing (HFN and MFA)
    * @param songId - Input song ID (MFA or HFN format)
-   * @returns MFA format song ID for NNA Registry
+   * @returns Original song ID (NNA Registry handles both formats)
    */
-  private async normalizeSongId(songId: string): Promise<string> {
-    // If already MFA format (contains dots and numbers), return as-is
-    if (/^\d+\.\d+\.\d+\.\d+$/.test(songId)) {
-      return songId;
-    }
-    
-    // If HFN format (contains letters and dots), convert to MFA
-    if (/^[A-Z]\./.test(songId)) {
-      this.logger.log(`🔄 [HFN→MFA] Converting HFN to MFA: ${songId}`);
-      try {
-        const mfaId = await this.optimizedNnaRegistryService.convertHfnToMfa(songId);
-        this.logger.log(`✅ [HFN→MFA] Converted ${songId} → ${mfaId}`);
-        return mfaId;
-      } catch (error) {
-        this.logger.warn(`⚠️ [HFN→MFA] Conversion failed for ${songId}: ${error.message}`);
-        return songId; // Return original if conversion fails
-      }
-    }
-    
-    // Unknown format, return as-is
+  private normalizeSongId(songId: string): string {
+    // NNA Registry supports dual addressing - no conversion needed
+    this.logger.log(`🔄 [DUAL ADDRESSING] Using original format: ${songId}`);
     return songId;
   }
 
@@ -156,14 +139,12 @@ export class RecommendationsService {
     this.logger.log(`🔧 [TEMPLATE ENDPOINT] Service is using latest code with emergency bypass`);
     this.logger.log(`🔧 [TEMPLATE ENDPOINT] Request: ${JSON.stringify(request)}`);
     
-    // 🔧 HFN→MFA NORMALIZATION: Convert input to MFA format for NNA Registry
+    // 🔧 DUAL ADDRESSING: NNA Registry supports both HFN and MFA formats
     const originalSongId = request.song_id;
-    const normalizedSongId = await this.normalizeSongId(request.song_id);
+    const normalizedSongId = this.normalizeSongId(request.song_id);
     
-    // Log normalization for observability
-    if (originalSongId !== normalizedSongId) {
-      this.logger.log(`🔄 [NORMALIZATION] HFN→MFA: ${originalSongId} → ${normalizedSongId}`);
-    }
+    // Log dual addressing support
+    this.logger.log(`🔄 [DUAL ADDRESSING] Using ${originalSongId} directly with NNA Registry`);
     
     // Use normalized ID for processing
     const normalizedRequest = { ...request, song_id: normalizedSongId };
