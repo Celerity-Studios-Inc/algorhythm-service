@@ -186,8 +186,8 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
         
         this.logger.log(`🔍 [API CALL] Calling NNA Registry: ${url}`);
         
-        // 🚀 AGGRESSIVE TIMEOUT: Promise.race with 2s timeout for P95 < 2s
-        const apiCall = firstValueFrom(
+        // 🚀 OPTIMIZED: Single timeout via HTTP service configuration
+        const response: AxiosResponse = await firstValueFrom(
           this.httpService.get(url, {
             headers: this.getHeaders(),
             params: {
@@ -195,15 +195,9 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
               compositeType: 'full',
               includeMetadata: true,
             },
-            timeout: this.timeout, // Use configurable timeout
+            timeout: this.timeout, // 2 second timeout for P95 < 2s
           })
         );
-
-        const timeoutPromise = new Promise((_, reject) => 
-          setTimeout(() => reject(new Error(`NNA Registry timeout after ${this.timeout}ms`)), this.timeout)
-        );
-
-        const response: AxiosResponse = await Promise.race([apiCall, timeoutPromise]) as AxiosResponse;
 
         // Handle NNA Registry response format: { data: [...], metadata: {...}, performance: {...} }
         if (response.data?.data && Array.isArray(response.data.data)) {
