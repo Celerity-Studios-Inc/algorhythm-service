@@ -245,7 +245,7 @@ export class RecommendationsService {
     try {
       // 🔧 CRITICAL FIX: Use NNA Registry with 2-second timeout and circuit breaker
       this.logger.log(`🔍 [NNA REGISTRY] Fetching composites for song: ${songId}`);
-      availableTemplates = await this.optimizedNnaRegistryService.getCompositesForSong(songId);
+      availableTemplates = await this.optimizedNnaRegistryService.getCompositesForSongOptimized(songId);
       this.logger.log(`✅ [NNA REGISTRY] Retrieved ${availableTemplates.length} composites from NNA Registry`);
     } catch (error) {
       this.logger.warn(`⚠️ [NNA REGISTRY] Failed to fetch composites: ${error.message}`);
