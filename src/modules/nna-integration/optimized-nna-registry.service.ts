@@ -655,13 +655,99 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
    * Backend team's exact method name for compatibility
    */
   async getCompositesBySongAlgoRhythmFormat(songId: string, options?: any) {
-    return this.getCompositesForSongAlgoRhythmFormat(songId);
+    const startTime = Date.now();
+    const cacheKey = `composites:algorhythm:${songId}`;
+    
+    // Check cache first
+    const cached = this.cacheService ? await this.cacheService.get(cacheKey) : null;
+    if (cached) {
+      this.logger.debug(`✅ Cache hit for AlgoRhythm composites ${songId}: ${Date.now() - startTime}ms`);
+      return cached;
+    }
+
+    try {
+      const url = `${this.baseUrl}/api/v1/assets/composites/by-song/${songId}/algorhythm`;
+      this.logger.debug(`🚀 Fetching AlgoRhythm-formatted composites: ${songId}`);
+      
+      const response = await firstValueFrom(
+        this.httpService.get(url, {
+          headers: { 'x-api-key': this.apiKey },
+          timeout: this.timeout
+        }).pipe(
+          timeout(this.timeout),
+          catchError(error => {
+            this.logger.error(`NNA Registry AlgoRhythm API error for ${songId}:`, error.message);
+            throw error;
+          })
+        )
+      );
+
+      if (response.data && response.data.success) {
+        const composites = response.data.data;
+        
+        // Cache the results
+        if (this.cacheService) {
+          await this.cacheService.set(cacheKey, composites, 300); // 5 minutes
+        }
+        
+        this.logger.debug(`✅ AlgoRhythm composites ${songId} fetched: ${Date.now() - startTime}ms`);
+        return composites;
+      } else {
+        throw new Error(`No AlgoRhythm composites found for song: ${songId}`);
+      }
+    } catch (error) {
+      this.logger.error(`Failed to fetch AlgoRhythm composites ${songId}:`, error.message);
+      throw error;
+    }
   }
 
   /**
    * Backend team's exact method name for layer assets
    */
   async getLayerAssetsAlgoRhythmFormat(songId: string, options?: any) {
-    return this.getLayerAssetsAlgoRhythmFormat(songId);
+    const startTime = Date.now();
+    const cacheKey = `layers:algorhythm:${songId}`;
+    
+    // Check cache first
+    const cached = this.cacheService ? await this.cacheService.get(cacheKey) : null;
+    if (cached) {
+      this.logger.debug(`✅ Cache hit for AlgoRhythm layers ${songId}: ${Date.now() - startTime}ms`);
+      return cached;
+    }
+
+    try {
+      const url = `${this.baseUrl}/api/v1/assets/composites/layers/${songId}/algorhythm`;
+      this.logger.debug(`🚀 Fetching AlgoRhythm-formatted layers: ${songId}`);
+      
+      const response = await firstValueFrom(
+        this.httpService.get(url, {
+          headers: { 'x-api-key': this.apiKey },
+          timeout: this.timeout
+        }).pipe(
+          timeout(this.timeout),
+          catchError(error => {
+            this.logger.error(`NNA Registry AlgoRhythm layers API error for ${songId}:`, error.message);
+            throw error;
+          })
+        )
+      );
+
+      if (response.data && response.data.success) {
+        const layers = response.data.data;
+        
+        // Cache the results
+        if (this.cacheService) {
+          await this.cacheService.set(cacheKey, layers, 300); // 5 minutes
+        }
+        
+        this.logger.debug(`✅ AlgoRhythm layers ${songId} fetched: ${Date.now() - startTime}ms`);
+        return layers;
+      } else {
+        throw new Error(`No AlgoRhythm layers found for song: ${songId}`);
+      }
+    } catch (error) {
+      this.logger.error(`Failed to fetch AlgoRhythm layers ${songId}:`, error.message);
+      throw error;
+    }
   }
 }
