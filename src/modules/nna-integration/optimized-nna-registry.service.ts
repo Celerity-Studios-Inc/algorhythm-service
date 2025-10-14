@@ -205,7 +205,8 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
 
         const response: AxiosResponse = await Promise.race([apiCall, timeoutPromise]) as AxiosResponse;
 
-        if (response.data?.success && response.data?.data) {
+        // Handle NNA Registry response format: { data: [...], metadata: {...}, performance: {...} }
+        if (response.data?.data && Array.isArray(response.data.data)) {
           const composites = response.data.data;
           const duration = Date.now() - startTime;
           
@@ -217,7 +218,8 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
           this.logger.log(`✅ [API CALL] Success! ${composites.length} composites in ${duration}ms`);
           return composites;
         } else {
-          throw new Error('No data in response');
+          this.logger.warn(`⚠️ [API CALL] Unexpected response format:`, JSON.stringify(response.data, null, 2));
+          throw new Error('No data in response or unexpected format');
         }
       },
       () => {
