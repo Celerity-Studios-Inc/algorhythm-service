@@ -22,12 +22,7 @@ export class CircuitBreakerService {
     try {
       this.logger.debug(`🟢 Executing ${operationName} with circuit breaker`);
       
-      const result = await Promise.race([
-        operation(),
-        new Promise<never>((_, reject) => 
-          setTimeout(() => reject(new Error('Circuit breaker timeout')), this.timeout)
-        )
-      ]);
+      const result = await operation();
       
       this.onSuccess(operationName);
       return result;
