@@ -434,12 +434,16 @@ export class ReVizCompleteExperienceProductionService {
       if (composites && composites.length > 0) {
         // 🎯 AlgoRhythm format already has correct field names - return directly
         return composites.slice(0, maxComposites);
+      } else {
+        this.logger.warn(`No composites found for song: ${song_id}`);
+        return [];
       }
     } catch (error) {
-      this.logger.warn(`Failed to fetch composites from NNA Registry: ${error.message}`);
+      this.logger.error(`Failed to fetch composites from NNA Registry: ${error.message}`);
+      throw error; // Don't fall back to mock data
     }
 
-    // Fallback to mock data if NNA Registry fails
+    // Remove fallback to mock data - let errors propagate
     const recommendations = Array.from({ length: maxComposites * 2 }, (_, i) => ({
       compositeId: `composite-${i}`,
       score: 0.8 - (i * 0.1)

@@ -290,4 +290,49 @@ export class DebugController {
       };
     }
   }
+
+  @Get('reviz-test')
+  @ApiOperation({ summary: 'Test ReViz service integration' })
+  async testReVizIntegration(@Query('songId') songId: string = '1.018.003.002') {
+    try {
+      const startTime = Date.now();
+      
+      // Test the ReViz service method directly
+      const request = {
+        song_id: songId,
+        experience_config: {
+          max_composites: 5,
+          max_assets_per_layer: 4
+        }
+      };
+      
+      // Import the service and test it directly
+      const { ReVizCompleteExperienceProductionService } = await import('./reviz-complete-experience-production.service');
+      const revizService = new ReVizCompleteExperienceProductionService();
+      
+      const composites = await revizService.getRecommendedComposites(request);
+      const responseTime = Date.now() - startTime;
+      
+      return {
+        status: 'success',
+        songId,
+        composites_count: composites.length,
+        response_time_ms: responseTime,
+        sample_composite: composites[0] ? {
+          composite_id: composites[0].composite_id,
+          composite_name: composites[0].composite_name,
+          gcp_storage_url: composites[0].gcp_storage_url
+        } : null,
+        timestamp: new Date().toISOString()
+      };
+    } catch (error) {
+      return {
+        status: 'error',
+        songId,
+        error: error.message,
+        stack: error.stack,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
 }
