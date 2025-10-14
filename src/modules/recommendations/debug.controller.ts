@@ -116,6 +116,46 @@ export class DebugController {
     }
   }
 
+  @Get('nna-http-test')
+  @ApiOperation({ summary: 'Test NNA Registry HTTP call directly' })
+  async testNNAHttp() {
+    try {
+      this.logger.log('🧪 Testing NNA Registry HTTP call directly...');
+      
+      const response = await axios.get(
+        'https://registry.dev.reviz.dev/api/v1/assets/composites/by-song/1.018.003.002',
+        {
+          timeout: 30000,
+          headers: {
+            'x-api-key': 'reviz-dev-30390-13220-4896-9516-9001',
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+        }
+      );
+      
+      this.logger.log(`✅ NNA Registry HTTP test successful: ${response.status}`);
+      
+      return {
+        status: 'success',
+        response_status: response.status,
+        data_length: response.data?.data?.length || 0,
+        total_count: response.data?.metadata?.totalCount || 0,
+        timestamp: new Date().toISOString()
+      };
+    } catch (error) {
+      this.logger.error(`❌ NNA Registry HTTP test failed: ${error.message}`);
+      
+      return {
+        status: 'error',
+        message: error.message,
+        code: error.code,
+        response: error.response?.data,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
+
   @Get('environment')
   @ApiOperation({ summary: 'Check environment variables' })
   checkEnvironment() {
