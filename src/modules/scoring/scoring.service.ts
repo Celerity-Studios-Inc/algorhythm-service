@@ -240,11 +240,11 @@ export class ScoringService {
     const components = template.components || [];
     
     return {
-      song_id: components.find((c: string) => c.startsWith('G.')) || '',
-      star_id: components.find((c: string) => c.startsWith('S.')) || '',
-      look_id: components.find((c: string) => c.startsWith('L.')) || '',
-      move_id: components.find((c: string) => c.startsWith('M.')) || '',
-      world_id: components.find((c: string) => c.startsWith('W.')) || '',
+      song_id: components.find((c: any) => c.nna_address?.startsWith('1.') || c.name?.startsWith('G.'))?.nna_address || '',
+      star_id: components.find((c: any) => c.nna_address?.startsWith('2.') || c.name?.startsWith('S.'))?.nna_address || '',
+      look_id: components.find((c: any) => c.nna_address?.startsWith('3.') || c.name?.startsWith('L.'))?.nna_address || '',
+      move_id: components.find((c: any) => c.nna_address?.startsWith('4.') || c.name?.startsWith('M.'))?.nna_address || '',
+      world_id: components.find((c: any) => c.nna_address?.startsWith('5.') || c.name?.startsWith('W.'))?.nna_address || '',
     };
   }
 
