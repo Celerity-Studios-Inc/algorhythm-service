@@ -382,19 +382,26 @@ Use the provided verification script to check all environments:
 **Cause**: `MONGODB_URI` secret mapped to wrong value
 **Solution**: Update Cloud Run environment variable mapping to correct secret
 
-### **Issue 3: NNA Registry Integration Failure**
+### **Issue 3: NNA Registry Database Configuration Mismatch**
+
+**Symptoms**: Template recommendations fall back to mock data, 7-9 second response times
+**Cause**: NNA Registry service using wrong database name (`nna-registry-development` instead of `nna-registry-service-dev`)
+**Solution**: Update NNA Registry service configuration to use correct database name
+**Reference**: [MongoDB Atlas Explorer](https://cloud.mongodb.com/v2/67fcb7e19f5be765ab9fc6e0#/explorer/67fcbc2857ec1e2a86573fe3/nna-registry-service-dev/assets/find)
+
+### **Issue 4: NNA Registry Integration Failure**
 
 **Symptoms**: Template recommendations fail, 500 errors
 **Cause**: `NNA_REGISTRY_BASE_URL` or `NNA_REGISTRY_API_KEY` incorrect
 **Solution**: Verify NNA Registry URLs and API keys for each environment
 
-### **Issue 4: CORS Errors**
+### **Issue 5: CORS Errors**
 
 **Symptoms**: Frontend cannot communicate with backend
 **Cause**: CORS configuration doesn't allow frontend domain
 **Solution**: Update CORS allowed origins in backend configuration
 
-### **Issue 5: Environment Detection Failure**
+### **Issue 6: Environment Detection Failure**
 
 **Symptoms**: Health endpoint shows wrong environment
 **Cause**: Hostname detection logic or environment variables incorrect

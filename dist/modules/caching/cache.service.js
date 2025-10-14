@@ -22,19 +22,26 @@ let CacheService = CacheService_1 = class CacheService {
     constructor(redisClient) {
         this.redisClient = redisClient;
         this.logger = new common_1.Logger(CacheService_1.name);
+        this.inMemoryCache = new Map();
+        setInterval(() => this.cleanupExpired(), 60000);
     }
     async get(key) {
         if (!this.redisClient) {
-            this.logger.debug(`Redis not available, cache miss for key: ${key}`);
+            const cached = this.inMemoryCache.get(key);
+            if (cached && cached.expires > Date.now()) {
+                this.logger.debug(`In-memory cache hit for key: ${key}`);
+                return cached.value;
+            }
+            this.logger.debug(`In-memory cache miss for key: ${key}`);
             return null;
         }
         try {
             const cached = await this.redisClient.get(key);
             if (cached) {
-                this.logger.debug(`Cache hit for key: ${key}`);
+                this.logger.debug(`Redis cache hit for key: ${key}`);
                 return JSON.parse(cached);
             }
-            this.logger.debug(`Cache miss for key: ${key}`);
+            this.logger.debug(`Redis cache miss for key: ${key}`);
             return null;
         }
         catch (error) {
@@ -44,14 +51,17 @@ let CacheService = CacheService_1 = class CacheService {
     }
     async set(key, value, ttl) {
         if (!this.redisClient) {
-            this.logger.debug(`Redis not available, cache set skipped for key: ${key}`);
-            return false;
+            const effectiveTtl = ttl || cache_keys_1.CACHE_TTL.TEMPLATE_RECOMMENDATION;
+            const expires = Date.now() + (effectiveTtl * 1000);
+            this.inMemoryCache.set(key, { value, expires });
+            this.logger.debug(`In-memory cache set for key: ${key}, TTL: ${effectiveTtl}s`);
+            return true;
         }
         try {
             const serialized = JSON.stringify(value);
             const effectiveTtl = ttl || cache_keys_1.CACHE_TTL.TEMPLATE_RECOMMENDATION;
             await this.redisClient.setex(key, effectiveTtl, serialized);
-            this.logger.debug(`Cache set for key: ${key}, TTL: ${effectiveTtl}s`);
+            this.logger.debug(`Redis cache set for key: ${key}, TTL: ${effectiveTtl}s`);
             return true;
         }
         catch (error) {
@@ -61,12 +71,14 @@ let CacheService = CacheService_1 = class CacheService {
     }
     async delete(key) {
         if (!this.redisClient) {
-            this.logger.debug(`Redis not available, cache delete skipped for key: ${key}`);
-            return false;
+            const existed = this.inMemoryCache.has(key);
+            this.inMemoryCache.delete(key);
+            this.logger.debug(`In-memory cache delete for key: ${key}, existed: ${existed}`);
+            return existed;
         }
         try {
             const result = await this.redisClient.del(key);
-            this.logger.debug(`Cache delete for key: ${key}, result: ${result}`);
+            this.logger.debug(`Redis cache delete for key: ${key}, result: ${result}`);
             return result > 0;
         }
         catch (error) {
@@ -211,6 +223,19 @@ let CacheService = CacheService_1 = class CacheService {
             }
         }
         return result;
+    }
+    cleanupExpired() {
+        const now = Date.now();
+        let cleaned = 0;
+        for (const [key, { expires }] of this.inMemoryCache.entries()) {
+            if (expires <= now) {
+                this.inMemoryCache.delete(key);
+                cleaned++;
+            }
+        }
+        if (cleaned > 0) {
+            this.logger.debug(`Cleaned up ${cleaned} expired in-memory cache entries`);
+        }
     }
     async getCompositesForSong(songId) {
         const key = `composite:queries:song:${songId}`;

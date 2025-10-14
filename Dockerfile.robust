@@ -1,7 +1,8 @@
-# FIXED DOCKERFILE FOR ALGORHYTHM SERVICE
-# Single-stage build with comprehensive verification
+# ROBUST DOCKERFILE FOR ALGORHYTHM SERVICE
+# Multi-stage build with explicit verification steps
 
-FROM node:20-alpine
+# Stage 1: Build stage
+FROM node:20-alpine AS builder
 
 # Set working directory
 WORKDIR /usr/src/app
@@ -11,34 +12,44 @@ COPY package*.json ./
 COPY tsconfig.json ./
 COPY nest-cli.json ./
 
-# Install ALL dependencies (including devDependencies for build)
+# Install dependencies with verbose output
 RUN echo "📦 Installing dependencies..." && \
-    npm install --legacy-peer-deps && \
+    npm install --legacy-peer-deps --verbose && \
     echo "✅ Dependencies installed"
 
 # Copy source code
 COPY . .
 
-# Build the application with comprehensive verification
+# Build the application with explicit verification
 RUN echo "🔨 Building TypeScript application..." && \
     npm run build && \
     echo "✅ Build completed"
 
-# Comprehensive verification of build output
+# Verify build output exists and is valid
 RUN echo "🔍 Verifying build output..." && \
-    echo "📁 Contents of dist directory:" && \
     ls -la dist/ && \
-    echo "📄 Checking main.js file:" && \
     test -f dist/main.js || (echo "❌ dist/main.js not found after build!" && exit 1) && \
     test -s dist/main.js || (echo "❌ dist/main.js is empty!" && exit 1) && \
-    echo "📊 File size:" && \
-    wc -c dist/main.js && \
     echo "✅ dist/main.js exists and is not empty"
 
 # Test that the built application can be loaded
 RUN echo "🧪 Testing built application..." && \
-    node -e "console.log('Testing main.js import...'); try { require('./dist/main.js'); console.log('✅ main.js loads successfully'); } catch(e) { console.error('❌ Error loading main.js:', e.message); process.exit(1); }" && \
+    node -e "console.log('Testing main.js import...'); require('./dist/main.js'); console.log('✅ main.js loads successfully')" && \
     echo "✅ Application loads successfully"
+
+# Stage 2: Production stage
+FROM node:20-alpine AS production
+
+# Set working directory
+WORKDIR /usr/src/app
+
+# Copy only production dependencies
+COPY package*.json ./
+RUN npm ci --only=production --legacy-peer-deps && \
+    npm cache clean --force
+
+# Copy built application from builder stage
+COPY --from=builder /usr/src/app/dist ./dist
 
 # Create non-root user
 RUN addgroup -g 1001 -S nodejs && \
@@ -55,10 +66,10 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD node -e "require('http').get('http://localhost:8080/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"
 
 # Final verification before starting
-RUN echo "🔍 Final verification before start..." && \
-    test -f dist/main.js || (echo "❌ dist/main.js not found in final stage!" && exit 1) && \
-    test -s dist/main.js || (echo "❌ dist/main.js is empty in final stage!" && exit 1) && \
-    echo "✅ Final stage ready"
+RUN echo "🔍 Final verification..." && \
+    test -f dist/main.js || (echo "❌ dist/main.js not found in production stage!" && exit 1) && \
+    test -s dist/main.js || (echo "❌ dist/main.js is empty in production stage!" && exit 1) && \
+    echo "✅ Production stage ready"
 
 # Start the application
 CMD ["node", "dist/main.js"]

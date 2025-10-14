@@ -227,8 +227,19 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
       this.logger.error(`❌ [DIRECT API CALL] NNA Registry call failed: ${error.message}`);
       this.logger.error(`❌ [DIRECT API CALL] Error details:`, error);
       
-      // 🔧 CRITICAL FIX: Only fall back for specific errors, not timeouts or connection issues
-      if (error.code === 'ENOTFOUND' || error.code === 'ECONNREFUSED') {
+      // 🔧 CRITICAL FIX: For timeouts and connection issues, try circuit breaker approach
+      if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
+        this.logger.warn(`⏰ [TIMEOUT] NNA Registry timeout for ${songId}: ${error.message}`);
+        this.logger.warn(`🔄 [CIRCUIT BREAKER] Using circuit breaker approach for ${songId}`);
+        
+        // Try circuit breaker approach instead of immediate fallback
+        try {
+          return await this.getCompositesForSong(songId);
+        } catch (circuitError) {
+          this.logger.warn(`🔄 [CIRCUIT BREAKER FAILED] Circuit breaker also failed, using fallback for ${songId}`);
+          return this.getFallbackComposites(songId);
+        }
+      } else if (error.code === 'ENOTFOUND' || error.code === 'ECONNREFUSED') {
         this.logger.warn(`🔌 [CONNECTION ERROR] Cannot reach NNA Registry: ${error.message}`);
         this.logger.warn(`🔄 [FALLBACK] Using fallback composites for ${songId}`);
         return this.getFallbackComposites(songId);
@@ -241,9 +252,16 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
         this.logger.warn(`🔄 [FALLBACK] Using fallback composites for ${songId}`);
         return this.getFallbackComposites(songId);
       } else {
-        // For timeouts and other errors, throw to let the circuit breaker handle it
-        this.logger.error(`⏰ [TIMEOUT/ERROR] Re-throwing error for circuit breaker: ${error.message}`);
-        throw error;
+        // For other errors, try circuit breaker approach
+        this.logger.warn(`❌ [OTHER ERROR] NNA Registry error for ${songId}: ${error.message}`);
+        this.logger.warn(`🔄 [CIRCUIT BREAKER] Trying circuit breaker approach for ${songId}`);
+        
+        try {
+          return await this.getCompositesForSong(songId);
+        } catch (circuitError) {
+          this.logger.warn(`🔄 [CIRCUIT BREAKER FAILED] Circuit breaker also failed, using fallback for ${songId}`);
+          return this.getFallbackComposites(songId);
+        }
       }
     }
   }

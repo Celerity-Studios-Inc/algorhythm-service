@@ -2,6 +2,7 @@ import { Redis } from 'ioredis';
 export declare class CacheService {
     private readonly redisClient;
     private readonly logger;
+    private readonly inMemoryCache;
     constructor(redisClient: Redis | null);
     get<T>(key: string): Promise<T | null>;
     set(key: string, value: any, ttl?: number): Promise<boolean>;
@@ -24,6 +25,7 @@ export declare class CacheService {
     }>;
     clearExpired(): Promise<number>;
     private parseKeyspaceInfo;
+    private cleanupExpired;
     getCompositesForSong(songId: string): Promise<any[] | null>;
     setCompositesForSong(songId: string, composites: any[]): Promise<boolean>;
     getBatchComposites(songIds: string[]): Promise<Map<string, any[]>>;

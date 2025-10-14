@@ -18,6 +18,7 @@ export declare class RecommendationsService {
     private readonly analyticsService;
     private readonly instantRecommendationsService;
     private readonly logger;
+    private cacheStats;
     constructor(compatibilityScoreModel: Model<CompatibilityScore>, recommendationCacheModel: Model<RecommendationCache>, scoringService: ScoringService, cacheService: CacheService, optimizedNnaRegistryService: OptimizedNnaRegistryService, analyticsService: AnalyticsService, instantRecommendationsService: InstantRecommendationsService);
     private getFallbackTemplates;
     private normalizeSongId;
@@ -45,4 +46,15 @@ export declare class RecommendationsService {
     private generateThumbnailUrl;
     private generatePreviewUrl;
     private getFallbackResponse;
+    private getCacheHitRate;
+    getCacheStats(): {
+        hitRate: number;
+        totalRequests: number;
+        hits: number;
+        misses: number;
+        sets: number;
+    };
+    private trackCacheHit;
+    private trackCacheMiss;
+    private trackCacheSet;
 }

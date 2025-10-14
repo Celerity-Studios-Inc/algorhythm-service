@@ -36,6 +36,12 @@ let RecommendationsService = RecommendationsService_1 = class RecommendationsSer
         this.analyticsService = analyticsService;
         this.instantRecommendationsService = instantRecommendationsService;
         this.logger = new common_1.Logger(RecommendationsService_1.name);
+        this.cacheStats = {
+            hits: 0,
+            misses: 0,
+            sets: 0,
+            totalRequests: 0,
+        };
         console.error('=====================================');
         console.error('🚀 RECOMMENDATIONS SERVICE STARTING');
         console.error('=====================================');
@@ -147,8 +153,11 @@ let RecommendationsService = RecommendationsService_1 = class RecommendationsSer
         let availableTemplates = [];
         try {
             this.logger.log(`🔍 [NNA REGISTRY] Fetching composites for song: ${songId}`);
-            availableTemplates = await this.optimizedNnaRegistryService.getCompositesForSong(songId);
+            this.logger.log(`🔍 [NNA REGISTRY] Service type: ${this.optimizedNnaRegistryService.constructor.name}`);
+            this.logger.log(`🔍 [NNA REGISTRY] Method being called: getCompositesForSongOptimized`);
+            availableTemplates = await this.optimizedNnaRegistryService.getCompositesForSongOptimized(songId);
             this.logger.log(`✅ [NNA REGISTRY] Retrieved ${availableTemplates.length} composites from NNA Registry`);
+            this.logger.log(`🔍 [NNA REGISTRY] Composites preview:`, JSON.stringify(availableTemplates.slice(0, 2), null, 2));
         }
         catch (error) {
             this.logger.warn(`⚠️ [NNA REGISTRY] Failed to fetch composites: ${error.message}`);
@@ -160,7 +169,7 @@ let RecommendationsService = RecommendationsService_1 = class RecommendationsSer
             this.logger.warn(`🔄 [FALLBACK] Using fallback response for ${songId}`);
             return this.getFallbackResponse(normalizedRequest);
         }
-        const secondaryCacheKey = `recommendations:${songId}:${JSON.stringify(normalizedRequest.user_context.preferences)}`;
+        const secondaryCacheKey = `recommendation:template:${songId}:${normalizedRequest.user_context.user_id}`;
         const secondaryCachedResult = await this.cacheService.get(secondaryCacheKey);
         if (secondaryCachedResult) {
             this.logger.debug(`Cache hit for song: ${songId}`);
@@ -409,6 +418,28 @@ let RecommendationsService = RecommendationsService_1 = class RecommendationsSer
             alternatives: fallbackTemplates.slice(1),
             total_available: fallbackTemplates.length,
         };
+    }
+    getCacheHitRate() {
+        const total = this.cacheStats.hits + this.cacheStats.misses;
+        return total > 0 ? (this.cacheStats.hits / total) * 100 : 0;
+    }
+    getCacheStats() {
+        return {
+            ...this.cacheStats,
+            hitRate: this.getCacheHitRate(),
+            totalRequests: this.cacheStats.totalRequests,
+        };
+    }
+    trackCacheHit() {
+        this.cacheStats.hits++;
+        this.cacheStats.totalRequests++;
+    }
+    trackCacheMiss() {
+        this.cacheStats.misses++;
+        this.cacheStats.totalRequests++;
+    }
+    trackCacheSet() {
+        this.cacheStats.sets++;
     }
 };
 exports.RecommendationsService = RecommendationsService;
