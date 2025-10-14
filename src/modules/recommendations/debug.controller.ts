@@ -297,20 +297,37 @@ export class DebugController {
     try {
       const startTime = Date.now();
       
-      // Test the ReViz service method directly
-      const request = {
-        song_id: songId,
-        experience_config: {
-          max_composites: 5,
-          max_assets_per_layer: 4
-        }
-      };
+      // Test service injection
+      const serviceExists = !!this.optimizedNnaRegistryService;
+      const serviceType = this.optimizedNnaRegistryService?.constructor?.name;
+      const methodExists = typeof this.optimizedNnaRegistryService?.getCompositesForSongAlgoRhythmFormat === 'function';
       
-      // Import the service and test it directly
-      const { ReVizCompleteExperienceProductionService } = await import('./reviz-complete-experience-production.service');
-      const revizService = new ReVizCompleteExperienceProductionService();
+      if (!serviceExists) {
+        return {
+          status: 'error',
+          songId,
+          error: 'OptimizedNnaRegistryService is not injected',
+          serviceExists,
+          serviceType,
+          methodExists,
+          timestamp: new Date().toISOString()
+        };
+      }
       
-      const composites = await revizService.getRecommendedComposites(request);
+      if (!methodExists) {
+        return {
+          status: 'error',
+          songId,
+          error: 'getCompositesForSongAlgoRhythmFormat method does not exist',
+          serviceExists,
+          serviceType,
+          methodExists,
+          timestamp: new Date().toISOString()
+        };
+      }
+      
+      // Test the method directly
+      const composites = await this.optimizedNnaRegistryService.getCompositesForSongAlgoRhythmFormat(songId);
       const responseTime = Date.now() - startTime;
       
       return {
@@ -318,6 +335,9 @@ export class DebugController {
         songId,
         composites_count: composites.length,
         response_time_ms: responseTime,
+        serviceExists,
+        serviceType,
+        methodExists,
         sample_composite: composites[0] ? {
           composite_id: composites[0].composite_id,
           composite_name: composites[0].composite_name,
