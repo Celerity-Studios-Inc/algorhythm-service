@@ -148,6 +148,10 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
         this.logger.warn(`⏰ [CIRCUIT BREAKER] Request aborted after ${duration}ms for song ${songId} - using fallback`);
       } else if (error.code === 'ENOTFOUND' || error.code === 'ECONNREFUSED') {
         this.logger.warn(`🔌 [CIRCUIT BREAKER] Cannot reach NNA Registry at ${this.baseUrl} for song ${songId} - using fallback`);
+      } else if (error.response?.status === 404) {
+        this.logger.warn(`🔍 [NOT FOUND] No composites found for song ${songId} - using fallback`);
+      } else if (error.response?.status >= 500) {
+        this.logger.warn(`🚨 [SERVER ERROR] NNA Registry server error ${error.response.status} for song ${songId} - using fallback`);
       } else {
         this.logger.warn(`❌ [CIRCUIT BREAKER] API call failed after ${duration}ms for song ${songId}: ${error.message} - using fallback`);
       }
@@ -222,8 +226,25 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
     } catch (error) {
       this.logger.error(`❌ [DIRECT API CALL] NNA Registry call failed: ${error.message}`);
       this.logger.error(`❌ [DIRECT API CALL] Error details:`, error);
-      this.logger.warn(`🔄 [FALLBACK] Using fallback composites for ${songId}`);
-      return this.getFallbackComposites(songId);
+      
+      // 🔧 CRITICAL FIX: Only fall back for specific errors, not timeouts or connection issues
+      if (error.code === 'ENOTFOUND' || error.code === 'ECONNREFUSED') {
+        this.logger.warn(`🔌 [CONNECTION ERROR] Cannot reach NNA Registry: ${error.message}`);
+        this.logger.warn(`🔄 [FALLBACK] Using fallback composites for ${songId}`);
+        return this.getFallbackComposites(songId);
+      } else if (error.response?.status === 404) {
+        this.logger.warn(`🔍 [NOT FOUND] No composites found for song ${songId}`);
+        this.logger.warn(`🔄 [FALLBACK] Using fallback composites for ${songId}`);
+        return this.getFallbackComposites(songId);
+      } else if (error.response?.status >= 500) {
+        this.logger.warn(`🚨 [SERVER ERROR] NNA Registry server error: ${error.response.status}`);
+        this.logger.warn(`🔄 [FALLBACK] Using fallback composites for ${songId}`);
+        return this.getFallbackComposites(songId);
+      } else {
+        // For timeouts and other errors, throw to let the circuit breaker handle it
+        this.logger.error(`⏰ [TIMEOUT/ERROR] Re-throwing error for circuit breaker: ${error.message}`);
+        throw error;
+      }
     }
   }
 
