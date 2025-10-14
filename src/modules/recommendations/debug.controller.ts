@@ -259,4 +259,35 @@ export class DebugController {
       };
     }
   }
+
+  @Get('algorhythm-test')
+  @ApiOperation({ summary: 'Test AlgoRhythm-compatible NNA Registry endpoint' })
+  async testAlgoRhythmEndpoint(@Query('songId') songId: string = '1.018.003.002') {
+    try {
+      const startTime = Date.now();
+      const composites = await this.optimizedNnaRegistryService.getCompositesForSongAlgoRhythmFormat(songId);
+      const responseTime = Date.now() - startTime;
+      
+      return {
+        status: 'success',
+        songId,
+        composites_count: composites.length,
+        response_time_ms: responseTime,
+        sample_composite: composites[0] ? {
+          composite_id: composites[0].composite_id,
+          composite_name: composites[0].composite_name,
+          gcp_storage_url: composites[0].gcp_storage_url,
+          compatibility_score: composites[0].compatibility_score
+        } : null,
+        timestamp: new Date().toISOString()
+      };
+    } catch (error) {
+      return {
+        status: 'error',
+        songId,
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
 }
