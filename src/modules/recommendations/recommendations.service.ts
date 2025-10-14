@@ -259,31 +259,16 @@ export class RecommendationsService {
     //   };
     // }
 
-    // 🚀 PERFORMANCE FIX: Bypass slow scoring service for sub-2-second response
+    // 🚀 BACKEND TEAM RECOMMENDATION: Simple architecture without complex processing
     const scoringStartTime = Date.now();
     
-    this.logger.log(`🚀 [PERFORMANCE] Bypassing slow scoring service for ${availableTemplates.length} templates`);
+    this.logger.log(`🚀 [BACKEND TEAM] Using simple architecture for ${availableTemplates.length} templates`);
     
-    // 🚀 FAST PATH: Use simple scoring instead of complex scoring service
-    const scoredTemplates = availableTemplates.map((template, index) => ({
-      template_id: template.composite_id || template._id || `template-${index}`,
-      template_name: template.composite_name || template.name || `Template ${index + 1}`,
-      compatibility_score: 0.8 - (index * 0.01), // Simple decreasing score
-      gcp_storage_url: template.gcp_storage_url,
-      thumbnail_url: template.thumbnail_url,
-      preview_url: template.preview_url,
-      metadata: template.metadata || {}
-    }));
+    // 🚀 SIMPLE PROCESSING: Use first template as recommendation, next 3 as alternatives
+    const recommendation = availableTemplates[0] || null;
+    const alternatives = availableTemplates.slice(1, 4); // Use next 3 as alternatives
     
     const scoringTime = Date.now() - scoringStartTime;
-    const eligibleTemplates = scoredTemplates; // All templates are eligible
-
-    // 🚀 PERFORMANCE FIX: Simple sorting by compatibility score
-    const sortedTemplates = eligibleTemplates.sort((a, b) => b.compatibility_score - a.compatibility_score);
-
-    // Select top recommendation and alternatives
-    const recommendation = sortedTemplates[0];
-    const alternatives = sortedTemplates.slice(1, (normalizedRequest.max_alternatives || 5) + 1);
 
     // 🔧 CRITICAL FIX: Ensure proper response structure with real data
     const result = {
