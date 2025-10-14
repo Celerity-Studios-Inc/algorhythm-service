@@ -223,7 +223,7 @@ export class RecommendationsService {
       this.logger.log(`🔍 [NNA REGISTRY] Fetching composites for song: ${songId}`);
       this.logger.log(`🔍 [NNA REGISTRY] Service type: ${this.optimizedNnaRegistryService.constructor.name}`);
       this.logger.log(`🔍 [NNA REGISTRY] Method being called: getCompositesForSongAlgoRhythmFormat`);
-      availableTemplates = await this.optimizedNnaRegistryService.getCompositesForSongAlgoRhythmFormat(songId);
+      availableTemplates = await this.optimizedNnaRegistryService.getCompositesBySongAlgoRhythmFormat(songId);
       this.logger.log(`✅ [NNA REGISTRY] Retrieved ${availableTemplates.length} composites from NNA Registry`);
       this.logger.log(`🔍 [NNA REGISTRY] Composites preview:`, JSON.stringify(availableTemplates.slice(0, 2), null, 2));
       

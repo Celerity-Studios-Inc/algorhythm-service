@@ -650,4 +650,18 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
       return hfn; // Return original if conversion fails
     }
   }
+
+  /**
+   * Backend team's exact method name for compatibility
+   */
+  async getCompositesBySongAlgoRhythmFormat(songId: string, options?: any) {
+    return this.getCompositesForSongAlgoRhythmFormat(songId);
+  }
+
+  /**
+   * Backend team's exact method name for layer assets
+   */
+  async getLayerAssetsAlgoRhythmFormat(songId: string, options?: any) {
+    return this.getLayerAssetsAlgoRhythmFormat(songId);
+  }
 }
