@@ -98,6 +98,7 @@ import { IndexingModule } from './modules/indexing/indexing.module';
 
     // Feature modules (PHASE 2: Re-enable core functionality)
     AuthModule,
+    AlgorhythmModule, // 🚨 CRITICAL FIX: Add missing Algorhythm module
     HealthModule, // ✅ FIX: Add health check endpoint
     NnaIntegrationModule, // ✅ RE-ENABLED: NNA Registry API integration
     WebhookModule, // ✅ RE-ENABLED: Webhook endpoints for NNA Registry
