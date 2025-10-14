@@ -250,6 +250,14 @@ export class RecommendationsService {
       availableTemplates = await this.optimizedNnaRegistryService.getCompositesForSongOptimized(songId);
       this.logger.log(`✅ [NNA REGISTRY] Retrieved ${availableTemplates.length} composites from NNA Registry`);
       this.logger.log(`🔍 [NNA REGISTRY] Composites preview:`, JSON.stringify(availableTemplates.slice(0, 2), null, 2));
+      
+      // 🔧 CRITICAL DEBUG: Check if we got real data or fallback data
+      if (availableTemplates.length > 0) {
+        const firstTemplate = availableTemplates[0];
+        this.logger.log(`🔍 [DATA CHECK] First template ID: ${firstTemplate.template_id || firstTemplate._id || 'NO_ID'}`);
+        this.logger.log(`🔍 [DATA CHECK] First template name: ${firstTemplate.name || 'NO_NAME'}`);
+        this.logger.log(`🔍 [DATA CHECK] Is fallback data: ${firstTemplate.template_id === 'default-pop-template' || firstTemplate._id?.includes('fallback')}`);
+      }
     } catch (error) {
       this.logger.warn(`⚠️ [NNA REGISTRY] Failed to fetch composites: ${error.message}`);
       this.logger.log(`🔄 [FALLBACK] Using fallback templates for song: ${songId}`);
