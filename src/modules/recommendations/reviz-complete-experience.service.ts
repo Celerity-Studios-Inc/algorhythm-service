@@ -336,23 +336,32 @@ export class ReVizCompleteExperienceService {
     // 🔧 FIX: Use enhanced NNA Registry endpoint for AlgoRhythm format
     const templates = await this.optimizedNnaRegistryService.getCompositesBySongAlgoRhythmFormat(songId);
     
-    return templates.slice(0, maxComposites).map((template, index) => ({
-      composite_id: template._id || template.nna_address,
-      composite_name: template.name || `Template ${index + 1}`,
-      nna_address: template.nna_address,
-      compatibility_score: 0.8 + (Math.random() * 0.2), // 0.8-1.0
-      components: {
-        song: this.createAssetReference(template.song_id || songId, 'song'),
-        star: this.createAssetReference(template.star_id || '2.009.002.018', 'star'),
-        look: this.createAssetReference(template.look_id || '3.003.001.001', 'look'),
-        move: this.createAssetReference(template.move_id || '4.022.002.003', 'move'),
-        world: this.createAssetReference(template.world_id || '5.015.001.001', 'world'),
-      },
-      metadata: {
-        created_at: template.createdAt || new Date().toISOString(),
-        tags: template.tags || ['nna-layer-G', 'nna-layer-S', 'nna-layer-L', 'nna-layer-M', 'nna-layer-W'],
-        aiGeneratedDescription: template.description || `Composite video ${index + 1}`,
-        viral_potential: 0.7 + (Math.random() * 0.3),
+    return templates.slice(0, maxComposites).map((template, index) => {
+      // Extract components by layer from the NNA Registry data structure
+      const components = template.components || [];
+      const songComponent = components.find(c => c.layer === 'G');
+      const starComponent = components.find(c => c.layer === 'S');
+      const lookComponent = components.find(c => c.layer === 'L');
+      const moveComponent = components.find(c => c.layer === 'M');
+      const worldComponent = components.find(c => c.layer === 'W');
+      
+      return {
+        composite_id: template.composite_id || template._id || template.nna_address,
+        composite_name: template.composite_name || template.name || `Template ${index + 1}`,
+        nna_address: template.nna_address,
+        compatibility_score: template.compatibility_score || 0.8 + (Math.random() * 0.2), // 0.8-1.0
+        components: {
+          song: this.createAssetReference(songComponent?.asset_id || songId, 'song'),
+          star: this.createAssetReference(starComponent?.asset_id || '2.009.002.018', 'star'),
+          look: this.createAssetReference(lookComponent?.asset_id || '3.003.001.001', 'look'),
+          move: this.createAssetReference(moveComponent?.asset_id || '4.022.002.003', 'move'),
+          world: this.createAssetReference(worldComponent?.asset_id || '5.015.001.001', 'world'),
+        },
+        metadata: {
+          created_at: template.created_at || template.createdAt || new Date().toISOString(),
+          tags: template.tags || ['nna-layer-G', 'nna-layer-S', 'nna-layer-L', 'nna-layer-M', 'nna-layer-W'],
+          aiGeneratedDescription: template.description || `Composite video ${index + 1}`,
+          viral_potential: 0.7 + (Math.random() * 0.3),
         energy_level: 'high',
         style_category: 'modern',
       },
@@ -376,16 +385,25 @@ export class ReVizCompleteExperienceService {
     const layerAssetsData = await this.optimizedNnaRegistryService.getLayerAssetsAlgoRhythmFormat('1.018.003.002'); // Use a default song ID for now
 
     for (const layer of layers) {
-      const assets = layerAssetsData[layer]?.assets || [];
+      // Map layer names to NNA Registry layer codes
+      const layerMapping = {
+        'stars': 'S',
+        'looks': 'L', 
+        'moves': 'M',
+        'worlds': 'W'
+      };
+      
+      const layerCode = layerMapping[layer] || layer;
+      const assets = layerAssetsData.layer_assets?.[layer]?.assets || [];
       const selectedAssets = assets.slice(0, maxAssetsPerLayer);
 
       result[layer] = {
         layer_type: layer,
         assets: await Promise.all(
           selectedAssets.map(async (asset) => {
-            const baseAsset = this.createAssetReference(asset.nna_address, layer);
+            const baseAsset = this.createAssetReference(asset.asset_id || asset.nna_address, layer);
             const variants = includeVariants 
-              ? await this.getAssetVariants(asset.nna_address, variantDepth)
+              ? await this.getAssetVariants(asset.asset_id || asset.nna_address, variantDepth)
               : [];
 
             return {
