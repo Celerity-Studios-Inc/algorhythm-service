@@ -175,58 +175,56 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
       return cached;
     }
 
-    // Use circuit breaker for NNA Registry call with Promise.race for aggressive timeout
-    return await this.circuitBreaker.executeWithCircuitBreaker(
-      async () => {
-        const url = `${this.baseUrl}/api/v1/assets/composites/by-song/${songId}`;
-        
-        this.logger.log(`🔍 [API CALL] Calling NNA Registry: ${url}`);
-        this.logger.log(`🔍 [API CALL] Base URL: ${this.baseUrl}`);
-        this.logger.log(`🔍 [API CALL] Song ID: ${songId}`);
-        this.logger.log(`🔍 [API CALL] Full URL: ${url}`);
-        this.logger.log(`🔍 [API CALL] Headers:`, JSON.stringify(this.getHeaders()));
-        
-        // 🚀 OPTIMIZED: Single timeout via HTTP service configuration
-        const response: AxiosResponse = await firstValueFrom(
-          this.httpService.get(url, {
-            headers: this.getHeaders(),
-            params: {
-              limit: 100,
-              compositeType: 'full',
-              includeMetadata: true,
-            },
-            timeout: this.timeout, // 2 second timeout for P95 < 2s
-          })
-        );
+    // 🔧 TEMPORARY: Bypass circuit breaker to test direct NNA Registry call
+    try {
+      const url = `${this.baseUrl}/api/v1/assets/composites/by-song/${songId}`;
+      
+      this.logger.log(`🔍 [DIRECT API CALL] Calling NNA Registry: ${url}`);
+      this.logger.log(`🔍 [DIRECT API CALL] Base URL: ${this.baseUrl}`);
+      this.logger.log(`🔍 [DIRECT API CALL] Song ID: ${songId}`);
+      this.logger.log(`🔍 [DIRECT API CALL] Full URL: ${url}`);
+      this.logger.log(`🔍 [DIRECT API CALL] Headers:`, JSON.stringify(this.getHeaders()));
+      
+      // 🚀 DIRECT: Call NNA Registry without circuit breaker
+      const response: AxiosResponse = await firstValueFrom(
+        this.httpService.get(url, {
+          headers: this.getHeaders(),
+          params: {
+            limit: 100,
+            compositeType: 'full',
+            includeMetadata: true,
+          },
+          timeout: this.timeout, // 30 second timeout
+        })
+      );
 
-        // Handle NNA Registry response format: { data: [...], metadata: {...}, performance: {...} }
-        this.logger.log(`🔍 [API CALL] Response status: ${response.status}`);
-        this.logger.log(`🔍 [API CALL] Response data keys:`, Object.keys(response.data || {}));
-        this.logger.log(`🔍 [API CALL] Response data type:`, typeof response.data);
-        this.logger.log(`🔍 [API CALL] Response data preview:`, JSON.stringify(response.data, null, 2).substring(0, 500));
+      // Handle NNA Registry response format: { data: [...], metadata: {...}, performance: {...} }
+      this.logger.log(`🔍 [DIRECT API CALL] Response status: ${response.status}`);
+      this.logger.log(`🔍 [DIRECT API CALL] Response data keys:`, Object.keys(response.data || {}));
+      this.logger.log(`🔍 [DIRECT API CALL] Response data type:`, typeof response.data);
+      this.logger.log(`🔍 [DIRECT API CALL] Response data preview:`, JSON.stringify(response.data, null, 2).substring(0, 500));
+      
+      if (response.data?.data && Array.isArray(response.data.data)) {
+        const composites = response.data.data;
+        const duration = Date.now() - startTime;
         
-        if (response.data?.data && Array.isArray(response.data.data)) {
-          const composites = response.data.data;
-          const duration = Date.now() - startTime;
-          
-          // Cache the results (if cache service available)
-          if (this.cacheService) {
-            await this.cacheService.setCompositesForSong(songId, composites);
-          }
-          
-          this.logger.log(`✅ [API CALL] Success! ${composites.length} composites in ${duration}ms`);
-          return composites;
-        } else {
-          this.logger.warn(`⚠️ [API CALL] Unexpected response format:`, JSON.stringify(response.data, null, 2));
-          throw new Error('No data in response or unexpected format');
+        // Cache the results (if cache service available)
+        if (this.cacheService) {
+          await this.cacheService.setCompositesForSong(songId, composites);
         }
-      },
-      () => {
-        this.logger.warn(`🔄 [FALLBACK] Using fallback composites for ${songId}`);
-        return this.getFallbackComposites(songId);
-      },
-      `getCompositesForSong-${songId}`
-    );
+        
+        this.logger.log(`✅ [DIRECT API CALL] Success! ${composites.length} composites in ${duration}ms`);
+        return composites;
+      } else {
+        this.logger.warn(`⚠️ [DIRECT API CALL] Unexpected response format:`, JSON.stringify(response.data, null, 2));
+        throw new Error('No data in response or unexpected format');
+      }
+    } catch (error) {
+      this.logger.error(`❌ [DIRECT API CALL] NNA Registry call failed: ${error.message}`);
+      this.logger.error(`❌ [DIRECT API CALL] Error details:`, error);
+      this.logger.warn(`🔄 [FALLBACK] Using fallback composites for ${songId}`);
+      return this.getFallbackComposites(songId);
+    }
   }
 
   /**
