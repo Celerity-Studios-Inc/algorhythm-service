@@ -51,11 +51,23 @@ export class ScoringService {
           template_name: template.name,
           nna_address: template.nna_address,
           compatibility_score: finalScore,
+          // 🔧 FIX: Include real GCP URLs from NNA Registry
+          gcp_storage_url: template.media?.full_asset_url,
+          thumbnail_url: template.media?.thumbnail_url,
+          preview_url: template.media?.preview_url,
           components: this.extractComponents(template),
           metadata: {
             created_at: template.createdAt,
             tags: template.tags || [],
             aiGeneratedDescription: template.description,
+            // 🔧 FIX: Include media metadata for ReViz developers
+            media: template.media ? {
+              duration_seconds: template.media.duration_seconds,
+              file_size_mb: template.media.file_size_mb,
+              resolution: template.media.resolution,
+              format: template.media.format,
+              quality_score: template.media.quality_score || 0.8,
+            } : undefined,
           },
           scoring_details: {
             ...compatibilityScore.score_breakdown,
@@ -103,9 +115,21 @@ export class ScoringService {
           asset_name: asset.name,
           nna_address: asset.nna_address,
           compatibility_score: finalScore,
+          // 🔧 FIX: Include real GCP URLs for layer variations
+          gcp_storage_url: asset.media?.full_asset_url,
+          thumbnail_url: asset.media?.thumbnail_url,
+          preview_url: asset.media?.preview_url,
           metadata: {
             tags: asset.tags || [],
             aiGeneratedDescription: asset.description,
+            // 🔧 FIX: Include media metadata for layer variations
+            media: asset.media ? {
+              duration_seconds: asset.media.duration_seconds,
+              file_size_mb: asset.media.file_size_mb,
+              resolution: asset.media.resolution,
+              format: asset.media.format,
+              quality_score: asset.media.quality_score || 0.8,
+            } : undefined,
           },
           scoring_details: {
             ...compatibilityScore.score_breakdown,

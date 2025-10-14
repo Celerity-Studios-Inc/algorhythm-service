@@ -48,9 +48,21 @@ export interface LayerVariation {
   asset_name: string;
   nna_address: string;
   compatibility_score: number;
+  // 🔧 FIX: Add GCP URLs for layer variations
+  gcp_storage_url?: string;
+  thumbnail_url?: string;
+  preview_url?: string;
   metadata: {
     tags: string[];
     aiGeneratedDescription?: string;
+    // 🔧 FIX: Add media metadata for layer variations
+    media?: {
+      duration_seconds?: number;
+      file_size_mb?: number;
+      resolution?: string;
+      format?: string;
+      quality_score?: number;
+    };
   };
   scoring_details?: CompatibilityScoreDetails;
 }
