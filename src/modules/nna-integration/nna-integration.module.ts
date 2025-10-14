@@ -8,8 +8,12 @@ import { CachingModule } from '../caching/caching.module';
 @Module({
   imports: [
     HttpModule.register({
-      timeout: 5000, // 5 second timeout to allow NNA Registry calls to complete
+      timeout: 30000, // 30 second timeout to allow NNA Registry calls to complete
       maxRedirects: 5,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
     }),
     CachingModule, // 🔧 FIX: Always import CachingModule to prevent dependency injection failure
   ],
