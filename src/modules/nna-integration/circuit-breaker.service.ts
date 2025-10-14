@@ -7,7 +7,7 @@ export class CircuitBreakerService {
   private lastFailureTime = 0;
   private readonly failureThreshold = 3;
   private readonly timeout = 5000; // 5 seconds to allow NNA Registry calls to complete
-  private readonly resetTimeout = 60000; // 1 minute
+  private readonly resetTimeout = 10000; // 10 seconds for faster recovery
 
   async executeWithCircuitBreaker<T>(
     operation: () => Promise<T>,
@@ -64,5 +64,15 @@ export class CircuitBreakerService {
       timeSinceLastFailure: Date.now() - this.lastFailureTime,
       resetTimeout: this.resetTimeout
     };
+  }
+
+  /**
+   * 🔧 CRITICAL FIX: Manual circuit breaker reset for immediate recovery
+   */
+  resetCircuitBreaker(): void {
+    this.logger.log(`🔄 [CIRCUIT BREAKER] Manual reset requested`);
+    this.failureCount = 0;
+    this.lastFailureTime = 0;
+    this.logger.log(`✅ [CIRCUIT BREAKER] Circuit breaker reset successfully`);
   }
 }

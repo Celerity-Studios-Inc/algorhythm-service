@@ -1,10 +1,13 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import axios from 'axios';
+import { CircuitBreakerService } from '../nna-integration/circuit-breaker.service';
 
 @Controller('debug')
 @ApiTags('Debug')
 export class DebugController {
+  
+  constructor(private readonly circuitBreakerService: CircuitBreakerService) {}
   
   @Get('nna-test')
   @ApiOperation({ summary: 'Test NNA Registry connectivity' })
@@ -140,6 +143,46 @@ export class DebugController {
     } catch (error) {
       this.logger.error(`❌ Template test failed: ${error.message}`);
       
+      return {
+        status: 'error',
+        message: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
+
+  @Get('circuit-breaker-status')
+  @ApiOperation({ summary: 'Check circuit breaker status' })
+  async getCircuitBreakerStatus() {
+    try {
+      const status = this.circuitBreakerService.getStatus();
+      
+      return {
+        status: 'success',
+        circuit_breaker: status,
+        timestamp: new Date().toISOString()
+      };
+    } catch (error) {
+      return {
+        status: 'error',
+        message: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
+
+  @Post('circuit-breaker-reset')
+  @ApiOperation({ summary: 'Reset circuit breaker' })
+  async resetCircuitBreaker() {
+    try {
+      this.circuitBreakerService.resetCircuitBreaker();
+      
+      return {
+        status: 'success',
+        message: 'Circuit breaker reset successfully',
+        timestamp: new Date().toISOString()
+      };
+    } catch (error) {
       return {
         status: 'error',
         message: error.message,
