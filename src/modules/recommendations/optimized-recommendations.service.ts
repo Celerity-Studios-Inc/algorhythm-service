@@ -112,8 +112,8 @@ export class OptimizedRecommendationsService {
     } catch (error) {
       this.logger.error(`❌ [OPTIMIZED SERVICE] NNA Registry failed: ${error.message}`);
       this.logger.error(`❌ [OPTIMIZED SERVICE] Error details:`, error);
-      this.logger.warn(`🔄 [OPTIMIZED SERVICE] Falling back to mock data for song: ${request.song_id}`);
-      return this.getFallbackResponse(request);
+      this.logger.warn(`🔄 [OPTIMIZED SERVICE] NNA Registry service unavailable for song: ${request.song_id}`);
+      throw new NotFoundException(`NNA Registry service unavailable: ${error.message}`);
     }
     
     if (composites.length === 0) {

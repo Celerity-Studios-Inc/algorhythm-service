@@ -247,8 +247,8 @@ export class RecommendationsService {
       }
     } catch (error) {
       this.logger.warn(`⚠️ [NNA REGISTRY] Failed to fetch composites: ${error.message}`);
-      this.logger.log(`🔄 [FALLBACK] Using fallback templates for song: ${songId}`);
-      availableTemplates = this.getFallbackTemplates(songId);
+      this.logger.warn(`🔄 [NNA REGISTRY] Service unavailable for song: ${songId}`);
+      throw new NotFoundException(`NNA Registry service unavailable: ${error.message}`);
     }
     
     if (availableTemplates.length === 0) {
