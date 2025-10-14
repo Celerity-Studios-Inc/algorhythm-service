@@ -172,11 +172,10 @@ export class ReVizCompositeExperienceService {
     }
 
     try {
-      // 🔧 OPTIMIZED: Use optimized NNA Registry service with circuit breaker
-      const composites = await this.optimizedNnaRegistryService.getCompositesForSongOptimized(compositeId);
+      // 🔧 FIX: Use correct method to get composite by ID
+      const composite = await this.optimizedNnaRegistryService.getCompositeById(compositeId);
       
-      if (composites && composites.length > 0) {
-        const composite = composites[0];
+      if (composite) {
         const compositeInfo = {
           composite_id: compositeId,
           composite_name: composite.name || `Composite ${compositeId}`,

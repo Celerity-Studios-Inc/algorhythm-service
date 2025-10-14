@@ -163,6 +163,57 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
   }
 
   /**
+   * 🔧 NEW: Get single composite by ID from NNA Registry
+   */
+  async getCompositeById(compositeId: string): Promise<any> {
+    const startTime = Date.now();
+    
+    // Check cache first
+    const cacheKey = `composite:${compositeId}`;
+    const cached = this.cacheService ? await this.cacheService.get(cacheKey) : null;
+    if (cached) {
+      this.logger.debug(`✅ Cache hit for composite ${compositeId}: ${Date.now() - startTime}ms`);
+      return cached;
+    }
+
+    try {
+      // Call NNA Registry API to get composite by ID
+      const url = `${this.baseUrl}/api/v1/assets/composites/${compositeId}`;
+      this.logger.debug(`Fetching composite: ${compositeId}`);
+      
+      const response = await firstValueFrom(
+        this.httpService.get(url, {
+          headers: { 'x-api-key': this.apiKey },
+          timeout: 5000
+        }).pipe(
+          timeout(5000),
+          catchError(error => {
+            this.logger.error(`NNA Registry API error for composite ${compositeId}:`, error.message);
+            throw error;
+          })
+        )
+      );
+
+      if (response.data && response.data.success) {
+        const composite = response.data.data;
+        
+        // Cache the result
+        if (this.cacheService) {
+          await this.cacheService.set(cacheKey, composite, 300); // 5 minutes
+        }
+        
+        this.logger.debug(`✅ Composite ${compositeId} fetched: ${Date.now() - startTime}ms`);
+        return composite;
+      } else {
+        throw new Error(`No composite found for ID: ${compositeId}`);
+      }
+    } catch (error) {
+      this.logger.error(`Failed to fetch composite ${compositeId}:`, error.message);
+      throw error;
+    }
+  }
+
+  /**
    * 🚀 OPTIMIZED: Get composites with circuit breaker (2s timeout with Promise.race)
    */
   async getCompositesForSongOptimized(songId: string): Promise<any[]> {

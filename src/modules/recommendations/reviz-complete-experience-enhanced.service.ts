@@ -470,12 +470,43 @@ export class ReVizCompleteExperienceEnhancedService {
   }
 
   /**
-   * Get recommended composites with GCP URLs
+   * Get recommended composites with GCP URLs from NNA Registry
    */
   private async getRecommendedComposites(request: ReVizCompleteRequest): Promise<CompositeVideo[]> {
     const maxComposites = request.experience_config.max_composites || 5;
     
-    // Mock implementation - replace with actual composite fetching
+    try {
+      // 🔧 FIX: Call NNA Registry to get real composites
+      const composites = await this.optimizedNnaRegistryService.getCompositesForSongOptimized(request.song_id);
+      
+      if (composites && composites.length > 0) {
+        return composites.slice(0, maxComposites).map(composite => ({
+          composite_id: composite.nna_address || composite.id,
+          composite_name: composite.name || `Composite ${composite.nna_address}`,
+          compatibility_score: composite.compatibilityScore || 0.8,
+          components: {
+            star: composite.components?.star || composite.star_id,
+            look: composite.components?.look || composite.look_id,
+            moves: composite.components?.moves || composite.move_id,
+            world: composite.components?.world || composite.world_id,
+            song: request.song_id
+          },
+          media: {
+            gcp_storage_url: composite.gcpStorageUrl || composite.media?.gcp_storage_url,
+            thumbnail_url: composite.thumbnailUrl || composite.media?.thumbnail_url,
+            preview_url: composite.previewUrl || composite.media?.preview_url,
+            duration_seconds: composite.duration || composite.media?.duration_seconds,
+            file_size_mb: composite.fileSize || composite.media?.file_size_mb,
+            resolution: composite.resolution || composite.media?.resolution,
+            format: composite.format || composite.media?.format
+          }
+        }));
+      }
+    } catch (error) {
+      this.logger.warn(`Failed to fetch composites from NNA Registry: ${error.message}`);
+    }
+    
+    // Fallback to mock data if NNA Registry fails
     return Array.from({ length: maxComposites }, (_, i) => ({
       composite_id: `C.001.001.00${i + 1}`,
       composite_name: `Composite ${i + 1}`,
