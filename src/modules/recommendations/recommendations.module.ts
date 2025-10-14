@@ -44,9 +44,9 @@ import { Composite, CompositeSchema } from '../../models/composite.schema';
   ],
   controllers: [
     RecommendationsController, 
-    ReVizCompleteExperienceProductionController,
-    ReVizCompleteExperienceEnhancedController,
-    ReVizCompositeExperienceController,
+    ReVizCompleteExperienceProductionController, // ✅ KEEP: Production controller
+    // ReVizCompleteExperienceEnhancedController, // ❌ DISABLED: Route conflict
+    ReVizCompositeExperienceController, // ✅ KEEP: Different route (/reviz/composite)
     DebugController,
     LegacyRedirectController  // Must be last to catch legacy routes
   ],
@@ -54,7 +54,7 @@ import { Composite, CompositeSchema } from '../../models/composite.schema';
     RecommendationsService, 
     InstantRecommendationsService, 
     ReVizCompleteExperienceProductionService,
-    ReVizCompleteExperienceEnhancedService,
+    // ReVizCompleteExperienceEnhancedService, // ❌ DISABLED: Controller disabled
     ReVizCompositeExperienceService,
     CacheWarmingService,
     OptimizedRecommendationsService,
@@ -64,7 +64,7 @@ import { Composite, CompositeSchema } from '../../models/composite.schema';
     RecommendationsService, 
     InstantRecommendationsService, 
     ReVizCompleteExperienceProductionService,
-    ReVizCompleteExperienceEnhancedService,
+    // ReVizCompleteExperienceEnhancedService, // ❌ DISABLED: Controller disabled
     ReVizCompositeExperienceService,
     CacheWarmingService,
     OptimizedRecommendationsService,

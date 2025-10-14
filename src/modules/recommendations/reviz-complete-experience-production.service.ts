@@ -428,31 +428,12 @@ export class ReVizCompleteExperienceProductionService {
     const maxComposites = experience_config.max_composites || 5;
 
     try {
-      // 🔧 FIX: Call NNA Registry to get real composites
-      const composites = await this.optimizedNnaRegistryService.getCompositesForSongOptimized(song_id);
+      // 🎯 NEW: Use AlgoRhythm-compatible endpoint for pre-formatted data
+      const composites = await this.optimizedNnaRegistryService.getCompositesForSongAlgoRhythmFormat(song_id);
       
       if (composites && composites.length > 0) {
-        return composites.slice(0, maxComposites).map(composite => ({
-          composite_id: composite.nna_address || composite.id,
-          composite_name: composite.name || `Composite ${composite.nna_address}`,
-          compatibility_score: composite.compatibilityScore || 0.8,
-          components: {
-            star: composite.components?.star || composite.star_id,
-            look: composite.components?.look || composite.look_id,
-            moves: composite.components?.moves || composite.move_id,
-            world: composite.components?.world || composite.world_id,
-            song: song_id
-          },
-          media: {
-            gcp_storage_url: composite.gcpStorageUrl || composite.media?.gcp_storage_url,
-            thumbnail_url: composite.thumbnailUrl || composite.media?.thumbnail_url,
-            preview_url: composite.previewUrl || composite.media?.preview_url,
-            duration_seconds: composite.duration || composite.media?.duration_seconds,
-            file_size_mb: composite.fileSize || composite.media?.file_size_mb,
-            resolution: composite.resolution || composite.media?.resolution,
-            format: composite.format || composite.media?.format
-          }
-        }));
+        // 🎯 AlgoRhythm format already has correct field names - return directly
+        return composites.slice(0, maxComposites);
       }
     } catch (error) {
       this.logger.warn(`Failed to fetch composites from NNA Registry: ${error.message}`);
@@ -511,12 +492,23 @@ export class ReVizCompleteExperienceProductionService {
   }
 
   private async getLayerAssetsOptimized(request: ReVizCompleteRequest): Promise<LayerAssets> {
-    const { experience_config } = request;
+    const { song_id, experience_config } = request;
     const layers = experience_config.layers || ['stars', 'looks', 'moves', 'worlds'];
     const maxAssets = experience_config.max_assets_per_layer || 6;
-    const includeVariants = experience_config.include_variants ?? true;
-    const variantDepth = experience_config.variant_depth || 6;
 
+    try {
+      // 🎯 NEW: Use AlgoRhythm-compatible endpoint for pre-formatted layer data
+      const layerAssets = await this.optimizedNnaRegistryService.getLayerAssetsAlgoRhythmFormat(song_id);
+      
+      if (layerAssets && Object.keys(layerAssets).length > 0) {
+        // 🎯 AlgoRhythm format already has correct structure - return directly
+        return layerAssets;
+      }
+    } catch (error) {
+      this.logger.warn(`Failed to fetch layer assets from NNA Registry: ${error.message}`);
+    }
+
+    // Fallback to empty layer assets if NNA Registry fails
     const layerMap: LayerAssets = {
       stars: { layer_type: 'stars', total_count: 0, assets: [] },
       looks: { layer_type: 'looks', total_count: 0, assets: [] },
