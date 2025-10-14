@@ -245,8 +245,11 @@ export class RecommendationsService {
     try {
       // 🔧 CRITICAL FIX: Use NNA Registry with 2-second timeout and circuit breaker
       this.logger.log(`🔍 [NNA REGISTRY] Fetching composites for song: ${songId}`);
+      this.logger.log(`🔍 [NNA REGISTRY] Service type: ${this.optimizedNnaRegistryService.constructor.name}`);
+      this.logger.log(`🔍 [NNA REGISTRY] Method being called: getCompositesForSongOptimized`);
       availableTemplates = await this.optimizedNnaRegistryService.getCompositesForSongOptimized(songId);
       this.logger.log(`✅ [NNA REGISTRY] Retrieved ${availableTemplates.length} composites from NNA Registry`);
+      this.logger.log(`🔍 [NNA REGISTRY] Composites preview:`, JSON.stringify(availableTemplates.slice(0, 2), null, 2));
     } catch (error) {
       this.logger.warn(`⚠️ [NNA REGISTRY] Failed to fetch composites: ${error.message}`);
       this.logger.log(`🔄 [FALLBACK] Using fallback templates for song: ${songId}`);

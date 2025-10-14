@@ -181,6 +181,10 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
         const url = `${this.baseUrl}/api/v1/assets/composites/by-song/${songId}`;
         
         this.logger.log(`🔍 [API CALL] Calling NNA Registry: ${url}`);
+        this.logger.log(`🔍 [API CALL] Base URL: ${this.baseUrl}`);
+        this.logger.log(`🔍 [API CALL] Song ID: ${songId}`);
+        this.logger.log(`🔍 [API CALL] Full URL: ${url}`);
+        this.logger.log(`🔍 [API CALL] Headers:`, JSON.stringify(this.getHeaders()));
         
         // 🚀 OPTIMIZED: Single timeout via HTTP service configuration
         const response: AxiosResponse = await firstValueFrom(
@@ -196,6 +200,11 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
         );
 
         // Handle NNA Registry response format: { data: [...], metadata: {...}, performance: {...} }
+        this.logger.log(`🔍 [API CALL] Response status: ${response.status}`);
+        this.logger.log(`🔍 [API CALL] Response data keys:`, Object.keys(response.data || {}));
+        this.logger.log(`🔍 [API CALL] Response data type:`, typeof response.data);
+        this.logger.log(`🔍 [API CALL] Response data preview:`, JSON.stringify(response.data, null, 2).substring(0, 500));
+        
         if (response.data?.data && Array.isArray(response.data.data)) {
           const composites = response.data.data;
           const duration = Date.now() - startTime;
