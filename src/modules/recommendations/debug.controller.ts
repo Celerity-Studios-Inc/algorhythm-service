@@ -2,12 +2,18 @@ import { Controller, Get, Post } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import axios from 'axios';
 import { CircuitBreakerService } from '../nna-integration/circuit-breaker.service';
+import { OptimizedNnaRegistryService } from '../nna-integration/optimized-nna-registry.service';
+import { Logger } from '@nestjs/common';
 
 @Controller('debug')
 @ApiTags('Debug')
 export class DebugController {
+  private readonly logger = new Logger(DebugController.name);
   
-  constructor(private readonly circuitBreakerService: CircuitBreakerService) {}
+  constructor(
+    private readonly circuitBreakerService: CircuitBreakerService,
+    private readonly optimizedNnaRegistryService: OptimizedNnaRegistryService
+  ) {}
   
   @Get('nna-test')
   @ApiOperation({ summary: 'Test NNA Registry connectivity' })
@@ -82,10 +88,33 @@ export class DebugController {
     }
   }
 
-  private logger = {
-    log: (message: string) => console.log(`[DEBUG] ${message}`),
-    error: (message: string) => console.error(`[DEBUG] ${message}`)
-  };
+  @Get('nna-service-test')
+  @ApiOperation({ summary: 'Test NNA Registry service directly' })
+  async testNNAService() {
+    try {
+      this.logger.log('🧪 Testing NNA Registry service directly...');
+      
+      const composites = await this.optimizedNnaRegistryService.getCompositesForSongOptimized('1.018.003.002');
+      
+      this.logger.log(`✅ NNA Registry service test successful: ${composites.length} composites`);
+      
+      return {
+        status: 'success',
+        composites_count: composites.length,
+        composites_preview: composites.slice(0, 2),
+        timestamp: new Date().toISOString()
+      };
+    } catch (error) {
+      this.logger.error(`❌ NNA Registry service test failed: ${error.message}`);
+      
+      return {
+        status: 'error',
+        message: error.message,
+        stack: error.stack,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
 
   @Get('environment')
   @ApiOperation({ summary: 'Check environment variables' })
