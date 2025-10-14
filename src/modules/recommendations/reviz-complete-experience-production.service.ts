@@ -64,6 +64,17 @@ export class ReVizCompleteExperienceProductionService {
       const requestValue = request.composite_id || request.song_id;
       this.logger.log(`[REQ-${requestId}] Processing production complete experience (${requestType}): ${requestValue}`);
 
+      // 🔧 FIX: Apply default configuration before validation
+      if (!request.experience_config) {
+        request.experience_config = {
+          max_composites: 5,
+          max_assets_per_layer: 4,
+          include_variants: true,
+          variant_depth: 4,
+          layers: ['stars', 'looks', 'moves', 'worlds']
+        };
+      }
+
       // Validate request
       this.validateRequest(request);
 
@@ -172,17 +183,7 @@ export class ReVizCompleteExperienceProductionService {
       throw new Error('Cannot specify both song_id and composite_id');
     }
     
-    // 🔧 FIX: Make experience_config optional with defaults
-    if (!request.experience_config) {
-      // Apply default configuration
-      request.experience_config = {
-        max_composites: 5,
-        max_assets_per_layer: 4,
-        include_variants: true,
-        variant_depth: 4,
-        layers: ['stars', 'looks', 'moves', 'worlds']
-      };
-    }
+    // experience_config is now guaranteed to be present (applied before validation)
     
     if (request.experience_config.max_composites && 
         (request.experience_config.max_composites < 1 || request.experience_config.max_composites > 20)) {
