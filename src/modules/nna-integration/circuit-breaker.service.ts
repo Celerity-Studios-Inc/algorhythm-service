@@ -6,7 +6,7 @@ export class CircuitBreakerService {
   private failureCount = 0;
   private lastFailureTime = 0;
   private readonly failureThreshold = 3;
-  private readonly timeout = 5000; // 5 seconds to allow NNA Registry processing
+  private readonly timeout = 2000; // 2 seconds for P95 < 2s target
   private readonly resetTimeout = 60000; // 1 minute
 
   async executeWithCircuitBreaker<T>(

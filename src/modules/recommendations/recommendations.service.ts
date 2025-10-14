@@ -260,7 +260,7 @@ export class RecommendationsService {
     }
 
     // PERFORMANCE OPTIMIZATION: Check cache first for instant responses
-    const secondaryCacheKey = `recommendations:${songId}:${JSON.stringify(normalizedRequest.user_context.preferences)}`;
+    const secondaryCacheKey = `recommendation:template:${songId}:${normalizedRequest.user_context.user_id}`;
     const secondaryCachedResult = await this.cacheService.get(secondaryCacheKey);
     
     if (secondaryCachedResult) {
