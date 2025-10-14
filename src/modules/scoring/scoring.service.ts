@@ -42,7 +42,8 @@ export class ScoringService {
         }
 
         // Apply freshness boost
-        const freshnessBoost = this.freshnessBoostService.calculateBoost(template.createdAt);
+        const createdAt = typeof template.createdAt === 'string' ? new Date(template.createdAt) : template.createdAt;
+        const freshnessBoost = this.freshnessBoostService.calculateBoost(createdAt);
         const finalScore = Math.min(compatibilityScore.base_score * freshnessBoost, 1.0);
 
         const templateRecommendation: TemplateRecommendation = {
@@ -223,7 +224,12 @@ export class ScoringService {
         algorithm_version: '1.0.0',
       });
 
-      await scoreDoc.save();
+      // Use upsert to avoid duplicate key errors
+      await this.compatibilityScoreModel.findOneAndUpdate(
+        { song_id: song.nna_address, template_id: template.nna_address },
+        scoreDoc.toObject(),
+        { upsert: true, new: true }
+      );
     } catch (error) {
       this.logger.error('Failed to cache compatibility score:', error);
       // Don't throw error - caching is non-critical
