@@ -249,8 +249,8 @@ export class RecommendationsService {
     // ⏱️ Strict 2s budget around the network call
     const nnaCall = (async () => {
       const t0 = Date.now();
-      this.logger.log(`🔍 [NNA REGISTRY] Fetching composites for song: ${songId}`);
-      const data = await this.optimizedNnaRegistryService.getCompositesBySongAlgoRhythmFormat(songId);
+      this.logger.log(`🔍 [NNA REGISTRY] Fetching composites for song: ${normalizedSongId}`);
+      const data = await this.optimizedNnaRegistryService.getCompositesBySongAlgoRhythmFormat(normalizedSongId);
       this.logger.log(`✅ [NNA REGISTRY] Retrieved ${Array.isArray(data) ? data.length : 0} composites in ${Date.now() - t0}ms`);
       return data;
     })();
@@ -267,7 +267,7 @@ export class RecommendationsService {
         try {
           const warmStart = Date.now();
           this.logger.log(`♻️ [WARM] Starting background warm for key=${primaryCacheKey}`);
-          const warmCall = this.optimizedNnaRegistryService.getCompositesBySongAlgoRhythmFormat(songId);
+          const warmCall = this.optimizedNnaRegistryService.getCompositesBySongAlgoRhythmFormat(normalizedSongId);
           const warmTimer = new Promise<'TIMEOUT'>(res => setTimeout(() => res('TIMEOUT'), 6500));
           const warmResult = await Promise.race([warmCall as any, warmTimer]);
           
