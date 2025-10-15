@@ -187,10 +187,11 @@ export class RecommendationsService {
     const primaryCacheKey = `recommendation:template:${normalizedSongId}:${maxAlternatives}`;
     const primaryCachedResult = await this.cacheService.get(primaryCacheKey);
     if (primaryCachedResult) {
-      this.logger.debug(`✅ [CACHE] Hit for template recommendation: ${primaryCacheKey}`);
+      this.logger.debug(`✅ [PATH] cache_hit | key=${primaryCacheKey}`);
       // Background refresh (fire-and-forget)
       (async () => {
         try {
+          const refreshStart = Date.now();
           const fresh = await this.optimizedNnaRegistryService.getCompositesBySongAlgoRhythmFormat(normalizedSongId);
           if (Array.isArray(fresh) && fresh.length > 0) {
             const recommendation = fresh[0];
@@ -205,6 +206,7 @@ export class RecommendationsService {
               templates_evaluated: fresh.length,
             };
             await this.cacheService.set(primaryCacheKey, toCache, 600); // 10 min TTL
+            this.logger.debug(`♻️ [CACHE REFRESH] key=${primaryCacheKey} updated in ${Date.now() - refreshStart}ms`);
           }
         } catch (e) {
           this.logger.warn(`⚠️ [CACHE REFRESH] Failed for ${primaryCacheKey}: ${e?.message || e}`);
@@ -252,11 +254,12 @@ export class RecommendationsService {
       return data;
     })();
     const timeout = new Promise<any[]>((resolve) => setTimeout(() => resolve(null as any), budgetMs));
+    const tCacheMiss = Date.now();
     const fetched = await Promise.race([nnaCall, timeout]);
     
     if (fetched === null) {
       // Over budget: return 202-like payload if nothing cached, or minimal empty suggestion
-      this.logger.warn(`⏳ [BUDGET] Exceeded ${budgetMs}ms for song ${songId}, returning fast response`);
+      this.logger.warn(`⏳ [PATH] miss_return_202_over_budget | elapsed=${Date.now() - startTime}ms | budget=${budgetMs}ms`);
       const elapsed = Date.now() - startTime;
       return {
         recommendation: null as any,
@@ -270,6 +273,7 @@ export class RecommendationsService {
       };
     }
     availableTemplates = Array.isArray(fetched) ? fetched : [];
+    this.logger.debug(`✅ [PATH] miss_fresh_under_budget | fetch_ms=${Date.now() - tCacheMiss} | total_ms=${Date.now() - startTime}`);
     
     if (availableTemplates.length === 0) {
       this.logger.warn(`No templates found for song: ${songId}`);

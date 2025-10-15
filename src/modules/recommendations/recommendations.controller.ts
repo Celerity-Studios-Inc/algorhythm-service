@@ -155,6 +155,31 @@ export class RecommendationsController {
         `Template recommendation completed in ${responseTime}ms for song: ${request.song_id}`
       );
 
+      // If service indicates partial_response (over budget), return 202 Accepted
+      if ((recommendation as any)?.partial_response) {
+        return {
+          success: true,
+          data: {
+            recommendation: null,
+            alternatives: [],
+            total_available: 0,
+          },
+          performance_metrics: {
+            response_time_ms: responseTime,
+            cache_hit: false,
+            score_computation_time_ms: 0,
+            templates_evaluated: 0,
+          },
+          metadata: {
+            timestamp: new Date().toISOString(),
+            request_id: `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+            version: '1.0.0',
+            retry_after_ms: (recommendation as any)?.retry_after_ms ?? 3000,
+            partial_response: true,
+          }
+        } as any;
+      }
+
       return {
         success: true,
         data: {
