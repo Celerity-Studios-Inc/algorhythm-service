@@ -347,6 +347,8 @@ export class ReVizCompleteExperienceService {
     this.logger.log(`🔍 [DEBUG] Processing ${templates.length} templates`);
     
     return templates.slice(0, maxComposites).map((template, index) => {
+      this.logger.log(`🔍 [DEBUG] Processing template ${index + 1}:`, JSON.stringify(template, null, 2));
+      
       // Extract components by layer from the NNA Registry data structure
       const components = template.components || [];
       const songComponent = components.find(c => c.layer === 'G');
@@ -354,6 +356,14 @@ export class ReVizCompleteExperienceService {
       const lookComponent = components.find(c => c.layer === 'L');
       const moveComponent = components.find(c => c.layer === 'M');
       const worldComponent = components.find(c => c.layer === 'W');
+      
+      this.logger.log(`🔍 [DEBUG] Components found:`, {
+        song: songComponent?.asset_id,
+        star: starComponent?.asset_id,
+        look: lookComponent?.asset_id,
+        move: moveComponent?.asset_id,
+        world: worldComponent?.asset_id
+      });
       
       return {
         composite_id: template.composite_id || template._id || template.nna_address,
