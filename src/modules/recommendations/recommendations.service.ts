@@ -692,47 +692,39 @@ export class RecommendationsService {
     this.cacheStats.sets++;
   }
 
-  // 🔥 BACKGROUND WARM HELPER - Simplified background warm logic
+  // 🔥 BACKGROUND WARM HELPER - Direct HTTP call approach
   private async startBackgroundWarm(cacheKey: string, songId: string, maxAlternatives: number) {
     (async () => {
       try {
         this.logger.log(`🔥 [WARM] Starting background warm for key=${cacheKey}`);
-        await this.singleflightWarm(cacheKey, async () => {
-          this.logger.log(`🔍 [WARM] Calling NNA Registry for song=${songId}`);
-          this.logger.log(`🔍 [WARM] Service injection check: optimizedNnaRegistryService=${!!this.optimizedNnaRegistryService}`);
-          this.logger.log(`🔍 [WARM] Method check: getCompositesForSongOptimized=${typeof this.optimizedNnaRegistryService.getCompositesForSongOptimized}`);
-          
-          let warmResult;
-          try {
-            const warmCall = this.optimizedNnaRegistryService.getCompositesForSongOptimized(songId);
-            this.logger.log(`🔍 [WARM] Method call initiated, waiting for result...`);
-            const warmTimer = new Promise<'TIMEOUT'>(res => setTimeout(() => res('TIMEOUT'), 10000)); // 10s timeout for background warm
-            warmResult = await Promise.race([warmCall, warmTimer]);
-            this.logger.log(`🔍 [WARM] Method call completed: ${warmResult === 'TIMEOUT' ? 'TIMEOUT' : Array.isArray(warmResult) ? `${warmResult.length} items` : 'NOT_ARRAY'}`);
-          } catch (error) {
-            this.logger.error(`❌ [WARM] Method call failed: ${error.message}`);
-            this.logger.error(`❌ [WARM] Error stack: ${error.stack}`);
-            throw error;
-          }
-          
-          if (warmResult !== 'TIMEOUT' && Array.isArray(warmResult) && warmResult.length > 0) {
-            const recommendation = warmResult[0];
-            const alternatives = warmResult.slice(1, 1 + maxAlternatives);
-            await this.cacheService.set(cacheKey, {
-              recommendation,
-              alternatives,
-              total_available: warmResult.length,
-              cache_hit: false,
-              response_time_ms: 0,
-              score_computation_time_ms: 0,
-              templates_evaluated: warmResult.length,
-            }, 600);
-            this.logger.log(`✅ [WARM] Cache set successfully for key=${cacheKey} with ${warmResult.length} items`);
-            return warmResult;
-          } else {
-            throw new Error(`Warm timeout or empty result: ${warmResult === 'TIMEOUT' ? 'TIMEOUT' : 'EMPTY_ARRAY'}`);
-          }
+        
+        // Direct HTTP call to avoid service injection issues
+        const http = require('axios');
+        const nnaRegistryUrl = process.env.NNA_REGISTRY_URL || 'https://dev.nna-registry.media';
+        const apiKey = process.env.NNA_REGISTRY_API_KEY;
+        
+        this.logger.log(`🔍 [WARM] Making direct HTTP call to NNA Registry`);
+        const response = await http.get(`${nnaRegistryUrl}/api/v1/assets/composites/by-song/${songId}`, {
+          headers: { 'x-api-key': apiKey },
+          timeout: 10000
         });
+        
+        if (response.data && Array.isArray(response.data) && response.data.length > 0) {
+          const recommendation = response.data[0];
+          const alternatives = response.data.slice(1, 1 + maxAlternatives);
+          await this.cacheService.set(cacheKey, {
+            recommendation,
+            alternatives,
+            total_available: response.data.length,
+            cache_hit: false,
+            response_time_ms: 0,
+            score_computation_time_ms: 0,
+            templates_evaluated: response.data.length,
+          }, 600);
+          this.logger.log(`✅ [WARM] Cache set successfully for key=${cacheKey} with ${response.data.length} items`);
+        } else {
+          this.logger.warn(`⚠️ [WARM] No data returned from NNA Registry`);
+        }
       } catch (e) {
         this.logger.warn(`⚠️ [WARM] Background warm failed for key=${cacheKey}: ${e?.message || e}`);
       }
