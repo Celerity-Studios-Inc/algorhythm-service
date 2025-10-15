@@ -22,6 +22,7 @@ import { SCORING_THRESHOLDS } from '../../common/constants/compatibility-weights
 @Injectable()
 export class RecommendationsService {
   private readonly logger = new Logger(RecommendationsService.name);
+  private readonly warmLocks = new Map<string, Promise<any>>();
   
   // 📊 CACHE MONITORING - Track cache performance
   private cacheStats = {
@@ -30,6 +31,18 @@ export class RecommendationsService {
     sets: 0,
     totalRequests: 0,
   };
+
+  // 🔒 SINGLEFLIGHT LOCK - Prevent thundering herd on warm operations
+  private warmLocks = new Map<string, Promise<any>>();
+
+  // 📊 WARM STATUS TRACKING - Track warm operations
+  private warmStatus = new Map<string, {
+    started_at: number;
+    finished_at?: number;
+    success: boolean;
+    items: number;
+    duration_ms: number;
+  }>();
 
   constructor(
     @InjectModel(CompatibilityScore.name)
@@ -262,31 +275,31 @@ export class RecommendationsService {
       // Over budget: fire background warm cache (non-blocking, realistic timeout)
       this.logger.warn(`⏳ [PATH] miss_return_202_over_budget | elapsed=${Date.now() - startTime}ms | budget=${budgetMs}ms`);
       
-      // Fire-and-forget background warm with realistic 6.5s timeout
+      // Fire-and-forget background warm with singleflight lock
       (async () => {
         try {
-          const warmStart = Date.now();
-          this.logger.log(`♻️ [WARM] Starting background warm for key=${primaryCacheKey}`);
-          const warmCall = this.optimizedNnaRegistryService.getCompositesBySongAlgoRhythmFormat(normalizedSongId);
-          const warmTimer = new Promise<'TIMEOUT'>(res => setTimeout(() => res('TIMEOUT'), 9500));
-          const warmResult = await Promise.race([warmCall as any, warmTimer]);
-          
-          if (warmResult !== 'TIMEOUT' && Array.isArray(warmResult) && warmResult.length > 0) {
-            const recommendation = warmResult[0];
-            const alternatives = warmResult.slice(1, 1 + maxAlternatives);
-            await this.cacheService.set(primaryCacheKey, {
-              recommendation,
-              alternatives,
-              total_available: warmResult.length,
-              cache_hit: false,
-              response_time_ms: 0,
-              score_computation_time_ms: 0,
-              templates_evaluated: warmResult.length,
-            }, 600);
-            this.logger.log(`✅ [WARM] Background cache warm success key=${primaryCacheKey} | warmed_in=${Date.now() - warmStart}ms | size=${warmResult.length}`);
-          } else {
-            this.logger.warn(`⚠️ [WARM] Background warm timeout/empty for key=${primaryCacheKey} | elapsed=${Date.now() - warmStart}ms`);
-          }
+          await this.singleflightWarm(primaryCacheKey, async () => {
+            const warmCall = this.optimizedNnaRegistryService.getCompositesBySongAlgoRhythmFormat(normalizedSongId);
+            const warmTimer = new Promise<'TIMEOUT'>(res => setTimeout(() => res('TIMEOUT'), 9500));
+            const warmResult = await Promise.race([warmCall as any, warmTimer]);
+            
+            if (warmResult !== 'TIMEOUT' && Array.isArray(warmResult) && warmResult.length > 0) {
+              const recommendation = warmResult[0];
+              const alternatives = warmResult.slice(1, 1 + maxAlternatives);
+              await this.cacheService.set(primaryCacheKey, {
+                recommendation,
+                alternatives,
+                total_available: warmResult.length,
+                cache_hit: false,
+                response_time_ms: 0,
+                score_computation_time_ms: 0,
+                templates_evaluated: warmResult.length,
+              }, 600);
+              return warmResult;
+            } else {
+              throw new Error('Warm timeout or empty result');
+            }
+          });
         } catch (e) {
           this.logger.warn(`⚠️ [WARM] Background warm failed for key=${primaryCacheKey}: ${e?.message || e}`);
         }
@@ -729,5 +742,121 @@ export class RecommendationsService {
 
   private trackCacheSet() {
     this.cacheStats.sets++;
+  }
+
+  // 🔍 CACHE STATUS ENDPOINT - Debug cache state and warm status
+  async getCacheStatus(songId: string, maxAlternatives: number = 3) {
+    const normalizedSongId = this.normalizeSongId(songId);
+    const primaryCacheKey = `recommendation:template:${normalizedSongId}:${maxAlternatives}`;
+    
+    const cached = await this.cacheService.get(primaryCacheKey);
+    const warmStatus = this.warmStatus.get(primaryCacheKey);
+    
+    return {
+      song_id: songId,
+      normalized_song_id: normalizedSongId,
+      cache_key: primaryCacheKey,
+      exists: !!cached,
+      ttl_seconds: cached ? 600 : 0, // 10 minutes TTL
+      size_bytes: cached ? JSON.stringify(cached).length : 0,
+      last_warm_status: warmStatus || null,
+      cache_stats: this.getCacheStats(),
+    };
+  }
+
+  // 🔒 SINGLEFLIGHT WARM - Prevent concurrent warms for same song
+  async singleflightWarm(
+    cacheKey: string, 
+    warmOperation: () => Promise<any>
+  ): Promise<any> {
+    // Check if warm is already in progress
+    if (this.warmLocks.has(cacheKey)) {
+      this.logger.debug(`🔒 [SINGLEFLIGHT] Warm already in progress for ${cacheKey}, waiting...`);
+      return this.warmLocks.get(cacheKey);
+    }
+
+    // Start new warm operation
+    const warmPromise = this.executeWarmWithTracking(cacheKey, warmOperation);
+    this.warmLocks.set(cacheKey, warmPromise);
+
+    try {
+      const result = await warmPromise;
+      return result;
+    } finally {
+      // Clean up lock after completion
+      this.warmLocks.delete(cacheKey);
+    }
+  }
+
+  // 📊 WARM TRACKING - Execute warm with analytics and status tracking
+  private async executeWarmWithTracking(
+    cacheKey: string,
+    warmOperation: () => Promise<any>
+  ): Promise<any> {
+    const startTime = Date.now();
+    
+    // Track warm start
+    this.warmStatus.set(cacheKey, {
+      started_at: startTime,
+      success: false,
+      items: 0,
+      duration_ms: 0,
+    });
+
+    // Emit warm_started analytics
+    await this.analyticsService.trackEvent({
+      event_type: 'warm_started',
+      cache_key: cacheKey,
+      timestamp: new Date().toISOString(),
+    });
+
+    try {
+      const result = await warmOperation();
+      const duration = Date.now() - startTime;
+      
+      // Track warm success
+      this.warmStatus.set(cacheKey, {
+        started_at: startTime,
+        finished_at: Date.now(),
+        success: true,
+        items: Array.isArray(result) ? result.length : 0,
+        duration_ms: duration,
+      });
+
+      // Emit warm_succeeded analytics
+      await this.analyticsService.trackEvent({
+        event_type: 'warm_succeeded',
+        cache_key: cacheKey,
+        duration_ms: duration,
+        items_count: Array.isArray(result) ? result.length : 0,
+        timestamp: new Date().toISOString(),
+      });
+
+      this.logger.log(`✅ [WARM SUCCESS] ${cacheKey} | duration=${duration}ms | items=${Array.isArray(result) ? result.length : 0}`);
+      return result;
+    } catch (error) {
+      const duration = Date.now() - startTime;
+      
+      // Track warm failure
+      this.warmStatus.set(cacheKey, {
+        started_at: startTime,
+        finished_at: Date.now(),
+        success: false,
+        items: 0,
+        duration_ms: duration,
+      });
+
+      // Emit warm_failed analytics
+      await this.analyticsService.trackEvent({
+        event_type: 'warm_failed',
+        cache_key: cacheKey,
+        duration_ms: duration,
+        error_message: error?.message || 'Unknown error',
+        timestamp: new Date().toISOString(),
+      });
+
+      this.logger.warn(`⚠️ [WARM FAILED] ${cacheKey} | duration=${duration}ms | error=${error?.message || error}`);
+      throw error;
+    }
   }
 }

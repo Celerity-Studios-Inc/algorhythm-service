@@ -77,6 +77,14 @@ export class RecommendationsController {
     };
   }
 
+  @Get('debug/cache-status')
+  async getCacheStatus(@Body() request: { song_id: string; max_alternatives?: number }) {
+    return this.recommendationsService.getCacheStatus(
+      request.song_id, 
+      request.max_alternatives || 3
+    );
+  }
+
   @Post('debug/test-both-services')
   async testBothServices(@Body() request: TemplateRecommendationDto) {
     this.logger.log(`🧪 [DEBUG] Testing both services for song: ${request.song_id}`);
@@ -146,7 +154,7 @@ export class RecommendationsController {
           }
         })();
 
-        // Also kick a background warm task (non-blocking, 6.5s timeout) to populate cache for next call
+        // Also kick a background warm task (non-blocking, 9.5s timeout) to populate cache for next call
         (async () => {
           try {
             // Normalize song ID for cache key symmetry
@@ -154,29 +162,29 @@ export class RecommendationsController {
             const maxAlternatives = Math.max(0, Math.min(6, (request as any)?.max_alternatives ?? 3));
             const primaryCacheKey = `recommendation:template:${normalizedSongId}:${maxAlternatives}`;
             
-            const warmStartTime = Date.now();
-            this.logger.log(`🔥 [CONTROLLER BACKGROUND WARM] Starting for song: ${normalizedSongId}`);
-            
-            const warmCall = this.optimizedNnaRegistryService.getCompositesBySongAlgoRhythmFormat(normalizedSongId);
-            const warmTimer = new Promise<'TIMEOUT'>(res => setTimeout(() => res('TIMEOUT'), 9500));
-            const warmResult = await Promise.race([warmCall as any, warmTimer]);
-            
-            if (warmResult !== 'TIMEOUT' && Array.isArray(warmResult) && warmResult.length > 0) {
-              const recommendation = warmResult[0];
-              const alternatives = warmResult.slice(1, 1 + maxAlternatives);
-              await this.cacheService.set(primaryCacheKey, {
-                recommendation,
-                alternatives,
-                total_available: warmResult.length,
-                cache_hit: false,
-                response_time_ms: 0,
-                score_computation_time_ms: 0,
-                templates_evaluated: warmResult.length,
-              }, 600);
-              this.logger.log(`✅ [CONTROLLER BACKGROUND WARM] Success key=${primaryCacheKey} | size=${warmResult.length} | time=${Date.now() - warmStartTime}ms`);
-            } else {
-              this.logger.warn(`⚠️ [CONTROLLER BACKGROUND WARM] Timeout for key=${primaryCacheKey} after ${Date.now() - warmStartTime}ms`);
-            }
+            // Use singleflight warm from service
+            await this.recommendationsService.singleflightWarm(primaryCacheKey, async () => {
+              const warmCall = this.optimizedNnaRegistryService.getCompositesBySongAlgoRhythmFormat(normalizedSongId);
+              const warmTimer = new Promise<'TIMEOUT'>(res => setTimeout(() => res('TIMEOUT'), 9500));
+              const warmResult = await Promise.race([warmCall as any, warmTimer]);
+              
+              if (warmResult !== 'TIMEOUT' && Array.isArray(warmResult) && warmResult.length > 0) {
+                const recommendation = warmResult[0];
+                const alternatives = warmResult.slice(1, 1 + maxAlternatives);
+                await this.cacheService.set(primaryCacheKey, {
+                  recommendation,
+                  alternatives,
+                  total_available: warmResult.length,
+                  cache_hit: false,
+                  response_time_ms: 0,
+                  score_computation_time_ms: 0,
+                  templates_evaluated: warmResult.length,
+                }, 600);
+                return warmResult;
+              } else {
+                throw new Error('Warm timeout or empty result');
+              }
+            });
           } catch (e) {
             this.logger.warn(`⚠️ [CONTROLLER BACKGROUND WARM] Failed: ${e?.message || e}`);
           }
