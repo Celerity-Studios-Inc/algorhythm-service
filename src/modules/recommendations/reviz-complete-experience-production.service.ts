@@ -933,6 +933,19 @@ export class ReVizCompleteExperienceProductionService {
             components?.world?.asset_id,
           ].filter(id => id && id !== 'unknown' && id !== undefined);
           this.logger.log(`🔍 [DEBUG] Object format - found ${assetIds.length} asset IDs`);
+        } else if (!composite.components) {
+          // 🚀 FINAL FIX: Handle NNA Registry data without components field
+          this.logger.log(`🔍 [DEBUG] No components field - extracting from composite_name`);
+          // Extract asset IDs from composite_name pattern: "C.FUL.ALL.106:1.018.003.002+2.009.001.001+3.003.010.002+4.022.002.003+5.004.004.002"
+          const nameParts = composite.composite_name?.split(':');
+          if (nameParts && nameParts.length > 1) {
+            const assetPart = nameParts[1]; // "1.018.003.002+2.009.001.001+3.003.010.002+4.022.002.003+5.004.004.002"
+            assetIds = assetPart.split('+').filter(id => id && id.trim());
+            this.logger.log(`🔍 [DEBUG] Extracted ${assetIds.length} asset IDs from composite_name`);
+          } else {
+            this.logger.warn(`🔍 [DEBUG] Could not extract asset IDs from composite_name: ${composite.composite_name}`);
+            assetIds = [];
+          }
         } else {
           this.logger.warn(`🔍 [DEBUG] Unknown components format for composite ${composite.composite_id}`);
           assetIds = [];
