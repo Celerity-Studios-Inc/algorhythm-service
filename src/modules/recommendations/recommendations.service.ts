@@ -258,7 +258,33 @@ export class RecommendationsService {
     const fetched = await Promise.race([nnaCall, timeout]);
     
     if (fetched === null) {
-      // Over budget: return 202-like payload if nothing cached, or minimal empty suggestion
+      // Over budget: try a bounded quick refresh (≤1s) to warm cache for next call
+      try {
+        const refreshBudgetMs = 1000;
+        const quickCall = this.optimizedNnaRegistryService.getCompositesBySongAlgoRhythmFormat(songId);
+        const refreshTimer = new Promise<'TIMEOUT'>(res => setTimeout(() => res('TIMEOUT'), refreshBudgetMs));
+        const quickResult = await Promise.race([quickCall as any, refreshTimer]);
+        if (quickResult !== 'TIMEOUT' && Array.isArray(quickResult) && quickResult.length > 0) {
+          const recommendation = quickResult[0];
+          const alternatives = quickResult.slice(1, 1 + maxAlternatives);
+          await this.cacheService.set(primaryCacheKey, {
+            recommendation,
+            alternatives,
+            total_available: quickResult.length,
+            cache_hit: false,
+            response_time_ms: 0,
+            score_computation_time_ms: 0,
+            templates_evaluated: quickResult.length,
+          }, 600);
+          this.logger.debug(`♻️ [SERVICE] Quick cache refresh success key=${primaryCacheKey}`);
+        } else {
+          this.logger.warn(`⚠️ [SERVICE] Quick cache refresh skipped/timeout for key=${primaryCacheKey}`);
+        }
+      } catch (e) {
+        this.logger.warn(`⚠️ [SERVICE] Quick cache refresh failed: ${e?.message || e}`);
+      }
+
+      // Return partial response immediately
       this.logger.warn(`⏳ [PATH] miss_return_202_over_budget | elapsed=${Date.now() - startTime}ms | budget=${budgetMs}ms`);
       const elapsed = Date.now() - startTime;
       return {
