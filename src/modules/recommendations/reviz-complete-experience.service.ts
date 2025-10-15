@@ -341,6 +341,8 @@ export class ReVizCompleteExperienceService {
         return [];
       }
       
+      this.logger.log(`✅ [SUCCESS] Received ${templates.length} templates from NNA Registry`);
+      
       return templates.slice(0, maxComposites).map((template, index) => {
         // Extract components by layer from the NNA Registry data structure
         const components = template.components || [];
