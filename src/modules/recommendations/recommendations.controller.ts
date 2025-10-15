@@ -19,6 +19,8 @@ import { ApiKeyGuard } from '../auth/guards/api-key.guard';
 import { CachingInterceptor } from '../../common/interceptors/caching.interceptor';
 import { RecommendationsService } from './recommendations.service';
 import { OptimizedRecommendationsService } from './optimized-recommendations.service';
+import { OptimizedNnaRegistryService } from '../nna-integration/optimized-nna-registry.service';
+import { CacheService } from '../caching/cache.service';
 import { TemplateRecommendationDto } from './dto/template-recommendation.dto';
 import { LayerVariationDto } from './dto/layer-variation.dto';
 import { 
@@ -35,6 +37,8 @@ export class RecommendationsController {
   constructor(
     private readonly recommendationsService: RecommendationsService,
     private readonly optimizedRecommendationsService: OptimizedRecommendationsService,
+    private readonly optimizedNnaRegistryService: OptimizedNnaRegistryService,
+    private readonly cacheService: CacheService,
   ) {}
 
   @ApiOperation({ 
@@ -134,6 +138,35 @@ export class RecommendationsController {
         // Fire-and-forget to warm cache; don't await
         (async () => {
           try { await servicePromise; } catch {}
+        })();
+
+        // Also kick a bounded (≤1s) quick refresh to populate cache for next call
+        (async () => {
+          try {
+            const songId = request.song_id;
+            const maxAlternatives = Math.max(0, Math.min(6, (request as any)?.max_alternatives ?? 3));
+            const primaryCacheKey = `recommendation:template:${songId}:${maxAlternatives}`;
+            const refreshBudgetMs = 1000;
+            const nnaCall = this.optimizedNnaRegistryService.getCompositesBySongAlgoRhythmFormat(songId);
+            const timer = new Promise<'TIMEOUT'>(res => setTimeout(() => res('TIMEOUT'), refreshBudgetMs));
+            const result = await Promise.race([nnaCall as any, timer]);
+            if (result !== 'TIMEOUT' && Array.isArray(result) && result.length > 0) {
+              const recommendation = result[0];
+              const alternatives = result.slice(1, 1 + maxAlternatives);
+              await this.cacheService.set(primaryCacheKey, {
+                recommendation,
+                alternatives,
+                total_available: result.length,
+                cache_hit: false,
+                response_time_ms: 0,
+                score_computation_time_ms: 0,
+                templates_evaluated: result.length,
+              }, 600);
+              this.logger.log(`♻️ [CONTROLLER] Quick cache refresh success key=${primaryCacheKey}`);
+            }
+          } catch (e) {
+            this.logger.warn(`⚠️ [CONTROLLER] Quick cache refresh failed: ${e?.message || e}`);
+          }
         })();
 
         const responseTime = Date.now() - startTime;
