@@ -224,7 +224,7 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
     const cacheKey = `composites:algorhythm:${songId}`;
     
     // Check cache first
-    const cached = this.cacheService ? await this.cacheService.get(cacheKey) : null;
+    const cached = this.cacheService ? await this.cacheService.get<any[]>(cacheKey) : null;
     if (cached) {
       this.logger.debug(`✅ Cache hit for AlgoRhythm composites ${songId}: ${Date.now() - startTime}ms`);
       return cached;

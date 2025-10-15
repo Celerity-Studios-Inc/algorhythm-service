@@ -2,6 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { NnaRegistryService } from '../nna-integration/nna-registry.service';
+import { OptimizedNnaRegistryService } from '../nna-integration/optimized-nna-registry.service';
 import { CacheService } from '../caching/cache.service';
 import { AnalyticsService } from '../analytics/analytics.service';
 import { ScoringService } from '../scoring/scoring.service';
@@ -177,6 +178,7 @@ export class ReVizCompleteExperienceEnhancedService {
   constructor(
     private readonly cacheService: CacheService,
     private readonly nnaRegistryService: NnaRegistryService,
+    private readonly optimizedNnaRegistryService: OptimizedNnaRegistryService,
     private readonly scoringService: ScoringService,
     private readonly analyticsService: AnalyticsService,
     private readonly instantRecommendationsService: InstantRecommendationsService,
@@ -477,7 +479,7 @@ export class ReVizCompleteExperienceEnhancedService {
     
     try {
       // 🔧 FIX: Call NNA Registry to get real composites
-      const composites = await this.nnaRegistryService.getCompositesForSongAlgoRhythmFormat(request.song_id);
+      const composites = await this.optimizedNnaRegistryService.getCompositesForSongAlgoRhythmFormat(request.song_id);
       
       if (composites && composites.length > 0) {
         return composites.slice(0, maxComposites).map(composite => ({
@@ -492,13 +494,22 @@ export class ReVizCompleteExperienceEnhancedService {
             song: request.song_id
           },
           media: {
-            gcp_storage_url: composite.gcpStorageUrl || composite.media?.gcp_storage_url,
             thumbnail_url: composite.thumbnailUrl || composite.media?.thumbnail_url,
             preview_url: composite.previewUrl || composite.media?.preview_url,
-            duration_seconds: composite.duration || composite.media?.duration_seconds,
-            file_size_mb: composite.fileSize || composite.media?.file_size_mb,
-            resolution: composite.resolution || composite.media?.resolution,
-            format: composite.format || composite.media?.format
+            full_video_url: composite.gcpStorageUrl || composite.media?.gcp_storage_url
+          },
+          metadata: {
+            name: composite.name || `Composite ${composite.nna_address}`,
+            description: composite.description || `Composite video for ${request.song_id}`,
+            tags: composite.tags || ['nna-layer-G', 'nna-layer-S', 'nna-layer-L', 'nna-layer-M', 'nna-layer-W'],
+            created_by: composite.created_by || 'system',
+            created_at: composite.created_at || new Date().toISOString()
+          },
+          analytics: {
+            view_count: composite.view_count || 0,
+            like_count: composite.like_count || 0,
+            remix_count: composite.remix_count || 0,
+            trending_score: composite.trending_score || 0.5
           }
         }));
       }

@@ -115,7 +115,6 @@ let RecommendationsService = RecommendationsService_1 = class RecommendationsSer
         const normalizedRequest = { ...request, song_id: normalizedSongId };
         this.logger.debug('🚀 Using OptimizedNnaRegistryService for 43x performance improvement');
         const maxAlternatives = Math.max(0, Math.min(6, request?.max_alternatives ?? 3));
-        const normalizedSongId = request.song_id?.trim()?.toUpperCase() || request.song_id;
         const primaryCacheKey = `recommendation:template:${normalizedSongId}:${maxAlternatives}`;
         const primaryCachedResult = await this.cacheService.get(primaryCacheKey);
         if (primaryCachedResult) {

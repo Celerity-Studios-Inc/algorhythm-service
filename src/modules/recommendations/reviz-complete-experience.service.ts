@@ -407,20 +407,25 @@ export class ReVizCompleteExperienceService {
             move: this.createAssetReference(moveComponent?.asset_id || '4.022.002.003', 'move'),
             world: this.createAssetReference(worldComponent?.asset_id || '5.015.001.001', 'world'),
           },
-        metadata: {
-          created_at: template.created_at || template.createdAt || new Date().toISOString(),
-          tags: template.tags || ['nna-layer-G', 'nna-layer-S', 'nna-layer-L', 'nna-layer-M', 'nna-layer-W'],
-          aiGeneratedDescription: template.description || `Composite video ${index + 1}`,
-          viral_potential: 0.7 + (Math.random() * 0.3),
-        energy_level: 'high',
-        style_category: 'modern',
-      },
-      performance: {
-        render_time_ms: 1000 + (Math.random() * 2000),
-        file_size_mb: 5 + (Math.random() * 10),
-        quality_score: 0.8 + (Math.random() * 0.2),
-      },
-    }));
+          metadata: {
+            created_at: template.created_at || template.createdAt || new Date().toISOString(),
+            tags: template.tags || ['nna-layer-G', 'nna-layer-S', 'nna-layer-L', 'nna-layer-M', 'nna-layer-W'],
+            aiGeneratedDescription: template.description || `Composite video ${index + 1}`,
+            viral_potential: 0.7 + (Math.random() * 0.3),
+            energy_level: 'high',
+            style_category: 'modern',
+          },
+        performance: {
+          render_time_ms: 1000 + (Math.random() * 2000),
+          file_size_mb: 5 + (Math.random() * 10),
+          quality_score: 0.8 + (Math.random() * 0.2),
+        },
+      };
+    });
+    } catch (error) {
+      this.logger.error(`Failed to fetch composites from NNA Registry: ${error.message}`);
+      return [];
+    }
   }
 
   private async getLayerAssetsWithVariants(
