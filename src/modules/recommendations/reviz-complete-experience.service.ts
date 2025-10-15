@@ -486,11 +486,20 @@ export class ReVizCompleteExperienceService {
 
     // Build composite to assets mapping
     compositeVideos.forEach(composite => {
-      // Extract asset IDs from components array
+      this.logger.log(`🔍 [DEBUG] Processing composite for buildAssetRelationships:`, JSON.stringify(composite, null, 2));
+      
+      // Extract asset IDs from components object
       const starComponent = composite.components?.star;
       const lookComponent = composite.components?.look;
       const moveComponent = composite.components?.move;
       const worldComponent = composite.components?.world;
+      
+      this.logger.log(`🔍 [DEBUG] Components in buildAssetRelationships:`, {
+        star: starComponent,
+        look: lookComponent,
+        move: moveComponent,
+        world: worldComponent
+      });
       
       compositeToAssets[composite.composite_id] = [
         starComponent?.asset_id || 'unknown',
