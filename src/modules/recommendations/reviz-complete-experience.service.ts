@@ -473,18 +473,30 @@ export class ReVizCompleteExperienceService {
 
     // Build composite to assets mapping
     compositeVideos.forEach(composite => {
-      // Extract asset IDs from components object
-      const starComponent = composite.components?.star;
-      const lookComponent = composite.components?.look;
-      const moveComponent = composite.components?.move;
-      const worldComponent = composite.components?.world;
+      // Extract asset IDs from components object - handle both array and object formats
+      let assetIds = [];
       
-      compositeToAssets[composite.composite_id] = [
-        starComponent?.asset_id || 'unknown',
-        lookComponent?.asset_id || 'unknown',
-        moveComponent?.asset_id || 'unknown',
-        worldComponent?.asset_id || 'unknown',
-      ].filter(id => id !== 'unknown');
+      if (Array.isArray(composite.components)) {
+        // Handle array format from NNA Registry
+        assetIds = composite.components
+          .filter(c => c.layer && c.asset_id)
+          .map(c => c.asset_id);
+      } else if (composite.components && typeof composite.components === 'object') {
+        // Handle object format from getCompositeVideos
+        const starComponent = composite.components?.star;
+        const lookComponent = composite.components?.look;
+        const moveComponent = composite.components?.move;
+        const worldComponent = composite.components?.world;
+        
+        assetIds = [
+          starComponent?.asset_id,
+          lookComponent?.asset_id,
+          moveComponent?.asset_id,
+          worldComponent?.asset_id,
+        ].filter(id => id && id !== 'unknown');
+      }
+      
+      compositeToAssets[composite.composite_id] = assetIds;
     });
 
     // Build base to variants mapping
