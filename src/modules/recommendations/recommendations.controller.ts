@@ -6,7 +6,8 @@ import {
   UseGuards, 
   UseInterceptors,
   HttpStatus,
-  Logger 
+  Logger,
+  Query 
 } from '@nestjs/common';
 import { 
   ApiTags, 
@@ -78,11 +79,9 @@ export class RecommendationsController {
   }
 
   @Get('debug/cache-status')
-  async getCacheStatus(@Body() request: { song_id: string; max_alternatives?: number }) {
-    return this.recommendationsService.getCacheStatus(
-      request.song_id, 
-      request.max_alternatives || 3
-    );
+  async getCacheStatus(@Query('song_id') songId: string, @Query('max_alternatives') maxAlt?: string) {
+    const maxAlternatives = Math.max(0, Math.min(6, Number(maxAlt || 3)));
+    return this.recommendationsService.getCacheStatus(songId, maxAlternatives);
   }
 
   @Post('debug/test-both-services')
