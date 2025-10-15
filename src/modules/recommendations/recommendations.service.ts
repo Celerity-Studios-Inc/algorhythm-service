@@ -367,6 +367,7 @@ export class RecommendationsService {
           score_computation_time_ms: result.score_computation_time_ms,
           templates_evaluated: result.templates_evaluated,
         }, 600);
+        this.logger.log(`✅ [CACHE SET OK] key=${primaryCacheKey} | size=${result.total_available}`);
       } catch (e) {
         this.logger.warn(`⚠️ [CACHE SET] Failed for ${primaryCacheKey}: ${e?.message || e}`);
       }
