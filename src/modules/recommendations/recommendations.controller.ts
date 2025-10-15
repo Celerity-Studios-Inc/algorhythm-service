@@ -136,9 +136,14 @@ export class RecommendationsController {
       const winner = await Promise.race([servicePromise as any, timeoutPromise]);
 
       if (winner === 'TIMEOUT') {
-        // Fire-and-forget to warm cache; don't await
+        // Fire-and-forget a fresh call to warm cache; don't reuse raced promise
         (async () => {
-          try { await servicePromise; } catch {}
+          try {
+            await this.recommendationsService.getTemplateRecommendation(request);
+            this.logger.log(`♻️ [CONTROLLER] Background warm completed for song ${request.song_id}`);
+          } catch (e) {
+            this.logger.warn(`⚠️ [CONTROLLER] Background warm failed: ${e?.message || e}`);
+          }
         })();
 
         // Also kick a bounded (≤1s) quick refresh to populate cache for next call
