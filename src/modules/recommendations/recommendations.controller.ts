@@ -116,47 +116,28 @@ export class RecommendationsController {
     @Body() request: TemplateRecommendationDto,
   ): Promise<TemplateRecommendationResponse> {
     const startTime = Date.now();
-    
+
     this.logger.log(
       `Template recommendation requested for song: ${request.song_id}`
     );
 
     try {
-      // 🚀 USE OPTIMIZED SERVICE FOR 15x PERFORMANCE IMPROVEMENT
-      this.logger.log(`🚀 [DEBUG] Starting template recommendation for: ${request.song_id}`);
-      this.logger.log(`🚀 [DEBUG] Using OptimizedRecommendationsService for song: ${request.song_id}`);
-      
-      let recommendation;
-      let serviceUsed = 'unknown';
-      const optimizedStartTime = Date.now();
-      
-      try {
-        recommendation = await this.optimizedRecommendationsService
-          .getTemplateRecommendation(request);
-        const optimizedDuration = Date.now() - optimizedStartTime;
-        this.logger.log(`✅ [DEBUG] Optimized service completed in ${optimizedDuration}ms`);
-        serviceUsed = 'optimized';
-      } catch (optimizedError) {
-        const optimizedDuration = Date.now() - optimizedStartTime;
-        this.logger.error(`❌ [DEBUG] Optimized service failed after ${optimizedDuration}ms: ${optimizedError.message}`);
-        this.logger.log(`🔄 [DEBUG] Falling back to old service...`);
-        
-        const fallbackStartTime = Date.now();
-        recommendation = await this.recommendationsService
-          .getTemplateRecommendation(request);
-        const fallbackDuration = Date.now() - fallbackStartTime;
-        this.logger.log(`⚠️ [DEBUG] Old service completed in ${fallbackDuration}ms`);
-        serviceUsed = 'fallback';
-      }
+      // 🚀 Controller-level 2s budget: race service vs timer
+      const budgetMs = 2000;
+      const servicePromise = this.optimizedRecommendationsService
+        .getTemplateRecommendation(request);
+      const timeoutPromise = new Promise<'TIMEOUT'>(resolve => setTimeout(() => resolve('TIMEOUT'), budgetMs));
 
-      const responseTime = Date.now() - startTime;
-      
-      this.logger.log(
-        `Template recommendation completed in ${responseTime}ms for song: ${request.song_id}`
-      );
+      const winner = await Promise.race([servicePromise as any, timeoutPromise]);
 
-      // If service indicates partial_response (over budget), return 202 Accepted
-      if ((recommendation as any)?.partial_response) {
+      if (winner === 'TIMEOUT') {
+        // Fire-and-forget to warm cache; don't await
+        (async () => {
+          try { await servicePromise; } catch {}
+        })();
+
+        const responseTime = Date.now() - startTime;
+        this.logger.warn(`⏳ [CONTROLLER] 2s budget exceeded, returning 202 for song ${request.song_id}`);
         return {
           success: true,
           data: {
@@ -174,7 +155,39 @@ export class RecommendationsController {
             timestamp: new Date().toISOString(),
             request_id: `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
             version: '1.0.0',
-            retry_after_ms: (recommendation as any)?.retry_after_ms ?? 3000,
+            retry_after_ms: 3000,
+            partial_response: true,
+          }
+        } as any;
+      }
+
+      const recommendation = winner as any;
+      const responseTime = Date.now() - startTime;
+
+      this.logger.log(
+        `Template recommendation completed in ${responseTime}ms for song: ${request.song_id}`
+      );
+
+      // If service indicates partial_response (over budget), return 202-like body
+      if (recommendation?.partial_response) {
+        return {
+          success: true,
+          data: {
+            recommendation: null,
+            alternatives: [],
+            total_available: 0,
+          },
+          performance_metrics: {
+            response_time_ms: responseTime,
+            cache_hit: false,
+            score_computation_time_ms: 0,
+            templates_evaluated: 0,
+          },
+          metadata: {
+            timestamp: new Date().toISOString(),
+            request_id: `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+            version: '1.0.0',
+            retry_after_ms: recommendation?.retry_after_ms ?? 3000,
             partial_response: true,
           }
         } as any;
@@ -201,12 +214,10 @@ export class RecommendationsController {
       };
     } catch (error) {
       const responseTime = Date.now() - startTime;
-      
       this.logger.error(
         `Template recommendation failed after ${responseTime}ms for song: ${request.song_id}`,
         error.stack
       );
-      
       throw error;
     }
   }
