@@ -282,7 +282,7 @@ export class RecommendationsService {
           await this.singleflightWarm(primaryCacheKey, async () => {
             this.logger.log(`🔍 [WARM] Calling NNA Registry for song=${normalizedSongId}`);
             const warmCall = this.optimizedNnaRegistryService.getCompositesForSongAlgoRhythmFormat(normalizedSongId);
-            const warmTimer = new Promise<'TIMEOUT'>(res => setTimeout(() => res('TIMEOUT'), 9500));
+            const warmTimer = new Promise<'TIMEOUT'>(res => setTimeout(() => res('TIMEOUT'), 20000));
             const warmResult = await Promise.race([warmCall as any, warmTimer]);
             
             this.logger.log(`📊 [WARM] NNA Registry result: ${warmResult === 'TIMEOUT' ? 'TIMEOUT' : Array.isArray(warmResult) ? `${warmResult.length} items` : 'NOT_ARRAY'}`);

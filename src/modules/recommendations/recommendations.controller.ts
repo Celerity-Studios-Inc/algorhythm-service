@@ -164,7 +164,7 @@ export class RecommendationsController {
             // Use singleflight warm from service
             await this.recommendationsService.singleflightWarm(primaryCacheKey, async () => {
               const warmCall = this.optimizedNnaRegistryService.getCompositesForSongAlgoRhythmFormat(normalizedSongId);
-              const warmTimer = new Promise<'TIMEOUT'>(res => setTimeout(() => res('TIMEOUT'), 9500));
+              const warmTimer = new Promise<'TIMEOUT'>(res => setTimeout(() => res('TIMEOUT'), 20000));
               const warmResult = await Promise.race([warmCall as any, warmTimer]);
               
               if (warmResult !== 'TIMEOUT' && Array.isArray(warmResult) && warmResult.length > 0) {
