@@ -668,6 +668,9 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
     try {
       const url = `${this.baseUrl}/api/v1/assets/composites/by-song/${songId}/algorhythm`;
       this.logger.debug(`🚀 Fetching AlgoRhythm-formatted composites: ${songId}`);
+      this.logger.debug(`🔍 [DEBUG] NNA Registry URL: ${url}`);
+      this.logger.debug(`🔍 [DEBUG] API Key: ${this.apiKey ? 'SET' : 'NOT SET'}`);
+      this.logger.debug(`🔍 [DEBUG] Timeout: ${this.timeout}ms`);
       
       const response = await firstValueFrom(
         this.httpService.get(url, {
