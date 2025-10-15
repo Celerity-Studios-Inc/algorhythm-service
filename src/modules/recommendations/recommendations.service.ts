@@ -692,41 +692,36 @@ export class RecommendationsService {
     this.cacheStats.sets++;
   }
 
-  // 🔥 BACKGROUND WARM HELPER - Direct HTTP call approach
+  // 🔥 BACKGROUND WARM HELPER - Use working debug endpoint approach
   private async startBackgroundWarm(cacheKey: string, songId: string, maxAlternatives: number) {
     (async () => {
       try {
         this.logger.log(`🔥 [WARM] Starting background warm for key=${cacheKey}`);
         
-        // Direct HTTP call to avoid service injection issues
-        const http = require('axios');
-        const nnaRegistryUrl = process.env.NNA_REGISTRY_URL || 'https://dev.nna-registry.media';
-        const apiKey = process.env.NNA_REGISTRY_API_KEY;
+        // Use the same approach as the working debug endpoint
+        this.logger.log(`🔍 [WARM] Using OptimizedNnaRegistryService directly`);
+        const result = await this.optimizedNnaRegistryService.getCompositesForSongOptimized(songId);
+        this.logger.log(`🔍 [WARM] Retrieved ${Array.isArray(result) ? result.length : 0} items`);
         
-        this.logger.log(`🔍 [WARM] Making direct HTTP call to NNA Registry`);
-        const response = await http.get(`${nnaRegistryUrl}/api/v1/assets/composites/by-song/${songId}`, {
-          headers: { 'x-api-key': apiKey },
-          timeout: 10000
-        });
-        
-        if (response.data && Array.isArray(response.data) && response.data.length > 0) {
-          const recommendation = response.data[0];
-          const alternatives = response.data.slice(1, 1 + maxAlternatives);
+        if (Array.isArray(result) && result.length > 0) {
+          const recommendation = result[0];
+          const alternatives = result.slice(1, 1 + maxAlternatives);
           await this.cacheService.set(cacheKey, {
             recommendation,
             alternatives,
-            total_available: response.data.length,
+            total_available: result.length,
             cache_hit: false,
             response_time_ms: 0,
             score_computation_time_ms: 0,
-            templates_evaluated: response.data.length,
+            templates_evaluated: result.length,
           }, 600);
-          this.logger.log(`✅ [WARM] Cache set successfully for key=${cacheKey} with ${response.data.length} items`);
+          this.logger.log(`✅ [WARM] Cache set successfully for key=${cacheKey} with ${result.length} items`);
         } else {
           this.logger.warn(`⚠️ [WARM] No data returned from NNA Registry`);
         }
       } catch (e) {
         this.logger.warn(`⚠️ [WARM] Background warm failed for key=${cacheKey}: ${e?.message || e}`);
+        this.logger.error(`❌ [WARM] Error stack: ${e?.stack || 'No stack trace'}`);
       }
     })();
   }
