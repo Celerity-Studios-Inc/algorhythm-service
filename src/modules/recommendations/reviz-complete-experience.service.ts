@@ -340,8 +340,11 @@ export class ReVizCompleteExperienceService {
     
     if (!templates || !Array.isArray(templates)) {
       this.logger.error(`❌ [DEBUG] Templates is not an array:`, typeof templates, templates);
+      this.logger.error(`❌ [DEBUG] Templates value:`, templates);
       return [];
     }
+    
+    this.logger.log(`🔍 [DEBUG] Processing ${templates.length} templates`);
     
     return templates.slice(0, maxComposites).map((template, index) => {
       // Extract components by layer from the NNA Registry data structure
