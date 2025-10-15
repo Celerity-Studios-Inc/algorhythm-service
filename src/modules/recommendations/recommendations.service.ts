@@ -278,10 +278,14 @@ export class RecommendationsService {
       // Fire-and-forget background warm with singleflight lock
       (async () => {
         try {
+          this.logger.log(`🔥 [WARM] Starting background warm for key=${primaryCacheKey}`);
           await this.singleflightWarm(primaryCacheKey, async () => {
+            this.logger.log(`🔍 [WARM] Calling NNA Registry for song=${normalizedSongId}`);
             const warmCall = this.optimizedNnaRegistryService.getCompositesBySongAlgoRhythmFormat(normalizedSongId);
             const warmTimer = new Promise<'TIMEOUT'>(res => setTimeout(() => res('TIMEOUT'), 9500));
             const warmResult = await Promise.race([warmCall as any, warmTimer]);
+            
+            this.logger.log(`📊 [WARM] NNA Registry result: ${warmResult === 'TIMEOUT' ? 'TIMEOUT' : Array.isArray(warmResult) ? `${warmResult.length} items` : 'NOT_ARRAY'}`);
             
             if (warmResult !== 'TIMEOUT' && Array.isArray(warmResult) && warmResult.length > 0) {
               const recommendation = warmResult[0];
@@ -295,9 +299,10 @@ export class RecommendationsService {
                 score_computation_time_ms: 0,
                 templates_evaluated: warmResult.length,
               }, 600);
+              this.logger.log(`✅ [WARM] Cache set successfully for key=${primaryCacheKey} with ${warmResult.length} items`);
               return warmResult;
             } else {
-              throw new Error('Warm timeout or empty result');
+              throw new Error(`Warm timeout or empty result: ${warmResult === 'TIMEOUT' ? 'TIMEOUT' : 'EMPTY_ARRAY'}`);
             }
           });
         } catch (e) {
