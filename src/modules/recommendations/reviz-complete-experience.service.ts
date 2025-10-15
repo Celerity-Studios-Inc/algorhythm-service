@@ -333,50 +333,35 @@ export class ReVizCompleteExperienceService {
   }
 
   private async getCompositeVideos(songId: string, maxComposites: number) {
-    // 🔧 FIX: Use enhanced NNA Registry endpoint for AlgoRhythm format
-    this.logger.log(`🔍 [DEBUG] Getting composite videos for song: ${songId}`);
-    const templates = await this.optimizedNnaRegistryService.getCompositesBySongAlgoRhythmFormat(songId);
-    this.logger.log(`🔍 [DEBUG] Templates received:`, JSON.stringify(templates?.slice(0, 2), null, 2));
-    
-    if (!templates || !Array.isArray(templates)) {
-      this.logger.error(`❌ [DEBUG] Templates is not an array:`, typeof templates, templates);
-      this.logger.error(`❌ [DEBUG] Templates value:`, templates);
-      return [];
-    }
-    
-    this.logger.log(`🔍 [DEBUG] Processing ${templates.length} templates`);
-    
-    return templates.slice(0, maxComposites).map((template, index) => {
-      this.logger.log(`🔍 [DEBUG] Processing template ${index + 1}:`, JSON.stringify(template, null, 2));
+    try {
+      const templates = await this.optimizedNnaRegistryService.getCompositesBySongAlgoRhythmFormat(songId);
       
-      // Extract components by layer from the NNA Registry data structure
-      const components = template.components || [];
-      const songComponent = components.find(c => c.layer === 'G');
-      const starComponent = components.find(c => c.layer === 'S');
-      const lookComponent = components.find(c => c.layer === 'L');
-      const moveComponent = components.find(c => c.layer === 'M');
-      const worldComponent = components.find(c => c.layer === 'W');
+      if (!templates || !Array.isArray(templates)) {
+        this.logger.error(`No templates received for song: ${songId}`);
+        return [];
+      }
       
-      this.logger.log(`🔍 [DEBUG] Components found:`, {
-        song: songComponent?.asset_id,
-        star: starComponent?.asset_id,
-        look: lookComponent?.asset_id,
-        move: moveComponent?.asset_id,
-        world: worldComponent?.asset_id
-      });
-      
-      return {
-        composite_id: template.composite_id || template._id || template.nna_address,
-        composite_name: template.composite_name || template.name || `Template ${index + 1}`,
-        nna_address: template.nna_address,
-        compatibility_score: template.compatibility_score || 0.8 + (Math.random() * 0.2), // 0.8-1.0
-        components: {
-          song: this.createAssetReference(songComponent?.asset_id || songId, 'song'),
-          star: this.createAssetReference(starComponent?.asset_id || '2.009.002.018', 'star'),
-          look: this.createAssetReference(lookComponent?.asset_id || '3.003.001.001', 'look'),
-          move: this.createAssetReference(moveComponent?.asset_id || '4.022.002.003', 'move'),
-          world: this.createAssetReference(worldComponent?.asset_id || '5.015.001.001', 'world'),
-        },
+      return templates.slice(0, maxComposites).map((template, index) => {
+        // Extract components by layer from the NNA Registry data structure
+        const components = template.components || [];
+        const songComponent = components.find(c => c.layer === 'G');
+        const starComponent = components.find(c => c.layer === 'S');
+        const lookComponent = components.find(c => c.layer === 'L');
+        const moveComponent = components.find(c => c.layer === 'M');
+        const worldComponent = components.find(c => c.layer === 'W');
+        
+        return {
+          composite_id: template.composite_id || template._id || template.nna_address,
+          composite_name: template.composite_name || template.name || `Template ${index + 1}`,
+          nna_address: template.nna_address,
+          compatibility_score: template.compatibility_score || 0.8 + (Math.random() * 0.2),
+          components: {
+            song: this.createAssetReference(songComponent?.asset_id || songId, 'song'),
+            star: this.createAssetReference(starComponent?.asset_id || '2.009.002.018', 'star'),
+            look: this.createAssetReference(lookComponent?.asset_id || '3.003.001.001', 'look'),
+            move: this.createAssetReference(moveComponent?.asset_id || '4.022.002.003', 'move'),
+            world: this.createAssetReference(worldComponent?.asset_id || '5.015.001.001', 'world'),
+          },
         metadata: {
           created_at: template.created_at || template.createdAt || new Date().toISOString(),
           tags: template.tags || ['nna-layer-G', 'nna-layer-S', 'nna-layer-L', 'nna-layer-M', 'nna-layer-W'],
@@ -486,20 +471,11 @@ export class ReVizCompleteExperienceService {
 
     // Build composite to assets mapping
     compositeVideos.forEach(composite => {
-      this.logger.log(`🔍 [DEBUG] Processing composite for buildAssetRelationships:`, JSON.stringify(composite, null, 2));
-      
       // Extract asset IDs from components object
       const starComponent = composite.components?.star;
       const lookComponent = composite.components?.look;
       const moveComponent = composite.components?.move;
       const worldComponent = composite.components?.world;
-      
-      this.logger.log(`🔍 [DEBUG] Components in buildAssetRelationships:`, {
-        star: starComponent,
-        look: lookComponent,
-        move: moveComponent,
-        world: worldComponent
-      });
       
       compositeToAssets[composite.composite_id] = [
         starComponent?.asset_id || 'unknown',
