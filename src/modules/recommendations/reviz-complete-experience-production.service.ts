@@ -906,8 +906,14 @@ export class ReVizCompleteExperienceProductionService {
       return mapping;
     }
 
-    composites.forEach(composite => {
+    this.logger.log(`🔍 [DEBUG] buildCompositeToAssets processing ${composites.length} composites`);
+    
+    composites.forEach((composite, index) => {
       try {
+        this.logger.log(`🔍 [DEBUG] Processing composite ${index + 1}: ${composite.composite_id}`);
+        this.logger.log(`🔍 [DEBUG] Composite components type: ${Array.isArray(composite.components) ? 'array' : typeof composite.components}`);
+        this.logger.log(`🔍 [DEBUG] Composite components:`, JSON.stringify(composite.components, null, 2));
+        
         // Handle both array and object component formats with robust null checking
         let assetIds = [];
         
@@ -916,6 +922,7 @@ export class ReVizCompleteExperienceProductionService {
           assetIds = composite.components
             .filter(c => c && c.layer && c.asset_id)
             .map(c => c.asset_id);
+          this.logger.log(`🔍 [DEBUG] Array format - found ${assetIds.length} asset IDs`);
         } else if (composite.components && typeof composite.components === 'object') {
           // Handle object format from getCompositeVideos
           const components = composite.components;
@@ -925,14 +932,21 @@ export class ReVizCompleteExperienceProductionService {
             components?.move?.asset_id,
             components?.world?.asset_id,
           ].filter(id => id && id !== 'unknown' && id !== undefined);
+          this.logger.log(`🔍 [DEBUG] Object format - found ${assetIds.length} asset IDs`);
+        } else {
+          this.logger.warn(`🔍 [DEBUG] Unknown components format for composite ${composite.composite_id}`);
+          assetIds = [];
         }
         
         mapping[composite.composite_id] = assetIds;
+        this.logger.log(`🔍 [DEBUG] Mapped composite ${composite.composite_id} to ${assetIds.length} assets`);
       } catch (error) {
         this.logger.error(`Error processing composite ${composite.composite_id}:`, error);
         mapping[composite.composite_id] = [];
       }
     });
+    
+    this.logger.log(`🔍 [DEBUG] buildCompositeToAssets completed with ${Object.keys(mapping).length} mappings`);
     
     return mapping;
   }
