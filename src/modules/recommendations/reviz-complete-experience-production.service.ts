@@ -783,6 +783,13 @@ export class ReVizCompleteExperienceProductionService {
     }
 
     const uniqueAssetIds = Array.from(new Set(allAssetIds));
+
+    // Early return guard to avoid heavy loops and undefined access
+    if (uniqueAssetIds.length === 0) {
+      this.logger.warn(`🔍 [DEBUG] buildCompatibilityMatrix: no asset ids collected; returning empty matrix`);
+      return matrix;
+    }
+
     // Mock bulk compatibility scores for now
     const bulkScores: Record<string, number> = {};
     for (const assetId1 of uniqueAssetIds) {
@@ -807,10 +814,13 @@ export class ReVizCompleteExperienceProductionService {
 
   private calculateTotalAssets(layerAssets: LayerAssets): number {
     let total = 0;
+    if (!layerAssets || typeof layerAssets !== 'object') return 0;
     for (const layerType in layerAssets) {
-      layerAssets[layerType].assets.forEach(assetWithVariants => {
+      const assets = layerAssets[layerType]?.assets;
+      if (!Array.isArray(assets)) continue;
+      assets.forEach(assetWithVariants => {
         total += 1;
-        total += assetWithVariants.variants?.length || 0;
+        total += Array.isArray(assetWithVariants.variants) ? assetWithVariants.variants.length : 0;
       });
     }
     return total;
