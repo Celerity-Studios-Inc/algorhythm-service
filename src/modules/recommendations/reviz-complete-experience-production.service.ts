@@ -582,8 +582,8 @@ export class ReVizCompleteExperienceProductionService {
       }));
     }
 
-    if (includeVariants) {
-      await this.loadVariantsOptimized(layerMap, variantDepth);
+    if (request.experience_config.include_variants) {
+      await this.loadVariantsOptimized(layerMap, request.experience_config.variant_depth);
     }
 
     return layerMap;

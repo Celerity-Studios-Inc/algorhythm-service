@@ -477,7 +477,7 @@ export class ReVizCompleteExperienceEnhancedService {
     
     try {
       // 🔧 FIX: Call NNA Registry to get real composites
-      const composites = await this.optimizedNnaRegistryService.getCompositesForSongAlgoRhythmFormat(request.song_id);
+      const composites = await this.nnaRegistryService.getCompositesForSongAlgoRhythmFormat(request.song_id);
       
       if (composites && composites.length > 0) {
         return composites.slice(0, maxComposites).map(composite => ({

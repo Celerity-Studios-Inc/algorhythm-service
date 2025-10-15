@@ -42,19 +42,19 @@ exports.AppModule = AppModule = __decorate([
                     '.env',
                 ],
             }),
-            ...(process.env.MONGODB_URI ? [mongoose_1.MongooseModule.forRootAsync({
-                    imports: [config_1.ConfigModule],
-                    useFactory: async (configService) => {
-                        const mongoUri = configService.get('MONGODB_URI');
-                        console.log('🗄️  MongoDB URI: cloud-database');
-                        return {
-                            uri: mongoUri,
-                            retryWrites: true,
-                            w: 'majority',
-                        };
-                    },
-                    inject: [config_1.ConfigService],
-                })] : []),
+            mongoose_1.MongooseModule.forRootAsync({
+                imports: [config_1.ConfigModule],
+                useFactory: async (configService) => {
+                    const mongoUri = configService.get('MONGODB_URI') || 'mongodb://localhost:27017/algorhythm-dev';
+                    console.log('🗄️  MongoDB URI:', mongoUri);
+                    return {
+                        uri: mongoUri,
+                        retryWrites: true,
+                        w: 'majority',
+                    };
+                },
+                inject: [config_1.ConfigService],
+            }),
             ...(process.env.REDIS_URL ? [redis_config_1.RedisModule] : []),
             throttler_1.ThrottlerModule.forRoot({
                 ttl: 60000,

@@ -100,39 +100,50 @@ let RecommendationsService = RecommendationsService_1 = class RecommendationsSer
         ];
     }
     normalizeSongId(songId) {
-        if (songId.includes('.')) {
-            return songId;
-        }
-        if (/^\d+$/.test(songId)) {
-            const parts = songId.match(/.{1,3}/g) || [];
-            return parts.join('.');
-        }
+        this.logger.log(`🔄 [DUAL ADDRESSING] Using original format: ${songId}`);
         return songId;
     }
     async getTemplateRecommendation(request) {
         const startTime = Date.now();
+        const budgetMs = 2000;
         this.logger.log(`🔧 [TEMPLATE ENDPOINT] Starting template recommendation for song: ${request.song_id}`);
         this.logger.log(`🔧 [TEMPLATE ENDPOINT] Service is using latest code with emergency bypass`);
         this.logger.log(`🔧 [TEMPLATE ENDPOINT] Request: ${JSON.stringify(request)}`);
         const originalSongId = request.song_id;
         const normalizedSongId = this.normalizeSongId(request.song_id);
-        if (originalSongId !== normalizedSongId) {
-            this.logger.log(`🔄 [NORMALIZATION] MFA→HFN: ${originalSongId} → ${normalizedSongId}`);
-        }
+        this.logger.log(`🔄 [DUAL ADDRESSING] Using ${originalSongId} directly with NNA Registry`);
         const normalizedRequest = { ...request, song_id: normalizedSongId };
         this.logger.debug('🚀 Using OptimizedNnaRegistryService for 43x performance improvement');
-        const primaryCacheKey = `${cache_keys_1.CACHE_KEYS.TEMPLATE_RECOMMENDATION}:${normalizedSongId}:${JSON.stringify(normalizedRequest.user_context)}`;
+        const maxAlternatives = Math.max(0, Math.min(6, request?.max_alternatives ?? 3));
+        const normalizedSongId = request.song_id?.trim()?.toUpperCase() || request.song_id;
+        const primaryCacheKey = `recommendation:template:${normalizedSongId}:${maxAlternatives}`;
         const primaryCachedResult = await this.cacheService.get(primaryCacheKey);
         if (primaryCachedResult) {
-            this.logger.debug(`Cache hit for template recommendation: ${normalizedSongId}`);
-            await this.analyticsService.trackEvent({
-                event_type: 'template_recommendation_served',
-                user_id: normalizedRequest.user_context.user_id,
-                song_id: normalizedSongId,
-                template_id: primaryCachedResult.recommendation?.template_id || 'unknown',
-                cache_hit: true,
-                response_time_ms: Date.now() - startTime,
-            });
+            this.logger.debug(`✅ [PATH] cache_hit | key=${primaryCacheKey}`);
+            (async () => {
+                try {
+                    const refreshStart = Date.now();
+                    const fresh = await this.optimizedNnaRegistryService.getCompositesBySongAlgoRhythmFormat(normalizedSongId);
+                    if (Array.isArray(fresh) && fresh.length > 0) {
+                        const recommendation = fresh[0];
+                        const alternatives = fresh.slice(1, 1 + maxAlternatives);
+                        const toCache = {
+                            recommendation,
+                            alternatives,
+                            total_available: fresh.length,
+                            cache_hit: false,
+                            response_time_ms: 0,
+                            score_computation_time_ms: 0,
+                            templates_evaluated: fresh.length,
+                        };
+                        await this.cacheService.set(primaryCacheKey, toCache, 600);
+                        this.logger.debug(`♻️ [CACHE REFRESH] key=${primaryCacheKey} updated in ${Date.now() - refreshStart}ms`);
+                    }
+                }
+                catch (e) {
+                    this.logger.warn(`⚠️ [CACHE REFRESH] Failed for ${primaryCacheKey}: ${e?.message || e}`);
+                }
+            })();
             return {
                 ...primaryCachedResult,
                 cache_hit: true,
@@ -145,74 +156,137 @@ let RecommendationsService = RecommendationsService_1 = class RecommendationsSer
             name: `Song ${songId}`,
             nna_address: songId
         };
-        this.logger.log(`🔍 [METHOD CALL] About to call getCompositesForSongOptimized`);
+        this.logger.log(`🔍 [METHOD CALL] About to call getCompositesForSongAlgoRhythmFormat`);
         this.logger.log(`🔍 [METHOD CALL] Song ID: ${songId}`);
         this.logger.log(`🔍 [METHOD CALL] Service exists: ${!!this.optimizedNnaRegistryService}`);
         this.logger.log(`🔍 [METHOD CALL] Service type: ${this.optimizedNnaRegistryService?.constructor?.name}`);
         this.logger.log(`🚀 [INTEGRATION] Calling NNA Registry with circuit breaker for song: ${songId}`);
         let availableTemplates = [];
-        try {
+        const nnaCall = (async () => {
+            const t0 = Date.now();
             this.logger.log(`🔍 [NNA REGISTRY] Fetching composites for song: ${songId}`);
-            this.logger.log(`🔍 [NNA REGISTRY] Service type: ${this.optimizedNnaRegistryService.constructor.name}`);
-            this.logger.log(`🔍 [NNA REGISTRY] Method being called: getCompositesForSongOptimized`);
-            availableTemplates = await this.optimizedNnaRegistryService.getCompositesForSongOptimized(songId);
-            this.logger.log(`✅ [NNA REGISTRY] Retrieved ${availableTemplates.length} composites from NNA Registry`);
-            this.logger.log(`🔍 [NNA REGISTRY] Composites preview:`, JSON.stringify(availableTemplates.slice(0, 2), null, 2));
-        }
-        catch (error) {
-            this.logger.warn(`⚠️ [NNA REGISTRY] Failed to fetch composites: ${error.message}`);
-            this.logger.log(`🔄 [FALLBACK] Using fallback templates for song: ${songId}`);
-            availableTemplates = this.getFallbackTemplates(songId);
-        }
-        if (availableTemplates.length === 0) {
-            this.logger.warn(`No templates found for song: ${songId}`);
-            this.logger.warn(`🔄 [FALLBACK] Using fallback response for ${songId}`);
-            return this.getFallbackResponse(normalizedRequest);
-        }
-        const secondaryCacheKey = `recommendation:template:${songId}:${normalizedRequest.user_context.user_id}`;
-        const secondaryCachedResult = await this.cacheService.get(secondaryCacheKey);
-        if (secondaryCachedResult) {
-            this.logger.debug(`Cache hit for song: ${songId}`);
+            const data = await this.optimizedNnaRegistryService.getCompositesBySongAlgoRhythmFormat(songId);
+            this.logger.log(`✅ [NNA REGISTRY] Retrieved ${Array.isArray(data) ? data.length : 0} composites in ${Date.now() - t0}ms`);
+            return data;
+        })();
+        const timeout = new Promise((resolve) => setTimeout(() => resolve(null), budgetMs));
+        const tCacheMiss = Date.now();
+        const fetched = await Promise.race([nnaCall, timeout]);
+        if (fetched === null) {
+            this.logger.warn(`⏳ [PATH] miss_return_202_over_budget | elapsed=${Date.now() - startTime}ms | budget=${budgetMs}ms`);
+            (async () => {
+                try {
+                    const warmStart = Date.now();
+                    this.logger.log(`♻️ [WARM] Starting background warm for key=${primaryCacheKey}`);
+                    const warmCall = this.optimizedNnaRegistryService.getCompositesBySongAlgoRhythmFormat(songId);
+                    const warmTimer = new Promise(res => setTimeout(() => res('TIMEOUT'), 6500));
+                    const warmResult = await Promise.race([warmCall, warmTimer]);
+                    if (warmResult !== 'TIMEOUT' && Array.isArray(warmResult) && warmResult.length > 0) {
+                        const recommendation = warmResult[0];
+                        const alternatives = warmResult.slice(1, 1 + maxAlternatives);
+                        await this.cacheService.set(primaryCacheKey, {
+                            recommendation,
+                            alternatives,
+                            total_available: warmResult.length,
+                            cache_hit: false,
+                            response_time_ms: 0,
+                            score_computation_time_ms: 0,
+                            templates_evaluated: warmResult.length,
+                        }, 600);
+                        this.logger.log(`✅ [WARM] Background cache warm success key=${primaryCacheKey} | warmed_in=${Date.now() - warmStart}ms | size=${warmResult.length}`);
+                    }
+                    else {
+                        this.logger.warn(`⚠️ [WARM] Background warm timeout/empty for key=${primaryCacheKey} | elapsed=${Date.now() - warmStart}ms`);
+                    }
+                }
+                catch (e) {
+                    this.logger.warn(`⚠️ [WARM] Background warm failed for key=${primaryCacheKey}: ${e?.message || e}`);
+                }
+            })();
+            const elapsed = Date.now() - startTime;
             return {
-                ...secondaryCachedResult,
-                cache_hit: true,
+                recommendation: null,
+                alternatives: [],
+                total_available: 0,
+                cache_hit: false,
                 score_computation_time_ms: 0,
-                templates_evaluated: secondaryCachedResult.alternatives?.length + 1 || 1,
+                templates_evaluated: 0,
+                partial_response: true,
+                retry_after_ms: 3000,
             };
         }
-        const scoringStartTime = Date.now();
-        this.logger.log(`🎯 [SCORING] Starting real scoring for ${availableTemplates.length} templates`);
-        const scoredTemplates = await this.scoringService.scoreTemplates(song, availableTemplates, request.user_context);
-        const scoringTime = Date.now() - scoringStartTime;
-        const eligibleTemplates = scoredTemplates;
-        const sortedTemplates = this.applyDiversityAndSort(eligibleTemplates);
-        const recommendation = sortedTemplates[0];
-        const alternatives = sortedTemplates.slice(1, (normalizedRequest.max_alternatives || 5) + 1);
+        availableTemplates = Array.isArray(fetched) ? fetched : [];
+        this.logger.debug(`✅ [PATH] miss_fresh_under_budget | fetch_ms=${Date.now() - tCacheMiss} | total_ms=${Date.now() - startTime}`);
+        if (availableTemplates.length === 0) {
+            this.logger.warn(`No templates found for song: ${songId}`);
+            throw new common_1.NotFoundException(`No templates available for song: ${songId}`);
+        }
+        if (Date.now() - startTime >= budgetMs) {
+            this.logger.warn(`⏳ [PATH] miss_return_202_post_fetch_over_budget | total_ms=${Date.now() - startTime}`);
+            return {
+                recommendation: null,
+                alternatives: [],
+                total_available: availableTemplates.length,
+                cache_hit: false,
+                score_computation_time_ms: 0,
+                templates_evaluated: availableTemplates.length,
+                partial_response: true,
+                retry_after_ms: 3000,
+            };
+        }
+        this.logger.log(`🚀 [BACKEND TEAM] Using simple architecture for ${availableTemplates.length} templates`);
+        const recommendation = availableTemplates[0] || null;
+        const alternatives = availableTemplates.slice(1, 1 + maxAlternatives);
+        const scoringTime = 0;
         const result = {
             recommendation: recommendation || null,
             alternatives: alternatives || [],
             total_available: availableTemplates.length,
             score_computation_time_ms: scoringTime,
-            templates_evaluated: scoredTemplates.length,
+            templates_evaluated: availableTemplates.length,
             cache_hit: false,
             response_time_ms: Date.now() - startTime,
         };
-        await this.cacheService.set(secondaryCacheKey, result, cache_keys_1.CACHE_TTL.TEMPLATE_RECOMMENDATION);
-        const instantCacheKey = `instant:${songId}`;
-        await this.cacheService.set(instantCacheKey, result, 3600);
-        await this.storeRecommendationCache(normalizedRequest, result);
-        await this.analyticsService.trackEvent({
-            event_type: 'template_recommendation_served',
-            user_id: normalizedRequest.user_context.user_id,
-            song_id: normalizedSongId,
-            template_id: recommendation?.template_id || 'unknown',
-            compatibility_score: recommendation?.compatibility_score || 0,
-            alternatives_count: alternatives.length,
-            cache_hit: false,
-            response_time_ms: Date.now() - startTime,
-            scoring_time_ms: scoringTime,
-            templates_evaluated: scoredTemplates.length,
-        });
+        (async () => {
+            try {
+                await this.cacheService.set(primaryCacheKey, {
+                    recommendation: result.recommendation,
+                    alternatives: result.alternatives,
+                    total_available: result.total_available,
+                    cache_hit: false,
+                    response_time_ms: result.response_time_ms,
+                    score_computation_time_ms: result.score_computation_time_ms,
+                    templates_evaluated: result.templates_evaluated,
+                }, 600);
+                this.logger.log(`✅ [CACHE SET OK] key=${primaryCacheKey} | size=${result.total_available}`);
+            }
+            catch (e) {
+                this.logger.warn(`⚠️ [CACHE SET] Failed for ${primaryCacheKey}: ${e?.message || e}`);
+            }
+        })();
+        (async () => {
+            try {
+                await this.storeRecommendationCache(normalizedRequest, result);
+            }
+            catch { }
+        })();
+        (async () => {
+            try {
+                await this.analyticsService.trackEvent({
+                    event_type: 'template_recommendation_served',
+                    user_id: normalizedRequest.user_context.user_id,
+                    song_id: normalizedSongId,
+                    template_id: recommendation?.template_id || 'unknown',
+                    compatibility_score: recommendation?.compatibility_score || 0,
+                    alternatives_count: alternatives.length,
+                    cache_hit: false,
+                    response_time_ms: Date.now() - startTime,
+                    scoring_time_ms: scoringTime,
+                    templates_evaluated: availableTemplates.length,
+                });
+            }
+            catch { }
+        })();
         const totalTime = Date.now() - startTime;
         this.logger.debug(`✅ OPTIMIZED Template recommendation completed in ${totalTime}ms for song: ${songId}`);
         const performanceMetrics = {
@@ -220,7 +294,7 @@ let RecommendationsService = RecommendationsService_1 = class RecommendationsSer
             song_id: songId,
             response_time_ms: totalTime,
             scoring_time_ms: scoringTime,
-            templates_evaluated: scoredTemplates.length,
+            templates_evaluated: availableTemplates.length,
             cache_hit: false,
             performance_tier: totalTime < 2000 ? 'excellent' : totalTime < 5000 ? 'good' : 'needs_optimization',
             timestamp: new Date().toISOString()

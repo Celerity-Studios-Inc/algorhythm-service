@@ -185,7 +185,7 @@ export class ReVizCompleteExperienceProductionController {
       res.setHeader('X-RateLimit-Remaining', '9'); // This would be calculated by the throttler
       res.setHeader('X-RateLimit-Reset', new Date(Date.now() + 60000).toISOString());
 
-      const response = await this.revizCompleteExperienceService.getCompleteExperience(request);
+      const response = await this.revizCompleteExperienceService.getCompleteExperience(request as any);
 
       // Update performance metrics
       const responseTime = Date.now() - startTime;

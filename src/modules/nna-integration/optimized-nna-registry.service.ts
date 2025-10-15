@@ -90,7 +90,7 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
     const healthCheck = await this.quickHealthCheck();
     if (!healthCheck.isHealthy) {
       this.logger.warn(`🔄 [CIRCUIT BREAKER] NNA Registry unhealthy for ${songId}`);
-      throw new Error(`NNA Registry service unavailable: ${healthCheck.error}`);
+      throw new Error(`NNA Registry service unavailable: ${healthCheck.responseTime}ms`);
     }
     
     // Check cache first
@@ -252,7 +252,7 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
         
         // Cache the results
         if (this.cacheService) {
-          await this.cacheService.set(cacheKey, composites, CACHE_TTL.COMPOSITES);
+          await this.cacheService.set(cacheKey, composites, 300);
         }
         
         this.logger.debug(`✅ AlgoRhythm composites ${songId} fetched: ${Date.now() - startTime}ms`);
@@ -270,7 +270,7 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
    * 🎯 NEW: Get layer assets using AlgoRhythm-compatible endpoint
    * Uses the enhanced NNA Registry endpoint that returns pre-formatted layer data
    */
-  async getLayerAssetsAlgoRhythmFormat(songId: string): Promise<any> {
+  async getLayerAssetsAlgoRhythmFormatV2(songId: string): Promise<any> {
     const startTime = Date.now();
     const cacheKey = `layers:algorhythm:${songId}`;
     
@@ -303,7 +303,7 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
         
         // Cache the results
         if (this.cacheService) {
-          await this.cacheService.set(cacheKey, layers, CACHE_TTL.COMPOSITES);
+          await this.cacheService.set(cacheKey, layers, 300);
         }
         
         this.logger.debug(`✅ AlgoRhythm layers ${songId} fetched: ${Date.now() - startTime}ms`);

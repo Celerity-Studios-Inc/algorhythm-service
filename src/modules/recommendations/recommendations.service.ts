@@ -184,8 +184,7 @@ export class RecommendationsService {
     
     // 🚀 FAST-PATH CACHE: immediate return on hit (<50ms)
     const maxAlternatives = Math.max(0, Math.min(6, (request as any)?.max_alternatives ?? 3));
-    // Normalize song ID for cache key symmetry
-    const normalizedSongId = request.song_id?.trim()?.toUpperCase() || request.song_id;
+    // Use the already normalized song ID from above
     const primaryCacheKey = `recommendation:template:${normalizedSongId}:${maxAlternatives}`;
     const primaryCachedResult = await this.cacheService.get(primaryCacheKey);
     if (primaryCachedResult) {

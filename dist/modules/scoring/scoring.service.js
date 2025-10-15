@@ -39,18 +39,29 @@ let ScoringService = ScoringService_1 = class ScoringService {
                     compatibilityScore = await this.computeCompatibilityScore(song, template, userPreferences);
                     await this.cacheScore(song, template, compatibilityScore);
                 }
-                const freshnessBoost = this.freshnessBoostService.calculateBoost(template.createdAt);
+                const createdAt = typeof template.createdAt === 'string' ? new Date(template.createdAt) : template.createdAt;
+                const freshnessBoost = this.freshnessBoostService.calculateBoost(createdAt);
                 const finalScore = Math.min(compatibilityScore.base_score * freshnessBoost, 1.0);
                 const templateRecommendation = {
                     template_id: template._id || template.nna_address,
                     template_name: template.name,
                     nna_address: template.nna_address,
                     compatibility_score: finalScore,
+                    gcp_storage_url: template.media?.full_asset_url,
+                    thumbnail_url: template.media?.thumbnail_url,
+                    preview_url: template.media?.preview_url,
                     components: this.extractComponents(template),
                     metadata: {
                         created_at: template.createdAt,
                         tags: template.tags || [],
                         aiGeneratedDescription: template.description,
+                        media: template.media ? {
+                            duration_seconds: template.media.duration_seconds,
+                            file_size_mb: template.media.file_size_mb,
+                            resolution: template.media.resolution,
+                            format: template.media.format,
+                            quality_score: template.media.quality_score || 0.8,
+                        } : undefined,
                     },
                     scoring_details: {
                         ...compatibilityScore.score_breakdown,
@@ -82,9 +93,19 @@ let ScoringService = ScoringService_1 = class ScoringService {
                     asset_name: asset.name,
                     nna_address: asset.nna_address,
                     compatibility_score: finalScore,
+                    gcp_storage_url: asset.media?.full_asset_url,
+                    thumbnail_url: asset.media?.thumbnail_url,
+                    preview_url: asset.media?.preview_url,
                     metadata: {
                         tags: asset.tags || [],
                         aiGeneratedDescription: asset.description,
+                        media: asset.media ? {
+                            duration_seconds: asset.media.duration_seconds,
+                            file_size_mb: asset.media.file_size_mb,
+                            resolution: asset.media.resolution,
+                            format: asset.media.format,
+                            quality_score: asset.media.quality_score || 0.8,
+                        } : undefined,
                     },
                     scoring_details: {
                         ...compatibilityScore.score_breakdown,
@@ -166,7 +187,7 @@ let ScoringService = ScoringService_1 = class ScoringService {
                 computed_at: new Date(),
                 algorithm_version: '1.0.0',
             });
-            await scoreDoc.save();
+            await this.compatibilityScoreModel.findOneAndUpdate({ song_id: song.nna_address, template_id: template.nna_address }, scoreDoc.toObject(), { upsert: true, new: true });
         }
         catch (error) {
             this.logger.error('Failed to cache compatibility score:', error);
@@ -175,11 +196,11 @@ let ScoringService = ScoringService_1 = class ScoringService {
     extractComponents(template) {
         const components = template.components || [];
         return {
-            song_id: components.find((c) => c.startsWith('G.')) || '',
-            star_id: components.find((c) => c.startsWith('S.')) || '',
-            look_id: components.find((c) => c.startsWith('L.')) || '',
-            move_id: components.find((c) => c.startsWith('M.')) || '',
-            world_id: components.find((c) => c.startsWith('W.')) || '',
+            song_id: components.find((c) => c.nna_address?.startsWith('1.') || c.name?.startsWith('G.'))?.nna_address || '',
+            star_id: components.find((c) => c.nna_address?.startsWith('2.') || c.name?.startsWith('S.'))?.nna_address || '',
+            look_id: components.find((c) => c.nna_address?.startsWith('3.') || c.name?.startsWith('L.'))?.nna_address || '',
+            move_id: components.find((c) => c.nna_address?.startsWith('4.') || c.name?.startsWith('M.'))?.nna_address || '',
+            world_id: components.find((c) => c.nna_address?.startsWith('5.') || c.name?.startsWith('W.'))?.nna_address || '',
         };
     }
     substituteLayerAsset(originalTemplate, newAsset, layerType) {

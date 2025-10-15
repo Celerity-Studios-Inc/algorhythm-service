@@ -29,6 +29,8 @@ export declare class RecommendationsService {
         cache_hit?: boolean;
         score_computation_time_ms?: number;
         templates_evaluated?: number;
+        partial_response?: boolean;
+        retry_after_ms?: number;
     }>;
     getLayerVariations(request: LayerVariationDto): Promise<{
         variations: LayerVariation[];
