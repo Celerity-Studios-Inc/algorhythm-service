@@ -334,7 +334,14 @@ export class ReVizCompleteExperienceService {
 
   private async getCompositeVideos(songId: string, maxComposites: number) {
     // 🔧 FIX: Use enhanced NNA Registry endpoint for AlgoRhythm format
+    this.logger.log(`🔍 [DEBUG] Getting composite videos for song: ${songId}`);
     const templates = await this.optimizedNnaRegistryService.getCompositesBySongAlgoRhythmFormat(songId);
+    this.logger.log(`🔍 [DEBUG] Templates received:`, JSON.stringify(templates?.slice(0, 2), null, 2));
+    
+    if (!templates || !Array.isArray(templates)) {
+      this.logger.error(`❌ [DEBUG] Templates is not an array:`, typeof templates, templates);
+      return [];
+    }
     
     return templates.slice(0, maxComposites).map((template, index) => {
       // Extract components by layer from the NNA Registry data structure
