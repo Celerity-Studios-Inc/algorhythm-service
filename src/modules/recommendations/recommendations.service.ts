@@ -258,34 +258,40 @@ export class RecommendationsService {
     const fetched = await Promise.race([nnaCall, timeout]);
     
     if (fetched === null) {
-      // Over budget: try a bounded quick refresh (≤1s) to warm cache for next call
-      try {
-        const refreshBudgetMs = 1000;
-        const quickCall = this.optimizedNnaRegistryService.getCompositesBySongAlgoRhythmFormat(songId);
-        const refreshTimer = new Promise<'TIMEOUT'>(res => setTimeout(() => res('TIMEOUT'), refreshBudgetMs));
-        const quickResult = await Promise.race([quickCall as any, refreshTimer]);
-        if (quickResult !== 'TIMEOUT' && Array.isArray(quickResult) && quickResult.length > 0) {
-          const recommendation = quickResult[0];
-          const alternatives = quickResult.slice(1, 1 + maxAlternatives);
-          await this.cacheService.set(primaryCacheKey, {
-            recommendation,
-            alternatives,
-            total_available: quickResult.length,
-            cache_hit: false,
-            response_time_ms: 0,
-            score_computation_time_ms: 0,
-            templates_evaluated: quickResult.length,
-          }, 600);
-          this.logger.debug(`♻️ [SERVICE] Quick cache refresh success key=${primaryCacheKey}`);
-        } else {
-          this.logger.warn(`⚠️ [SERVICE] Quick cache refresh skipped/timeout for key=${primaryCacheKey}`);
-        }
-      } catch (e) {
-        this.logger.warn(`⚠️ [SERVICE] Quick cache refresh failed: ${e?.message || e}`);
-      }
-
-      // Return partial response immediately
+      // Over budget: fire background warm cache (non-blocking, realistic timeout)
       this.logger.warn(`⏳ [PATH] miss_return_202_over_budget | elapsed=${Date.now() - startTime}ms | budget=${budgetMs}ms`);
+      
+      // Fire-and-forget background warm with realistic 6.5s timeout
+      (async () => {
+        try {
+          const warmStart = Date.now();
+          this.logger.log(`♻️ [WARM] Starting background warm for key=${primaryCacheKey}`);
+          const warmCall = this.optimizedNnaRegistryService.getCompositesBySongAlgoRhythmFormat(songId);
+          const warmTimer = new Promise<'TIMEOUT'>(res => setTimeout(() => res('TIMEOUT'), 6500));
+          const warmResult = await Promise.race([warmCall as any, warmTimer]);
+          
+          if (warmResult !== 'TIMEOUT' && Array.isArray(warmResult) && warmResult.length > 0) {
+            const recommendation = warmResult[0];
+            const alternatives = warmResult.slice(1, 1 + maxAlternatives);
+            await this.cacheService.set(primaryCacheKey, {
+              recommendation,
+              alternatives,
+              total_available: warmResult.length,
+              cache_hit: false,
+              response_time_ms: 0,
+              score_computation_time_ms: 0,
+              templates_evaluated: warmResult.length,
+            }, 600);
+            this.logger.log(`✅ [WARM] Background cache warm success key=${primaryCacheKey} | warmed_in=${Date.now() - warmStart}ms | size=${warmResult.length}`);
+          } else {
+            this.logger.warn(`⚠️ [WARM] Background warm timeout/empty for key=${primaryCacheKey} | elapsed=${Date.now() - warmStart}ms`);
+          }
+        } catch (e) {
+          this.logger.warn(`⚠️ [WARM] Background warm failed for key=${primaryCacheKey}: ${e?.message || e}`);
+        }
+      })();
+
+      // Return partial response immediately (background warm is running)
       const elapsed = Date.now() - startTime;
       return {
         recommendation: null as any,
