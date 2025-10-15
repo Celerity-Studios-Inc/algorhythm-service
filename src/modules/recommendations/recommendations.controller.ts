@@ -128,7 +128,8 @@ export class RecommendationsController {
     try {
       // 🚀 Controller-level 2s budget: race service vs timer
       const budgetMs = 2000;
-      const servicePromise = this.optimizedRecommendationsService
+      // Use the cache-first fast-path (warms cache and enforces 2s budget internally)
+      const servicePromise = this.recommendationsService
         .getTemplateRecommendation(request);
       const timeoutPromise = new Promise<'TIMEOUT'>(resolve => setTimeout(() => resolve('TIMEOUT'), budgetMs));
 
