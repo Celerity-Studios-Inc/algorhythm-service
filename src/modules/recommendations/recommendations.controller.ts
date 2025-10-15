@@ -146,32 +146,39 @@ export class RecommendationsController {
           }
         })();
 
-        // Also kick a bounded (≤1s) quick refresh to populate cache for next call
+        // Also kick a background warm task (non-blocking, 6.5s timeout) to populate cache for next call
         (async () => {
           try {
-            const songId = request.song_id;
+            // Normalize song ID for cache key symmetry
+            const normalizedSongId = request.song_id?.trim()?.toUpperCase() || request.song_id;
             const maxAlternatives = Math.max(0, Math.min(6, (request as any)?.max_alternatives ?? 3));
-            const primaryCacheKey = `recommendation:template:${songId}:${maxAlternatives}`;
-            const refreshBudgetMs = 1000;
-            const nnaCall = this.optimizedNnaRegistryService.getCompositesBySongAlgoRhythmFormat(songId);
-            const timer = new Promise<'TIMEOUT'>(res => setTimeout(() => res('TIMEOUT'), refreshBudgetMs));
-            const result = await Promise.race([nnaCall as any, timer]);
-            if (result !== 'TIMEOUT' && Array.isArray(result) && result.length > 0) {
-              const recommendation = result[0];
-              const alternatives = result.slice(1, 1 + maxAlternatives);
+            const primaryCacheKey = `recommendation:template:${normalizedSongId}:${maxAlternatives}`;
+            
+            const warmStartTime = Date.now();
+            this.logger.log(`🔥 [CONTROLLER BACKGROUND WARM] Starting for song: ${normalizedSongId}`);
+            
+            const warmCall = this.optimizedNnaRegistryService.getCompositesBySongAlgoRhythmFormat(normalizedSongId);
+            const warmTimer = new Promise<'TIMEOUT'>(res => setTimeout(() => res('TIMEOUT'), 6500));
+            const warmResult = await Promise.race([warmCall as any, warmTimer]);
+            
+            if (warmResult !== 'TIMEOUT' && Array.isArray(warmResult) && warmResult.length > 0) {
+              const recommendation = warmResult[0];
+              const alternatives = warmResult.slice(1, 1 + maxAlternatives);
               await this.cacheService.set(primaryCacheKey, {
                 recommendation,
                 alternatives,
-                total_available: result.length,
+                total_available: warmResult.length,
                 cache_hit: false,
                 response_time_ms: 0,
                 score_computation_time_ms: 0,
-                templates_evaluated: result.length,
+                templates_evaluated: warmResult.length,
               }, 600);
-              this.logger.log(`♻️ [CONTROLLER] Quick cache refresh success key=${primaryCacheKey}`);
+              this.logger.log(`✅ [CONTROLLER BACKGROUND WARM] Success key=${primaryCacheKey} | size=${warmResult.length} | time=${Date.now() - warmStartTime}ms`);
+            } else {
+              this.logger.warn(`⚠️ [CONTROLLER BACKGROUND WARM] Timeout for key=${primaryCacheKey} after ${Date.now() - warmStartTime}ms`);
             }
           } catch (e) {
-            this.logger.warn(`⚠️ [CONTROLLER] Quick cache refresh failed: ${e?.message || e}`);
+            this.logger.warn(`⚠️ [CONTROLLER BACKGROUND WARM] Failed: ${e?.message || e}`);
           }
         })();
 
