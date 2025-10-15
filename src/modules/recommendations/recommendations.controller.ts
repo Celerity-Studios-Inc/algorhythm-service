@@ -84,6 +84,32 @@ export class RecommendationsController {
     return this.recommendationsService.getCacheStatus(songId, maxAlternatives);
   }
 
+  @Get('debug/test-nna-registry')
+  async testNnaRegistry(@Query('song_id') songId: string) {
+    try {
+      this.logger.log(`🧪 [TEST] Testing NNA Registry for song: ${songId}`);
+      const result = await this.optimizedNnaRegistryService.getCompositesForSongAlgoRhythmFormat(songId);
+      this.logger.log(`✅ [TEST] NNA Registry returned: ${Array.isArray(result) ? result.length : 'NOT_ARRAY'} items`);
+      return {
+        success: true,
+        song_id: songId,
+        result_type: Array.isArray(result) ? 'array' : typeof result,
+        item_count: Array.isArray(result) ? result.length : 0,
+        sample_item: Array.isArray(result) && result.length > 0 ? result[0] : null,
+        timestamp: new Date().toISOString()
+      };
+    } catch (error) {
+      this.logger.error(`❌ [TEST] NNA Registry test failed: ${error.message}`);
+      return {
+        success: false,
+        song_id: songId,
+        error: error.message,
+        stack: error.stack,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
+
   @Post('debug/test-both-services')
   async testBothServices(@Body() request: TemplateRecommendationDto) {
     this.logger.log(`🧪 [DEBUG] Testing both services for song: ${request.song_id}`);
