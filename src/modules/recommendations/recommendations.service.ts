@@ -699,7 +699,7 @@ export class RecommendationsService {
         this.logger.log(`🔥 [WARM] Starting background warm for key=${cacheKey}`);
         await this.singleflightWarm(cacheKey, async () => {
           this.logger.log(`🔍 [WARM] Calling NNA Registry for song=${songId}`);
-          const warmCall = this.optimizedNnaRegistryService.getCompositesForSongAlgoRhythmFormat(songId);
+          const warmCall = this.optimizedNnaRegistryService.getCompositesForSongOptimized(songId);
           const warmTimer = new Promise<'TIMEOUT'>(res => setTimeout(() => res('TIMEOUT'), 2000)); // Same timeout as main call
           const warmResult = await Promise.race([warmCall, warmTimer]);
           
