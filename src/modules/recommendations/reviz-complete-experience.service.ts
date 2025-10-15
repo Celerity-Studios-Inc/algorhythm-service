@@ -191,9 +191,12 @@ export class ReVizCompleteExperienceService {
       } else {
         // 🔧 FIX: Song-based request (legacy support)
         this.logger.log(`🎵 Processing song-based request: ${request.song_id}`);
+        this.logger.log(`🔍 [DEBUG] Request structure:`, JSON.stringify(request, null, 2));
         
         songMetadata = await this.getSongMetadata(request.song_id);
+        this.logger.log(`🔍 [DEBUG] About to call getCompositeVideos with songId: ${request.song_id}`);
         compositeVideos = await this.getCompositeVideos(request.song_id, 3);
+        this.logger.log(`🔍 [DEBUG] getCompositeVideos returned ${compositeVideos.length} composites`);
       }
 
       // Get layer assets with variants
