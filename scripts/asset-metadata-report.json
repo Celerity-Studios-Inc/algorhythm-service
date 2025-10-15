@@ -1,11 +1,11 @@
 {
-  "timestamp": "2025-10-15T20:10:03.713Z",
-  "totalAssets": 213,
+  "timestamp": "2025-10-15T20:40:01.252Z",
+  "totalAssets": 214,
   "layerBreakdown": {
-    "C": 114,
+    "C": 115,
     "S": 46,
-    "G": 18,
     "L": 18,
+    "G": 18,
     "M": 9,
     "W": 8
   },
@@ -162,18 +162,18 @@
     },
     "C": {
       "components": {
-        "completed": 114,
-        "total": 114,
+        "completed": 115,
+        "total": 115,
         "percentage": 100
       },
       "componentAssets": {
-        "completed": 111,
-        "total": 114,
+        "completed": 112,
+        "total": 115,
         "percentage": 97
       },
       "synergyScore": {
         "completed": 0,
-        "total": 114,
+        "total": 115,
         "percentage": 0
       }
     }
