@@ -466,12 +466,18 @@ export class ReVizCompleteExperienceService {
 
     // Build composite to assets mapping
     compositeVideos.forEach(composite => {
+      // Extract asset IDs from components array
+      const starComponent = composite.components?.star;
+      const lookComponent = composite.components?.look;
+      const moveComponent = composite.components?.move;
+      const worldComponent = composite.components?.world;
+      
       compositeToAssets[composite.composite_id] = [
-        composite.components.star.asset_id,
-        composite.components.look.asset_id,
-        composite.components.move.asset_id,
-        composite.components.world.asset_id,
-      ];
+        starComponent?.asset_id || 'unknown',
+        lookComponent?.asset_id || 'unknown',
+        moveComponent?.asset_id || 'unknown',
+        worldComponent?.asset_id || 'unknown',
+      ].filter(id => id !== 'unknown');
     });
 
     // Build base to variants mapping
