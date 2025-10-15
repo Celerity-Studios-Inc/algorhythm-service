@@ -899,14 +899,41 @@ export class ReVizCompleteExperienceProductionService {
 
   private buildCompositeToAssets(composites: CompositeVideo[]): Record<string, string[]> {
     const mapping: Record<string, string[]> = {};
+    
+    // Early return if no composites
+    if (!composites || composites.length === 0) {
+      this.logger.warn('No composite videos provided to buildCompositeToAssets');
+      return mapping;
+    }
+
     composites.forEach(composite => {
-      mapping[composite.composite_id] = [
-        composite.components.star.asset_id,
-        composite.components.look.asset_id,
-        composite.components.move.asset_id,
-        composite.components.world.asset_id,
-      ];
+      try {
+        // Handle both array and object component formats with robust null checking
+        let assetIds = [];
+        
+        if (Array.isArray(composite.components)) {
+          // Handle array format from NNA Registry
+          assetIds = composite.components
+            .filter(c => c && c.layer && c.asset_id)
+            .map(c => c.asset_id);
+        } else if (composite.components && typeof composite.components === 'object') {
+          // Handle object format from getCompositeVideos
+          const components = composite.components;
+          assetIds = [
+            components?.star?.asset_id,
+            components?.look?.asset_id,
+            components?.move?.asset_id,
+            components?.world?.asset_id,
+          ].filter(id => id && id !== 'unknown' && id !== undefined);
+        }
+        
+        mapping[composite.composite_id] = assetIds;
+      } catch (error) {
+        this.logger.error(`Error processing composite ${composite.composite_id}:`, error);
+        mapping[composite.composite_id] = [];
+      }
     });
+    
     return mapping;
   }
 
