@@ -131,8 +131,11 @@ export class RecommendationsService {
     cache_hit?: boolean;
     score_computation_time_ms?: number;
     templates_evaluated?: number;
+    partial_response?: boolean;
+    retry_after_ms?: number;
   }> {
     const startTime = Date.now();
+    const budgetMs = 2000; // strict wall-clock budget for fast responses
     
     // 🔧 CRITICAL DEBUG: Log that we're entering the template endpoint
     this.logger.log(`🔧 [TEMPLATE ENDPOINT] Starting template recommendation for song: ${request.song_id}`);
@@ -179,17 +182,39 @@ export class RecommendationsService {
     //   }
     // }
     
-    // 🚀 PERFORMANCE FIX: Bypass cache operations for sub-2-second response
-    // const primaryCacheKey = `${CACHE_KEYS.TEMPLATE_RECOMMENDATION}:${normalizedSongId}:${JSON.stringify(normalizedRequest.user_context)}`;
-    // const primaryCachedResult = await this.cacheService.get(primaryCacheKey);
-    
-    // if (primaryCachedResult) {
-    //   this.logger.debug(`Cache hit for template recommendation: ${normalizedSongId}`);
-    //   return {
-    //     ...(primaryCachedResult as any),
-    //     cache_hit: true,
-    //   };
-    // }
+    // 🚀 FAST-PATH CACHE: immediate return on hit (<50ms)
+    const maxAlternatives = Math.max(0, Math.min(6, (request as any)?.max_alternatives ?? 3));
+    const primaryCacheKey = `recommendation:template:${normalizedSongId}:${maxAlternatives}`;
+    const primaryCachedResult = await this.cacheService.get(primaryCacheKey);
+    if (primaryCachedResult) {
+      this.logger.debug(`✅ [CACHE] Hit for template recommendation: ${primaryCacheKey}`);
+      // Background refresh (fire-and-forget)
+      (async () => {
+        try {
+          const fresh = await this.optimizedNnaRegistryService.getCompositesBySongAlgoRhythmFormat(normalizedSongId);
+          if (Array.isArray(fresh) && fresh.length > 0) {
+            const recommendation = fresh[0];
+            const alternatives = fresh.slice(1, 1 + maxAlternatives);
+            const toCache = {
+              recommendation,
+              alternatives,
+              total_available: fresh.length,
+              cache_hit: false,
+              response_time_ms: 0,
+              score_computation_time_ms: 0,
+              templates_evaluated: fresh.length,
+            };
+            await this.cacheService.set(primaryCacheKey, toCache, 600); // 10 min TTL
+          }
+        } catch (e) {
+          this.logger.warn(`⚠️ [CACHE REFRESH] Failed for ${primaryCacheKey}: ${e?.message || e}`);
+        }
+      })();
+      return {
+        ...(primaryCachedResult as any),
+        cache_hit: true,
+      };
+    }
 
     // 🔧 CRITICAL FIX: Use normalized HFN song ID
     const songId = normalizedSongId;
@@ -218,27 +243,33 @@ export class RecommendationsService {
     
     let availableTemplates: any[] = [];
     
-    try {
-      // 🔧 CRITICAL FIX: Use NNA Registry with 2-second timeout and circuit breaker
+    // ⏱️ Strict 2s budget around the network call
+    const nnaCall = (async () => {
+      const t0 = Date.now();
       this.logger.log(`🔍 [NNA REGISTRY] Fetching composites for song: ${songId}`);
-      this.logger.log(`🔍 [NNA REGISTRY] Service type: ${this.optimizedNnaRegistryService.constructor.name}`);
-      this.logger.log(`🔍 [NNA REGISTRY] Method being called: getCompositesForSongAlgoRhythmFormat`);
-      availableTemplates = await this.optimizedNnaRegistryService.getCompositesBySongAlgoRhythmFormat(songId);
-      this.logger.log(`✅ [NNA REGISTRY] Retrieved ${availableTemplates.length} composites from NNA Registry`);
-      this.logger.log(`🔍 [NNA REGISTRY] Composites preview:`, JSON.stringify(availableTemplates.slice(0, 2), null, 2));
-      
-      // 🔧 CRITICAL DEBUG: Check if we got real data or fallback data
-      if (availableTemplates.length > 0) {
-        const firstTemplate = availableTemplates[0];
-        this.logger.log(`🔍 [DATA CHECK] First template ID: ${firstTemplate.template_id || firstTemplate._id || 'NO_ID'}`);
-        this.logger.log(`🔍 [DATA CHECK] First template name: ${firstTemplate.name || 'NO_NAME'}`);
-        this.logger.log(`🔍 [DATA CHECK] Is fallback data: ${firstTemplate.template_id === 'default-pop-template' || firstTemplate._id?.includes('fallback')}`);
-      }
-    } catch (error) {
-      this.logger.warn(`⚠️ [NNA REGISTRY] Failed to fetch composites: ${error.message}`);
-      this.logger.warn(`🔄 [NNA REGISTRY] Service unavailable for song: ${songId}`);
-      throw new NotFoundException(`NNA Registry service unavailable: ${error.message}`);
+      const data = await this.optimizedNnaRegistryService.getCompositesBySongAlgoRhythmFormat(songId);
+      this.logger.log(`✅ [NNA REGISTRY] Retrieved ${Array.isArray(data) ? data.length : 0} composites in ${Date.now() - t0}ms`);
+      return data;
+    })();
+    const timeout = new Promise<any[]>((resolve) => setTimeout(() => resolve(null as any), budgetMs));
+    const fetched = await Promise.race([nnaCall, timeout]);
+    
+    if (fetched === null) {
+      // Over budget: return 202-like payload if nothing cached, or minimal empty suggestion
+      this.logger.warn(`⏳ [BUDGET] Exceeded ${budgetMs}ms for song ${songId}, returning fast response`);
+      const elapsed = Date.now() - startTime;
+      return {
+        recommendation: null as any,
+        alternatives: [],
+        total_available: 0,
+        cache_hit: false,
+        score_computation_time_ms: 0,
+        templates_evaluated: 0,
+        partial_response: true,
+        retry_after_ms: 3000,
+      };
     }
+    availableTemplates = Array.isArray(fetched) ? fetched : [];
     
     if (availableTemplates.length === 0) {
       this.logger.warn(`No templates found for song: ${songId}`);
@@ -266,7 +297,7 @@ export class RecommendationsService {
     
     // 🚀 SIMPLE PROCESSING: Use first template as recommendation, next 3 as alternatives
     const recommendation = availableTemplates[0] || null;
-    const alternatives = availableTemplates.slice(1, 4); // Use next 3 as alternatives
+    const alternatives = availableTemplates.slice(1, 1 + maxAlternatives); // Use next N as alternatives
     
     const scoringTime = Date.now() - scoringStartTime;
 
@@ -281,12 +312,20 @@ export class RecommendationsService {
       response_time_ms: Date.now() - startTime,
     };
 
-    // 🚀 PERFORMANCE FIX: Bypass cache set operations for sub-2-second response
-    // await this.cacheService.set(
-    //   secondaryCacheKey,
-    //   result,
-    //   CACHE_TTL.TEMPLATE_RECOMMENDATION,
-    // );
+    // ✅ Cache the fresh result for fast future hits (10–30 minutes TTL)
+    try {
+      await this.cacheService.set(primaryCacheKey, {
+        recommendation: result.recommendation,
+        alternatives: result.alternatives,
+        total_available: result.total_available,
+        cache_hit: false,
+        response_time_ms: result.response_time_ms,
+        score_computation_time_ms: result.score_computation_time_ms,
+        templates_evaluated: result.templates_evaluated,
+      }, 600);
+    } catch (e) {
+      this.logger.warn(`⚠️ [CACHE SET] Failed for ${primaryCacheKey}: ${e?.message || e}`);
+    }
     
     // const instantCacheKey = `instant:${songId}`;
     // await this.cacheService.set(
