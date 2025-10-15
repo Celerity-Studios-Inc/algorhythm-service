@@ -474,29 +474,39 @@ export class ReVizCompleteExperienceService {
     const baseToVariants: Record<string, string[]> = {};
     const compatibilityMatrix: Record<string, Record<string, number>> = {};
 
-    // Build composite to assets mapping
+    // Early return if no composite videos
+    if (!compositeVideos || compositeVideos.length === 0) {
+      this.logger.warn('No composite videos provided to buildAssetRelationships');
+      return {
+        composite_to_assets: compositeToAssets,
+        base_to_variants: baseToVariants,
+        compatibility_matrix: compatibilityMatrix,
+      };
+    }
+
+    // Build composite to assets mapping - SIMPLIFIED AND ROBUST
     compositeVideos.forEach(composite => {
-      // Extract asset IDs from components object - handle both array and object formats
       let assetIds = [];
       
-      if (Array.isArray(composite.components)) {
-        // Handle array format from NNA Registry
-        assetIds = composite.components
-          .filter(c => c.layer && c.asset_id)
-          .map(c => c.asset_id);
-      } else if (composite.components && typeof composite.components === 'object') {
-        // Handle object format from getCompositeVideos
-        const starComponent = composite.components?.star;
-        const lookComponent = composite.components?.look;
-        const moveComponent = composite.components?.move;
-        const worldComponent = composite.components?.world;
-        
-        assetIds = [
-          starComponent?.asset_id,
-          lookComponent?.asset_id,
-          moveComponent?.asset_id,
-          worldComponent?.asset_id,
-        ].filter(id => id && id !== 'unknown');
+      try {
+        if (Array.isArray(composite.components)) {
+          // Handle array format from NNA Registry
+          assetIds = composite.components
+            .filter(c => c && c.layer && c.asset_id)
+            .map(c => c.asset_id);
+        } else if (composite.components && typeof composite.components === 'object') {
+          // Handle object format from getCompositeVideos
+          const components = composite.components;
+          assetIds = [
+            components?.star?.asset_id,
+            components?.look?.asset_id,
+            components?.move?.asset_id,
+            components?.world?.asset_id,
+          ].filter(id => id && id !== 'unknown' && id !== undefined);
+        }
+      } catch (error) {
+        this.logger.error(`Error processing composite ${composite.composite_id}:`, error);
+        assetIds = [];
       }
       
       compositeToAssets[composite.composite_id] = assetIds;
