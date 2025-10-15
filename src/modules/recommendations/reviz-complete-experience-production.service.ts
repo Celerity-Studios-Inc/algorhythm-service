@@ -658,10 +658,18 @@ export class ReVizCompleteExperienceProductionService {
 
     for (const layerType in layerMap) {
       layerMap[layerType].assets.forEach(assetWithVariants => {
-        const variants = variantsByBase[assetWithVariants.base_asset.asset_id] || [];
-        assetWithVariants.variants = variants;
-        assetWithVariants.hasVariants = variants.length > 0;
-        assetWithVariants.variantCount = variants.length;
+        // Robust null checking for base_asset
+        if (assetWithVariants?.base_asset?.asset_id) {
+          const variants = variantsByBase[assetWithVariants.base_asset.asset_id] || [];
+          assetWithVariants.variants = variants;
+          assetWithVariants.hasVariants = variants.length > 0;
+          assetWithVariants.variantCount = variants.length;
+        } else {
+          this.logger.warn(`🔍 [DEBUG] Asset in layer ${layerType} missing base_asset or asset_id, skipping variant assignment`);
+          assetWithVariants.variants = [];
+          assetWithVariants.hasVariants = false;
+          assetWithVariants.variantCount = 0;
+        }
       });
     }
   }
