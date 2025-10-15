@@ -284,7 +284,7 @@ export class RecommendationsService {
             try {
               const warmCall = this.optimizedNnaRegistryService.getCompositesForSongAlgoRhythmFormat(normalizedSongId);
               const warmTimer = new Promise<'TIMEOUT'>(res => setTimeout(() => res('TIMEOUT'), 9500));
-              const warmResult = await Promise.race([warmCall as any, warmTimer]);
+              const warmResult = await Promise.race([warmCall, warmTimer]);
               
               this.logger.log(`📊 [WARM] NNA Registry result: ${warmResult === 'TIMEOUT' ? 'TIMEOUT' : Array.isArray(warmResult) ? `${warmResult.length} items` : 'NOT_ARRAY'}`);
               
