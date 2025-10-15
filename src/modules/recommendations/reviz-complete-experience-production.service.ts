@@ -736,23 +736,53 @@ export class ReVizCompleteExperienceProductionService {
     layerAssets: LayerAssets
   ): Promise<Record<string, Record<string, number>>> {
     const matrix: Record<string, Record<string, number>> = {};
+    const allAssetIds: string[] = [];
 
-    const allAssetDetails: AssetDetail[] = [];
-    for (const layerType in layerAssets) {
-      layerAssets[layerType].assets.forEach(assetWithVariants => {
-        allAssetDetails.push(assetWithVariants.base_asset);
-        assetWithVariants.variants.forEach(variant => allAssetDetails.push(variant));
+    // Safely collect asset ids from layer assets (base + variants)
+    if (layerAssets && typeof layerAssets === 'object') {
+      for (const layerType in layerAssets) {
+        const layer = (layerAssets as any)[layerType];
+        const assets = layer?.assets;
+        if (!Array.isArray(assets)) {
+          this.logger.warn(`🔍 [DEBUG] buildCompatibilityMatrix: layer '${layerType}' has no assets array`);
+          continue;
+        }
+        assets.forEach(assetWithVariants => {
+          const baseId = assetWithVariants?.base_asset?.asset_id;
+          if (baseId) allAssetIds.push(baseId);
+          const variants = Array.isArray(assetWithVariants?.variants) ? assetWithVariants.variants : [];
+          variants.forEach(v => {
+            if (v?.asset_id) allAssetIds.push(v.asset_id);
+          });
+        });
+      }
+    }
+
+    // Safely collect component asset ids from composites
+    if (Array.isArray(composites)) {
+      composites.forEach(composite => {
+        const comps = (composite as any)?.components;
+        if (Array.isArray(comps)) {
+          // array format
+          comps.forEach(c => {
+            if (c?.asset_id) allAssetIds.push(c.asset_id);
+          });
+        } else if (comps && typeof comps === 'object') {
+          // object format
+          const ids = [
+            comps?.star?.asset_id,
+            comps?.look?.asset_id,
+            comps?.move?.asset_id,
+            comps?.world?.asset_id,
+          ].filter(Boolean) as string[];
+          allAssetIds.push(...ids);
+        } else {
+          this.logger.warn(`🔍 [DEBUG] buildCompatibilityMatrix: composite has unknown components format`);
+        }
       });
     }
 
-    composites.forEach(composite => {
-      allAssetDetails.push(composite.components.star as any);
-      allAssetDetails.push(composite.components.look as any);
-      allAssetDetails.push(composite.components.move as any);
-      allAssetDetails.push(composite.components.world as any);
-    });
-
-    const uniqueAssetIds = Array.from(new Set(allAssetDetails.map(ad => ad.asset_id)));
+    const uniqueAssetIds = Array.from(new Set(allAssetIds));
     // Mock bulk compatibility scores for now
     const bulkScores: Record<string, number> = {};
     for (const assetId1 of uniqueAssetIds) {
