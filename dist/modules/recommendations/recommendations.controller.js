@@ -107,7 +107,7 @@ let RecommendationsController = RecommendationsController_1 = class Recommendati
                         const warmStartTime = Date.now();
                         this.logger.log(`🔥 [CONTROLLER BACKGROUND WARM] Starting for song: ${normalizedSongId}`);
                         const warmCall = this.optimizedNnaRegistryService.getCompositesBySongAlgoRhythmFormat(normalizedSongId);
-                        const warmTimer = new Promise(res => setTimeout(() => res('TIMEOUT'), 6500));
+                        const warmTimer = new Promise(res => setTimeout(() => res('TIMEOUT'), 9500));
                         const warmResult = await Promise.race([warmCall, warmTimer]);
                         if (warmResult !== 'TIMEOUT' && Array.isArray(warmResult) && warmResult.length > 0) {
                             const recommendation = warmResult[0];
