@@ -699,9 +699,21 @@ export class RecommendationsService {
         this.logger.log(`🔥 [WARM] Starting background warm for key=${cacheKey}`);
         await this.singleflightWarm(cacheKey, async () => {
           this.logger.log(`🔍 [WARM] Calling NNA Registry for song=${songId}`);
-          const warmCall = this.optimizedNnaRegistryService.getCompositesForSongOptimized(songId);
-          const warmTimer = new Promise<'TIMEOUT'>(res => setTimeout(() => res('TIMEOUT'), 10000)); // 10s timeout for background warm
-          const warmResult = await Promise.race([warmCall, warmTimer]);
+          this.logger.log(`🔍 [WARM] Service injection check: optimizedNnaRegistryService=${!!this.optimizedNnaRegistryService}`);
+          this.logger.log(`🔍 [WARM] Method check: getCompositesForSongOptimized=${typeof this.optimizedNnaRegistryService.getCompositesForSongOptimized}`);
+          
+          let warmResult;
+          try {
+            const warmCall = this.optimizedNnaRegistryService.getCompositesForSongOptimized(songId);
+            this.logger.log(`🔍 [WARM] Method call initiated, waiting for result...`);
+            const warmTimer = new Promise<'TIMEOUT'>(res => setTimeout(() => res('TIMEOUT'), 10000)); // 10s timeout for background warm
+            warmResult = await Promise.race([warmCall, warmTimer]);
+            this.logger.log(`🔍 [WARM] Method call completed: ${warmResult === 'TIMEOUT' ? 'TIMEOUT' : Array.isArray(warmResult) ? `${warmResult.length} items` : 'NOT_ARRAY'}`);
+          } catch (error) {
+            this.logger.error(`❌ [WARM] Method call failed: ${error.message}`);
+            this.logger.error(`❌ [WARM] Error stack: ${error.stack}`);
+            throw error;
+          }
           
           if (warmResult !== 'TIMEOUT' && Array.isArray(warmResult) && warmResult.length > 0) {
             const recommendation = warmResult[0];
