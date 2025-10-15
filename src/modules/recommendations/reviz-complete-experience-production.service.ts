@@ -966,11 +966,61 @@ export class ReVizCompleteExperienceProductionService {
 
   private buildBaseToVariants(layerAssets: LayerAssets): Record<string, string[]> {
     const mapping: Record<string, string[]> = {};
-    for (const layerType in layerAssets) {
-      layerAssets[layerType].assets.forEach(assetWithVariants => {
-        mapping[assetWithVariants.base_asset.asset_id] = assetWithVariants.variants.map(v => v.asset_id);
-      });
+    
+    // Early return if no layer assets
+    if (!layerAssets || typeof layerAssets !== 'object') {
+      this.logger.warn('No layer assets provided to buildBaseToVariants');
+      return mapping;
     }
+    
+    this.logger.log(`🔍 [DEBUG] buildBaseToVariants processing layer assets`);
+    
+    for (const layerType in layerAssets) {
+      try {
+        const layer = layerAssets[layerType];
+        if (!layer || !Array.isArray(layer.assets)) {
+          this.logger.warn(`🔍 [DEBUG] Layer ${layerType} has no assets array`);
+          continue;
+        }
+        
+        this.logger.log(`🔍 [DEBUG] Processing layer ${layerType} with ${layer.assets.length} assets`);
+        
+        layer.assets.forEach((assetWithVariants, index) => {
+          try {
+            this.logger.log(`🔍 [DEBUG] Processing asset ${index + 1} in layer ${layerType}`);
+            this.logger.log(`🔍 [DEBUG] Asset structure:`, JSON.stringify(assetWithVariants, null, 2));
+            
+            // Robust null checking for base_asset and variants
+            if (!assetWithVariants || !assetWithVariants.base_asset || !assetWithVariants.base_asset.asset_id) {
+              this.logger.warn(`🔍 [DEBUG] Asset ${index + 1} in layer ${layerType} missing base_asset or asset_id`);
+              return;
+            }
+            
+            const baseAssetId = assetWithVariants.base_asset.asset_id;
+            let variantIds = [];
+            
+            if (Array.isArray(assetWithVariants.variants)) {
+              variantIds = assetWithVariants.variants
+                .filter(v => v && v.asset_id)
+                .map(v => v.asset_id);
+              this.logger.log(`🔍 [DEBUG] Found ${variantIds.length} variants for asset ${baseAssetId}`);
+            } else {
+              this.logger.warn(`🔍 [DEBUG] Asset ${baseAssetId} has no variants array`);
+              variantIds = [];
+            }
+            
+            mapping[baseAssetId] = variantIds;
+            this.logger.log(`🔍 [DEBUG] Mapped base asset ${baseAssetId} to ${variantIds.length} variants`);
+          } catch (error) {
+            this.logger.error(`Error processing asset ${index + 1} in layer ${layerType}:`, error);
+          }
+        });
+      } catch (error) {
+        this.logger.error(`Error processing layer ${layerType}:`, error);
+      }
+    }
+    
+    this.logger.log(`🔍 [DEBUG] buildBaseToVariants completed with ${Object.keys(mapping).length} mappings`);
     return mapping;
   }
 
