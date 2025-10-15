@@ -295,15 +295,27 @@ export class RecommendationsService {
     // }
 
     // 🚀 BACKEND TEAM RECOMMENDATION: Simple architecture without complex processing
-    const scoringStartTime = Date.now();
-    
+    // Enforce global 2s budget before any additional processing
+    if (Date.now() - startTime >= budgetMs) {
+      this.logger.warn(`⏳ [PATH] miss_return_202_post_fetch_over_budget | total_ms=${Date.now() - startTime}`);
+      return {
+        recommendation: null as any,
+        alternatives: [],
+        total_available: availableTemplates.length,
+        cache_hit: false,
+        score_computation_time_ms: 0,
+        templates_evaluated: availableTemplates.length,
+        partial_response: true,
+        retry_after_ms: 3000,
+      };
+    }
+
     this.logger.log(`🚀 [BACKEND TEAM] Using simple architecture for ${availableTemplates.length} templates`);
-    
+
     // 🚀 SIMPLE PROCESSING: Use first template as recommendation, next 3 as alternatives
     const recommendation = availableTemplates[0] || null;
     const alternatives = availableTemplates.slice(1, 1 + maxAlternatives); // Use next N as alternatives
-    
-    const scoringTime = Date.now() - scoringStartTime;
+    const scoringTime = 0; // scoring disabled on template fast-path
 
     // 🔧 CRITICAL FIX: Ensure proper response structure with real data
     const result = {
@@ -317,19 +329,22 @@ export class RecommendationsService {
     };
 
     // ✅ Cache the fresh result for fast future hits (10–30 minutes TTL)
-    try {
-      await this.cacheService.set(primaryCacheKey, {
-        recommendation: result.recommendation,
-        alternatives: result.alternatives,
-        total_available: result.total_available,
-        cache_hit: false,
-        response_time_ms: result.response_time_ms,
-        score_computation_time_ms: result.score_computation_time_ms,
-        templates_evaluated: result.templates_evaluated,
-      }, 600);
-    } catch (e) {
-      this.logger.warn(`⚠️ [CACHE SET] Failed for ${primaryCacheKey}: ${e?.message || e}`);
-    }
+    // Cache set in background to avoid budget impact
+    (async () => {
+      try {
+        await this.cacheService.set(primaryCacheKey, {
+          recommendation: result.recommendation,
+          alternatives: result.alternatives,
+          total_available: result.total_available,
+          cache_hit: false,
+          response_time_ms: result.response_time_ms,
+          score_computation_time_ms: result.score_computation_time_ms,
+          templates_evaluated: result.templates_evaluated,
+        }, 600);
+      } catch (e) {
+        this.logger.warn(`⚠️ [CACHE SET] Failed for ${primaryCacheKey}: ${e?.message || e}`);
+      }
+    })();
     
     // const instantCacheKey = `instant:${songId}`;
     // await this.cacheService.set(
@@ -339,21 +354,30 @@ export class RecommendationsService {
     // );
 
     // Store in recommendation cache for analytics
-    await this.storeRecommendationCache(normalizedRequest, result);
+    // Store analytics/counters in background
+    (async () => {
+      try {
+        await this.storeRecommendationCache(normalizedRequest, result);
+      } catch {}
+    })();
 
     // Track analytics
-    await this.analyticsService.trackEvent({
-      event_type: 'template_recommendation_served',
-      user_id: normalizedRequest.user_context.user_id,
-      song_id: normalizedSongId,
-      template_id: recommendation?.template_id || 'unknown',
-      compatibility_score: recommendation?.compatibility_score || 0,
-      alternatives_count: alternatives.length,
-      cache_hit: false,
-      response_time_ms: Date.now() - startTime,
-      scoring_time_ms: scoringTime,
-      templates_evaluated: availableTemplates.length,
-    });
+    (async () => {
+      try {
+        await this.analyticsService.trackEvent({
+          event_type: 'template_recommendation_served',
+          user_id: normalizedRequest.user_context.user_id,
+          song_id: normalizedSongId,
+          template_id: recommendation?.template_id || 'unknown',
+          compatibility_score: recommendation?.compatibility_score || 0,
+          alternatives_count: alternatives.length,
+          cache_hit: false,
+          response_time_ms: Date.now() - startTime,
+          scoring_time_ms: scoringTime,
+          templates_evaluated: availableTemplates.length,
+        });
+      } catch {}
+    })();
 
         const totalTime = Date.now() - startTime;
         this.logger.debug(`✅ OPTIMIZED Template recommendation completed in ${totalTime}ms for song: ${songId}`);
