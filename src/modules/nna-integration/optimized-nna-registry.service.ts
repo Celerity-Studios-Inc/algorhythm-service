@@ -736,7 +736,7 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
         }
       }
 
-      const url = `${this.baseUrl}/api/v1/assets/composites/${compositeId}`;
+      const url = `${this.baseUrl}/api/v1/assets/composites/by-id/${compositeId}`;
       this.logger.debug(`🔍 [COMPOSITE BY ID] Calling NNA Registry: ${url}`);
       
       const response = await this.circuitBreaker.executeWithCircuitBreaker(
