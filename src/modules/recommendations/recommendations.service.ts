@@ -703,6 +703,15 @@ export class RecommendationsService {
 
   // 🔥 BACKGROUND WARM HELPER - Service-injection-free approach with verified cache write
   private async startBackgroundWarm(cacheKey: string, songId: string, maxAlternatives: number) {
+    // Pre-mark warm start so cache-status reflects progress immediately
+    const now = Date.now();
+    this.warmStatus.set(cacheKey, {
+      started_at: now,
+      success: false,
+      items: 0,
+      duration_ms: 0,
+    });
+
     // Use singleflight to avoid duplicate warms for same key
     this.singleflightWarm(cacheKey, async () => {
       const startedAt = Date.now();
