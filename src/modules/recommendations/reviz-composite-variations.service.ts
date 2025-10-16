@@ -1,7 +1,4 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { HttpService } from '@nestjs/axios';
-import { firstValueFrom } from 'rxjs';
-import { timeout, catchError } from 'rxjs/operators';
 import { OptimizedNnaRegistryService } from '../nna-integration/optimized-nna-registry.service';
 import { ReVizCompositeVariationDto, ReVizCompositeVariationResponse } from './dto/reviz-composite-variation.dto';
 
@@ -18,8 +15,7 @@ export class ReVizCompositeVariationsService {
   private readonly logger = new Logger(ReVizCompositeVariationsService.name);
 
   constructor(
-    private readonly optimizedNnaRegistryService: OptimizedNnaRegistryService,
-    private readonly httpService: HttpService
+    private readonly optimizedNnaRegistryService: OptimizedNnaRegistryService
   ) {}
 
   async getCompositeVariations(
@@ -194,50 +190,20 @@ export class ReVizCompositeVariationsService {
     this.logger.debug(`Getting layer variations for composite: ${compositeId}, layer: ${layer}, limit: ${limit}`);
     
     try {
-      // Use the new backend endpoint for composite-specific variants
-      const baseUrl = this.optimizedNnaRegistryService.registryBaseUrl;
-      const apiKey = this.optimizedNnaRegistryService.registryApiKey;
-      const timeoutMs = this.optimizedNnaRegistryService.registryTimeout;
+      // Use the OptimizedNnaRegistryService to get composite variants
+      this.logger.debug(`🔍 [COMPOSITE VARIANTS] Calling NNA Registry for composite: ${compositeId}`);
       
-      const url = `${baseUrl}/api/v1/assets/composites/by-id/${compositeId}/variants`;
-      this.logger.debug(`🔍 [COMPOSITE VARIANTS] Calling NNA Registry: ${url}`);
+      const response = await this.optimizedNnaRegistryService.getCompositeVariants(compositeId);
       
-      const response = await this.optimizedNnaRegistryService.registryCircuitBreaker.executeWithCircuitBreaker(
-        () => firstValueFrom(
-          this.httpService.get(url, {
-            headers: { 'x-api-key': apiKey },
-            timeout: timeoutMs
-          }).pipe(
-            timeout(timeoutMs),
-            catchError(error => {
-              this.logger.error(`❌ [COMPOSITE VARIANTS] NNA Registry call failed: ${error.message}`);
-              throw error;
-            })
-          )
-        ),
-        () => {
-          this.logger.warn(`⚠️ [COMPOSITE VARIANTS] Circuit breaker fallback for composite: ${compositeId}`);
-          return { 
-            data: { success: false, error: 'Circuit breaker fallback' },
-            status: 503,
-            statusText: 'Service Unavailable',
-            headers: {} as any,
-            config: { headers: {} } as any
-          } as any;
-        },
-        `getCompositeVariants-${compositeId}`
-      );
+      this.logger.debug(`✅ [COMPOSITE VARIANTS] NNA Registry response: ${JSON.stringify(response).substring(0, 200)}...`);
 
-      const data = response.data;
-      this.logger.debug(`✅ [COMPOSITE VARIANTS] NNA Registry response: ${JSON.stringify(data).substring(0, 200)}...`);
-
-      if (!data || !data.success) {
+      if (!response || !response.success) {
         this.logger.warn(`No composite variants found for composite: ${compositeId}`);
         return [];
       }
 
       // Extract the specific layer variants from the response
-      const layerVariants = this.extractLayerVariants(data.data, layer);
+      const layerVariants = this.extractLayerVariants(response.data, layer);
       
       // Limit the results
       const limitedAssets = layerVariants.slice(0, limit);

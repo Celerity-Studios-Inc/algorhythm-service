@@ -773,4 +773,62 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
       throw error;
     }
   }
+
+  /**
+   * 🎯 REVIZ INTEGRATION: Get composite variants from NNA Registry
+   * 
+   * This method calls the NNA Registry composite variants endpoint
+   * to get variant assets for a specific composite.
+   */
+  async getCompositeVariants(compositeId: string): Promise<any> {
+    const startTime = Date.now();
+    
+    try {
+      this.logger.debug(`🔍 [COMPOSITE VARIANTS] Getting variants for composite: ${compositeId}`);
+      
+      const url = `${this.baseUrl}/api/v1/assets/composites/by-id/${compositeId}/variants`;
+      this.logger.debug(`🔍 [COMPOSITE VARIANTS] Calling NNA Registry: ${url}`);
+      
+      const response = await this.circuitBreaker.executeWithCircuitBreaker(
+        () => firstValueFrom(
+          this.httpService.get(url, {
+            headers: { 'x-api-key': this.apiKey },
+            timeout: this.timeout
+          }).pipe(
+            timeout(this.timeout),
+            catchError(error => {
+              this.logger.error(`❌ [COMPOSITE VARIANTS] NNA Registry call failed: ${error.message}`);
+              throw error;
+            })
+          )
+        ),
+        () => {
+          this.logger.warn(`⚠️ [COMPOSITE VARIANTS] Circuit breaker fallback for composite: ${compositeId}`);
+          return { 
+            data: { success: false, error: 'Circuit breaker fallback' },
+            status: 503,
+            statusText: 'Service Unavailable',
+            headers: {} as any,
+            config: { headers: {} } as any
+          } as any;
+        },
+        `getCompositeVariants-${compositeId}`
+      );
+
+      const data = response.data;
+      const queryTime = Date.now() - startTime;
+      
+      this.logger.debug(`✅ [COMPOSITE VARIANTS] NNA Registry response in ${queryTime}ms: ${JSON.stringify(data).substring(0, 200)}...`);
+
+      if (!data || !data.success) {
+        this.logger.warn(`No composite variants found for composite: ${compositeId}`);
+        return { success: false, error: 'No variants found' };
+      }
+
+      return data;
+    } catch (error) {
+      this.logger.error(`❌ [COMPOSITE VARIANTS] Failed to get composite variants: ${error.message}`);
+      throw error;
+    }
+  }
 }
