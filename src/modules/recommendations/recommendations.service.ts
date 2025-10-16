@@ -246,7 +246,7 @@ export class RecommendationsService {
     // 🔧 REGRESSION FIX: Get real data immediately (bypass timeout for now)
     this.logger.log(`🔧 [REGRESSION FIX] Getting real data immediately for song: ${normalizedSongId}`);
     const t0 = Date.now();
-    const fetched = await this.optimizedNnaRegistryService.getCompositesForSongOptimized(normalizedSongId);
+    const fetched = await this.optimizedNnaRegistryService.getCompositesForSongAlgoRhythmFormat(normalizedSongId);
     this.logger.log(`✅ [REGRESSION FIX] Retrieved ${Array.isArray(fetched) ? fetched.length : 0} composites in ${Date.now() - t0}ms`);
     
     // 🔧 REGRESSION FIX: Process the real data we got
