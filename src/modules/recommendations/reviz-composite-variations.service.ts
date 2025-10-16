@@ -240,26 +240,26 @@ export class ReVizCompositeVariationsService {
     this.logger.debug(`Getting layer assets for composite: ${compositeId}, layer: ${layer}, assets: ${assetsPerLayer}, variants: ${variantsPerAsset}`);
     
     try {
-      // 🎯 BRILLIANT INSIGHT: Extract HFN from composite and find other composites with same song
-      const songId = await this.extractSongIdFromComposite(compositeId);
-      this.logger.debug(`🎯 [SONG-BASED VARIANTS] Extracted song ID: ${songId} from composite: ${compositeId}`);
+      // 🎯 BRILLIANT INSIGHT: Extract base composite ID and find other composites with same base
+      const baseCompositeId = this.extractCompositeBaseId(compositeId);
+      this.logger.debug(`🎯 [COMPOSITE-BASED VARIANTS] Extracted base ID: ${baseCompositeId} from composite: ${compositeId}`);
       
-      if (!songId) {
-        this.logger.warn(`Could not extract song ID from composite: ${compositeId}`);
+      if (!baseCompositeId) {
+        this.logger.warn(`Could not extract base composite ID from: ${compositeId}`);
         return [];
       }
 
-      // Get all composites for this song
-      const songComposites = await this.optimizedNnaRegistryService.getCompositesForSongOptimized(songId);
-      this.logger.debug(`🎯 [SONG-BASED VARIANTS] Found ${songComposites.length} composites for song: ${songId}`);
+      // Get all composites that start with the same base ID
+      const relatedComposites = await this.getCompositesByBaseId(baseCompositeId);
+      this.logger.debug(`🎯 [COMPOSITE-BASED VARIANTS] Found ${relatedComposites.length} related composites for base: ${baseCompositeId}`);
 
-      if (!songComposites || songComposites.length === 0) {
-        this.logger.warn(`No composites found for song: ${songId}`);
+      if (!relatedComposites || relatedComposites.length === 0) {
+        this.logger.warn(`No related composites found for base: ${baseCompositeId}`);
         return [];
       }
 
       // Filter out the current composite and get layer-specific assets
-      const otherComposites = songComposites.filter(comp => comp._id !== compositeId);
+      const otherComposites = relatedComposites.filter(comp => comp._id !== compositeId);
       const layerAssets = this.extractLayerAssetsFromComposites(otherComposites, layer, assetsPerLayer);
       
       this.logger.debug(`Found ${layerAssets.length} layer assets for composite: ${compositeId}, layer: ${layer}`);
@@ -307,45 +307,49 @@ export class ReVizCompositeVariationsService {
     }
   }
 
-  private async extractSongIdFromComposite(compositeId: string): Promise<string | null> {
+  private extractCompositeBaseId(compositeId: string): string | null {
     try {
-      // Get the composite to extract the song ID
-      const composite = await this.optimizedNnaRegistryService.getCompositeById(compositeId);
+      // Extract the base composite ID (part before the colon)
+      // Format: C.FUL.ALL.106:1.018.003.002+2.009.001.001+3.003.010.002+4.022.002.003+5.004.004.002
+      // We want: C.FUL.ALL.106
       
-      if (!composite || !composite.data) {
-        this.logger.warn(`Could not get composite data for: ${compositeId}`);
-        return null;
+      if (!compositeId.includes(':')) {
+        // If no colon, assume it's already the base ID
+        return compositeId;
       }
-
-      // The composite name format is: C.FUL.ALL.106:1.018.003.002+2.009.001.001+3.003.010.002+4.022.002.003+5.004.004.002
-      // We need to extract the first component (the song ID) - it's the G layer component
-      const compositeName = composite.data.name;
-      if (!compositeName || !compositeName.includes(':')) {
-        this.logger.warn(`Invalid composite name format: ${compositeName}`);
-        return null;
-      }
-
-      // Extract the components part after the colon
-      const componentsPart = compositeName.split(':')[1];
-      if (!componentsPart) {
-        this.logger.warn(`No components found in composite name: ${compositeName}`);
-        return null;
-      }
-
-      // Split by + and get the first component (G layer = song)
-      const components = componentsPart.split('+');
-      if (components.length === 0) {
-        this.logger.warn(`No components found in composite: ${compositeName}`);
-        return null;
-      }
-
-      const songId = components[0]; // First component is always the song (G layer)
-      this.logger.debug(`🎯 [SONG EXTRACTION] Extracted song ID: ${songId} from composite: ${compositeName}`);
       
-      return songId;
+      const baseId = compositeId.split(':')[0];
+      this.logger.debug(`🎯 [COMPOSITE BASE] Extracted base ID: ${baseId} from composite: ${compositeId}`);
+      
+      return baseId;
     } catch (error) {
-      this.logger.error(`Failed to extract song ID from composite: ${compositeId}`, error);
+      this.logger.error(`Failed to extract base composite ID from: ${compositeId}`, error);
       return null;
+    }
+  }
+
+  private async getCompositesByBaseId(baseCompositeId: string): Promise<any[]> {
+    try {
+      // Extract the song ID from the base composite ID to get all composites for that song
+      // The base ID format is: C.FUL.ALL.106
+      // We need to find the song ID to get all composites for that song
+      
+      this.logger.debug(`🔍 [COMPOSITE SEARCH] Searching for composites with base ID: ${baseCompositeId}`);
+      
+      // For now, we'll use a direct approach - get all composites and filter by name pattern
+      // This could be optimized with a database query in production
+      
+      // We'll use the NNA Registry's composite search
+      // Since we don't have a direct "search by base ID" endpoint, we'll get all composites
+      // and filter them client-side (this is not ideal for production but works for now)
+      
+      // For now, return empty array - this will be implemented with proper NNA Registry search
+      this.logger.warn(`🔍 [COMPOSITE SEARCH] Base ID search not yet implemented for: ${baseCompositeId}`);
+      
+      return [];
+    } catch (error) {
+      this.logger.error(`Failed to get composites by base ID: ${baseCompositeId}`, error);
+      return [];
     }
   }
 

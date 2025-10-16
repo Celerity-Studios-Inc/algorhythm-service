@@ -219,80 +219,78 @@ export class ReVizCompositeExperienceService {
     moves: LayerAssets;
     worlds: LayerAssets;
   }> {
-    // 🔧 CRITICAL FIX: Handle undefined config and provide safe defaults
+    // 🎯 NEW IMPLEMENTATION: Use NNA Registry composite pattern recommendations
     const safeConfig = config || {};
     const layers = safeConfig.layers || ['stars', 'looks', 'moves', 'worlds'];
     const maxAssetsPerLayer = safeConfig.max_assets_per_layer || 5;
+    const variantsPerAsset = safeConfig.variants_per_asset || 3;
     
-    const layerAssets: any = {};
-    
-    // 🚀 PERFORMANCE FIX: Use Promise.allSettled with timeout to prevent 35+ second delays
-    const layerPromises = layers.map(async (layer) => {
-      try {
-        // Add timeout to prevent hanging
-        const timeoutPromise = new Promise((_, reject) => 
-          setTimeout(() => reject(new Error(`Timeout: ${layer} assets took too long`)), 5000)
-        );
-        
-        const assetsPromise = this.nnaRegistryService.getAssetsByLayer(layer, maxAssetsPerLayer);
-        const assets = await Promise.race([assetsPromise, timeoutPromise]) as any[];
-        
-        return {
-          layer,
-          success: true,
-          data: {
-            layer_type: layer,
-            total_assets: assets.length,
-            assets: assets.map((asset, index) => ({
-              asset_id: asset.assetId || `asset_${layer}_${index}`,
-              asset_name: asset.name || `${layer} Asset ${index + 1}`,
-              gcp_storage_url: asset.gcpStorageUrl || `https://storage.googleapis.com/algorhythm-assets/${layer}/${asset.assetId || `asset_${index}`}.mp4`,
-              thumbnail_url: `https://storage.googleapis.com/algorhythm-assets/thumbnails/${layer}/${asset.assetId || `asset_${index}`}.jpg`,
-              duration_seconds: asset.duration || 10,
-              file_size_mb: asset.fileSize || 5.1,
-              resolution: asset.resolution || '1080p',
-              format: asset.format || 'mp4',
-              compatibility_score: asset.compatibilityScore || 0.8,
-              layer: layer,
-              category: asset.category || 'general',
-              subcategory: asset.subcategory || 'default',
-              metadata: asset.metadata || {},
-              variants: safeConfig.include_variants ? this.generateVariants(asset, safeConfig.variant_depth || 3) : undefined,
-            })),
-          }
-        };
-      } catch (error) {
-        this.logger.warn(`⚠️ Could not fetch ${layer} assets: ${error.message}`);
-        return {
-          layer,
-          success: false,
-          data: {
-            layer_type: layer,
-            total_assets: 0,
-            assets: [],
-          }
-        };
+    try {
+      this.logger.log(`🔍 [LAYER ASSETS] Getting layer assets for composite: ${compositeId} using NNA Registry pattern recommendations`);
+      
+      // Call the new NNA Registry composite pattern recommendations endpoint
+      const patternResponse = await this.optimizedNnaRegistryService.getCompositePatternRecommendations(
+        compositeId,
+        layers,
+        maxAssetsPerLayer,
+        variantsPerAsset
+      );
+      
+      if (!patternResponse || !patternResponse.success) {
+        this.logger.warn(`⚠️ No pattern recommendations found for composite: ${compositeId}`);
+        return this.getEmptyLayerAssets(layers);
       }
-    });
-    
-    // Wait for all layer requests with timeout
-    const results = await Promise.allSettled(layerPromises);
-    
-    // Process results
-    results.forEach((result, index) => {
-      const layer = layers[index];
-      if (result.status === 'fulfilled') {
-        layerAssets[layer] = result.value.data;
-      } else {
-        this.logger.warn(`⚠️ Layer ${layer} failed: ${result.reason}`);
+      
+      const layerAssetsData = patternResponse.data?.layer_assets || {};
+      this.logger.log(`✅ [LAYER ASSETS] Successfully retrieved layer assets from NNA Registry: ${Object.keys(layerAssetsData).length} layers`);
+      
+      // Convert NNA Registry response to expected format
+      const layerAssets: any = {};
+      
+      layers.forEach(layer => {
+        const layerData = layerAssetsData[layer] || { assets: [] };
         layerAssets[layer] = {
           layer_type: layer,
-          total_assets: 0,
-          assets: [],
+          total_assets: layerData.assets?.length || 0,
+          assets: (layerData.assets || []).map((asset: any) => ({
+            asset_id: asset.asset_id || asset.id,
+            asset_name: asset.asset_name || asset.name,
+            gcp_storage_url: asset.gcp_storage_url || asset.gcpStorageUrl,
+            thumbnail_url: asset.thumbnail_url || asset.thumbnailUrl,
+            duration_seconds: asset.duration_seconds || asset.duration || 30,
+            file_size_mb: asset.file_size_mb || asset.fileSize || 5.1,
+            resolution: asset.resolution || '1920x1080',
+            format: asset.format || 'mp4',
+            compatibility_score: asset.compatibility_score || asset.compatibilityScore || 0.8,
+            layer: layer,
+            category: asset.category || 'general',
+            subcategory: asset.subcategory || 'default',
+            metadata: asset.metadata || {},
+            variants: asset.variants || [],
+          }))
         };
-      }
+      });
+      
+      return layerAssets;
+      
+    } catch (error) {
+      this.logger.error(`❌ [LAYER ASSETS] Failed to get layer assets from NNA Registry: ${error.message}`);
+      return this.getEmptyLayerAssets(layers);
+    }
+  }
+
+  /**
+   * Get empty layer assets structure
+   */
+  private getEmptyLayerAssets(layers: string[]): any {
+    const layerAssets: any = {};
+    layers.forEach(layer => {
+      layerAssets[layer] = {
+        layer_type: layer,
+        total_assets: 0,
+        assets: [],
+      };
     });
-    
     return layerAssets;
   }
 

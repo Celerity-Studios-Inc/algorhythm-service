@@ -831,4 +831,79 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
       throw error;
     }
   }
+
+  /**
+   * 🎯 REVIZ INTEGRATION: Get composite pattern recommendations from NNA Registry
+   * 
+   * This method calls the new NNA Registry composite pattern recommendations endpoint
+   * to get related composites and layer assets with variants.
+   */
+  async getCompositePatternRecommendations(
+    compositeId: string,
+    layers: string[] = ['stars', 'looks', 'moves', 'worlds'],
+    assetsPerLayer: number = 5,
+    variantsPerAsset: number = 3
+  ): Promise<any> {
+    const startTime = Date.now();
+    
+    try {
+      this.logger.debug(`🔍 [COMPOSITE PATTERN] Getting pattern recommendations for composite: ${compositeId}`);
+      
+      const url = `${this.baseUrl}/api/v1/reviz/composite/pattern-recommendations`;
+      this.logger.debug(`🔍 [COMPOSITE PATTERN] Calling NNA Registry: ${url}`);
+      
+      const requestBody = {
+        composite_id: compositeId,
+        layers: layers,
+        assets_per_layer: assetsPerLayer,
+        variants_per_asset: variantsPerAsset
+      };
+      
+      this.logger.debug(`🔍 [COMPOSITE PATTERN] Request body:`, JSON.stringify(requestBody, null, 2));
+      
+      const response = await this.circuitBreaker.executeWithCircuitBreaker(
+        () => firstValueFrom(
+          this.httpService.post(url, requestBody, {
+            headers: {
+              'x-api-key': this.apiKey,
+              'Content-Type': 'application/json',
+            },
+            timeout: this.timeout
+          }).pipe(
+            timeout(this.timeout),
+            catchError(error => {
+              this.logger.error(`❌ [COMPOSITE PATTERN] NNA Registry call failed: ${error.message}`);
+              throw error;
+            })
+          )
+        ),
+        () => {
+          this.logger.warn(`⚠️ [COMPOSITE PATTERN] Circuit breaker fallback for composite: ${compositeId}`);
+          return { 
+            data: { success: false, error: 'Circuit breaker fallback' },
+            status: 503,
+            statusText: 'Service Unavailable',
+            headers: {} as any,
+            config: { headers: {} } as any
+          } as any;
+        },
+        `getCompositePatternRecommendations-${compositeId}`
+      );
+
+      const data = response.data;
+      const queryTime = Date.now() - startTime;
+      
+      this.logger.debug(`✅ [COMPOSITE PATTERN] NNA Registry response in ${queryTime}ms: ${JSON.stringify(data).substring(0, 200)}...`);
+
+      if (!data || !data.success) {
+        this.logger.warn(`No composite pattern recommendations found for composite: ${compositeId}`);
+        return { success: false, error: 'No pattern recommendations found' };
+      }
+
+      return data;
+    } catch (error) {
+      this.logger.error(`❌ [COMPOSITE PATTERN] Failed to get composite pattern recommendations: ${error.message}`);
+      throw error;
+    }
+  }
 }
