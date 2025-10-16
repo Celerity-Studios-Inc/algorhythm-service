@@ -248,6 +248,8 @@ export class RecommendationsService {
     const t0 = Date.now();
     const fetched = await this.optimizedNnaRegistryService.getCompositesForSongAlgoRhythmFormat(normalizedSongId);
     this.logger.log(`✅ [REGRESSION FIX] Retrieved ${Array.isArray(fetched) ? fetched.length : 0} composites in ${Date.now() - t0}ms`);
+    this.logger.log(`🔍 [DEBUG] Fetched data type: ${typeof fetched}, isArray: ${Array.isArray(fetched)}`);
+    this.logger.log(`🔍 [DEBUG] Fetched data: ${JSON.stringify(fetched, null, 2)}`);
     
     // 🔧 REGRESSION FIX: Process the real data we got
     availableTemplates = Array.isArray(fetched) ? fetched : [];
@@ -255,6 +257,7 @@ export class RecommendationsService {
     
     if (availableTemplates.length === 0) {
       this.logger.warn(`No templates found for song: ${songId}`);
+      this.logger.error(`🔍 [DEBUG] About to throw NotFoundException for song: ${songId}`);
       throw new NotFoundException(`No templates available for song: ${songId}`);
     }
 
