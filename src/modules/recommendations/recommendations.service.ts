@@ -238,7 +238,7 @@ export class RecommendationsService {
     const nnaCall = (async () => {
       const t0 = Date.now();
       this.logger.log(`🔍 [NNA REGISTRY] Fetching composites for song: ${normalizedSongId}`);
-      const data = await this.optimizedNnaRegistryService.getCompositesForSongAlgoRhythmFormat(normalizedSongId);
+      const data = await this.optimizedNnaRegistryService.getCompositesForSongOptimized(normalizedSongId);
       this.logger.log(`✅ [NNA REGISTRY] Retrieved ${Array.isArray(data) ? data.length : 0} composites in ${Date.now() - t0}ms`);
       return data;
     })();
