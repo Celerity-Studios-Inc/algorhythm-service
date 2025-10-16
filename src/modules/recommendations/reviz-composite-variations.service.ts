@@ -267,7 +267,7 @@ export class ReVizCompositeVariationsService {
     }
 
     // Find the component in the composite data
-    const component = compositeData.components?.find(comp => comp.type === componentType);
+    const component = compositeData.components?.[componentType];
     if (!component) {
       this.logger.warn(`No ${componentType} component found in composite`);
       return [];
