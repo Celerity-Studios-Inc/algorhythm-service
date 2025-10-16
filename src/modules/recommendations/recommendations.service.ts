@@ -676,38 +676,57 @@ export class RecommendationsService {
     this.cacheStats.sets++;
   }
 
-  // 🔧 REGRESSION FIX: Simple background warm using working service method
+  // 🔧 DEFINITIVE FIX: Service-injection-free background warm using direct HTTP
   private async startSimpleBackgroundWarm(cacheKey: string, songId: string, maxAlternatives: number) {
     (async () => {
       try {
-        this.logger.log(`🔧 [SIMPLE WARM] Starting simple background warm for key=${cacheKey}`);
+        this.logger.log(`🔧 [DEFINITIVE FIX] Starting service-injection-free warm for key=${cacheKey}`);
         
-        // Use the working service method directly (no complex HTTP calls)
-        const data = await this.optimizedNnaRegistryService.getCompositesForSongOptimized(songId);
-        this.logger.log(`🔧 [SIMPLE WARM] Retrieved ${Array.isArray(data) ? data.length : 0} composites`);
+        // DIRECT HTTP CALL - No service injection dependencies
+        const axios = require('axios');
+        const nnaRegistryUrl = (process.env.NNA_REGISTRY_URL || 'https://registry.dev.reviz.dev').trim();
+        const apiKey = (process.env.NNA_REGISTRY_API_KEY || process.env.NNA_API_KEY || 'reviz-dev-30390-13220-4896-9516-9001').trim();
         
-        if (Array.isArray(data) && data.length > 0) {
-          const recommendation = data[0];
-          const alternatives = data.slice(1, 1 + maxAlternatives);
+        this.logger.log(`🔧 [DEFINITIVE FIX] Making direct HTTP call to: ${nnaRegistryUrl}/api/v1/assets/composites/by-song/${songId}`);
+        
+        const response = await axios.get(`${nnaRegistryUrl}/api/v1/assets/composites/by-song/${songId}`, {
+          headers: { 'x-api-key': apiKey },
+          timeout: 15000,
+          params: { limit: 100, compositeType: 'full', includeMetadata: true }
+        });
+        
+        this.logger.log(`🔧 [DEFINITIVE FIX] HTTP response status: ${response.status}`);
+        
+        if (response.data && response.data.data && Array.isArray(response.data.data)) {
+          const composites = response.data.data;
+          this.logger.log(`🔧 [DEFINITIVE FIX] Retrieved ${composites.length} composites from NNA Registry`);
           
-          const payload = {
-            recommendation,
-            alternatives,
-            total_available: data.length,
-            cache_hit: false,
-            response_time_ms: 0,
-            score_computation_time_ms: 0,
-            templates_evaluated: data.length,
-          };
-          
-          await this.cacheService.set(cacheKey, payload, 600);
-          this.trackCacheSet();
-          this.logger.log(`✅ [SIMPLE WARM] Cache set successfully for key=${cacheKey} with ${data.length} items`);
+          if (composites.length > 0) {
+            const recommendation = composites[0];
+            const alternatives = composites.slice(1, 1 + maxAlternatives);
+            
+            const payload = {
+              recommendation,
+              alternatives,
+              total_available: composites.length,
+              cache_hit: false,
+              response_time_ms: 0,
+              score_computation_time_ms: 0,
+              templates_evaluated: composites.length,
+            };
+            
+            await this.cacheService.set(cacheKey, payload, 600);
+            this.trackCacheSet();
+            this.logger.log(`✅ [DEFINITIVE FIX] Cache set successfully for key=${cacheKey} with ${composites.length} items`);
+          } else {
+            this.logger.warn(`⚠️ [DEFINITIVE FIX] No composites returned from NNA Registry`);
+          }
         } else {
-          this.logger.warn(`⚠️ [SIMPLE WARM] No data returned from service`);
+          this.logger.warn(`⚠️ [DEFINITIVE FIX] Invalid response format from NNA Registry`);
         }
       } catch (e) {
-        this.logger.warn(`⚠️ [SIMPLE WARM] Background warm failed for key=${cacheKey}: ${e?.message || e}`);
+        this.logger.warn(`⚠️ [DEFINITIVE FIX] Background warm failed for key=${cacheKey}: ${e?.message || e}`);
+        this.logger.error(`❌ [DEFINITIVE FIX] Error stack: ${e?.stack || 'No stack trace'}`);
       }
     })();
   }
