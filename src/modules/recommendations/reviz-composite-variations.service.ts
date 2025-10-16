@@ -167,10 +167,20 @@ export class ReVizCompositeVariationsService {
       return null;
     }
     
+    this.logger.debug(`🔍 [DEBUG] Looking for layer code: ${layerCode} in composite components`);
+    this.logger.debug(`🔍 [DEBUG] Composite components: ${JSON.stringify(composite.components, null, 2)}`);
+    
     // Look for the current asset in the composite's components
     if (composite.components && Array.isArray(composite.components)) {
-      const component = composite.components.find(comp => comp.layer === layerCode);
+      this.logger.debug(`🔍 [DEBUG] Found ${composite.components.length} components`);
+      
+      const component = composite.components.find(comp => {
+        this.logger.debug(`🔍 [DEBUG] Checking component: ${comp.name}, layer: ${comp.layer}, matches ${layerCode}: ${comp.layer === layerCode}`);
+        return comp.layer === layerCode;
+      });
+      
       if (component) {
+        this.logger.debug(`🔍 [DEBUG] Found matching component: ${JSON.stringify(component, null, 2)}`);
         return {
           id: component.id,
           asset_id: component.id,
