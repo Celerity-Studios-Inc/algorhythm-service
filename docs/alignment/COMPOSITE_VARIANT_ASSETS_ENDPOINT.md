@@ -1,411 +1,328 @@
-# Composite-Specific Variant Assets Endpoint
+# 🔧 Backend Team Coordination: Composite Variant Assets Endpoint
 
-## 🎯 **Problem Statement**
+**Date**: October 16, 2025  
+**From**: AlgoRhythm Service Team  
+**To**: NNA Registry Service Backend Team  
+**Priority**: HIGH - ReViz Developer Request  
+**Status**: ⏳ **AWAITING BACKEND IMPLEMENTATION**
 
-**ReViz Developer Request:**
-> "As I mentioned previously I'm requesting variant assets for a specific composite. Not just a song. So we built this endpoint specifically for this purpose. I provide this endpoint with the exact composite for which I need variant assets and then I display those variant assets to the user. If that is not what you wish to do I can do it the other way, but then there's no point in the user clicking on a specific video to remix. They're just getting random assets for the song and not the specific composite they clicked on"
+---
 
-## 🔍 **Current State Analysis**
+## 🎯 **REVIZ DEVELOPER REQUEST**
 
-### **What We Have ✅**
-- ✅ **Composite by ID**: `GET /api/v1/assets/composites/by-id/{compositeId}`
-- ✅ **Composites by Song**: `GET /api/v1/assets/composites/by-song/{songId}`
-- ✅ **Layer Assets by Song**: `GET /api/v1/assets/layers/by-song/{songId}/algorhythm`
+The ReViz developers have identified a critical missing endpoint for composite-specific layer variations. They need:
 
-### **What We're Missing ❌**
-- ❌ **Composite-Specific Variant Assets**: Get variant assets for a specific composite's components
-- ❌ **Component-Specific Variants**: Get variants for each component in a composite
+> **"Variant assets for a specific composite. Not just a song. I provide this endpoint with the exact composite for which I need variant assets and then I display those variant assets to the user. If that is not what you wish to do I can do it the other way, but then there's no point in the user clicking on a specific video to remix. They're just getting random assets for the song and not the specific composite they clicked on"**
 
-## 🎯 **Required Endpoint**
+## 🔧 **REQUIRED BACKEND ENDPOINT**
 
-### **GET /api/v1/assets/composites/{compositeId}/variants**
-
-**Purpose**: Get variant assets for all components in a specific composite
-
-**Request**:
-```http
-GET /api/v1/assets/composites/9.002.025.106/variants
+### **Endpoint Specification**
+```
+GET /api/v1/assets/composites/{compositeId}/variants/{layer}
 ```
 
-**Response**:
+### **Purpose**
+Get variant assets for a specific layer within a specific composite context, rather than generic song-based assets.
+
+---
+
+## 📝 **DETAILED REQUIREMENTS**
+
+### **1. Endpoint Structure**
+```
+GET /api/v1/assets/composites/{compositeId}/variants/{layer}
+```
+
+**Parameters:**
+- `compositeId`: The specific composite ID (e.g., `C.FUL.ALL.001`)
+- `layer`: The layer to get variants for (`stars`, `looks`, `moves`, `worlds`)
+
+**Query Parameters:**
+- `limit`: Maximum number of variants to return (default: 8, max: 20)
+- `exclude_current`: Exclude the current asset in the composite (default: true)
+- `compatibility_threshold`: Minimum compatibility score (default: 0.7)
+
+### **2. Request Example**
+```bash
+GET /api/v1/assets/composites/C.FUL.ALL.001/variants/stars?limit=8&exclude_current=true&compatibility_threshold=0.7
+```
+
+### **3. Response Structure**
 ```json
 {
   "success": true,
   "data": {
-    "composite_id": "9.002.025.106",
-    "composite_name": "C.FUL.ALL.106",
-    "components": {
-      "star": {
-        "base_asset": {
-          "asset_id": "2.009.002.018",
-          "nna_address": "2.009.002.018",
-          "name": "Taylor Swift Base",
-          "layer": "S",
-          "category": "POP",
-          "subcategory": "TSW"
-        },
-        "variants": [
-          {
-            "asset_id": "2.009.002.018-V01",
-            "nna_address": "2.009.002.018-V01",
-            "name": "Taylor Swift - Blue Dress",
-            "variant_name": "Blue Dress",
-            "base_asset_id": "2.009.002.018",
-            "layer": "S",
-            "category": "POP",
-            "subcategory": "TSW",
-            "media": {
-              "thumbnail_url": "https://storage.googleapis.com/nna_registry_assets_dev/stars/2.009.002.018-V01/thumb.jpg",
-              "preview_url": "https://storage.googleapis.com/nna_registry_assets_dev/stars/2.009.002.018-V01/preview.mp4",
-              "full_asset_url": "https://storage.googleapis.com/nna_registry_assets_dev/stars/2.009.002.018-V01/full.mp4"
-            },
-            "compatibility_score": 0.95
-          },
-          {
-            "asset_id": "2.009.002.018-V02",
-            "nna_address": "2.009.002.018-V02",
-            "name": "Taylor Swift - Red Dress",
-            "variant_name": "Red Dress",
-            "base_asset_id": "2.009.002.018",
-            "layer": "S",
-            "category": "POP",
-            "subcategory": "TSW",
-            "media": {
-              "thumbnail_url": "https://storage.googleapis.com/nna_registry_assets_dev/stars/2.009.002.018-V02/thumb.jpg",
-              "preview_url": "https://storage.googleapis.com/nna_registry_assets_dev/stars/2.009.002.018-V02/preview.mp4",
-              "full_asset_url": "https://storage.googleapis.com/nna_registry_assets_dev/stars/2.009.002.018-V02/full.mp4"
-            },
-            "compatibility_score": 0.92
-          }
-        ]
-      },
-      "look": {
-        "base_asset": {
-          "asset_id": "3.003.001.001",
-          "nna_address": "3.003.001.001",
-          "name": "Casual Look Base",
-          "layer": "L",
-          "category": "POP",
-          "subcategory": "CAS"
-        },
-        "variants": [
-          {
-            "asset_id": "3.003.001.001-V01",
-            "nna_address": "3.003.001.001-V01",
-            "name": "Casual Look - Summer",
-            "variant_name": "Summer",
-            "base_asset_id": "3.003.001.001",
-            "layer": "L",
-            "category": "POP",
-            "subcategory": "CAS",
-            "media": {
-              "thumbnail_url": "https://storage.googleapis.com/nna_registry_assets_dev/looks/3.003.001.001-V01/thumb.jpg",
-              "preview_url": "https://storage.googleapis.com/nna_registry_assets_dev/looks/3.003.001.001-V01/preview.mp4",
-              "full_asset_url": "https://storage.googleapis.com/nna_registry_assets_dev/looks/3.003.001.001-V01/full.mp4"
-            },
-            "compatibility_score": 0.88
-          }
-        ]
-      },
-      "move": {
-        "base_asset": {
-          "asset_id": "4.022.002.003",
-          "nna_address": "4.022.002.003",
-          "name": "Dance Move Base",
-          "layer": "M",
-          "category": "POP",
-          "subcategory": "DAN"
-        },
-        "variants": [
-          {
-            "asset_id": "4.022.002.003-V01",
-            "nna_address": "4.022.002.003-V01",
-            "name": "Dance Move - Fast",
-            "variant_name": "Fast",
-            "base_asset_id": "4.022.002.003",
-            "layer": "M",
-            "category": "POP",
-            "subcategory": "DAN",
-            "media": {
-              "thumbnail_url": "https://storage.googleapis.com/nna_registry_assets_dev/moves/4.022.002.003-V01/thumb.jpg",
-              "preview_url": "https://storage.googleapis.com/nna_registry_assets_dev/moves/4.022.002.003-V01/preview.mp4",
-              "full_asset_url": "https://storage.googleapis.com/nna_registry_assets_dev/moves/4.022.002.003-V01/full.mp4"
-            },
-            "compatibility_score": 0.90
-          }
-        ]
-      },
-      "world": {
-        "base_asset": {
-          "asset_id": "5.015.001.001",
-          "nna_address": "5.015.001.001",
-          "name": "Concert World Base",
-          "layer": "W",
-          "category": "POP",
-          "subcategory": "CON"
-        },
-        "variants": [
-          {
-            "asset_id": "5.015.001.001-V01",
-            "nna_address": "5.015.001.001-V01",
-            "name": "Concert World - Night",
-            "variant_name": "Night",
-            "base_asset_id": "5.015.001.001",
-            "layer": "W",
-            "category": "POP",
-            "subcategory": "CON",
-            "media": {
-              "thumbnail_url": "https://storage.googleapis.com/nna_registry_assets_dev/worlds/5.015.001.001-V01/thumb.jpg",
-              "preview_url": "https://storage.googleapis.com/nna_registry_assets_dev/worlds/5.015.001.001-V01/preview.mp4",
-              "full_asset_url": "https://storage.googleapis.com/nna_registry_assets_dev/worlds/5.015.001.001-V01/full.mp4"
-            },
-            "compatibility_score": 0.87
-          }
-        ]
+    "composite_id": "C.FUL.ALL.001",
+    "layer": "stars",
+    "current_asset": {
+      "asset_id": "S.TEN.YOU.001",
+      "nna_address": "S.TEN.YOU.001",
+      "name": "Emma",
+      "gcp_storage_url": "https://storage.googleapis.com/algorhythm-assets/stars/S.TEN.YOU.001.mp4",
+      "thumbnail_url": "https://storage.googleapis.com/algorhythm-assets/thumbnails/stars/S.TEN.YOU.001.jpg",
+      "metadata": {
+        "archetype": "Pop Star",
+        "energy": "Medium",
+        "gender": "Female",
+        "hairColor": "Blonde",
+        "musicalStyle": ["Pop"]
       }
     },
-    "total_variants": 5,
-    "query_time_ms": 245
+    "variants": [
+      {
+        "asset_id": "S.TEN.YOU.002",
+        "nna_address": "S.TEN.YOU.002",
+        "name": "Lucy",
+        "gcp_storage_url": "https://storage.googleapis.com/algorhythm-assets/stars/S.TEN.YOU.002.mp4",
+        "thumbnail_url": "https://storage.googleapis.com/algorhythm-assets/thumbnails/stars/S.TEN.YOU.002.jpg",
+        "compatibility_score": 0.87,
+        "metadata": {
+          "archetype": "Pop Star",
+          "energy": "Medium",
+          "gender": "Female",
+          "hairColor": "Pink",
+          "musicalStyle": ["Pop"]
+        },
+        "scoring_details": {
+          "composite_compatibility": 0.85,
+          "layer_compatibility": 0.92,
+          "style_compatibility": 0.84,
+          "energy_compatibility": 0.89
+        }
+      }
+    ],
+    "total_available": 8,
+    "compatibility_analysis": {
+      "composite_style": ["pop", "teen", "energetic"],
+      "composite_energy": "medium",
+      "composite_mood": ["uplifting", "playful"],
+      "matching_criteria": {
+        "archetype_match": 0.9,
+        "energy_match": 0.8,
+        "style_match": 0.85,
+        "demographic_match": 0.95
+      }
+    }
   },
   "metadata": {
-    "composite_id": "9.002.025.106",
-    "total_time": 245,
-    "optimization": "EXCELLENT"
+    "request_id": "req_1737034567890",
+    "timestamp": "2025-10-16T12:34:56.789Z",
+    "version": "1.0.0",
+    "response_time_ms": 1250
   }
 }
 ```
-
-## 🔧 **Implementation Plan**
-
-### **Step 1: Add Method to OptimizedCompositeQueryService**
-
-```typescript
-/**
- * Get variant assets for a specific composite's components
- */
-async getCompositeVariants(compositeId: string): Promise<{
-  composite_id: string;
-  composite_name: string;
-  components: {
-    star: ComponentVariants;
-    look: ComponentVariants;
-    move: ComponentVariants;
-    world: ComponentVariants;
-  };
-  total_variants: number;
-  query_time_ms: number;
-}> {
-  const startTime = Date.now();
-  
-  try {
-    // 1. Get the composite by ID
-    const composite = await this.getCompositeById(compositeId);
-    if (!composite) {
-      throw new Error(`Composite not found: ${compositeId}`);
-    }
-    
-    // 2. Extract components from composite
-    const components = composite.components || [];
-    
-    // 3. Get variants for each component
-    const componentVariants = {
-      star: await this.getComponentVariants(components, 'S'),
-      look: await this.getComponentVariants(components, 'L'),
-      move: await this.getComponentVariants(components, 'M'),
-      world: await this.getComponentVariants(components, 'W')
-    };
-    
-    // 4. Calculate total variants
-    const totalVariants = Object.values(componentVariants).reduce((total, comp) => {
-      return total + (comp.variants?.length || 0);
-    }, 0);
-    
-    const queryTime = Date.now() - startTime;
-    
-    return {
-      composite_id: compositeId,
-      composite_name: composite.name,
-      components: componentVariants,
-      total_variants: totalVariants,
-      query_time_ms: queryTime
-    };
-    
-  } catch (error) {
-    this.logger.error(`❌ [COMPOSITE VARIANTS] Failed for ${compositeId}:`, error);
-    throw error;
-  }
-}
-
-/**
- * Get variants for a specific component layer
- */
-private async getComponentVariants(components: any[], layer: string): Promise<ComponentVariants> {
-  // Find the component for this layer
-  const component = components.find(comp => comp.layer === layer);
-  if (!component) {
-    return {
-      base_asset: null,
-      variants: []
-    };
-  }
-  
-  // Get the base asset
-  const baseAsset = await this.assetModel.findById(component._id).lean();
-  if (!baseAsset) {
-    return {
-      base_asset: null,
-      variants: []
-    };
-  }
-  
-  // Get variants for this base asset
-  const variants = await this.assetModel.find({
-    base_asset_id: component._id,
-    asset_type: 'variant',
-    layer: layer
-  }).lean();
-  
-  return {
-    base_asset: {
-      asset_id: baseAsset._id,
-      nna_address: baseAsset.nna_address,
-      name: baseAsset.name,
-      layer: baseAsset.layer,
-      category: baseAsset.category,
-      subcategory: baseAsset.subcategory
-    },
-    variants: variants.map(variant => ({
-      asset_id: variant._id,
-      nna_address: variant.nna_address,
-      name: variant.name,
-      variant_name: variant.variant_name,
-      base_asset_id: variant.base_asset_id,
-      layer: variant.layer,
-      category: variant.category,
-      subcategory: variant.subcategory,
-      media: {
-        thumbnail_url: this.buildUrl(variant, 'thumb.jpg'),
-        preview_url: this.buildUrl(variant, 'preview.mp4'),
-        full_asset_url: this.buildUrl(variant, 'full.mp4')
-      },
-      compatibility_score: variant.compatibility_score || 0.8
-    }))
-  };
-}
-```
-
-### **Step 2: Add Controller Endpoint**
-
-```typescript
-@Get('by-id/:compositeId/variants')
-@ApiOperation({
-  summary: 'Get variant assets for a specific composite',
-  description: 'Returns variant assets for all components in a specific composite - optimized for ReViz developers'
-})
-@ApiParam({
-  name: 'compositeId',
-  description: 'Composite ID (MongoDB ObjectId), NNA address (e.g., 9.002.025.106), or composite name (e.g., C.FUL.ALL.106)',
-  example: '9.002.025.106'
-})
-async getCompositeVariants(@Param('compositeId') compositeId: string) {
-  const startTime = Date.now();
-  
-  try {
-    this.logger.log(`🔍 [COMPOSITE VARIANTS] Getting variants for composite: ${compositeId}`);
-    
-    const result = await this.optimizedCompositeQueryService.getCompositeVariants(compositeId);
-    
-    const totalTime = Date.now() - startTime;
-    
-    this.logger.log(`✅ [COMPOSITE VARIANTS] Found ${result.total_variants} variants in ${totalTime}ms`);
-    
-    return {
-      success: true,
-      data: result,
-      metadata: {
-        composite_id: compositeId,
-        total_time: totalTime,
-        optimization: totalTime < 500 ? 'EXCELLENT' : totalTime < 1000 ? 'GOOD' : 'NEEDS_OPTIMIZATION'
-      }
-    };
-    
-  } catch (error) {
-    this.logger.error(`❌ [COMPOSITE VARIANTS] Failed for ${compositeId}:`, error);
-    throw error;
-  }
-}
-```
-
-## 🎯 **Usage for ReViz Developers**
-
-### **Current Workflow (Problematic)**
-```typescript
-// 1. User clicks on composite "9.002.025.106"
-// 2. ReViz gets random variants for song "1.018.003.002"
-// 3. User sees variants that don't match the composite they clicked on
-```
-
-### **New Workflow (Correct)**
-```typescript
-// 1. User clicks on composite "9.002.025.106"
-// 2. ReViz calls GET /api/v1/assets/composites/9.002.025.106/variants
-// 3. ReViz gets variants specifically for that composite's components
-// 4. User sees variants that match the composite they clicked on
-```
-
-## 🚀 **Implementation Priority**
-
-### **HIGH PRIORITY - Implement Immediately**
-This endpoint is **critical** for the ReViz user experience because:
-
-1. **User Intent**: Users click on a specific composite to remix it
-2. **Context Preservation**: Variants should be relevant to that specific composite
-3. **User Experience**: Random variants break the user's mental model
-
-### **Implementation Timeline**
-- **Day 1**: Implement service method
-- **Day 2**: Add controller endpoint
-- **Day 3**: Test with ReViz developers
-- **Day 4**: Deploy to production
-
-## 🧪 **Testing Strategy**
-
-### **Test Cases**
-1. **Valid Composite ID**: Should return variants for all components
-2. **Invalid Composite ID**: Should return 404 error
-3. **Composite with No Variants**: Should return empty variants arrays
-4. **Performance**: Should respond within 1 second
-5. **Data Format**: Should match ReViz expectations
-
-### **Test Data**
-```typescript
-// Test composite with known variants
-const testCompositeId = '9.002.025.106'; // C.FUL.ALL.106
-const expectedVariants = {
-  star: 2, // Should have 2 star variants
-  look: 1, // Should have 1 look variant
-  move: 1, // Should have 1 move variant
-  world: 1  // Should have 1 world variant
-};
-```
-
-## 🎯 **Success Criteria**
-
-### **Functional Requirements**
-- ✅ **Composite-Specific**: Returns variants for the specific composite's components
-- ✅ **Component-Based**: Groups variants by component layer (star, look, move, world)
-- ✅ **Complete Data**: Includes all necessary fields for ReViz integration
-- ✅ **Performance**: Responds within 1 second
-
-### **ReViz Developer Requirements**
-- ✅ **User Intent**: Variants match the composite the user clicked on
-- ✅ **Context Preservation**: No random variants from other composites
-- ✅ **Easy Integration**: Simple API call with clear response format
-- ✅ **Reliable**: Consistent response format and error handling
 
 ---
 
-**Implementation Date**: October 16, 2025  
-**Status**: Ready for Implementation  
-**Priority**: HIGH (Critical for ReViz UX)  
-**Estimated Effort**: 1 day
+## 🎯 **KEY DIFFERENCES FROM EXISTING ENDPOINTS**
+
+### **❌ Current Song-Based Approach**
+```
+GET /api/v1/assets/composites/by-song/{songId}
+```
+**Problem**: Returns all composites for a song, not variants for a specific composite.
+
+### **✅ Required Composite-Based Approach**
+```
+GET /api/v1/assets/composites/{compositeId}/variants/{layer}
+```
+**Solution**: Returns variant assets for a specific layer within a specific composite context.
+
+---
+
+## 🔍 **COMPATIBILITY SCORING REQUIREMENTS**
+
+### **1. Composite Context Analysis**
+The endpoint should analyze the composite to understand:
+- **Style**: What style/theme the composite has
+- **Energy**: High, medium, or low energy level
+- **Mood**: Uplifting, romantic, energetic, etc.
+- **Demographics**: Target audience, age group, etc.
+
+### **2. Layer-Specific Compatibility**
+For each layer, consider:
+- **Stars**: Archetype, energy, gender, style compatibility
+- **Looks**: Style category, occasion, formality compatibility
+- **Moves**: Dance style, difficulty, energy compatibility
+- **Worlds**: Environment type, mood, lighting compatibility
+
+### **3. Scoring Algorithm**
+```typescript
+interface CompatibilityScore {
+  composite_compatibility: number;  // How well it fits the composite's style
+  layer_compatibility: number;     // How well it fits the layer type
+  style_compatibility: number;    // Style/theme matching
+  energy_compatibility: number;   // Energy level matching
+  overall_score: number;          // Weighted average
+}
+```
+
+---
+
+## 🚀 **IMPLEMENTATION PRIORITIES**
+
+### **Phase 1: Core Functionality** (HIGH PRIORITY)
+1. **✅ Endpoint Creation**: `GET /api/v1/assets/composites/{compositeId}/variants/{layer}`
+2. **✅ Composite Lookup**: Get composite by ID with all components
+3. **✅ Current Asset Identification**: Find current asset in the specified layer
+4. **✅ Variant Retrieval**: Get compatible assets for the layer
+5. **✅ Basic Compatibility Scoring**: Simple scoring algorithm
+
+### **Phase 2: Enhanced Scoring** (MEDIUM PRIORITY)
+1. **✅ Advanced Compatibility Analysis**: Multi-factor scoring
+2. **✅ Composite Style Analysis**: Extract style, energy, mood from composite
+3. **✅ Layer-Specific Logic**: Different scoring for each layer type
+4. **✅ Performance Optimization**: Caching and query optimization
+
+### **Phase 3: Advanced Features** (LOW PRIORITY)
+1. **✅ User Preference Integration**: Personalization based on user context
+2. **✅ Machine Learning Scoring**: AI-powered compatibility scoring
+3. **✅ Real-time Updates**: Dynamic scoring based on current trends
+
+---
+
+## 📊 **PERFORMANCE REQUIREMENTS**
+
+### **Response Time**
+- **Target**: < 1 second
+- **Acceptable**: < 2 seconds
+- **Timeout**: 5 seconds
+
+### **Caching Strategy**
+- **Composite Data**: Cache for 30 minutes
+- **Compatibility Scores**: Cache for 1 hour
+- **Layer Assets**: Cache for 15 minutes
+
+### **Database Optimization**
+- **Indexes**: Composite ID, layer type, compatibility scores
+- **Query Optimization**: Efficient composite and asset lookups
+- **Batch Processing**: Process multiple variants in parallel
+
+---
+
+## 🔧 **TECHNICAL SPECIFICATIONS**
+
+### **Authentication**
+- **Header**: `x-api-key: reviz-dev-30390-13220-4896-9516-9001`
+- **Rate Limiting**: 100 requests per minute per API key
+
+### **Error Handling**
+```json
+{
+  "success": false,
+  "error": {
+    "code": "COMPOSITE_NOT_FOUND",
+    "message": "Composite C.FUL.ALL.001 not found",
+    "details": "The specified composite ID does not exist in the database"
+  },
+  "metadata": {
+    "request_id": "req_1737034567890",
+    "timestamp": "2025-10-16T12:34:56.789Z"
+  }
+}
+```
+
+### **Error Codes**
+- `COMPOSITE_NOT_FOUND`: Composite ID doesn't exist
+- `LAYER_NOT_FOUND`: Layer type not supported
+- `NO_VARIANTS_AVAILABLE`: No compatible variants found
+- `INVALID_PARAMETERS`: Invalid query parameters
+
+---
+
+## 🧪 **TESTING REQUIREMENTS**
+
+### **Test Cases**
+1. **Valid Composite**: `C.FUL.ALL.001` with `stars` layer
+2. **Invalid Composite**: Non-existent composite ID
+3. **Invalid Layer**: Unsupported layer type
+4. **Edge Cases**: Composite with no variants, single variant, many variants
+5. **Performance**: Large composite with many components
+
+### **Test Data**
+```bash
+# Test composite IDs
+C.FUL.ALL.001  # Full composite with all layers
+C.PAR.2LA.003  # Partial composite
+C.EMPTY.001    # Empty composite (no components)
+
+# Test layers
+stars, looks, moves, worlds
+```
+
+---
+
+## 📋 **DELIVERY CHECKLIST**
+
+### **Backend Team Deliverables**
+- [ ] **Endpoint Implementation**: `GET /api/v1/assets/composites/{compositeId}/variants/{layer}`
+- [ ] **Composite Lookup**: Get composite by ID with components
+- [ ] **Current Asset Detection**: Identify current asset in layer
+- [ ] **Variant Retrieval**: Get compatible layer assets
+- [ ] **Compatibility Scoring**: Score variants based on composite context
+- [ ] **Error Handling**: Proper error responses and status codes
+- [ ] **Performance Optimization**: Caching and query optimization
+- [ ] **Documentation**: API documentation and examples
+- [ ] **Testing**: Unit tests and integration tests
+
+### **AlgoRhythm Team Deliverables**
+- [ ] **Frontend Integration**: Update service to call new endpoint
+- [ ] **Error Handling**: Handle backend errors gracefully
+- [ ] **Caching**: Implement client-side caching
+- [ ] **Testing**: End-to-end testing with real data
+- [ ] **Documentation**: Update API documentation
+
+---
+
+## 🎯 **SUCCESS CRITERIA**
+
+### **Functional Requirements**
+- ✅ **Composite-Specific**: Returns variants for the exact composite requested
+- ✅ **Layer-Aware**: Returns variants for the specified layer only
+- ✅ **Compatibility Scoring**: Variants scored based on composite context
+- ✅ **Real GCP URLs**: All URLs are actual GCP storage URLs
+- ✅ **Performance**: Sub-2-second response times
+
+### **User Experience**
+- ✅ **Contextual**: User clicks composite → gets variants for that composite
+- ✅ **Relevant**: All variants maintain the composite's style and theme
+- ✅ **Fast**: Quick response times for smooth user experience
+- ✅ **Reliable**: Consistent results with proper error handling
+
+---
+
+## 📞 **COORDINATION CONTACTS**
+
+### **AlgoRhythm Team**
+- **Primary**: Claude (AI Assistant)
+- **Backup**: Development Team
+- **Communication**: GitHub Issues, Slack, Email
+
+### **Backend Team**
+- **Primary**: NNA Registry Service Team
+- **Communication**: GitHub Issues, Slack, Email
+- **Repository**: NNA Registry Service Repository
+
+---
+
+## 🚀 **NEXT STEPS**
+
+### **Immediate Actions**
+1. **Backend Team**: Review requirements and provide implementation timeline
+2. **AlgoRhythm Team**: Prepare frontend integration code
+3. **Coordination**: Schedule regular check-ins for progress updates
+
+### **Timeline**
+- **Week 1**: Backend endpoint implementation
+- **Week 2**: Integration and testing
+- **Week 3**: Performance optimization and deployment
+- **Week 4**: End-to-end testing and documentation
+
+---
+
+**🎉 This endpoint will provide exactly what ReViz developers need: composite-specific layer variations that maintain the context of the user's clicked composite for proper remixing experience!**
+
+**Last Updated**: October 16, 2025  
+**Status**: ⏳ **AWAITING BACKEND IMPLEMENTATION**  
+**Priority**: HIGH - ReViz Developer Request
