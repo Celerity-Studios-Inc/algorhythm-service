@@ -243,41 +243,15 @@ export class RecommendationsService {
     
     let availableTemplates: any[] = [];
     
-    // ⏱️ Strict 2s budget around the network call
-    const nnaCall = (async () => {
-      const t0 = Date.now();
-      this.logger.log(`🔍 [NNA REGISTRY] Fetching composites for song: ${normalizedSongId}`);
-      const data = await this.optimizedNnaRegistryService.getCompositesForSongOptimized(normalizedSongId);
-      this.logger.log(`✅ [NNA REGISTRY] Retrieved ${Array.isArray(data) ? data.length : 0} composites in ${Date.now() - t0}ms`);
-      return data;
-    })();
-    const timeout = new Promise<any[]>((resolve) => setTimeout(() => resolve(null as any), budgetMs));
-    const tCacheMiss = Date.now();
-    const fetched = await Promise.race([nnaCall, timeout]);
+    // 🔧 REGRESSION FIX: Get real data immediately (bypass timeout for now)
+    this.logger.log(`🔧 [REGRESSION FIX] Getting real data immediately for song: ${normalizedSongId}`);
+    const t0 = Date.now();
+    const fetched = await this.optimizedNnaRegistryService.getCompositesForSongOptimized(normalizedSongId);
+    this.logger.log(`✅ [REGRESSION FIX] Retrieved ${Array.isArray(fetched) ? fetched.length : 0} composites in ${Date.now() - t0}ms`);
     
-    if (fetched === null) {
-      // Over budget: fire background warm cache (non-blocking, realistic timeout)
-      this.logger.warn(`⏳ [PATH] miss_return_202_over_budget | elapsed=${Date.now() - startTime}ms | budget=${budgetMs}ms`);
-      
-      // 🔧 REGRESSION FIX: Use working service method directly instead of complex warm
-      this.logger.log(`🔧 [REGRESSION FIX] Using working service method for background warm`);
-      this.startSimpleBackgroundWarm(primaryCacheKey, normalizedSongId, maxAlternatives);
-
-      // Return partial response immediately (background warm is running)
-      const elapsed = Date.now() - startTime;
-      return {
-        recommendation: null as any,
-        alternatives: [],
-        total_available: 0,
-        cache_hit: false,
-        score_computation_time_ms: 0,
-        templates_evaluated: 0,
-        partial_response: true,
-        retry_after_ms: 3000,
-      };
-    }
+    // 🔧 REGRESSION FIX: Process the real data we got
     availableTemplates = Array.isArray(fetched) ? fetched : [];
-    this.logger.debug(`✅ [PATH] miss_fresh_under_budget | fetch_ms=${Date.now() - tCacheMiss} | total_ms=${Date.now() - startTime}`);
+    this.logger.log(`🔧 [REGRESSION FIX] Processing ${availableTemplates.length} templates`);
     
     if (availableTemplates.length === 0) {
       this.logger.warn(`No templates found for song: ${songId}`);
