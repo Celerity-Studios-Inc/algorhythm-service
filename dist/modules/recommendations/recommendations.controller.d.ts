@@ -67,6 +67,7 @@ export declare class RecommendationsController {
         sample_item?: undefined;
     }>;
     testBothServices(request: TemplateRecommendationDto): Promise<any>;
+    getTemplates(songId: string, maxAlternatives?: number): Promise<TemplateRecommendationResponse>;
     getTemplateRecommendation(request: TemplateRecommendationDto): Promise<TemplateRecommendationResponse>;
     getLayerVariations(request: LayerVariationDto): Promise<LayerVariationResponse>;
 }

@@ -95,14 +95,14 @@ export class ReVizCompositeVariationsService {
       }
 
       return {
-        composite_id: composite.composite_id || compositeId,
-        composite_name: composite.name || `Composite ${compositeId}`,
-        gcp_storage_url: composite.gcp_storage_url || `https://storage.googleapis.com/algorhythm-assets/composites/${compositeId}.mp4`,
-        thumbnail_url: composite.thumbnail_url || `https://storage.googleapis.com/algorhythm-assets/thumbnails/composites/${compositeId}.jpg`,
-        duration_seconds: composite.duration_seconds || 30,
-        file_size_mb: composite.file_size_mb || 15.2,
-        resolution: composite.resolution || '1080p',
-        format: composite.format || 'mp4'
+        composite_id: composite.data?._id || compositeId,
+        composite_name: composite.data?.name || `Composite ${compositeId}`,
+        gcp_storage_url: composite.data?.gcpStorageUrl || `https://storage.googleapis.com/algorhythm-assets/composites/${compositeId}.mp4`,
+        thumbnail_url: composite.data?.thumbnailUrl || `https://storage.googleapis.com/algorhythm-assets/thumbnails/composites/${compositeId}.jpg`,
+        duration_seconds: composite.data?.duration_seconds || 30,
+        file_size_mb: composite.data?.file_size_mb || 15.2,
+        resolution: composite.data?.resolution || '1080p',
+        format: composite.data?.format || 'mp4'
       };
     } catch (error) {
       this.logger.error(`Failed to get composite info for ${compositeId}:`, error);

@@ -109,6 +109,44 @@ let RecommendationsController = RecommendationsController_1 = class Recommendati
         }
         return results;
     }
+    async getTemplates(songId, maxAlternatives = 5) {
+        const startTime = Date.now();
+        this.logger.log(`Templates requested for song: ${songId}`);
+        try {
+            const request = {
+                song_id: songId,
+                max_alternatives: maxAlternatives,
+                user_context: { user_id: 'api-request' }
+            };
+            const recommendation = await this.recommendationsService.getTemplateRecommendation(request);
+            const responseTime = Date.now() - startTime;
+            this.logger.log(`Templates completed in ${responseTime}ms for song: ${songId}`);
+            return {
+                success: true,
+                data: {
+                    recommendation: recommendation.recommendation,
+                    alternatives: recommendation.alternatives,
+                    total_available: recommendation.total_available,
+                },
+                performance_metrics: {
+                    response_time_ms: responseTime,
+                    cache_hit: recommendation.cache_hit || false,
+                    score_computation_time_ms: recommendation.score_computation_time_ms,
+                    templates_evaluated: recommendation.templates_evaluated,
+                },
+                metadata: {
+                    timestamp: new Date().toISOString(),
+                    request_id: `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                    version: '1.0.0',
+                }
+            };
+        }
+        catch (error) {
+            const responseTime = Date.now() - startTime;
+            this.logger.error(`Templates failed after ${responseTime}ms for song: ${songId}`, error.stack);
+            throw error;
+        }
+    }
     async getTemplateRecommendation(request) {
         const startTime = Date.now();
         this.logger.log(`Template recommendation requested for song: ${request.song_id}`);
@@ -224,6 +262,15 @@ __decorate([
     __metadata("design:paramtypes", [template_recommendation_dto_1.TemplateRecommendationDto]),
     __metadata("design:returntype", Promise)
 ], RecommendationsController.prototype, "testBothServices", null);
+__decorate([
+    (0, common_1.Get)('templates'),
+    (0, common_1.UseInterceptors)(caching_interceptor_1.CachingInterceptor),
+    __param(0, (0, common_1.Query)('song_id')),
+    __param(1, (0, common_1.Query)('max_alternatives')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Number]),
+    __metadata("design:returntype", Promise)
+], RecommendationsController.prototype, "getTemplates", null);
 __decorate([
     (0, common_1.Post)('template'),
     (0, common_1.UseInterceptors)(caching_interceptor_1.CachingInterceptor),

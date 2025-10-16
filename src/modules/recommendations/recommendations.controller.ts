@@ -147,6 +147,61 @@ export class RecommendationsController {
     return results;
   }
 
+  @Get('templates')
+  @UseInterceptors(CachingInterceptor)
+  async getTemplates(
+    @Query('song_id') songId: string,
+    @Query('max_alternatives') maxAlternatives: number = 5,
+  ): Promise<TemplateRecommendationResponse> {
+    const startTime = Date.now();
+
+    this.logger.log(
+      `Templates requested for song: ${songId}`
+    );
+
+    try {
+      const request: TemplateRecommendationDto = {
+        song_id: songId,
+        max_alternatives: maxAlternatives,
+        user_context: { user_id: 'api-request' }
+      };
+      
+      const recommendation = await this.recommendationsService.getTemplateRecommendation(request);
+      const responseTime = Date.now() - startTime;
+
+      this.logger.log(
+        `Templates completed in ${responseTime}ms for song: ${songId}`
+      );
+
+      return {
+        success: true,
+        data: {
+          recommendation: recommendation.recommendation,
+          alternatives: recommendation.alternatives,
+          total_available: recommendation.total_available,
+        },
+        performance_metrics: {
+          response_time_ms: responseTime,
+          cache_hit: recommendation.cache_hit || false,
+          score_computation_time_ms: recommendation.score_computation_time_ms,
+          templates_evaluated: recommendation.templates_evaluated,
+        },
+        metadata: {
+          timestamp: new Date().toISOString(),
+          request_id: `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+          version: '1.0.0',
+        }
+      };
+    } catch (error) {
+      const responseTime = Date.now() - startTime;
+      this.logger.error(
+        `Templates failed after ${responseTime}ms for song: ${songId}`,
+        error.stack
+      );
+      throw error;
+    }
+  }
+
   @Post('template')
   @UseInterceptors(CachingInterceptor)
   async getTemplateRecommendation(
