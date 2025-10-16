@@ -134,6 +134,15 @@ export class RecommendationsService {
     return songId;
   }
 
+  /**
+   * Generate the primary cache key for template recommendations. Centralized to
+   * guarantee symmetry between the fast-path request handler and the
+   * background-warm path.
+   */
+  private generatePrimaryCacheKey(normalizedSongId: string, maxAlternatives: number): string {
+    return `recommendation:template:${normalizedSongId}:${maxAlternatives}`;
+  }
+
   async getTemplateRecommendation(
     request: TemplateRecommendationDto,
   ): Promise<{
@@ -196,7 +205,7 @@ export class RecommendationsService {
     
     // 🚀 SIMPLIFIED CACHE-FIRST STRATEGY
     const maxAlternatives = Math.max(0, Math.min(6, (request as any)?.max_alternatives ?? 3));
-    const primaryCacheKey = `recommendation:template:${normalizedSongId}:${maxAlternatives}`;
+    const primaryCacheKey = this.generatePrimaryCacheKey(normalizedSongId, maxAlternatives);
     const primaryCachedResult = await this.cacheService.get(primaryCacheKey);
     
     if (primaryCachedResult) {
@@ -692,68 +701,70 @@ export class RecommendationsService {
     this.cacheStats.sets++;
   }
 
-  // 🔥 BACKGROUND WARM HELPER - Service-injection-free approach
+  // 🔥 BACKGROUND WARM HELPER - Service-injection-free approach with verified cache write
   private async startBackgroundWarm(cacheKey: string, songId: string, maxAlternatives: number) {
-    (async () => {
-      try {
-        this.logger.log(`🔥 [WARM] Starting background warm for key=${cacheKey}`);
-        
-        // DIRECT HTTP CALL - No service injection dependencies
-        const axios = require('axios');
-        const nnaRegistryUrl = process.env.NNA_REGISTRY_URL || 'https://registry.dev.reviz.dev';
-        const apiKey = process.env.NNA_REGISTRY_API_KEY || 'reviz-dev-30390-13220-4896-9516-9001';
-        
-        this.logger.log(`🔍 [WARM] Making direct HTTP call to: ${nnaRegistryUrl}/api/v1/assets/composites/by-song/${songId}`);
-        
-        const response = await axios.get(`${nnaRegistryUrl}/api/v1/assets/composites/by-song/${songId}`, {
-          headers: { 'x-api-key': apiKey },
-          timeout: 10000,
-          params: {
-            limit: 100,
-            compositeType: 'full',
-            includeMetadata: true
-          }
-        });
-        
-        this.logger.log(`🔍 [WARM] HTTP response status: ${response.status}`);
-        this.logger.log(`🔍 [WARM] Response data keys: ${Object.keys(response.data || {})}`);
-        
-        if (response.data && response.data.data && Array.isArray(response.data.data)) {
-          const composites = response.data.data;
-          this.logger.log(`🔍 [WARM] Retrieved ${composites.length} composites from NNA Registry`);
-          
-          if (composites.length > 0) {
-            const recommendation = composites[0];
-            const alternatives = composites.slice(1, 1 + maxAlternatives);
-            
-            await this.cacheService.set(cacheKey, {
-              recommendation,
-              alternatives,
-              total_available: composites.length,
-              cache_hit: false,
-              response_time_ms: 0,
-              score_computation_time_ms: 0,
-              templates_evaluated: composites.length,
-            }, 600);
-            
-            this.logger.log(`✅ [WARM] Cache set successfully for key=${cacheKey} with ${composites.length} items`);
-          } else {
-            this.logger.warn(`⚠️ [WARM] No composites returned from NNA Registry`);
-          }
-        } else {
-          this.logger.warn(`⚠️ [WARM] Invalid response format from NNA Registry`);
-        }
-      } catch (e) {
-        this.logger.warn(`⚠️ [WARM] Background warm failed for key=${cacheKey}: ${e?.message || e}`);
-        this.logger.error(`❌ [WARM] Error stack: ${e?.stack || 'No stack trace'}`);
+    // Use singleflight to avoid duplicate warms for same key
+    this.singleflightWarm(cacheKey, async () => {
+      const startedAt = Date.now();
+      this.logger.log(`🔥 [WARM] start | key=${cacheKey} | song=${songId} | maxAlt=${maxAlternatives}`);
+
+      // Load axios dynamically, and prepare env
+      const axios = require('axios');
+      const nnaRegistryUrl = (process.env.NNA_REGISTRY_URL || 'https://registry.dev.reviz.dev').trim();
+      const apiKeyRaw = (process.env.NNA_REGISTRY_API_KEY || process.env.NNA_API_KEY || 'reviz-dev-30390-13220-4896-9516-9001');
+      const apiKey = String(apiKeyRaw).trim();
+
+      this.logger.log(`🔍 [WARM] http_target=${nnaRegistryUrl}/api/v1/assets/composites/by-song/${songId} | apiKeyPresent=${!!apiKey}`);
+
+      // Enforce ≤ 9500ms timeout around HTTP call
+      const httpCall = axios.get(`${nnaRegistryUrl}/api/v1/assets/composites/by-song/${songId}`, {
+        headers: { 'x-api-key': apiKey },
+        timeout: 10000,
+        params: { limit: 100, compositeType: 'full', includeMetadata: true },
+      });
+      const timer = new Promise((_, reject) => setTimeout(() => reject(new Error('warm_timeout_9500ms')), 9500));
+
+      const response = await Promise.race([httpCall, timer]);
+      this.logger.log(`🔍 [WARM] http_done | status=${response.status} | elapsed_ms=${Date.now() - startedAt}`);
+
+      const composites = (response?.data && Array.isArray(response.data.data)) ? response.data.data : [];
+      this.logger.log(`🔍 [WARM] items=${composites.length}`);
+
+      const recommendation = composites[0] || null;
+      const alternatives = composites.slice(1, 1 + maxAlternatives);
+      const payload = {
+        recommendation,
+        alternatives,
+        total_available: composites.length,
+        cache_hit: false,
+        response_time_ms: 0,
+        score_computation_time_ms: 0,
+        templates_evaluated: composites.length,
+      };
+
+      // Verified cache write: set then read-back
+      await this.cacheService.set(cacheKey, payload, 600);
+      const wrote = await this.cacheService.get(cacheKey);
+      const wroteOk = !!wrote;
+      if (wroteOk) {
+        this.trackCacheSet();
+        this.logger.log(`✅ [WARM] cache_set_done | key=${cacheKey} | ttl=600 | elapsed_ms=${Date.now() - startedAt}`);
+      } else {
+        throw new Error('cache_write_verification_failed');
       }
-    })();
+
+      // Return array length for warm tracking
+      return composites;
+    }).catch((err) => {
+      this.logger.warn(`⚠️ [WARM] failed | key=${cacheKey} | error=${err?.message || err}`);
+      this.logger.error(`❌ [WARM] stack=${err?.stack || 'n/a'}`);
+    });
   }
 
   // 🔍 CACHE STATUS ENDPOINT - Debug cache state and warm status
   async getCacheStatus(songId: string, maxAlternatives: number = 3) {
     const normalizedSongId = this.normalizeSongId(songId);
-    const primaryCacheKey = `recommendation:template:${normalizedSongId}:${maxAlternatives}`;
+    const primaryCacheKey = this.generatePrimaryCacheKey(normalizedSongId, maxAlternatives);
     
     const cached = await this.cacheService.get(primaryCacheKey);
     const warmStatus = this.warmStatus.get(primaryCacheKey);
