@@ -19,6 +19,8 @@ const reviz_complete_experience_production_service_1 = require("./reviz-complete
 const reviz_complete_experience_production_controller_1 = require("./reviz-complete-experience-production.controller");
 const reviz_composite_experience_service_1 = require("./reviz-composite-experience.service");
 const reviz_composite_experience_controller_1 = require("./reviz-composite-experience.controller");
+const reviz_composite_variations_service_1 = require("./reviz-composite-variations.service");
+const reviz_composite_variations_controller_1 = require("./reviz-composite-variations.controller");
 const debug_controller_1 = require("./debug.controller");
 const cache_warming_service_1 = require("./cache-warming.service");
 const optimized_recommendations_service_1 = require("./optimized-recommendations.service");
@@ -60,6 +62,7 @@ exports.RecommendationsModule = RecommendationsModule = __decorate([
             recommendations_controller_1.RecommendationsController,
             reviz_complete_experience_production_controller_1.ReVizCompleteExperienceProductionController,
             reviz_composite_experience_controller_1.ReVizCompositeExperienceController,
+            reviz_composite_variations_controller_1.ReVizCompositeVariationsController,
             debug_controller_1.DebugController,
             legacy_redirect_controller_1.LegacyRedirectController
         ],
@@ -68,6 +71,7 @@ exports.RecommendationsModule = RecommendationsModule = __decorate([
             instant_recommendations_service_1.InstantRecommendationsService,
             reviz_complete_experience_production_service_1.ReVizCompleteExperienceProductionService,
             reviz_composite_experience_service_1.ReVizCompositeExperienceService,
+            reviz_composite_variations_service_1.ReVizCompositeVariationsService,
             cache_warming_service_1.CacheWarmingService,
             optimized_recommendations_service_1.OptimizedRecommendationsService,
             composite_recommendations_service_1.CompositeRecommendationsService
@@ -77,6 +81,7 @@ exports.RecommendationsModule = RecommendationsModule = __decorate([
             instant_recommendations_service_1.InstantRecommendationsService,
             reviz_complete_experience_production_service_1.ReVizCompleteExperienceProductionService,
             reviz_composite_experience_service_1.ReVizCompositeExperienceService,
+            reviz_composite_variations_service_1.ReVizCompositeVariationsService,
             cache_warming_service_1.CacheWarmingService,
             optimized_recommendations_service_1.OptimizedRecommendationsService,
             composite_recommendations_service_1.CompositeRecommendationsService

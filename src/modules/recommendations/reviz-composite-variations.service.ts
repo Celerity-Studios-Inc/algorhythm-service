@@ -202,8 +202,8 @@ export class ReVizCompositeVariationsService {
       const url = `${baseUrl}/api/v1/assets/composites/by-id/${compositeId}/variants`;
       this.logger.debug(`🔍 [COMPOSITE VARIANTS] Calling NNA Registry: ${url}`);
       
-      const response = await this.optimizedNnaRegistryService.registryCircuitBreaker.execute(() =>
-        firstValueFrom(
+      const response = await this.optimizedNnaRegistryService.registryCircuitBreaker.executeWithCircuitBreaker(
+        () => firstValueFrom(
           this.httpService.get(url, {
             headers: { 'x-api-key': apiKey },
             timeout: timeoutMs
@@ -214,7 +214,18 @@ export class ReVizCompositeVariationsService {
               throw error;
             })
           )
-        )
+        ),
+        () => {
+          this.logger.warn(`⚠️ [COMPOSITE VARIANTS] Circuit breaker fallback for composite: ${compositeId}`);
+          return { 
+            data: { success: false, error: 'Circuit breaker fallback' },
+            status: 503,
+            statusText: 'Service Unavailable',
+            headers: {} as any,
+            config: { headers: {} } as any
+          } as any;
+        },
+        `getCompositeVariants-${compositeId}`
       );
 
       const data = response.data;
@@ -285,7 +296,7 @@ export class ReVizCompositeVariationsService {
       
       const overallScore = (baseScore + layerScore + userScore) / 3;
       
-      const result = {
+      const result: any = {
         asset_id: variation.asset_id || variation.id || `var_${index}`,
         asset_name: variation.name || `${layer} Variation ${index + 1}`,
         nna_address: variation.nna_address || variation.id,

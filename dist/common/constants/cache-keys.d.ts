@@ -9,6 +9,8 @@ export declare const CACHE_KEYS: {
     readonly BATCH_COMPOSITES: "batch:composites";
     readonly PRE_COMPUTED_SCORES: "precomputed:scores";
     readonly PERFORMANCE_METRICS: "performance:metrics";
+    readonly COMPOSITE_BY_ID: "composite:by_id";
+    readonly LAYER_ASSETS_ALGORHYTHM: "layer_assets:algorhythm";
 };
 export declare const CACHE_TTL: {
     readonly TEMPLATE_RECOMMENDATION: 300;
@@ -21,4 +23,6 @@ export declare const CACHE_TTL: {
     readonly BATCH_COMPOSITES: 1800;
     readonly PRE_COMPUTED_SCORES: 86400;
     readonly PERFORMANCE_METRICS: 300;
+    readonly COMPOSITE: 1800;
+    readonly LAYER_ASSETS: 300;
 };

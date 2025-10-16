@@ -18,10 +18,13 @@ export declare class RecommendationsService {
     private readonly analyticsService;
     private readonly instantRecommendationsService;
     private readonly logger;
+    private readonly warmLocks;
     private cacheStats;
+    private warmStatus;
     constructor(compatibilityScoreModel: Model<CompatibilityScore>, recommendationCacheModel: Model<RecommendationCache>, scoringService: ScoringService, cacheService: CacheService, optimizedNnaRegistryService: OptimizedNnaRegistryService, analyticsService: AnalyticsService, instantRecommendationsService: InstantRecommendationsService);
     private getFallbackTemplates;
     private normalizeSongId;
+    private generatePrimaryCacheKey;
     getTemplateRecommendation(request: TemplateRecommendationDto): Promise<{
         recommendation: TemplateRecommendation;
         alternatives: TemplateRecommendation[];
@@ -59,4 +62,30 @@ export declare class RecommendationsService {
     private trackCacheHit;
     private trackCacheMiss;
     private trackCacheSet;
+    private startSimpleBackgroundWarm;
+    private startBackgroundWarm;
+    getCacheStatus(songId: string, maxAlternatives?: number): Promise<{
+        song_id: string;
+        normalized_song_id: string;
+        cache_key: string;
+        exists: boolean;
+        ttl_seconds: number;
+        size_bytes: number;
+        last_warm_status: {
+            started_at: number;
+            finished_at?: number;
+            success: boolean;
+            items: number;
+            duration_ms: number;
+        };
+        cache_stats: {
+            hitRate: number;
+            totalRequests: number;
+            hits: number;
+            misses: number;
+            sets: number;
+        };
+    }>;
+    singleflightWarm(cacheKey: string, warmOperation: () => Promise<any>): Promise<any>;
+    private executeWarmWithTracking;
 }

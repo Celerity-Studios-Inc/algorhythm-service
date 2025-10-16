@@ -49,6 +49,35 @@ let RecommendationsController = RecommendationsController_1 = class Recommendati
             timestamp: new Date().toISOString()
         };
     }
+    async getCacheStatus(songId, maxAlt) {
+        const maxAlternatives = Math.max(0, Math.min(6, Number(maxAlt || 3)));
+        return this.recommendationsService.getCacheStatus(songId, maxAlternatives);
+    }
+    async testNnaRegistry(songId) {
+        try {
+            this.logger.log(`🧪 [TEST] Testing NNA Registry for song: ${songId}`);
+            const result = await this.optimizedNnaRegistryService.getCompositesForSongAlgoRhythmFormat(songId);
+            this.logger.log(`✅ [TEST] NNA Registry returned: ${Array.isArray(result) ? result.length : 'NOT_ARRAY'} items`);
+            return {
+                success: true,
+                song_id: songId,
+                result_type: Array.isArray(result) ? 'array' : typeof result,
+                item_count: Array.isArray(result) ? result.length : 0,
+                sample_item: Array.isArray(result) && result.length > 0 ? result[0] : null,
+                timestamp: new Date().toISOString()
+            };
+        }
+        catch (error) {
+            this.logger.error(`❌ [TEST] NNA Registry test failed: ${error.message}`);
+            return {
+                success: false,
+                song_id: songId,
+                error: error.message,
+                stack: error.stack,
+                timestamp: new Date().toISOString()
+            };
+        }
+    }
     async testBothServices(request) {
         this.logger.log(`🧪 [DEBUG] Testing both services for song: ${request.song_id}`);
         const results = {
@@ -84,103 +113,10 @@ let RecommendationsController = RecommendationsController_1 = class Recommendati
         const startTime = Date.now();
         this.logger.log(`Template recommendation requested for song: ${request.song_id}`);
         try {
-            const budgetMs = 2000;
-            const servicePromise = this.recommendationsService
-                .getTemplateRecommendation(request);
-            const timeoutPromise = new Promise(resolve => setTimeout(() => resolve('TIMEOUT'), budgetMs));
-            const winner = await Promise.race([servicePromise, timeoutPromise]);
-            if (winner === 'TIMEOUT') {
-                (async () => {
-                    try {
-                        await this.recommendationsService.getTemplateRecommendation(request);
-                        this.logger.log(`♻️ [CONTROLLER] Background warm completed for song ${request.song_id}`);
-                    }
-                    catch (e) {
-                        this.logger.warn(`⚠️ [CONTROLLER] Background warm failed: ${e?.message || e}`);
-                    }
-                })();
-                (async () => {
-                    try {
-                        const normalizedSongId = request.song_id?.trim()?.toUpperCase() || request.song_id;
-                        const maxAlternatives = Math.max(0, Math.min(6, request?.max_alternatives ?? 3));
-                        const primaryCacheKey = `recommendation:template:${normalizedSongId}:${maxAlternatives}`;
-                        const warmStartTime = Date.now();
-                        this.logger.log(`🔥 [CONTROLLER BACKGROUND WARM] Starting for song: ${normalizedSongId}`);
-                        const warmCall = this.optimizedNnaRegistryService.getCompositesBySongAlgoRhythmFormat(normalizedSongId);
-                        const warmTimer = new Promise(res => setTimeout(() => res('TIMEOUT'), 9500));
-                        const warmResult = await Promise.race([warmCall, warmTimer]);
-                        if (warmResult !== 'TIMEOUT' && Array.isArray(warmResult) && warmResult.length > 0) {
-                            const recommendation = warmResult[0];
-                            const alternatives = warmResult.slice(1, 1 + maxAlternatives);
-                            await this.cacheService.set(primaryCacheKey, {
-                                recommendation,
-                                alternatives,
-                                total_available: warmResult.length,
-                                cache_hit: false,
-                                response_time_ms: 0,
-                                score_computation_time_ms: 0,
-                                templates_evaluated: warmResult.length,
-                            }, 600);
-                            this.logger.log(`✅ [CONTROLLER BACKGROUND WARM] Success key=${primaryCacheKey} | size=${warmResult.length} | time=${Date.now() - warmStartTime}ms`);
-                        }
-                        else {
-                            this.logger.warn(`⚠️ [CONTROLLER BACKGROUND WARM] Timeout for key=${primaryCacheKey} after ${Date.now() - warmStartTime}ms`);
-                        }
-                    }
-                    catch (e) {
-                        this.logger.warn(`⚠️ [CONTROLLER BACKGROUND WARM] Failed: ${e?.message || e}`);
-                    }
-                })();
-                const responseTime = Date.now() - startTime;
-                this.logger.warn(`⏳ [CONTROLLER] 2s budget exceeded, returning 202 for song ${request.song_id}`);
-                return {
-                    success: true,
-                    data: {
-                        recommendation: null,
-                        alternatives: [],
-                        total_available: 0,
-                    },
-                    performance_metrics: {
-                        response_time_ms: responseTime,
-                        cache_hit: false,
-                        score_computation_time_ms: 0,
-                        templates_evaluated: 0,
-                    },
-                    metadata: {
-                        timestamp: new Date().toISOString(),
-                        request_id: `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-                        version: '1.0.0',
-                        retry_after_ms: 3000,
-                        partial_response: true,
-                    }
-                };
-            }
-            const recommendation = winner;
+            this.logger.log(`🔧 [CONTROLLER DEFINITIVE FIX] Calling service without timeout constraints`);
+            const recommendation = await this.recommendationsService.getTemplateRecommendation(request);
             const responseTime = Date.now() - startTime;
             this.logger.log(`Template recommendation completed in ${responseTime}ms for song: ${request.song_id}`);
-            if (recommendation?.partial_response) {
-                return {
-                    success: true,
-                    data: {
-                        recommendation: null,
-                        alternatives: [],
-                        total_available: 0,
-                    },
-                    performance_metrics: {
-                        response_time_ms: responseTime,
-                        cache_hit: false,
-                        score_computation_time_ms: 0,
-                        templates_evaluated: 0,
-                    },
-                    metadata: {
-                        timestamp: new Date().toISOString(),
-                        request_id: `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-                        version: '1.0.0',
-                        retry_after_ms: recommendation?.retry_after_ms ?? 3000,
-                        partial_response: true,
-                    }
-                };
-            }
             return {
                 success: true,
                 data: {
@@ -266,6 +202,21 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], RecommendationsController.prototype, "debugServices", null);
+__decorate([
+    (0, common_1.Get)('debug/cache-status'),
+    __param(0, (0, common_1.Query)('song_id')),
+    __param(1, (0, common_1.Query)('max_alternatives')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", Promise)
+], RecommendationsController.prototype, "getCacheStatus", null);
+__decorate([
+    (0, common_1.Get)('debug/test-nna-registry'),
+    __param(0, (0, common_1.Query)('song_id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], RecommendationsController.prototype, "testNnaRegistry", null);
 __decorate([
     (0, common_1.Post)('debug/test-both-services'),
     __param(0, (0, common_1.Body)()),

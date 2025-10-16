@@ -25,6 +25,47 @@ export declare class RecommendationsController {
         };
         timestamp: string;
     }>;
+    getCacheStatus(songId: string, maxAlt?: string): Promise<{
+        song_id: string;
+        normalized_song_id: string;
+        cache_key: string;
+        exists: boolean;
+        ttl_seconds: number;
+        size_bytes: number;
+        last_warm_status: {
+            started_at: number;
+            finished_at?: number;
+            success: boolean;
+            items: number;
+            duration_ms: number;
+        };
+        cache_stats: {
+            hitRate: number;
+            totalRequests: number;
+            hits: number;
+            misses: number;
+            sets: number;
+        };
+    }>;
+    testNnaRegistry(songId: string): Promise<{
+        success: boolean;
+        song_id: string;
+        result_type: string;
+        item_count: number;
+        sample_item: any;
+        timestamp: string;
+        error?: undefined;
+        stack?: undefined;
+    } | {
+        success: boolean;
+        song_id: string;
+        error: any;
+        stack: any;
+        timestamp: string;
+        result_type?: undefined;
+        item_count?: undefined;
+        sample_item?: undefined;
+    }>;
     testBothServices(request: TemplateRecommendationDto): Promise<any>;
     getTemplateRecommendation(request: TemplateRecommendationDto): Promise<TemplateRecommendationResponse>;
     getLayerVariations(request: LayerVariationDto): Promise<LayerVariationResponse>;

@@ -180,57 +180,6 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
     throw new Error(`No data received from NNA Registry for song: ${songId}`);
   }
 
-  /**
-   * 🔧 FIX: Get composite by ID from existing composites (no direct API endpoint)
-   */
-  async getCompositeById(compositeId: string): Promise<any> {
-    const startTime = Date.now();
-    
-    // Check cache first
-    const cacheKey = `composite:${compositeId}`;
-    const cached = this.cacheService ? await this.cacheService.get(cacheKey) : null;
-    if (cached) {
-      this.logger.debug(`✅ Cache hit for composite ${compositeId}: ${Date.now() - startTime}ms`);
-      return cached;
-    }
-
-    try {
-      // Since there's no direct composite endpoint, we need to find the composite
-      // by searching through all composites. This is not ideal but works with current API.
-      
-      // For now, return a mock composite with the requested ID
-      // TODO: This should be replaced with a proper composite lookup when the API is available
-      const composite = {
-        id: compositeId,
-        nna_address: compositeId,
-        name: `Composite ${compositeId}`,
-        gcpStorageUrl: `https://storage.googleapis.com/algorhythm-assets/composites/${compositeId}.mp4`,
-        thumbnailUrl: `https://storage.googleapis.com/algorhythm-assets/thumbnails/${compositeId}.jpg`,
-        duration: 30,
-        fileSize: 15.2,
-        resolution: '1080p',
-        format: 'mp4',
-        compatibilityScore: 0.8,
-        components: {
-          star: `S.POP.IDF.001`,
-          look: `L.MOD.POP.001`,
-          moves: `M.POP.CON.001`,
-          world: `W.STG.CON.001`
-        }
-      };
-      
-      // Cache the result
-      if (this.cacheService) {
-        await this.cacheService.set(cacheKey, composite, 300); // 5 minutes
-      }
-      
-      this.logger.debug(`✅ Composite ${compositeId} created: ${Date.now() - startTime}ms`);
-      return composite;
-    } catch (error) {
-      this.logger.error(`Failed to create composite ${compositeId}:`, error.message);
-      throw error;
-    }
-  }
 
   /**
    * 🎯 NEW: Get composites using AlgoRhythm-compatible endpoint
@@ -790,8 +739,8 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
       const url = `${this.baseUrl}/api/v1/assets/composites/${compositeId}`;
       this.logger.debug(`🔍 [COMPOSITE BY ID] Calling NNA Registry: ${url}`);
       
-      const response = await this.circuitBreaker.execute(() =>
-        firstValueFrom(
+      const response = await this.circuitBreaker.executeWithCircuitBreaker(
+        () => firstValueFrom(
           this.httpService.get(url, {
             headers: { 'x-api-key': this.apiKey },
             timeout: this.timeout
@@ -802,7 +751,12 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
               throw error;
             })
           )
-        )
+        ),
+        () => {
+          this.logger.warn(`⚠️ [COMPOSITE BY ID] Circuit breaker fallback for composite: ${compositeId}`);
+          return null;
+        },
+        `getCompositeById-${compositeId}`
       );
 
       const data = response.data;

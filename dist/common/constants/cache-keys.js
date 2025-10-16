@@ -12,6 +12,8 @@ exports.CACHE_KEYS = {
     BATCH_COMPOSITES: 'batch:composites',
     PRE_COMPUTED_SCORES: 'precomputed:scores',
     PERFORMANCE_METRICS: 'performance:metrics',
+    COMPOSITE_BY_ID: 'composite:by_id',
+    LAYER_ASSETS_ALGORHYTHM: 'layer_assets:algorhythm',
 };
 exports.CACHE_TTL = {
     TEMPLATE_RECOMMENDATION: 300,
@@ -24,5 +26,7 @@ exports.CACHE_TTL = {
     BATCH_COMPOSITES: 1800,
     PRE_COMPUTED_SCORES: 86400,
     PERFORMANCE_METRICS: 300,
+    COMPOSITE: 1800,
+    LAYER_ASSETS: 300,
 };
 //# sourceMappingURL=cache-keys.js.map

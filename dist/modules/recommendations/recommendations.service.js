@@ -36,12 +36,14 @@ let RecommendationsService = RecommendationsService_1 = class RecommendationsSer
         this.analyticsService = analyticsService;
         this.instantRecommendationsService = instantRecommendationsService;
         this.logger = new common_1.Logger(RecommendationsService_1.name);
+        this.warmLocks = new Map();
         this.cacheStats = {
             hits: 0,
             misses: 0,
             sets: 0,
             totalRequests: 0,
         };
+        this.warmStatus = new Map();
         console.error('=====================================');
         console.error('🚀 RECOMMENDATIONS SERVICE STARTING');
         console.error('=====================================');
@@ -103,6 +105,9 @@ let RecommendationsService = RecommendationsService_1 = class RecommendationsSer
         this.logger.log(`🔄 [DUAL ADDRESSING] Using original format: ${songId}`);
         return songId;
     }
+    generatePrimaryCacheKey(normalizedSongId, maxAlternatives) {
+        return `recommendation:template:${normalizedSongId}:${maxAlternatives}`;
+    }
     async getTemplateRecommendation(request) {
         const startTime = Date.now();
         const budgetMs = 2000;
@@ -115,34 +120,10 @@ let RecommendationsService = RecommendationsService_1 = class RecommendationsSer
         const normalizedRequest = { ...request, song_id: normalizedSongId };
         this.logger.debug('🚀 Using OptimizedNnaRegistryService for 43x performance improvement');
         const maxAlternatives = Math.max(0, Math.min(6, request?.max_alternatives ?? 3));
-        const primaryCacheKey = `recommendation:template:${normalizedSongId}:${maxAlternatives}`;
+        const primaryCacheKey = this.generatePrimaryCacheKey(normalizedSongId, maxAlternatives);
         const primaryCachedResult = await this.cacheService.get(primaryCacheKey);
         if (primaryCachedResult) {
-            this.logger.debug(`✅ [PATH] cache_hit | key=${primaryCacheKey}`);
-            (async () => {
-                try {
-                    const refreshStart = Date.now();
-                    const fresh = await this.optimizedNnaRegistryService.getCompositesBySongAlgoRhythmFormat(normalizedSongId);
-                    if (Array.isArray(fresh) && fresh.length > 0) {
-                        const recommendation = fresh[0];
-                        const alternatives = fresh.slice(1, 1 + maxAlternatives);
-                        const toCache = {
-                            recommendation,
-                            alternatives,
-                            total_available: fresh.length,
-                            cache_hit: false,
-                            response_time_ms: 0,
-                            score_computation_time_ms: 0,
-                            templates_evaluated: fresh.length,
-                        };
-                        await this.cacheService.set(primaryCacheKey, toCache, 600);
-                        this.logger.debug(`♻️ [CACHE REFRESH] key=${primaryCacheKey} updated in ${Date.now() - refreshStart}ms`);
-                    }
-                }
-                catch (e) {
-                    this.logger.warn(`⚠️ [CACHE REFRESH] Failed for ${primaryCacheKey}: ${e?.message || e}`);
-                }
-            })();
+            this.logger.debug(`✅ [CACHE HIT] key=${primaryCacheKey}`);
             return {
                 ...primaryCachedResult,
                 cache_hit: true,
@@ -161,78 +142,20 @@ let RecommendationsService = RecommendationsService_1 = class RecommendationsSer
         this.logger.log(`🔍 [METHOD CALL] Service type: ${this.optimizedNnaRegistryService?.constructor?.name}`);
         this.logger.log(`🚀 [INTEGRATION] Calling NNA Registry with circuit breaker for song: ${songId}`);
         let availableTemplates = [];
-        const nnaCall = (async () => {
-            const t0 = Date.now();
-            this.logger.log(`🔍 [NNA REGISTRY] Fetching composites for song: ${normalizedSongId}`);
-            const data = await this.optimizedNnaRegistryService.getCompositesBySongAlgoRhythmFormat(normalizedSongId);
-            this.logger.log(`✅ [NNA REGISTRY] Retrieved ${Array.isArray(data) ? data.length : 0} composites in ${Date.now() - t0}ms`);
-            return data;
-        })();
-        const timeout = new Promise((resolve) => setTimeout(() => resolve(null), budgetMs));
-        const tCacheMiss = Date.now();
-        const fetched = await Promise.race([nnaCall, timeout]);
-        if (fetched === null) {
-            this.logger.warn(`⏳ [PATH] miss_return_202_over_budget | elapsed=${Date.now() - startTime}ms | budget=${budgetMs}ms`);
-            (async () => {
-                try {
-                    const warmStart = Date.now();
-                    this.logger.log(`♻️ [WARM] Starting background warm for key=${primaryCacheKey}`);
-                    const warmCall = this.optimizedNnaRegistryService.getCompositesBySongAlgoRhythmFormat(normalizedSongId);
-                    const warmTimer = new Promise(res => setTimeout(() => res('TIMEOUT'), 9500));
-                    const warmResult = await Promise.race([warmCall, warmTimer]);
-                    if (warmResult !== 'TIMEOUT' && Array.isArray(warmResult) && warmResult.length > 0) {
-                        const recommendation = warmResult[0];
-                        const alternatives = warmResult.slice(1, 1 + maxAlternatives);
-                        await this.cacheService.set(primaryCacheKey, {
-                            recommendation,
-                            alternatives,
-                            total_available: warmResult.length,
-                            cache_hit: false,
-                            response_time_ms: 0,
-                            score_computation_time_ms: 0,
-                            templates_evaluated: warmResult.length,
-                        }, 600);
-                        this.logger.log(`✅ [WARM] Background cache warm success key=${primaryCacheKey} | warmed_in=${Date.now() - warmStart}ms | size=${warmResult.length}`);
-                    }
-                    else {
-                        this.logger.warn(`⚠️ [WARM] Background warm timeout/empty for key=${primaryCacheKey} | elapsed=${Date.now() - warmStart}ms`);
-                    }
-                }
-                catch (e) {
-                    this.logger.warn(`⚠️ [WARM] Background warm failed for key=${primaryCacheKey}: ${e?.message || e}`);
-                }
-            })();
-            const elapsed = Date.now() - startTime;
-            return {
-                recommendation: null,
-                alternatives: [],
-                total_available: 0,
-                cache_hit: false,
-                score_computation_time_ms: 0,
-                templates_evaluated: 0,
-                partial_response: true,
-                retry_after_ms: 3000,
-            };
-        }
+        this.logger.log(`🔧 [REGRESSION FIX] Getting real data immediately for song: ${normalizedSongId}`);
+        const t0 = Date.now();
+        const fetched = await this.optimizedNnaRegistryService.getCompositesForSongAlgoRhythmFormat(normalizedSongId);
+        this.logger.log(`✅ [REGRESSION FIX] Retrieved ${Array.isArray(fetched) ? fetched.length : 0} composites in ${Date.now() - t0}ms`);
+        this.logger.log(`🔍 [DEBUG] Fetched data type: ${typeof fetched}, isArray: ${Array.isArray(fetched)}`);
+        this.logger.log(`🔍 [DEBUG] Fetched data: ${JSON.stringify(fetched, null, 2)}`);
         availableTemplates = Array.isArray(fetched) ? fetched : [];
-        this.logger.debug(`✅ [PATH] miss_fresh_under_budget | fetch_ms=${Date.now() - tCacheMiss} | total_ms=${Date.now() - startTime}`);
+        this.logger.log(`🔧 [REGRESSION FIX] Processing ${availableTemplates.length} templates`);
         if (availableTemplates.length === 0) {
             this.logger.warn(`No templates found for song: ${songId}`);
+            this.logger.error(`🔍 [DEBUG] About to throw NotFoundException for song: ${songId}`);
             throw new common_1.NotFoundException(`No templates available for song: ${songId}`);
         }
-        if (Date.now() - startTime >= budgetMs) {
-            this.logger.warn(`⏳ [PATH] miss_return_202_post_fetch_over_budget | total_ms=${Date.now() - startTime}`);
-            return {
-                recommendation: null,
-                alternatives: [],
-                total_available: availableTemplates.length,
-                cache_hit: false,
-                score_computation_time_ms: 0,
-                templates_evaluated: availableTemplates.length,
-                partial_response: true,
-                retry_after_ms: 3000,
-            };
-        }
+        this.logger.log(`🔧 [DEFINITIVE FIX] Processing ${availableTemplates.length} templates without timeout constraints`);
         this.logger.log(`🚀 [BACKEND TEAM] Using simple architecture for ${availableTemplates.length} templates`);
         const recommendation = availableTemplates[0] || null;
         const alternatives = availableTemplates.slice(1, 1 + maxAlternatives);
@@ -513,6 +436,198 @@ let RecommendationsService = RecommendationsService_1 = class RecommendationsSer
     }
     trackCacheSet() {
         this.cacheStats.sets++;
+    }
+    async startSimpleBackgroundWarm(cacheKey, songId, maxAlternatives) {
+        (async () => {
+            try {
+                this.logger.log(`🔧 [DEFINITIVE FIX] Starting service-injection-free warm for key=${cacheKey}`);
+                const axios = require('axios');
+                const nnaRegistryUrl = (process.env.NNA_REGISTRY_URL || 'https://registry.dev.reviz.dev').trim();
+                const apiKey = (process.env.NNA_REGISTRY_API_KEY || process.env.NNA_API_KEY || 'reviz-dev-30390-13220-4896-9516-9001').trim();
+                this.logger.log(`🔧 [DEFINITIVE FIX] Making direct HTTP call to: ${nnaRegistryUrl}/api/v1/assets/composites/by-song/${songId}`);
+                const response = await axios.get(`${nnaRegistryUrl}/api/v1/assets/composites/by-song/${songId}`, {
+                    headers: { 'x-api-key': apiKey },
+                    timeout: 15000,
+                    params: { limit: 100, compositeType: 'full', includeMetadata: true }
+                });
+                this.logger.log(`🔧 [DEFINITIVE FIX] HTTP response status: ${response.status}`);
+                if (response.data && response.data.data && Array.isArray(response.data.data)) {
+                    const composites = response.data.data;
+                    this.logger.log(`🔧 [DEFINITIVE FIX] Retrieved ${composites.length} composites from NNA Registry`);
+                    if (composites.length > 0) {
+                        const recommendation = composites[0];
+                        const alternatives = composites.slice(1, 1 + maxAlternatives);
+                        const payload = {
+                            recommendation,
+                            alternatives,
+                            total_available: composites.length,
+                            cache_hit: false,
+                            response_time_ms: 0,
+                            score_computation_time_ms: 0,
+                            templates_evaluated: composites.length,
+                        };
+                        await this.cacheService.set(cacheKey, payload, 600);
+                        this.trackCacheSet();
+                        this.logger.log(`✅ [DEFINITIVE FIX] Cache set successfully for key=${cacheKey} with ${composites.length} items`);
+                    }
+                    else {
+                        this.logger.warn(`⚠️ [DEFINITIVE FIX] No composites returned from NNA Registry`);
+                    }
+                }
+                else {
+                    this.logger.warn(`⚠️ [DEFINITIVE FIX] Invalid response format from NNA Registry`);
+                }
+            }
+            catch (e) {
+                this.logger.warn(`⚠️ [DEFINITIVE FIX] Background warm failed for key=${cacheKey}: ${e?.message || e}`);
+                this.logger.error(`❌ [DEFINITIVE FIX] Error stack: ${e?.stack || 'No stack trace'}`);
+            }
+        })();
+    }
+    async startBackgroundWarm(cacheKey, songId, maxAlternatives) {
+        this.logger.log(`🔥 [WARM] ENTRY: startBackgroundWarm called for key=${cacheKey}`);
+        const now = Date.now();
+        this.warmStatus.set(cacheKey, {
+            started_at: now,
+            success: false,
+            items: 0,
+            duration_ms: 0,
+        });
+        this.logger.log(`🔥 [WARM] STATUS: Pre-marked warm status for key=${cacheKey}`);
+        this.logger.log(`🔥 [WARM] SINGLEFLIGHT: About to call singleflightWarm for key=${cacheKey}`);
+        this.singleflightWarm(cacheKey, async () => {
+            const startedAt = Date.now();
+            this.logger.log(`🔥 [WARM] start | key=${cacheKey} | song=${songId} | maxAlt=${maxAlternatives}`);
+            this.logger.log(`🔍 [WARM] LOADING: About to require axios`);
+            const axios = require('axios');
+            this.logger.log(`🔍 [WARM] LOADED: Axios loaded successfully`);
+            this.logger.log(`🔍 [WARM] ENV: NNA_REGISTRY_URL=${process.env.NNA_REGISTRY_URL}`);
+            this.logger.log(`🔍 [WARM] ENV: NNA_REGISTRY_API_KEY=${process.env.NNA_REGISTRY_API_KEY}`);
+            this.logger.log(`🔍 [WARM] ENV: NNA_API_KEY=${process.env.NNA_API_KEY}`);
+            const nnaRegistryUrl = (process.env.NNA_REGISTRY_URL || 'https://registry.dev.reviz.dev').trim();
+            const apiKeyRaw = (process.env.NNA_REGISTRY_API_KEY || process.env.NNA_API_KEY || 'reviz-dev-30390-13220-4896-9516-9001');
+            const apiKey = String(apiKeyRaw).trim();
+            this.logger.log(`🔍 [WARM] http_target=${nnaRegistryUrl}/api/v1/assets/composites/by-song/${songId} | apiKeyPresent=${!!apiKey}`);
+            const httpCall = axios.get(`${nnaRegistryUrl}/api/v1/assets/composites/by-song/${songId}`, {
+                headers: { 'x-api-key': apiKey },
+                timeout: 10000,
+                params: { limit: 100, compositeType: 'full', includeMetadata: true },
+            });
+            const timer = new Promise((_, reject) => setTimeout(() => reject(new Error('warm_timeout_9500ms')), 9500));
+            const response = await Promise.race([httpCall, timer]);
+            this.logger.log(`🔍 [WARM] http_done | status=${response.status} | elapsed_ms=${Date.now() - startedAt}`);
+            const composites = (response?.data && Array.isArray(response.data.data)) ? response.data.data : [];
+            this.logger.log(`🔍 [WARM] items=${composites.length}`);
+            const recommendation = composites[0] || null;
+            const alternatives = composites.slice(1, 1 + maxAlternatives);
+            const payload = {
+                recommendation,
+                alternatives,
+                total_available: composites.length,
+                cache_hit: false,
+                response_time_ms: 0,
+                score_computation_time_ms: 0,
+                templates_evaluated: composites.length,
+            };
+            await this.cacheService.set(cacheKey, payload, 600);
+            const wrote = await this.cacheService.get(cacheKey);
+            const wroteOk = !!wrote;
+            if (wroteOk) {
+                this.trackCacheSet();
+                this.logger.log(`✅ [WARM] cache_set_done | key=${cacheKey} | ttl=600 | elapsed_ms=${Date.now() - startedAt}`);
+            }
+            else {
+                throw new Error('cache_write_verification_failed');
+            }
+            return composites;
+        }).catch((err) => {
+            this.logger.warn(`⚠️ [WARM] failed | key=${cacheKey} | error=${err?.message || err}`);
+            this.logger.error(`❌ [WARM] stack=${err?.stack || 'n/a'}`);
+        });
+    }
+    async getCacheStatus(songId, maxAlternatives = 3) {
+        const normalizedSongId = this.normalizeSongId(songId);
+        const primaryCacheKey = this.generatePrimaryCacheKey(normalizedSongId, maxAlternatives);
+        const cached = await this.cacheService.get(primaryCacheKey);
+        const warmStatus = this.warmStatus.get(primaryCacheKey);
+        return {
+            song_id: songId,
+            normalized_song_id: normalizedSongId,
+            cache_key: primaryCacheKey,
+            exists: !!cached,
+            ttl_seconds: cached ? 600 : 0,
+            size_bytes: cached ? JSON.stringify(cached).length : 0,
+            last_warm_status: warmStatus || null,
+            cache_stats: this.getCacheStats(),
+        };
+    }
+    async singleflightWarm(cacheKey, warmOperation) {
+        if (this.warmLocks.has(cacheKey)) {
+            this.logger.debug(`🔒 [SINGLEFLIGHT] Warm already in progress for ${cacheKey}, waiting...`);
+            return this.warmLocks.get(cacheKey);
+        }
+        const warmPromise = this.executeWarmWithTracking(cacheKey, warmOperation);
+        this.warmLocks.set(cacheKey, warmPromise);
+        try {
+            const result = await warmPromise;
+            return result;
+        }
+        finally {
+            this.warmLocks.delete(cacheKey);
+        }
+    }
+    async executeWarmWithTracking(cacheKey, warmOperation) {
+        const startTime = Date.now();
+        this.warmStatus.set(cacheKey, {
+            started_at: startTime,
+            success: false,
+            items: 0,
+            duration_ms: 0,
+        });
+        await this.analyticsService.trackEvent({
+            event_type: 'warm_started',
+            cache_key: cacheKey,
+            timestamp: new Date().toISOString(),
+        });
+        try {
+            const result = await warmOperation();
+            const duration = Date.now() - startTime;
+            this.warmStatus.set(cacheKey, {
+                started_at: startTime,
+                finished_at: Date.now(),
+                success: true,
+                items: Array.isArray(result) ? result.length : 0,
+                duration_ms: duration,
+            });
+            await this.analyticsService.trackEvent({
+                event_type: 'warm_succeeded',
+                cache_key: cacheKey,
+                duration_ms: duration,
+                items_count: Array.isArray(result) ? result.length : 0,
+                timestamp: new Date().toISOString(),
+            });
+            this.logger.log(`✅ [WARM SUCCESS] ${cacheKey} | duration=${duration}ms | items=${Array.isArray(result) ? result.length : 0}`);
+            return result;
+        }
+        catch (error) {
+            const duration = Date.now() - startTime;
+            this.warmStatus.set(cacheKey, {
+                started_at: startTime,
+                finished_at: Date.now(),
+                success: false,
+                items: 0,
+                duration_ms: duration,
+            });
+            await this.analyticsService.trackEvent({
+                event_type: 'warm_failed',
+                cache_key: cacheKey,
+                duration_ms: duration,
+                error_message: error?.message || 'Unknown error',
+                timestamp: new Date().toISOString(),
+            });
+            this.logger.warn(`⚠️ [WARM FAILED] ${cacheKey} | duration=${duration}ms | error=${error?.message || error}`);
+            throw error;
+        }
     }
 };
 exports.RecommendationsService = RecommendationsService;
