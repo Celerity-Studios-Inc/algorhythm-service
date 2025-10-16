@@ -703,6 +703,8 @@ export class RecommendationsService {
 
   // 🔥 BACKGROUND WARM HELPER - Service-injection-free approach with verified cache write
   private async startBackgroundWarm(cacheKey: string, songId: string, maxAlternatives: number) {
+    this.logger.log(`🔥 [WARM] ENTRY: startBackgroundWarm called for key=${cacheKey}`);
+    
     // Pre-mark warm start so cache-status reflects progress immediately
     const now = Date.now();
     this.warmStatus.set(cacheKey, {
@@ -711,14 +713,23 @@ export class RecommendationsService {
       items: 0,
       duration_ms: 0,
     });
+    this.logger.log(`🔥 [WARM] STATUS: Pre-marked warm status for key=${cacheKey}`);
 
     // Use singleflight to avoid duplicate warms for same key
+    this.logger.log(`🔥 [WARM] SINGLEFLIGHT: About to call singleflightWarm for key=${cacheKey}`);
     this.singleflightWarm(cacheKey, async () => {
       const startedAt = Date.now();
       this.logger.log(`🔥 [WARM] start | key=${cacheKey} | song=${songId} | maxAlt=${maxAlternatives}`);
 
       // Load axios dynamically, and prepare env
+      this.logger.log(`🔍 [WARM] LOADING: About to require axios`);
       const axios = require('axios');
+      this.logger.log(`🔍 [WARM] LOADED: Axios loaded successfully`);
+      
+      this.logger.log(`🔍 [WARM] ENV: NNA_REGISTRY_URL=${process.env.NNA_REGISTRY_URL}`);
+      this.logger.log(`🔍 [WARM] ENV: NNA_REGISTRY_API_KEY=${process.env.NNA_REGISTRY_API_KEY}`);
+      this.logger.log(`🔍 [WARM] ENV: NNA_API_KEY=${process.env.NNA_API_KEY}`);
+      
       const nnaRegistryUrl = (process.env.NNA_REGISTRY_URL || 'https://registry.dev.reviz.dev').trim();
       const apiKeyRaw = (process.env.NNA_REGISTRY_API_KEY || process.env.NNA_API_KEY || 'reviz-dev-30390-13220-4896-9516-9001');
       const apiKey = String(apiKeyRaw).trim();
