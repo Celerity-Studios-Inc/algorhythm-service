@@ -159,118 +159,15 @@ export class RecommendationsController {
     );
 
     try {
-      // 🚀 Controller-level 2s budget: race service vs timer
-      const budgetMs = 2000;
-      // Use the cache-first fast-path (warms cache and enforces 2s budget internally)
-      const servicePromise = this.recommendationsService
-        .getTemplateRecommendation(request);
-      const timeoutPromise = new Promise<'TIMEOUT'>(resolve => setTimeout(() => resolve('TIMEOUT'), budgetMs));
-
-      const winner = await Promise.race([servicePromise as any, timeoutPromise]);
-
-      if (winner === 'TIMEOUT') {
-        // Fire-and-forget a fresh call to warm cache; don't reuse raced promise
-        (async () => {
-          try {
-            await this.recommendationsService.getTemplateRecommendation(request);
-            this.logger.log(`♻️ [CONTROLLER] Background warm completed for song ${request.song_id}`);
-          } catch (e) {
-            this.logger.warn(`⚠️ [CONTROLLER] Background warm failed: ${e?.message || e}`);
-          }
-        })();
-
-        // Also kick a background warm task (non-blocking, 9.5s timeout) to populate cache for next call
-        (async () => {
-          try {
-            // Normalize song ID for cache key symmetry
-            const normalizedSongId = request.song_id?.trim()?.toUpperCase() || request.song_id;
-            const maxAlternatives = Math.max(0, Math.min(6, (request as any)?.max_alternatives ?? 3));
-            const primaryCacheKey = `recommendation:template:${normalizedSongId}:${maxAlternatives}`;
-            
-            // Use singleflight warm from service
-            await this.recommendationsService.singleflightWarm(primaryCacheKey, async () => {
-              const warmCall = this.optimizedNnaRegistryService.getCompositesForSongOptimized(normalizedSongId);
-              const warmTimer = new Promise<'TIMEOUT'>(res => setTimeout(() => res('TIMEOUT'), 9500));
-              const warmResult = await Promise.race([warmCall as any, warmTimer]);
-              
-              if (warmResult !== 'TIMEOUT' && Array.isArray(warmResult) && warmResult.length > 0) {
-                const recommendation = warmResult[0];
-                const alternatives = warmResult.slice(1, 1 + maxAlternatives);
-                await this.cacheService.set(primaryCacheKey, {
-                  recommendation,
-                  alternatives,
-                  total_available: warmResult.length,
-                  cache_hit: false,
-                  response_time_ms: 0,
-                  score_computation_time_ms: 0,
-                  templates_evaluated: warmResult.length,
-                }, 600);
-                return warmResult;
-              } else {
-                throw new Error('Warm timeout or empty result');
-              }
-            });
-          } catch (e) {
-            this.logger.warn(`⚠️ [CONTROLLER BACKGROUND WARM] Failed: ${e?.message || e}`);
-          }
-        })();
-
-        const responseTime = Date.now() - startTime;
-        this.logger.warn(`⏳ [CONTROLLER] 2s budget exceeded, returning 202 for song ${request.song_id}`);
-        return {
-          success: true,
-          data: {
-            recommendation: null,
-            alternatives: [],
-            total_available: 0,
-          },
-          performance_metrics: {
-            response_time_ms: responseTime,
-            cache_hit: false,
-            score_computation_time_ms: 0,
-            templates_evaluated: 0,
-          },
-          metadata: {
-            timestamp: new Date().toISOString(),
-            request_id: `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-            version: '1.0.0',
-            retry_after_ms: 3000,
-            partial_response: true,
-          }
-        } as any;
-      }
-
-      const recommendation = winner as any;
+      // 🔧 DEFINITIVE FIX: Remove controller timeout logic completely - get real data always
+      this.logger.log(`🔧 [CONTROLLER DEFINITIVE FIX] Calling service without timeout constraints`);
+      
+      const recommendation = await this.recommendationsService.getTemplateRecommendation(request);
       const responseTime = Date.now() - startTime;
 
       this.logger.log(
         `Template recommendation completed in ${responseTime}ms for song: ${request.song_id}`
       );
-
-      // If service indicates partial_response (over budget), return 202-like body
-      if (recommendation?.partial_response) {
-        return {
-          success: true,
-          data: {
-            recommendation: null,
-            alternatives: [],
-            total_available: 0,
-          },
-          performance_metrics: {
-            response_time_ms: responseTime,
-            cache_hit: false,
-            score_computation_time_ms: 0,
-            templates_evaluated: 0,
-          },
-          metadata: {
-            timestamp: new Date().toISOString(),
-            request_id: `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-            version: '1.0.0',
-            retry_after_ms: recommendation?.retry_after_ms ?? 3000,
-            partial_response: true,
-          }
-        } as any;
-      }
 
       return {
         success: true,
