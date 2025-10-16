@@ -259,8 +259,9 @@ export class RecommendationsService {
       // Over budget: fire background warm cache (non-blocking, realistic timeout)
       this.logger.warn(`⏳ [PATH] miss_return_202_over_budget | elapsed=${Date.now() - startTime}ms | budget=${budgetMs}ms`);
       
-      // Start simplified background warm
-      this.startBackgroundWarm(primaryCacheKey, normalizedSongId, maxAlternatives);
+      // 🔧 REGRESSION FIX: Use working service method directly instead of complex warm
+      this.logger.log(`🔧 [REGRESSION FIX] Using working service method for background warm`);
+      this.startSimpleBackgroundWarm(primaryCacheKey, normalizedSongId, maxAlternatives);
 
       // Return partial response immediately (background warm is running)
       const elapsed = Date.now() - startTime;
@@ -699,6 +700,42 @@ export class RecommendationsService {
 
   private trackCacheSet() {
     this.cacheStats.sets++;
+  }
+
+  // 🔧 REGRESSION FIX: Simple background warm using working service method
+  private async startSimpleBackgroundWarm(cacheKey: string, songId: string, maxAlternatives: number) {
+    (async () => {
+      try {
+        this.logger.log(`🔧 [SIMPLE WARM] Starting simple background warm for key=${cacheKey}`);
+        
+        // Use the working service method directly (no complex HTTP calls)
+        const data = await this.optimizedNnaRegistryService.getCompositesForSongOptimized(songId);
+        this.logger.log(`🔧 [SIMPLE WARM] Retrieved ${Array.isArray(data) ? data.length : 0} composites`);
+        
+        if (Array.isArray(data) && data.length > 0) {
+          const recommendation = data[0];
+          const alternatives = data.slice(1, 1 + maxAlternatives);
+          
+          const payload = {
+            recommendation,
+            alternatives,
+            total_available: data.length,
+            cache_hit: false,
+            response_time_ms: 0,
+            score_computation_time_ms: 0,
+            templates_evaluated: data.length,
+          };
+          
+          await this.cacheService.set(cacheKey, payload, 600);
+          this.trackCacheSet();
+          this.logger.log(`✅ [SIMPLE WARM] Cache set successfully for key=${cacheKey} with ${data.length} items`);
+        } else {
+          this.logger.warn(`⚠️ [SIMPLE WARM] No data returned from service`);
+        }
+      } catch (e) {
+        this.logger.warn(`⚠️ [SIMPLE WARM] Background warm failed for key=${cacheKey}: ${e?.message || e}`);
+      }
+    })();
   }
 
   // 🔥 BACKGROUND WARM HELPER - Service-injection-free approach with verified cache write
