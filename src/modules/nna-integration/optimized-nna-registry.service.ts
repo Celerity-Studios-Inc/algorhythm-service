@@ -48,6 +48,23 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
     await this.testConnection();
   }
 
+  // Getter methods for external access
+  get registryBaseUrl(): string {
+    return this.baseUrl;
+  }
+
+  get registryApiKey(): string {
+    return this.apiKey;
+  }
+
+  get registryTimeout(): number {
+    return this.timeout;
+  }
+
+  get registryCircuitBreaker(): CircuitBreakerService {
+    return this.circuitBreaker;
+  }
+
   /**
    * 🚀 OPTIMIZED: Batch fetch composites for multiple songs
    */

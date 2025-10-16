@@ -1,4 +1,7 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
+import { firstValueFrom } from 'rxjs';
+import { timeout, catchError } from 'rxjs/operators';
 import { OptimizedNnaRegistryService } from '../nna-integration/optimized-nna-registry.service';
 import { ReVizCompositeVariationDto, ReVizCompositeVariationResponse } from './dto/reviz-composite-variation.dto';
 
@@ -15,7 +18,8 @@ export class ReVizCompositeVariationsService {
   private readonly logger = new Logger(ReVizCompositeVariationsService.name);
 
   constructor(
-    private readonly optimizedNnaRegistryService: OptimizedNnaRegistryService
+    private readonly optimizedNnaRegistryService: OptimizedNnaRegistryService,
+    private readonly httpService: HttpService
   ) {}
 
   async getCompositeVariations(
@@ -190,19 +194,42 @@ export class ReVizCompositeVariationsService {
     this.logger.debug(`Getting layer variations for composite: ${compositeId}, layer: ${layer}, limit: ${limit}`);
     
     try {
-      // Get all assets for the specified layer
-      const layerAssets = await this.optimizedNnaRegistryService.getLayerAssetsAlgoRhythmFormat(
-        compositeId, // Use composite ID to get context-specific assets
-        layer
-      );
+      // Use the new backend endpoint for composite-specific variants
+      const baseUrl = this.optimizedNnaRegistryService.registryBaseUrl;
+      const apiKey = this.optimizedNnaRegistryService.registryApiKey;
+      const timeoutMs = this.optimizedNnaRegistryService.registryTimeout;
       
-      if (!layerAssets || !Array.isArray(layerAssets)) {
-        this.logger.warn(`No layer assets found for composite: ${compositeId}, layer: ${layer}`);
+      const url = `${baseUrl}/api/v1/assets/composites/by-id/${compositeId}/variants`;
+      this.logger.debug(`🔍 [COMPOSITE VARIANTS] Calling NNA Registry: ${url}`);
+      
+      const response = await this.optimizedNnaRegistryService.registryCircuitBreaker.execute(() =>
+        firstValueFrom(
+          this.httpService.get(url, {
+            headers: { 'x-api-key': apiKey },
+            timeout: timeoutMs
+          }).pipe(
+            timeout(timeoutMs),
+            catchError(error => {
+              this.logger.error(`❌ [COMPOSITE VARIANTS] NNA Registry call failed: ${error.message}`);
+              throw error;
+            })
+          )
+        )
+      );
+
+      const data = response.data;
+      this.logger.debug(`✅ [COMPOSITE VARIANTS] NNA Registry response: ${JSON.stringify(data).substring(0, 200)}...`);
+
+      if (!data || !data.success) {
+        this.logger.warn(`No composite variants found for composite: ${compositeId}`);
         return [];
       }
 
+      // Extract the specific layer variants from the response
+      const layerVariants = this.extractLayerVariants(data.data, layer);
+      
       // Limit the results
-      const limitedAssets = layerAssets.slice(0, limit);
+      const limitedAssets = layerVariants.slice(0, limit);
       
       this.logger.debug(`Found ${limitedAssets.length} layer variations for composite: ${compositeId}, layer: ${layer}`);
       
@@ -211,6 +238,35 @@ export class ReVizCompositeVariationsService {
       this.logger.error(`Failed to get layer variations for ${compositeId}, ${layer}:`, error);
       return [];
     }
+  }
+
+  private extractLayerVariants(compositeData: any, layer: string): any[] {
+    // Map layer names to component types
+    const layerMap = {
+      'stars': 'star',
+      'looks': 'look', 
+      'moves': 'move',
+      'worlds': 'world'
+    };
+    
+    const componentType = layerMap[layer];
+    if (!componentType) {
+      this.logger.warn(`Unknown layer type: ${layer}`);
+      return [];
+    }
+
+    // Find the component in the composite data
+    const component = compositeData.components?.find(comp => comp.type === componentType);
+    if (!component) {
+      this.logger.warn(`No ${componentType} component found in composite`);
+      return [];
+    }
+
+    // Extract variants from the component
+    const variants = component.variants || [];
+    this.logger.debug(`Found ${variants.length} variants for ${layer} layer`);
+    
+    return variants;
   }
 
   private async calculateCompatibilityScores(
