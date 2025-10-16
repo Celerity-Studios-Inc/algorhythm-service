@@ -168,31 +168,50 @@ export class ReVizCompositeVariationsService {
     }
     
     this.logger.debug(`🔍 [DEBUG] Looking for layer code: ${layerCode} in composite components`);
-    this.logger.debug(`🔍 [DEBUG] Composite components: ${JSON.stringify(composite.components, null, 2)}`);
+    this.logger.debug(`🔍 [DEBUG] Composite structure: ${JSON.stringify(composite, null, 2)}`);
     
-    // Look for the current asset in the composite's components
+    // Handle different composite data structures
+    let components = null;
+    
+    // Check if components are in the expected format
     if (composite.components && Array.isArray(composite.components)) {
-      this.logger.debug(`🔍 [DEBUG] Found ${composite.components.length} components`);
+      components = composite.components;
+      this.logger.debug(`🔍 [DEBUG] Found components array with ${components.length} items`);
+    } 
+    // Check if components are in a different structure (e.g., from getCompositeById)
+    else if (composite.data && composite.data.components && Array.isArray(composite.data.components)) {
+      components = composite.data.components;
+      this.logger.debug(`🔍 [DEBUG] Found components in data.components with ${components.length} items`);
+    }
+    // Check if the composite itself has the component data directly
+    else if (composite.data && Array.isArray(composite.data)) {
+      components = composite.data;
+      this.logger.debug(`🔍 [DEBUG] Using composite.data as components array with ${components.length} items`);
+    }
+    
+    if (components && components.length > 0) {
+      this.logger.debug(`🔍 [DEBUG] Searching through ${components.length} components for layer ${layerCode}`);
       
-      const component = composite.components.find(comp => {
-        this.logger.debug(`🔍 [DEBUG] Checking component: ${comp.name}, layer: ${comp.layer}, matches ${layerCode}: ${comp.layer === layerCode}`);
-        return comp.layer === layerCode;
+      const component = components.find(comp => {
+        const compLayer = comp.layer || comp.layer_type || comp.type;
+        this.logger.debug(`🔍 [DEBUG] Checking component: ${comp.name || comp.id}, layer: ${compLayer}, matches ${layerCode}: ${compLayer === layerCode}`);
+        return compLayer === layerCode;
       });
       
       if (component) {
         this.logger.debug(`🔍 [DEBUG] Found matching component: ${JSON.stringify(component, null, 2)}`);
         return {
-          id: component.id,
-          asset_id: component.id,
-          name: component.name,
+          id: component.id || component._id,
+          asset_id: component.id || component._id,
+          name: component.name || component.friendlyName,
           nna_address: component.nnaAddress || component.nna_address,
           layer: layer,
           category: component.category,
           subcategory: component.subcategory,
-          gcp_storage_url: `https://storage.googleapis.com/algorhythm-assets/${layer}/${component.id}.mp4`,
-          thumbnail_url: `https://storage.googleapis.com/algorhythm-assets/thumbnails/${layer}/${component.id}.jpg`,
-          tags: [],
-          ai_description: component.name,
+          gcp_storage_url: `https://storage.googleapis.com/algorhythm-assets/${layer}/${component.id || component._id}.mp4`,
+          thumbnail_url: `https://storage.googleapis.com/algorhythm-assets/thumbnails/${layer}/${component.id || component._id}.jpg`,
+          tags: component.tags || [],
+          ai_description: component.name || component.friendlyName,
           duration_seconds: 10,
           file_size_mb: 5.1,
           resolution: '1080p',
@@ -201,7 +220,7 @@ export class ReVizCompositeVariationsService {
       }
     }
     
-    this.logger.warn(`No ${layer} component found in composite`);
+    this.logger.warn(`No ${layer} component found in composite. Available components: ${components ? components.map(c => `${c.name || c.id} (${c.layer || c.layer_type || c.type})`).join(', ') : 'none'}`);
     return null;
   }
 
