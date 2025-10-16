@@ -153,31 +153,45 @@ export class ReVizCompositeVariationsService {
   }
 
   private findCurrentLayerAsset(composite: any, layer: string) {
-    // Look for the current asset in the composite's components
-    if (composite.components && Array.isArray(composite.components)) {
-      return composite.components.find(component => 
-        component.layer === layer || component.layer_type === layer
-      );
-    }
-    
-    // Fallback: look for layer-specific fields
-    const layerFieldMap = {
-      'stars': 'star_id',
-      'looks': 'look_id', 
-      'moves': 'move_id',
-      'worlds': 'world_id'
+    // Map layer names to NNA layer codes
+    const layerMap = {
+      'stars': 'S',
+      'looks': 'L', 
+      'moves': 'M',
+      'worlds': 'W'
     };
     
-    const fieldName = layerFieldMap[layer];
-    if (fieldName && composite[fieldName]) {
-      return {
-        id: composite[fieldName],
-        asset_id: composite[fieldName],
-        name: `${layer} Asset`,
-        layer: layer
-      };
+    const layerCode = layerMap[layer];
+    if (!layerCode) {
+      this.logger.warn(`Unknown layer type: ${layer}`);
+      return null;
     }
     
+    // Look for the current asset in the composite's components
+    if (composite.components && Array.isArray(composite.components)) {
+      const component = composite.components.find(comp => comp.layer === layerCode);
+      if (component) {
+        return {
+          id: component.id,
+          asset_id: component.id,
+          name: component.name,
+          nna_address: component.nnaAddress || component.nna_address,
+          layer: layer,
+          category: component.category,
+          subcategory: component.subcategory,
+          gcp_storage_url: `https://storage.googleapis.com/algorhythm-assets/${layer}/${component.id}.mp4`,
+          thumbnail_url: `https://storage.googleapis.com/algorhythm-assets/thumbnails/${layer}/${component.id}.jpg`,
+          tags: [],
+          ai_description: component.name,
+          duration_seconds: 10,
+          file_size_mb: 5.1,
+          resolution: '1080p',
+          format: 'mp4'
+        };
+      }
+    }
+    
+    this.logger.warn(`No ${layer} component found in composite`);
     return null;
   }
 
