@@ -753,4 +753,53 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
       throw error;
     }
   }
+
+  /**
+   * Get composite by ID for ReViz composite variations
+   */
+  async getCompositeById(compositeId: string): Promise<any> {
+    const cacheKey = `${CACHE_KEYS.COMPOSITE_BY_ID}:${compositeId}`;
+    
+    try {
+      // Check cache first
+      if (this.cacheService) {
+        const cached = await this.cacheService.get(cacheKey);
+        if (cached) {
+          this.logger.debug(`Cache hit for composite by ID: ${compositeId}`);
+          return cached as any;
+        }
+      }
+
+      const url = `${this.baseUrl}/api/v1/assets/composites/${compositeId}`;
+      this.logger.debug(`🔍 [COMPOSITE BY ID] Calling NNA Registry: ${url}`);
+      
+      const response = await this.circuitBreaker.execute(() =>
+        firstValueFrom(
+          this.httpService.get(url, {
+            headers: { 'x-api-key': this.apiKey },
+            timeout: this.timeout
+          }).pipe(
+            timeout(this.timeout),
+            catchError(error => {
+              this.logger.error(`❌ [COMPOSITE BY ID] NNA Registry call failed: ${error.message}`);
+              throw error;
+            })
+          )
+        )
+      );
+
+      const data = response.data;
+      this.logger.debug(`✅ [COMPOSITE BY ID] NNA Registry response: ${JSON.stringify(data).substring(0, 200)}...`);
+
+      // Cache the result
+      if (this.cacheService && data) {
+        await this.cacheService.set(cacheKey, data, CACHE_TTL.COMPOSITE);
+      }
+
+      return data;
+    } catch (error) {
+      this.logger.error(`❌ [COMPOSITE BY ID] Failed to get composite by ID: ${error.message}`);
+      throw error;
+    }
+  }
 }

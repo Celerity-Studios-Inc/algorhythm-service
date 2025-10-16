@@ -9,6 +9,8 @@ export const CACHE_KEYS = {
   BATCH_COMPOSITES: 'batch:composites',
   PRE_COMPUTED_SCORES: 'precomputed:scores',
   PERFORMANCE_METRICS: 'performance:metrics',
+  COMPOSITE_BY_ID: 'composite:by_id',
+  LAYER_ASSETS_ALGORHYTHM: 'layer_assets:algorhythm',
 } as const;
 
 export const CACHE_TTL = {
@@ -22,4 +24,6 @@ export const CACHE_TTL = {
   BATCH_COMPOSITES: 1800,         // 30 minutes
   PRE_COMPUTED_SCORES: 86400,     // 24 hours
   PERFORMANCE_METRICS: 300,       // 5 minutes
+  COMPOSITE: 1800,                // 30 minutes
+  LAYER_ASSETS: 300,              // 5 minutes
 } as const;

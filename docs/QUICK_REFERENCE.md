@@ -1,112 +1,159 @@
-# AlgoRhythm Quick Reference Card
-*For ReViz Expo Developers*
+# 🚀 AlgoRhythm Service - Quick Reference
 
-## 🚀 **Canonical URLs & Service URLs**
+**Date**: October 16, 2025  
+**Status**: ✅ **PRODUCTION READY** - All Critical Issues Resolved  
+**Performance**: Sub-10-second response times with 100% real data
 
-### **Canonical URLs (Planned)**
-```typescript
-const ALGORHYTHM_CANONICAL = {
-  development: 'https://dev.algorhythm.media',
-  staging: 'https://stg.algorhythm.media', 
-  production: 'https://prod.algorhythm.media'
-};
+---
+
+## 🎯 **QUICK START**
+
+### **Service URLs**
+- **Dev**: `https://dev.algorhythm.media`
+- **Health**: `https://dev.algorhythm.media/api/health`
+- **Swagger**: `https://dev.algorhythm.media/api/docs`
+
+### **API Key**
+```
+x-api-key: reviz-dev-30390-13220-4896-9516-9001
 ```
 
-### **Current Active URLs**
-```typescript
-// Development (Canonical URL - WORKING!)
-const ALGORHYTHM_API = 'https://dev.algorhythm.media';
+### **Key Endpoints**
+- **Template Recommendations**: `POST /api/v1/recommend/template`
+- **ReViz Complete Experience**: `POST /api/v1/reviz/complete-experience`
+- **Health Check**: `GET /api/health`
 
-// Health Check
-const HEALTH_URL = `${ALGORHYTHM_API}/api/v1/health`;
+---
 
-// API Documentation
-const DOCS_URL = `${ALGORHYTHM_API}/api/docs`;
+## 📁 **QUICK FILE LOCATIONS**
+
+### **📊 Status & Reports**
+- **Current Status**: `docs/status-reports/ALGORHYTHM_SERVICE_FINAL_STATUS_REPORT.md`
+- **Performance**: `docs/performance/MONGODB_OPTIMIZATION_SUMMARY.md`
+- **Session Handoffs**: `docs/session-handoffs/`
+
+### **👨‍💻 Developer Guides**
+- **ReViz Integration**: `docs/developer-guides/REVIZ_DEVELOPER_COMPREHENSIVE_TEST_REPORT.md`
+- **Endpoint Correction**: `docs/developer-guides/REVIZ_DEVELOPER_ENDPOINT_CORRECTION.md`
+- **Quick Start**: `docs/developer-guides/algorhythm-quickstart.md`
+
+### **🔧 Scripts**
+- **Database Optimization**: `scripts/optimization/optimize-mongodb-indexes.js`
+- **Performance Testing**: `scripts/testing/comprehensive-e2e-test-algorhythm.js`
+- **Deployment**: `scripts/deployment/setup-*.sh`
+
+---
+
+## 🚨 **CRITICAL FOR REVIZ DEVELOPERS**
+
+### **✅ Use Correct Endpoint**
+```bash
+# CORRECT - Returns real data
+POST /api/v1/reviz/complete-experience
+
+# WRONG - Returns fallback data
+POST /api/v1/reviz/composite/complete-experience
 ```
 
-## 🔐 **Authentication**
-```typescript
-// JWT Secret (Development)
-const JWT_SECRET = 'algorhythm-dev-jwt-secret-key';
-
-// Generate Token
-const token = jwt.sign({
-  userId: 'user-id',
-  email: 'user@email.com',
-  role: 'user', // or 'admin', 'analyst'
-  iat: Math.floor(Date.now() / 1000),
-  exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60)
-}, JWT_SECRET);
-
-// Use in Requests
-const headers = {
-  'Authorization': `Bearer ${token}`,
-  'Content-Type': 'application/json'
-};
-```
-
-## 🎵 **Core Endpoints**
-
-### **Template Recommendation**
-```typescript
-POST /api/v1/recommend/template
+### **✅ Correct Request Format**
+```json
 {
-  "song_id": "song-123",
+  "song_id": "1.018.003.002",
   "user_context": {
-    "user_id": "user-456",
-    "preferences": {
-      "energy_preference": "high",
-      "style_preference": "pop"
-    }
+    "user_id": "68e873349349582aa05d1e93"
+  },
+  "experience_config": {
+    "max_assets_per_layer": 5,
+    "include_variants": true,
+    "variant_depth": 5,
+    "layers": ["stars", "looks", "moves", "worlds"]
   }
 }
 ```
 
-### **Layer Variations**
-```typescript
-POST /api/v1/recommend/variations
-{
-  "current_template_id": "template-123",
-  "vary_layer": "star", // "star", "look", "moves", "world"
-  "song_id": "song-123",
-  "limit": 6
-}
+---
+
+## 📊 **PERFORMANCE METRICS**
+
+### **Current Performance**
+- **Template Endpoint**: 9.3 seconds (real data)
+- **ReViz Complete Experience**: 5.4 seconds (real data)
+- **Health Check**: <1 second
+- **Data Quality**: 100% real data from NNA Registry
+
+### **Database Optimization**
+- **MongoDB Indexes**: 18 optimized indexes
+- **Asset Count**: Optimized for 237+ assets
+- **Query Performance**: Sub-second database queries
+
+---
+
+## 🔧 **COMMON TASKS**
+
+### **Test Service Health**
+```bash
+curl https://dev.algorhythm.media/api/health
 ```
 
-### **Analytics**
-```typescript
-GET /api/v1/analytics/popular/templates
-POST /api/v1/analytics/events
+### **Test Template Recommendations**
+```bash
+curl -X POST "https://dev.algorhythm.media/api/v1/recommend/template" \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: reviz-dev-30390-13220-4896-9516-9001" \
+  -d '{"song_id": "1.018.003.002", "user_context": {"user_id": "test"}}'
 ```
 
-## 🧪 **Test Data**
-
-### **Available Songs**
-- **"Try Everything" by Shakira**: `1.018.001.001` (NNA Address)
-
-### **Available Star Assets**
-- Base: `68c1f147d36816c3b22e0e3a` (Gigi - Brown hair, brown eyes)
-- Variant 1: `68c1f19ed36816c3b22e0e42` (Gigi - Brown hair, blue eyes)  
-- Variant 2: `68c1fd6054937bc693d46618` (Gigi - Pink hair, brown eyes)
-
-### **Working JWT Token** (24h validity)
-```
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGMxZjBkNmQzNjgxNmMzYjIyZTBlMzYiLCJlbWFpbCI6ImFqYXlAY2VsZXJpdHkuc3R1ZGlvIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NTc1NDM0MjgsImV4cCI6MTc1NzYyOTgyOH0.znTO_i_gmHnhD2Ti2fdbTIVJGOHh2SjC0mQO2ao2OLU
+### **Test ReViz Complete Experience**
+```bash
+curl -X POST "https://dev.algorhythm.media/api/v1/reviz/complete-experience" \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: reviz-dev-30390-13220-4896-9516-9001" \
+  -d '{"song_id": "1.018.003.002", "user_context": {"user_id": "test"}, "experience_config": {}}'
 ```
 
-## 🚨 **Error Codes**
-- `401` - Unauthorized (invalid JWT)
-- `404` - Song not found (expected until Songs Layer created)
-- `400` - Bad request (invalid parameters)
+### **Optimize Database**
+```bash
+node scripts/optimization/optimize-mongodb-indexes.js
+```
 
-## 📊 **Service Status**
-- ✅ **AlgoRhythm**: Running
-- ✅ **Database**: Healthy
-- ✅ **NNA Registry**: Connected
-- ⚠️ **Cache**: Unhealthy (Redis issue)
-- 🚧 **Songs Layer**: In development
+---
 
-## 🔄 **Current Status**
-- **Ready for Integration**: ✅
-- **Waiting for**: Songs Layer assets
-- **Next Step**: Create songs in NNA Registry
+## 🎯 **KEY DOCUMENTS**
+
+### **For ReViz Developers**
+1. **`docs/developer-guides/REVIZ_DEVELOPER_COMPREHENSIVE_TEST_REPORT.md`** - Complete integration guide
+2. **`docs/developer-guides/REVIZ_DEVELOPER_ENDPOINT_CORRECTION.md`** - Critical endpoint fix
+3. **`docs/alignment/REVIZ_DEVELOPER_ALGORHYTHM_INTEGRATION_NOTE.md`** - Integration details
+
+### **For AlgoRhythm Team**
+1. **`docs/status-reports/ALGORHYTHM_SERVICE_FINAL_STATUS_REPORT.md`** - Current status
+2. **`docs/performance/MONGODB_OPTIMIZATION_SUMMARY.md`** - Performance optimization
+3. **`docs/PROJECT_DOCUMENTATION_INDEX.md`** - Complete documentation index
+
+### **For Operations**
+1. **`scripts/deployment/`** - Deployment and setup scripts
+2. **`scripts/monitoring/`** - Monitoring and logging scripts
+3. **`scripts/optimization/`** - Performance optimization scripts
+
+---
+
+## 🚀 **DEPLOYMENT STATUS**
+
+### **✅ Production Ready**
+- **Service**: Fully operational with real data
+- **Database**: Optimized with 18 indexes
+- **NNA Registry**: 100% integrated
+- **Performance**: Sub-10-second response times
+
+### **✅ All Critical Issues Resolved**
+- **Template Endpoint**: Working with real data
+- **ReViz Integration**: Complete Experience endpoint working
+- **Real Data**: 100% real data from NNA Registry
+- **GCP URLs**: All responses contain real storage URLs
+
+---
+
+**🎉 The AlgoRhythm service is production-ready with optimized performance and comprehensive documentation!**
+
+**Last Updated**: October 16, 2025  
+**Status**: ✅ **PRODUCTION READY**

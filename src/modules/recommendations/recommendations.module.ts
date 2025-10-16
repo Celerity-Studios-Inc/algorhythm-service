@@ -9,6 +9,8 @@ import { ReVizCompleteExperienceEnhancedService } from './reviz-complete-experie
 import { ReVizCompleteExperienceEnhancedController } from './reviz-complete-experience-enhanced.controller';
 import { ReVizCompositeExperienceService } from './reviz-composite-experience.service';
 import { ReVizCompositeExperienceController } from './reviz-composite-experience.controller';
+import { ReVizCompositeVariationsService } from './reviz-composite-variations.service';
+import { ReVizCompositeVariationsController } from './reviz-composite-variations.controller';
 import { DebugController } from './debug.controller';
 import { CacheWarmingService } from './cache-warming.service';
 import { OptimizedRecommendationsService } from './optimized-recommendations.service';
@@ -47,6 +49,7 @@ import { Composite, CompositeSchema } from '../../models/composite.schema';
     ReVizCompleteExperienceProductionController, // ✅ KEEP: Production controller
     // ReVizCompleteExperienceEnhancedController, // ❌ DISABLED: Route conflict
     ReVizCompositeExperienceController, // ✅ KEEP: Different route (/reviz/composite)
+    ReVizCompositeVariationsController, // ✅ NEW: Composite-specific variations
     DebugController,
     LegacyRedirectController  // Must be last to catch legacy routes
   ],
@@ -56,6 +59,7 @@ import { Composite, CompositeSchema } from '../../models/composite.schema';
     ReVizCompleteExperienceProductionService,
     // ReVizCompleteExperienceEnhancedService, // ❌ DISABLED: Controller disabled
     ReVizCompositeExperienceService,
+    ReVizCompositeVariationsService, // ✅ NEW: Composite-specific variations
     CacheWarmingService,
     OptimizedRecommendationsService,
     CompositeRecommendationsService
@@ -66,6 +70,7 @@ import { Composite, CompositeSchema } from '../../models/composite.schema';
     ReVizCompleteExperienceProductionService,
     // ReVizCompleteExperienceEnhancedService, // ❌ DISABLED: Controller disabled
     ReVizCompositeExperienceService,
+    ReVizCompositeVariationsService, // ✅ NEW: Composite-specific variations
     CacheWarmingService,
     OptimizedRecommendationsService,
     CompositeRecommendationsService
