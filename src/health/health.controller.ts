@@ -1,4 +1,4 @@
-import { Controller, Get, Inject } from '@nestjs/common';
+import { Controller, Get, Optional, Inject } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { RecommendationsService } from '../modules/recommendations/recommendations.service';
 
@@ -6,15 +6,15 @@ import { RecommendationsService } from '../modules/recommendations/recommendatio
 @ApiTags('Health')
 export class HealthController {
   constructor(
-    @Inject(RecommendationsService)
-    private readonly recommendationsService: RecommendationsService,
+    @Optional() @Inject(RecommendationsService)
+    private readonly recommendationsService?: RecommendationsService,
   ) {}
   @Get()
   @ApiOperation({ summary: 'Service health check' })
   @ApiResponse({ status: 200, description: 'Service is healthy' })
   check() {
-    // 📊 CACHE MONITORING - Get cache statistics
-    const cacheStats = this.recommendationsService.getCacheStats();
+    // 📊 CACHE MONITORING - Get cache statistics (optional)
+    const cacheStats = this.recommendationsService?.getCacheStats() || { hits: 0, misses: 0, size: 0 };
     
     return {
       status: 'ok',

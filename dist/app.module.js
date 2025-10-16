@@ -47,6 +47,16 @@ exports.AppModule = AppModule = __decorate([
                 useFactory: async (configService) => {
                     const mongoUri = configService.get('MONGODB_URI') || 'mongodb://localhost:27017/algorhythm-dev';
                     console.log('🗄️  MongoDB URI:', mongoUri);
+                    if (!mongoUri || mongoUri.includes('localhost')) {
+                        console.log('⚠️  MongoDB not configured - service will start with limited functionality');
+                        return {
+                            uri: 'mongodb://localhost:27017/algorhythm-dev',
+                            retryAttempts: 1,
+                            retryDelay: 1000,
+                            connectionTimeoutMS: 5000,
+                            serverSelectionTimeoutMS: 5000,
+                        };
+                    }
                     return {
                         uri: mongoUri,
                         retryWrites: true,
