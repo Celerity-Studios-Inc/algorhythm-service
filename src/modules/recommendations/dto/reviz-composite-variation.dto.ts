@@ -7,38 +7,58 @@ import {
   Min,
   Max,
   IsObject,
-  ValidateNested
+  ValidateNested,
+  IsArray,
+  ArrayMinSize,
+  ArrayMaxSize
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class ReVizCompositeVariationDto {
   @ApiProperty({ 
     description: 'The specific composite ID to get variations for',
-    example: 'C.FUL.ALL.001'
+    example: '68ea2a3b5528304385303b8b'
   })
   @IsString()
   composite_id: string;
 
   @ApiProperty({ 
-    description: 'Layer to get variations for',
+    description: 'Array of layers to get variations for',
     enum: ['stars', 'looks', 'moves', 'worlds'],
-    example: 'stars'
+    isArray: true,
+    example: ['stars', 'looks', 'moves', 'worlds']
   })
-  @IsEnum(['stars', 'looks', 'moves', 'worlds'])
-  vary_layer: 'stars' | 'looks' | 'moves' | 'worlds';
+  @IsArray()
+  @ArrayMinSize(1)
+  @ArrayMaxSize(4)
+  @IsEnum(['stars', 'looks', 'moves', 'worlds'], { each: true })
+  vary_layers: ('stars' | 'looks' | 'moves' | 'worlds')[];
 
   @ApiProperty({ 
-    description: 'Maximum number of variations to return',
+    description: 'Number of assets per layer to return',
     minimum: 1,
     maximum: 20,
-    default: 8,
-    example: 8
+    default: 5,
+    example: 5
   })
   @IsOptional()
   @IsNumber()
   @Min(1)
   @Max(20)
-  limit?: number = 8;
+  assets_per_layer?: number = 5;
+
+  @ApiProperty({ 
+    description: 'Number of variants per asset to return',
+    minimum: 1,
+    maximum: 10,
+    default: 3,
+    example: 3
+  })
+  @IsOptional()
+  @IsNumber()
+  @Min(1)
+  @Max(10)
+  variants_per_asset?: number = 3;
 
   @ApiProperty({ 
     description: 'User context for personalized results',
@@ -165,6 +185,20 @@ export class LayerVariation {
   };
 }
 
+export class LayerAssets {
+  @ApiProperty({ description: 'Layer name' })
+  layer: string;
+
+  @ApiProperty({ description: 'Current asset in this layer' })
+  current_asset: CurrentLayerAsset;
+
+  @ApiProperty({ description: 'Available assets for this layer' })
+  assets: LayerVariation[];
+
+  @ApiProperty({ description: 'Total assets available for this layer' })
+  total_available: number;
+}
+
 export class ReVizCompositeVariationResponse {
   @ApiProperty({ description: 'Success status' })
   success: boolean;
@@ -172,12 +206,11 @@ export class ReVizCompositeVariationResponse {
   @ApiProperty({ description: 'Response data' })
   data: {
     composite_info: CompositeInfo;
-    current_layer_asset: CurrentLayerAsset;
-    variations: LayerVariation[];
-    total_available: number;
+    layers: LayerAssets[];
+    total_assets: number;
     performance_metrics: {
       response_time_ms: number;
-      variations_evaluated: number;
+      assets_evaluated: number;
       cache_hit: boolean;
     };
   };

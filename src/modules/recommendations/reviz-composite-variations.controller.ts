@@ -87,7 +87,7 @@ export class ReVizCompositeVariationsController {
     const startTime = Date.now();
     
     this.logger.log(
-      `🔧 ReViz Composite Variations requested for composite: ${request.composite_id}, layer: ${request.vary_layer}`
+      `🔧 ReViz Composite Variations requested for composite: ${request.composite_id}, layers: ${request.vary_layers.join(', ')}`
     );
 
     try {

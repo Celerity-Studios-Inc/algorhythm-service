@@ -24,55 +24,61 @@ export class ReVizCompositeVariationsService {
     const startTime = Date.now();
     
     this.logger.log(
-      `🔧 Getting composite variations for composite: ${request.composite_id}, layer: ${request.vary_layer}`
+      `🔧 Getting composite variations for composite: ${request.composite_id}, layers: ${request.vary_layers.join(', ')}`
     );
 
     try {
       // 1. Get the specific composite information
       const compositeInfo = await this.getCompositeInfo(request.composite_id);
       
-      // 2. Get the current layer asset from the composite
-      const currentLayerAsset = await this.getCurrentLayerAsset(
-        request.composite_id, 
-        request.vary_layer
+      // 2. Process each requested layer
+      const layerResults = await Promise.all(
+        request.vary_layers.map(async (layer) => {
+          // Get current asset for this layer
+          const currentAsset = await this.getCurrentLayerAsset(request.composite_id, layer);
+          
+          // Get assets for this layer
+          const assets = await this.getLayerAssets(
+            request.composite_id,
+            layer,
+            request.assets_per_layer || 5,
+            request.variants_per_asset || 3,
+            request.user_context
+          );
+          
+          return {
+            layer,
+            current_asset: currentAsset,
+            assets,
+            total_available: assets.length
+          };
+        })
       );
       
-      // 3. Get variant assets for the specified layer
-      const variations = await this.getLayerVariations(
-        request.composite_id,
-        request.vary_layer,
-        request.limit || 8,
-        request.user_context
-      );
+      const responseTime = Date.now() - startTime;
+      const totalAssets = layerResults.reduce((sum, layer) => sum + layer.total_available, 0);
       
-      // 4. Calculate compatibility scores
-      const scoredVariations = await this.calculateCompatibilityScores(
-        variations,
-        compositeInfo,
-        request.vary_layer,
-        request.include_scoring_details
+      this.logger.log(
+        `✅ Composite variations completed in ${responseTime}ms for composite: ${request.composite_id}, total assets: ${totalAssets}`
       );
 
-      const responseTime = Date.now() - startTime;
-      
       return {
         success: true,
         data: {
           composite_info: compositeInfo,
-          current_layer_asset: currentLayerAsset,
-          variations: scoredVariations,
-          total_available: scoredVariations.length,
+          layers: layerResults,
+          total_assets: totalAssets,
           performance_metrics: {
             response_time_ms: responseTime,
-            variations_evaluated: scoredVariations.length,
-            cache_hit: false // TODO: Implement caching
-          }
+            assets_evaluated: totalAssets,
+            cache_hit: false,
+          },
         },
         metadata: {
-          request_id: `req_${Date.now()}`,
+          request_id: `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
           timestamp: new Date().toISOString(),
-          version: '1.0.0'
-        }
+          version: '1.0.0',
+        },
       };
     } catch (error) {
       this.logger.error(
@@ -224,6 +230,47 @@ export class ReVizCompositeVariationsService {
     return null;
   }
 
+  private async getLayerAssets(
+    compositeId: string,
+    layer: string,
+    assetsPerLayer: number,
+    variantsPerAsset: number,
+    userContext?: any
+  ) {
+    this.logger.debug(`Getting layer assets for composite: ${compositeId}, layer: ${layer}, assets: ${assetsPerLayer}, variants: ${variantsPerAsset}`);
+    
+    try {
+      // 🎯 BRILLIANT INSIGHT: Extract HFN from composite and find other composites with same song
+      const songId = await this.extractSongIdFromComposite(compositeId);
+      this.logger.debug(`🎯 [SONG-BASED VARIANTS] Extracted song ID: ${songId} from composite: ${compositeId}`);
+      
+      if (!songId) {
+        this.logger.warn(`Could not extract song ID from composite: ${compositeId}`);
+        return [];
+      }
+
+      // Get all composites for this song
+      const songComposites = await this.optimizedNnaRegistryService.getCompositesForSongOptimized(songId);
+      this.logger.debug(`🎯 [SONG-BASED VARIANTS] Found ${songComposites.length} composites for song: ${songId}`);
+
+      if (!songComposites || songComposites.length === 0) {
+        this.logger.warn(`No composites found for song: ${songId}`);
+        return [];
+      }
+
+      // Filter out the current composite and get layer-specific assets
+      const otherComposites = songComposites.filter(comp => comp._id !== compositeId);
+      const layerAssets = this.extractLayerAssetsFromComposites(otherComposites, layer, assetsPerLayer);
+      
+      this.logger.debug(`Found ${layerAssets.length} layer assets for composite: ${compositeId}, layer: ${layer}`);
+      
+      return layerAssets;
+    } catch (error) {
+      this.logger.error(`Failed to get layer assets for ${compositeId}, ${layer}:`, error);
+      return [];
+    }
+  }
+
   private async getLayerVariations(
     compositeId: string,
     layer: string,
@@ -258,6 +305,189 @@ export class ReVizCompositeVariationsService {
       this.logger.error(`Failed to get layer variations for ${compositeId}, ${layer}:`, error);
       return [];
     }
+  }
+
+  private async extractSongIdFromComposite(compositeId: string): Promise<string | null> {
+    try {
+      // Get the composite to extract the song ID
+      const composite = await this.optimizedNnaRegistryService.getCompositeById(compositeId);
+      
+      if (!composite || !composite.data) {
+        this.logger.warn(`Could not get composite data for: ${compositeId}`);
+        return null;
+      }
+
+      // The composite name format is: C.FUL.ALL.106:1.018.003.002+2.009.001.001+3.003.010.002+4.022.002.003+5.004.004.002
+      // We need to extract the first component (the song ID) - it's the G layer component
+      const compositeName = composite.data.name;
+      if (!compositeName || !compositeName.includes(':')) {
+        this.logger.warn(`Invalid composite name format: ${compositeName}`);
+        return null;
+      }
+
+      // Extract the components part after the colon
+      const componentsPart = compositeName.split(':')[1];
+      if (!componentsPart) {
+        this.logger.warn(`No components found in composite name: ${compositeName}`);
+        return null;
+      }
+
+      // Split by + and get the first component (G layer = song)
+      const components = componentsPart.split('+');
+      if (components.length === 0) {
+        this.logger.warn(`No components found in composite: ${compositeName}`);
+        return null;
+      }
+
+      const songId = components[0]; // First component is always the song (G layer)
+      this.logger.debug(`🎯 [SONG EXTRACTION] Extracted song ID: ${songId} from composite: ${compositeName}`);
+      
+      return songId;
+    } catch (error) {
+      this.logger.error(`Failed to extract song ID from composite: ${compositeId}`, error);
+      return null;
+    }
+  }
+
+  private extractLayerAssetsFromComposites(composites: any[], layer: string, assetsPerLayer: number): any[] {
+    // Map layer names to component types
+    const layerMap = {
+      'stars': 'S',
+      'looks': 'L', 
+      'moves': 'M',
+      'worlds': 'W'
+    };
+    
+    const layerCode = layerMap[layer];
+    if (!layerCode) {
+      this.logger.warn(`Unknown layer type: ${layer}`);
+      return [];
+    }
+
+    const assets = [];
+    
+    // Extract layer-specific assets from each composite
+    for (const composite of composites) {
+      if (composite.components && Array.isArray(composite.components)) {
+        const layerComponent = composite.components.find(comp => comp.layer === layerCode);
+        if (layerComponent) {
+          assets.push({
+            asset_id: layerComponent.id || layerComponent._id,
+            asset_name: layerComponent.name,
+            nna_address: layerComponent.nna_address || layerComponent.nnaAddress,
+            layer: layer,
+            category: layerComponent.category,
+            subcategory: layerComponent.subcategory,
+            gcp_storage_url: `https://storage.googleapis.com/algorhythm-assets/${layer}/${layerComponent.id || layerComponent._id}.mp4`,
+            thumbnail_url: `https://storage.googleapis.com/algorhythm-assets/thumbnails/${layer}/${layerComponent.id || layerComponent._id}.jpg`,
+            compatibility_score: 0.9, // High compatibility since it's the same song
+            metadata: {
+              tags: [],
+              aiGeneratedDescription: layerComponent.name,
+              media: {
+                duration_seconds: 10,
+                file_size_mb: 5.1,
+                resolution: '1080p',
+                format: 'mp4'
+              }
+            }
+          });
+        }
+      }
+    }
+    
+    // Limit total assets per layer
+    const limitedAssets = assets.slice(0, assetsPerLayer);
+    this.logger.debug(`Found ${limitedAssets.length} layer assets from ${composites.length} composites for ${layer} layer`);
+    
+    return limitedAssets;
+  }
+
+  private extractLayerAssets(compositeData: any, layer: string, assetsPerLayer: number, variantsPerAsset: number): any[] {
+    // Map layer names to component types
+    const layerMap = {
+      'stars': 'star',
+      'looks': 'look', 
+      'moves': 'move',
+      'worlds': 'world'
+    };
+    
+    const componentType = layerMap[layer];
+    if (!componentType) {
+      this.logger.warn(`Unknown layer type: ${layer}`);
+      return [];
+    }
+
+    // Find the component in the composite data
+    const component = compositeData.components?.[componentType];
+    if (!component) {
+      this.logger.warn(`No ${componentType} component found in composite`);
+      return [];
+    }
+
+    // Get base asset and variants
+    const baseAsset = component.base_asset;
+    const variants = component.variants || [];
+    
+    // Create assets array with base asset + variants
+    const assets = [];
+    
+    // Add base asset
+    if (baseAsset) {
+      assets.push({
+        asset_id: baseAsset.asset_id,
+        asset_name: baseAsset.name,
+        nna_address: baseAsset.nna_address,
+        layer: layer,
+        category: baseAsset.category,
+        subcategory: baseAsset.subcategory,
+        gcp_storage_url: `https://storage.googleapis.com/algorhythm-assets/${layer}/${baseAsset.asset_id}.mp4`,
+        thumbnail_url: `https://storage.googleapis.com/algorhythm-assets/thumbnails/${layer}/${baseAsset.asset_id}.jpg`,
+        compatibility_score: 1.0, // Base asset has perfect compatibility
+        metadata: {
+          tags: [],
+          aiGeneratedDescription: baseAsset.name,
+          media: {
+            duration_seconds: 10,
+            file_size_mb: 5.1,
+            resolution: '1080p',
+            format: 'mp4'
+          }
+        }
+      });
+    }
+    
+    // Add variants (limited by variantsPerAsset)
+    const limitedVariants = variants.slice(0, variantsPerAsset);
+    limitedVariants.forEach(variant => {
+      assets.push({
+        asset_id: variant.asset_id,
+        asset_name: variant.name,
+        nna_address: variant.nna_address,
+        layer: layer,
+        category: variant.category,
+        subcategory: variant.subcategory,
+        gcp_storage_url: `https://storage.googleapis.com/algorhythm-assets/${layer}/${variant.asset_id}.mp4`,
+        thumbnail_url: `https://storage.googleapis.com/algorhythm-assets/thumbnails/${layer}/${variant.asset_id}.jpg`,
+        compatibility_score: variant.compatibility_score || 0.8,
+        metadata: {
+          tags: [],
+          aiGeneratedDescription: variant.name,
+          media: {
+            duration_seconds: 10,
+            file_size_mb: 5.1,
+            resolution: '1080p',
+            format: 'mp4'
+          }
+        }
+      });
+    });
+    
+    // Limit total assets per layer
+    const limitedAssets = assets.slice(0, assetsPerLayer);
+    this.logger.debug(`Found ${limitedAssets.length} assets for ${layer} layer (${assetsPerLayer} requested, ${variantsPerAsset} variants per asset)`);
+    
+    return limitedAssets;
   }
 
   private extractLayerVariants(compositeData: any, layer: string): any[] {
