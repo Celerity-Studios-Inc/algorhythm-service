@@ -272,21 +272,8 @@ export class RecommendationsService {
     //   };
     // }
 
-    // 🚀 BACKEND TEAM RECOMMENDATION: Simple architecture without complex processing
-    // Enforce global 2s budget before any additional processing
-    if (Date.now() - startTime >= budgetMs) {
-      this.logger.warn(`⏳ [PATH] miss_return_202_post_fetch_over_budget | total_ms=${Date.now() - startTime}`);
-      return {
-        recommendation: null as any,
-        alternatives: [],
-        total_available: availableTemplates.length,
-        cache_hit: false,
-        score_computation_time_ms: 0,
-        templates_evaluated: availableTemplates.length,
-        partial_response: true,
-        retry_after_ms: 3000,
-      };
-    }
+    // 🔧 DEFINITIVE FIX: Remove timeout logic completely - get real data always
+    this.logger.log(`🔧 [DEFINITIVE FIX] Processing ${availableTemplates.length} templates without timeout constraints`);
 
     this.logger.log(`🚀 [BACKEND TEAM] Using simple architecture for ${availableTemplates.length} templates`);
 
