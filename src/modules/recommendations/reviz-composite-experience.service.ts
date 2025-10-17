@@ -248,11 +248,11 @@ export class ReVizCompositeExperienceService {
       const layerAssets: any = {};
       
       layers.forEach(layer => {
-        const layerData = layerAssetsData[layer] || { assets: [] };
+        const layerData = layerAssetsData[layer] || [];
         layerAssets[layer] = {
           layer_type: layer,
-          total_assets: layerData.assets?.length || 0,
-          assets: (layerData.assets || []).map((asset: any) => ({
+          total_assets: layerData.length || 0,
+          assets: (layerData || []).map((asset: any) => ({
             asset_id: asset.asset_id || asset.id,
             asset_name: asset.asset_name || asset.name,
             gcp_storage_url: asset.gcp_storage_url || asset.gcpStorageUrl,
