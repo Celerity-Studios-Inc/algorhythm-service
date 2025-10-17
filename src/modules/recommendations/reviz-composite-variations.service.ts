@@ -240,27 +240,25 @@ export class ReVizCompositeVariationsService {
     this.logger.debug(`Getting layer assets for composite: ${compositeId}, layer: ${layer}, assets: ${assetsPerLayer}, variants: ${variantsPerAsset}`);
     
     try {
-      // 🎯 BRILLIANT INSIGHT: Extract base composite ID and find other composites with same base
-      const baseCompositeId = this.extractCompositeBaseId(compositeId);
-      this.logger.debug(`🎯 [COMPOSITE-BASED VARIANTS] Extracted base ID: ${baseCompositeId} from composite: ${compositeId}`);
+      // 🔧 FIX: Use NNA Registry's new composite pattern matching endpoint
+      this.logger.debug(`🔍 [NNA REGISTRY] Calling composite pattern recommendations for composite: ${compositeId}`);
       
-      if (!baseCompositeId) {
-        this.logger.warn(`Could not extract base composite ID from: ${compositeId}`);
+      const response = await this.optimizedNnaRegistryService.getCompositePatternRecommendations({
+        composite_id: compositeId,
+        layers: [layer],
+        assets_per_layer: assetsPerLayer,
+        variants_per_asset: variantsPerAsset
+      });
+      
+      this.logger.debug(`✅ [NNA REGISTRY] Response received: ${JSON.stringify(response).substring(0, 200)}...`);
+
+      if (!response || !response.success || !response.data?.layer_assets) {
+        this.logger.warn(`No layer assets found for composite: ${compositeId}, layer: ${layer}`);
         return [];
       }
 
-      // Get all composites that start with the same base ID
-      const relatedComposites = await this.getCompositesByBaseId(baseCompositeId);
-      this.logger.debug(`🎯 [COMPOSITE-BASED VARIANTS] Found ${relatedComposites.length} related composites for base: ${baseCompositeId}`);
-
-      if (!relatedComposites || relatedComposites.length === 0) {
-        this.logger.warn(`No related composites found for base: ${baseCompositeId}`);
-        return [];
-      }
-
-      // Filter out the current composite and get layer-specific assets
-      const otherComposites = relatedComposites.filter(comp => comp._id !== compositeId);
-      const layerAssets = this.extractLayerAssetsFromComposites(otherComposites, layer, assetsPerLayer);
+      // Extract layer assets from NNA Registry response
+      const layerAssets = response.data.layer_assets[layer] || [];
       
       this.logger.debug(`Found ${layerAssets.length} layer assets for composite: ${compositeId}, layer: ${layer}`);
       
