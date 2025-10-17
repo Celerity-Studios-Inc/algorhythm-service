@@ -243,12 +243,12 @@ export class ReVizCompositeVariationsService {
       // 🔧 FIX: Use NNA Registry's new composite pattern matching endpoint
       this.logger.debug(`🔍 [NNA REGISTRY] Calling composite pattern recommendations for composite: ${compositeId}`);
       
-      const response = await this.optimizedNnaRegistryService.getCompositePatternRecommendations({
-        composite_id: compositeId,
-        layers: [layer],
-        assets_per_layer: assetsPerLayer,
-        variants_per_asset: variantsPerAsset
-      });
+      const response = await this.optimizedNnaRegistryService.getCompositePatternRecommendations(
+        compositeId,
+        [layer],
+        assetsPerLayer,
+        variantsPerAsset
+      );
       
       this.logger.debug(`✅ [NNA REGISTRY] Response received: ${JSON.stringify(response).substring(0, 200)}...`);
 
