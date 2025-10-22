@@ -1,0 +1,19 @@
+{
+  "stats": {
+    "totalSongs": 18,
+    "totalComposites": 420,
+    "fullComposites": 411,
+    "partialComposites": 9,
+    "songsWithComposites": 0,
+    "categories": 5,
+    "tags": 200
+  },
+  "metadata": {
+    "songsWithGcpUrls": 18,
+    "compositesWithGcpUrls": 411,
+    "compositesWithThumbnails": 0,
+    "compositesWithPreviews": 0
+  },
+  "lastUpdated": "2025-10-22T21:45:47.808Z",
+  "version": "1.0.0"
+}

@@ -1,0 +1,32 @@
+{
+  "buildDate": "2025-10-22T21:45:47.808Z",
+  "indexes": {
+    "songs": 18,
+    "fullComposites": 411,
+    "partialComposites": 9,
+    "songsWithComposites": 0,
+    "categories": 5,
+    "tags": 200
+  },
+  "performance": {
+    "totalSongs": 18,
+    "totalComposites": 420,
+    "fullComposites": 411,
+    "partialComposites": 9,
+    "songsWithComposites": 0,
+    "categories": 5,
+    "tags": 200
+  },
+  "metadata": {
+    "songsWithGcpUrls": 18,
+    "compositesWithGcpUrls": 411,
+    "compositesWithThumbnails": 0,
+    "compositesWithPreviews": 0
+  },
+  "files": [
+    "indexes/songs-index.json",
+    "indexes/composites-index.json",
+    "indexes/recommendations-index.json",
+    "indexes/performance-index.json"
+  ]
+}

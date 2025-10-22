@@ -225,3 +225,4 @@ git log --oneline -20
 Start with: **"I need to review the last 20 commits and do a deep codebase review to understand the current state, then debug the template endpoint performance issues."**
 
 This will give you the full context you need to jump-start the debugging process effectively!
+

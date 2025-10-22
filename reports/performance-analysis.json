@@ -1,0 +1,48 @@
+{
+  "timestamp": "2025-10-22T21:46:12.694Z",
+  "summary": {
+    "totalAssets": 438,
+    "songs": 18,
+    "composites": 420,
+    "fullComposites": 411,
+    "partialComposites": 9
+  },
+  "coverage": {
+    "songsWithGcpUrls": {
+      "count": 18,
+      "percentage": 100
+    },
+    "compositesWithGcpUrls": {
+      "count": 411,
+      "percentage": 97.85714285714285
+    },
+    "compositesWithThumbnails": {
+      "count": 0,
+      "percentage": 0
+    },
+    "compositesWithPreviews": {
+      "count": 0,
+      "percentage": 0
+    }
+  },
+  "recommendations": [
+    {
+      "type": "warning",
+      "message": "Some composites are missing GCP URLs - consider updating storage configuration",
+      "impact": "high",
+      "action": "Check NNA Registry storage setup"
+    },
+    {
+      "type": "info",
+      "message": "Very few composites have thumbnails - consider generating thumbnails for better UX",
+      "impact": "medium",
+      "action": "Implement thumbnail generation service"
+    },
+    {
+      "type": "critical",
+      "message": "No songs have associated composites - this will impact recommendation quality",
+      "impact": "high",
+      "action": "Create more composite assets linking songs to other layers"
+    }
+  ]
+}

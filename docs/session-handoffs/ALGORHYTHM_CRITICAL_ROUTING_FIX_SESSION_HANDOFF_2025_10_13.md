@@ -193,3 +193,4 @@ curl -s https://algorhythm-service-dev-5jm4duk5oa-uc.a.run.app/api/v1/debug/temp
 **The deployment should resolve both the health endpoint and template endpoint issues!** 🚀
 
 **Ready for testing once deployment completes (~3-5 minutes).**
+
