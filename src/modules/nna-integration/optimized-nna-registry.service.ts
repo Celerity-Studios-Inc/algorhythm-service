@@ -1,5 +1,6 @@
 import { Injectable, Logger, Inject, Optional, OnModuleInit } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
+import * as https from 'https';
 import { ConfigService } from '@nestjs/config';
 import { firstValueFrom } from 'rxjs';
 import { timeout, catchError } from 'rxjs/operators';
@@ -42,6 +43,18 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
     
     this.logger.log(`🔍 [INIT] NNA Registry URL: ${this.baseUrl}`);
     this.logger.log(`🔍 [INIT] OptimizedNnaRegistryService initialized`);
+
+    // ✅ HTTP Keep-Alive: reduce TCP/TLS overhead for registry calls
+    const keepAliveAgent = new https.Agent({ keepAlive: true, maxSockets: 100 });
+    // Nest HttpService wraps axios; set a default agent via axiosRef if available
+    try {
+      // axiosRef is available on HttpService in NestJS
+      (this.httpService as any).axiosRef.defaults.httpsAgent = keepAliveAgent;
+      (this.httpService as any).axiosRef.defaults.timeout = this.timeout;
+      this.logger.log(`🔧 [INIT] Keep-Alive agent enabled (maxSockets=100)`);
+    } catch (e) {
+      this.logger.warn(`⚠️ [INIT] Failed to set keep-alive agent: ${e?.message || e}`);
+    }
   }
 
   async onModuleInit() {
@@ -102,6 +115,14 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
    */
   async getCompositesForSong(songId: string): Promise<any[]> {
     const startTime = Date.now();
+    const memoryCache = (global as any).__nna_cache || ((global as any).__nna_cache = new Map());
+    const cacheKey = `nna:by-song:${songId}`;
+    // 1) Fast in-memory cache (5 min TTL tracked inline)
+    const cachedEntry = memoryCache.get(cacheKey);
+    if (cachedEntry && cachedEntry.expiresAt > Date.now()) {
+      this.logger.debug(`✅ [MEMCACHE] by-song hit for ${songId} in ${Date.now() - startTime}ms`);
+      return cachedEntry.value;
+    }
     
     // 🔧 CIRCUIT BREAKER: Check if NNA Registry is healthy first
     const healthCheck = await this.quickHealthCheck();
@@ -110,10 +131,12 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
       throw new Error(`NNA Registry service unavailable: ${healthCheck.responseTime}ms`);
     }
     
-    // Check cache first
+    // 2) Distributed cache (if available)
     const cached = this.cacheService ? await this.cacheService.getCompositesForSong(songId) : null;
     if (cached) {
-      this.logger.debug(`✅ Cache hit for song ${songId}: ${Date.now() - startTime}ms`);
+      this.logger.debug(`✅ [DISTCACHE] by-song hit for ${songId} in ${Date.now() - startTime}ms`);
+      // refresh in-memory cache too
+      memoryCache.set(cacheKey, { value: cached, expiresAt: Date.now() + 5 * 60 * 1000 });
       return cached;
     }
 
@@ -146,10 +169,9 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
         
         const duration = Date.now() - startTime;
         
-        // Cache the results (if cache service available)
-        if (this.cacheService) {
-          await this.cacheService.setCompositesForSong(songId, composites);
-        }
+        // Cache the results
+        memoryCache.set(cacheKey, { value: composites, expiresAt: Date.now() + 5 * 60 * 1000 });
+        if (this.cacheService) await this.cacheService.setCompositesForSong(songId, composites);
         
         this.logger.log(`✅ [API CALL] Success! ${composites.length} composites in ${duration}ms`);
         return composites;
