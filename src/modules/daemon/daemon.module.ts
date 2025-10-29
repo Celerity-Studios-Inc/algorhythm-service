@@ -3,6 +3,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { MongooseModule } from '@nestjs/mongoose';
 import { DaemonService } from './daemon.service';
 import { DaemonController } from './daemon.controller';
+import { DaemonBypassController } from './daemon-bypass.controller';
 import { IndexBuilderService } from './index-builder.service';
 import { ScoreComputationService } from './score-computation.service';
 import { NnaIntegrationModule } from '../nna-integration/nna-integration.module';
@@ -24,7 +25,7 @@ import { RecommendationCacheSchema } from '../../models/recommendation-cache.sch
     AnalyticsModule,
     ScoringModule,
   ],
-  controllers: [DaemonController],
+  controllers: [DaemonController, DaemonBypassController],
   providers: [
     DaemonService,
     IndexBuilderService,
