@@ -28,18 +28,35 @@ export class ReVizCompositeVariationsService {
     );
 
     try {
-      // 1. Get the specific composite information
+      // 1. Get the specific composite information (may trigger generation)
       const compositeInfo = await this.getCompositeInfo(request.composite_id);
+      
+      // 🔧 ISSUE #2 FIX: Use resolved composite_id (from generation) instead of original request
+      // If generation was triggered, compositeInfo.composite_id will be the new composite ID
+      const actualCompositeId = compositeInfo.composite_id || request.composite_id;
+      const isGenerating = compositeInfo.generation_status === 'generating';
+      
+      // 🔧 ISSUE #2 FIX: Store component IDs for generating case
+      const componentIds = this.parseComponentIds(request.composite_id);
+      
+      this.logger.debug(`Using composite ID: ${actualCompositeId} (original: ${request.composite_id}, generating: ${isGenerating})`);
       
       // 2. Process each requested layer
       const layerResults = await Promise.all(
         request.vary_layers.map(async (layer) => {
           // Get current asset for this layer
-          const currentAsset = await this.getCurrentLayerAsset(request.composite_id, layer);
+          let currentAsset;
+          if (isGenerating && componentIds) {
+            // 🔧 ISSUE #2 FIX: If generating, extract current asset from component IDs
+            currentAsset = await this.getCurrentLayerAssetFromComponents(componentIds, layer);
+          } else {
+            // Normal flow: get from existing composite
+            currentAsset = await this.getCurrentLayerAsset(actualCompositeId, layer);
+          }
           
-          // Get assets for this layer
+          // Get assets for this layer (use resolved composite_id)
           const assets = await this.getLayerAssets(
-            request.composite_id,
+            actualCompositeId,
             layer,
             request.assets_per_layer || 5,
             request.variants_per_asset || 3,
@@ -169,6 +186,60 @@ export class ReVizCompositeVariationsService {
     
     // For now, return null - we'll need to enhance this based on actual composite ID formats
     return null;
+  }
+
+  /**
+   * 🔧 ISSUE #2 FIX: Get current layer asset from component IDs (when composite is generating)
+   */
+  private async getCurrentLayerAssetFromComponents(componentIds: string[], layer: string) {
+    this.logger.debug(`Getting current layer asset from component IDs for layer: ${layer}`);
+    
+    // Map layer names to component prefixes
+    const layerMap: Record<string, string> = {
+      'stars': '2',  // Star layer starts with 2
+      'looks': '3',  // Look layer starts with 3
+      'moves': '4',  // Move layer starts with 4
+      'worlds': '5'  // World layer starts with 5
+    };
+    
+    const layerPrefix = layerMap[layer];
+    if (!layerPrefix) {
+      throw new NotFoundException(`Invalid layer: ${layer}`);
+    }
+    
+    // Find component ID that matches this layer
+    const layerComponentId = componentIds.find(id => id.startsWith(`${layerPrefix}.`));
+    
+    if (!layerComponentId) {
+      throw new NotFoundException(`No component found for layer ${layer} in component IDs: ${componentIds.join(', ')}`);
+    }
+    
+    // Fetch asset info from NNA Registry
+    try {
+      // Use NNA Registry to get asset details by NNA address
+      // For now, return a basic structure - this could be enhanced to fetch full asset details
+      return {
+        asset_id: layerComponentId,
+        asset_name: layerComponentId, // Could fetch actual name from NNA Registry
+        nna_address: layerComponentId,
+        gcp_storage_url: `https://storage.googleapis.com/algorhythm-assets/${layer}/${layerComponentId}.mp4`,
+        thumbnail_url: `https://storage.googleapis.com/algorhythm-assets/thumbnails/${layer}/${layerComponentId}.jpg`,
+        layer: layer,
+        metadata: {
+          tags: [],
+          aiGeneratedDescription: `${layer} asset ${layerComponentId}`,
+          media: {
+            duration_seconds: 10,
+            file_size_mb: 5.1,
+            resolution: '1080p',
+            format: 'mp4'
+          }
+        }
+      };
+    } catch (error) {
+      this.logger.error(`Failed to get current layer asset from components for ${layer}:`, error);
+      throw new NotFoundException(`No current asset found for layer ${layer} from component IDs`);
+    }
   }
 
   private async getCurrentLayerAsset(compositeId: string, layer: string) {
