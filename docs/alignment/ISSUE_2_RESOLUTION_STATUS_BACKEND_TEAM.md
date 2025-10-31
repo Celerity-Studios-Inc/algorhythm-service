@@ -1,5 +1,21 @@
 # Issue #2 Resolution Status - Backend Team Note
 
+## Deployment note (JWT secret wiring)
+
+- AlgoRhythm now uses JWT Bearer for `/api/v1/composites/resolve-or-generate`.
+- Ensure Cloud Run env var `NNA_REGISTRY_JWT_SECRET` is set from Secret Manager per env.
+- After setting the secret, deploy a new revision so the app can generate the service token.
+
+Verification endpoint (dev):
+
+```
+GET /api/v1/reviz/composite/debug/test-resolution?ids=1.018.003.002,2.009.001.001,3.003.010.002,4.022.002.008,5.015.001.003
+Header: x-api-key: <reviz-api-key>
+```
+
+Expected: no "secret not configured"; response status `found | generating | not_found`.
+
+
 **Date:** October 31, 2025  
 **Service:** AlgoRhythm Service  
 **Status:** ✅ **RESOLVED** (CUSTOMIZE flow working, PERSONALIZE flow ready but not yet implemented)  
