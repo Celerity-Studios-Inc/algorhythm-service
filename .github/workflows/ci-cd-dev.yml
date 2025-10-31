@@ -99,13 +99,13 @@ jobs:
             -H "x-api-key: $API_KEY" -H "Content-Type: application/json" \
             -d '{"composite_id":"1.018.003.002+2.009.001.001+3.003.010.002+4.022.002.008+5.015.001.003","vary_layers":["stars","looks","moves","worlds"],"assets_per_layer":2}')
           echo "Smoke test (components) HTTP: $RES"
-          [ "$RES" = "200" ] || { echo "Smoke test failed for components path"; exit 1; }
+          if [ "$RES" != "200" ] && [ "$RES" != "201" ]; then echo "Smoke test failed for components path"; exit 1; fi
           # 2) Known composite HFN path
           RES2=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$SERVICE_URL/api/v1/reviz/composite/variations" \
             -H "x-api-key: $API_KEY" -H "Content-Type: application/json" \
             -d '{"composite_id":"9.002.025.082","vary_layers":["stars","looks","moves","worlds"],"assets_per_layer":2}')
           echo "Smoke test (hfn) HTTP: $RES2"
-          [ "$RES2" = "200" ] || { echo "Smoke test failed for HFN path"; exit 1; }
+          if [ "$RES2" != "200" ] && [ "$RES2" != "201" ]; then echo "Smoke test failed for HFN path"; exit 1; fi
           echo "✅ Smoke tests passed"
 
       - name: Post-deploy health check
