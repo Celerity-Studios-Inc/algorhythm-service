@@ -75,6 +75,34 @@ jobs:
             --set-secrets=REVIZ_API_KEY=algorhythm-reviz-api-key-stg:latest \
                         --set-env-vars "NODE_ENV=staging,ENVIRONMENT=staging,NNA_REGISTRY_BASE_URL=https://registry.stg.reviz.dev,ALGORHYTHM_BASE_URL=https://stg.algorhythm.media"
 
+      - name: Verify secret binding (NNA_REGISTRY_JWT_SECRET)
+        run: |
+          REVISION=$(gcloud run services describe algorhythm-service-staging --region us-central1 --format='value(status.latestReadyRevisionName)')
+          echo "Latest ready revision (staging): $REVISION"
+          ENV_YAML=$(gcloud run revisions describe "$REVISION" --region us-central1 --format='yaml(spec.containers[0].env)')
+          echo "$ENV_YAML" | grep -q "NNA_REGISTRY_JWT_SECRET" || { echo "Missing NNA_REGISTRY_JWT_SECRET on $REVISION"; exit 1; }
+          echo "✅ NNA_REGISTRY_JWT_SECRET bound on $REVISION"
+
+      - name: Post-deploy smoke test (staging variations)
+        run: |
+          SERVICE_URL=$(gcloud run services describe algorhythm-service-staging --region us-central1 --format='value(status.url)')
+          echo "Service URL: $SERVICE_URL"
+          # Get API key from Secret Manager
+          API_KEY=$(gcloud secrets versions access latest --secret algorhythm-reviz-api-key-stg)
+          # 1) Component IDs
+          RES=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$SERVICE_URL/api/v1/reviz/composite/variations" \
+            -H "x-api-key: $API_KEY" -H "Content-Type: application/json" \
+            -d '{"composite_id":"1.018.003.002+2.009.001.001+3.003.010.002+4.022.002.008+5.015.001.003","vary_layers":["stars","looks","moves","worlds"],"assets_per_layer":2}')
+          echo "Smoke (components) HTTP: $RES"
+          [ "$RES" = "200" ] || { echo "Smoke test failed (components)"; exit 1; }
+          # 2) HFN
+          RES2=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$SERVICE_URL/api/v1/reviz/composite/variations" \
+            -H "x-api-key: $API_KEY" -H "Content-Type: application/json" \
+            -d '{"composite_id":"9.002.025.082","vary_layers":["stars","looks","moves","worlds"],"assets_per_layer":2}')
+          echo "Smoke (hfn) HTTP: $RES2"
+          [ "$RES2" = "200" ] || { echo "Smoke test failed (hfn)"; exit 1; }
+          echo "✅ Staging smoke tests passed"
+
       - name: Update Traffic to Latest Revision
         run: |
           gcloud run services update-traffic algorhythm-service-staging \
