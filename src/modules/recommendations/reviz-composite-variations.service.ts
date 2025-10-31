@@ -1,5 +1,6 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { OptimizedNnaRegistryService } from '../nna-integration/optimized-nna-registry.service';
+import { buildCurrentByLayer, dualAddressEqual, normalizeLayerKeys, layerKeyToCode } from '../../common/layers.util';
 import { ReVizCompositeVariationDto, ReVizCompositeVariationResponse } from './dto/reviz-composite-variation.dto';
 
 /**
@@ -22,6 +23,7 @@ export class ReVizCompositeVariationsService {
     request: ReVizCompositeVariationDto,
   ): Promise<ReVizCompositeVariationResponse> {
     const startTime = Date.now();
+    const warnings: Array<{ layer?: string; code: string; message: string }> = [];
     
     this.logger.log(
       `🔧 Getting composite variations for composite: ${request.composite_id}, layers: ${request.vary_layers.join(', ')}`
@@ -71,19 +73,41 @@ export class ReVizCompositeVariationsService {
       this.logger.debug(`Using composite ID: ${actualCompositeId} (original: ${request.composite_id})`);
       
       // 2. Normalize layer keys and process layers
-      const layerKeyToCode: Record<string, string> = { stars: 'S', looks: 'L', moves: 'M', worlds: 'W' };
-      const requestedLayers: string[] = (request.vary_layers || [])
-        .map((k) => (typeof k === 'string' ? k.toLowerCase() : k))
-        .filter((k) => ['stars', 'looks', 'moves', 'worlds'].includes(k));
+      const requestedLayers = normalizeLayerKeys(request.vary_layers);
+
+      // Build current-by-layer map once
+      let currentByLayer = new Map<string, {nna_address?: string, name?: string}>();
+      try {
+        const compositeRaw = await this.optimizedNnaRegistryService.getCompositeById(actualCompositeId);
+        const comps = compositeRaw?.components || compositeRaw?.data?.components || Array.isArray(compositeRaw?.data) ? compositeRaw?.data : [];
+        currentByLayer = buildCurrentByLayer(comps);
+      } catch (e) {
+        this.logger.warn(`⚠️ Unable to prefetch composite components for ${actualCompositeId}`);
+        warnings.push({ code: 'COMPONENTS_PREFETCH_FAILED', message: 'Could not prefetch composite components' });
+      }
 
       const layerResults = await Promise.all(
         requestedLayers.map(async (layerKey) => {
           // Get current asset; degrade gracefully if missing
           let currentAsset: any | null = null;
           try {
-            currentAsset = await this.getCurrentLayerAsset(actualCompositeId, layerKey);
+            // Prefer precomputed map if available
+            const code = layerKeyToCode(layerKey);
+            const cur = currentByLayer.get(code);
+            if (cur) {
+              currentAsset = {
+                asset_id: cur.nna_address || cur.name,
+                asset_name: cur.name,
+                nna_address: cur.nna_address,
+                layer: layerKey,
+              };
+            } else {
+              currentAsset = await this.getCurrentLayerAsset(actualCompositeId, layerKey);
+            }
           } catch (err) {
-            this.logger.warn(`⚠️ Missing current component for layer ${layerKey}: ${err?.message || err}`);
+            const msg = `Missing current component for layer ${layerKey}: ${err?.message || err}`;
+            this.logger.warn(`⚠️ ${msg}`);
+            warnings.push({ layer: layerKey, code: 'MISSING_CURRENT_COMPONENT', message: msg });
           }
 
           // Fetch candidate assets for this layer
@@ -97,14 +121,14 @@ export class ReVizCompositeVariationsService {
 
           // Ensure current asset is present and first (match by MFA or HFN)
           if (currentAsset) {
-            const idx = assets.findIndex((a: any) =>
-              a?.nna_address === currentAsset?.nna_address ||
-              a?.asset_name === currentAsset?.asset_name ||
-              a?.name === currentAsset?.asset_name
-            );
+            const idx = assets.findIndex((a: any) => dualAddressEqual(
+              { nna_address: a?.nna_address, name: a?.asset_name || a?.name },
+              { nna_address: currentAsset?.nna_address, name: currentAsset?.asset_name }
+            ));
             if (idx === -1) {
               // Prepend a virtual current asset to stabilize UI
               assets.unshift(currentAsset);
+              warnings.push({ layer: layerKey, code: 'CURRENT_NOT_IN_ASSETS', message: 'Prepended virtual current asset' });
             } else if (idx > 0) {
               const [cur] = assets.splice(idx, 1);
               assets.unshift(cur);
@@ -138,6 +162,8 @@ export class ReVizCompositeVariationsService {
             assets_evaluated: totalAssets,
             cache_hit: false,
           },
+          // Non-breaking: attach warnings for client visibility
+          ...(warnings.length ? { warnings } : {}),
         },
         metadata: {
           request_id: `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,

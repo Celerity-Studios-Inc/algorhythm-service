@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "dist/main.js",
   "scripts": {
+    "export:layer-status": "node scripts/testing/export-composite-layer-status.mjs",
     "build": "nest build",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -15,7 +16,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "seed": "ts-node scripts/seed-data.ts",
     "cache-warmup": "ts-node scripts/cache-warmup.ts",
-    "smoke:dev": "node scripts/smoke/recommendation-smoke-dev.js"
+    "smoke:dev": "node scripts/smoke/recommendation-smoke-dev.js",
+    "export:layer-status": "node scripts/testing/export-composite-layer-status.mjs"
   },
   "keywords": [],
   "author": "",

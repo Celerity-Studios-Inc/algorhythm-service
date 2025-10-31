@@ -10,7 +10,11 @@ const AR_BASE = process.env.ALGORHYTHM_BASE_URL || 'https://dev.algorhythm.media
 const API_KEY = process.env.AR_API_KEY || 'reviz-dev-30390-13220-4896-9516-9001';
 
 // Dev JWT secret (must match Backend JWT_SECRET_DEV). Prefer env; fallback to known value if provided.
-const DEV_JWT_SECRET = process.env.DEV_JWT_SECRET || 'a0cdf9eff0b7393cf499c2db888638f71362615fe63599ec78cf7095d1973f39';
+const DEV_JWT_SECRET = process.env.DEV_JWT_SECRET;
+if (!DEV_JWT_SECRET) {
+  console.error('❌ DEV_JWT_SECRET env var is required to run this exporter.');
+  process.exit(1);
+}
 
 function signHS256(payload, secret) {
   const header = { alg: 'HS256', typ: 'JWT' };
@@ -148,11 +152,6 @@ async function main() {
   const csv = rows.map(r => r.map(v => String(v).includes(',') ? `"${String(v).replace(/"/g,'""')}"` : String(v)).join(',')).join('\n');
   console.log(csv);
 }
-
-main().catch((e) => {
-  console.error('Unexpected error', e);
-  process.exit(1);
-});
 
 main().catch((e) => {
   console.error('Unexpected error', e);
