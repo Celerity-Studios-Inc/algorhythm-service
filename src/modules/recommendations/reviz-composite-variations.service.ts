@@ -119,27 +119,38 @@ export class ReVizCompositeVariationsService {
             request.user_context
           );
 
+          // 🔧 FIX: Deduplicate assets that are variants of each other
+          const deduplicatedAssets = this.deduplicateVariantAssets(assets, currentAsset);
+          if (deduplicatedAssets.length < assets.length) {
+            const removedCount = assets.length - deduplicatedAssets.length;
+            warnings.push({
+              layer: layerKey,
+              code: 'VARIANTS_DEDUPLICATED',
+              message: `Removed ${removedCount} asset(s) that were variants of other assets in the list`
+            });
+          }
+
           // Ensure current asset is present and first (match by MFA or HFN)
           if (currentAsset) {
-            const idx = assets.findIndex((a: any) => dualAddressEqual(
+            const idx = deduplicatedAssets.findIndex((a: any) => dualAddressEqual(
               { nna_address: a?.nna_address, name: a?.asset_name || a?.name },
               { nna_address: currentAsset?.nna_address, name: currentAsset?.asset_name }
             ));
             if (idx === -1) {
               // Prepend a virtual current asset to stabilize UI
-              assets.unshift(currentAsset);
+              deduplicatedAssets.unshift(currentAsset);
               warnings.push({ layer: layerKey, code: 'CURRENT_NOT_IN_ASSETS', message: 'Prepended virtual current asset' });
             } else if (idx > 0) {
-              const [cur] = assets.splice(idx, 1);
-              assets.unshift(cur);
+              const [cur] = deduplicatedAssets.splice(idx, 1);
+              deduplicatedAssets.unshift(cur);
             }
           }
-
+          
           return {
             layer: layerKey,
             current_asset: currentAsset || null,
-            assets,
-            total_available: assets.length,
+            assets: deduplicatedAssets,
+            total_available: deduplicatedAssets.length,
           };
         })
       );
@@ -530,6 +541,126 @@ export class ReVizCompositeVariationsService {
     
     this.logger.warn(`No ${layer} component found in composite. Available components: ${components ? components.map(c => `${c.name || c.id} (${c.layer || c.layer_type || c.type})`).join(', ') : 'none'}`);
     return null;
+  }
+
+  /**
+   * 🔧 FIX: Deduplicate assets that are variants of each other
+   * If two assets are variants of each other (one appears in the other's variants list),
+   * keep only one in the assets array. Prefer current asset if it's one of them,
+   * otherwise keep the one with higher compatibility_score.
+   */
+  private deduplicateVariantAssets(assets: any[], currentAsset: any | null): any[] {
+    if (!assets || assets.length === 0) return assets;
+    
+    // Build a map: asset identifier -> list of its variant identifiers
+    const variantMap = new Map<string, Set<string>>();
+    
+    // For each asset, collect all identifiers of its variants
+    for (const asset of assets) {
+      const assetId = asset.asset_id || asset.nna_address || asset.asset_name;
+      if (!assetId) continue;
+      
+      const variantIds = new Set<string>();
+      variantIds.add(assetId);
+      
+      // Collect all variant identifiers (nna_address, variant_id, variant_name)
+      if (Array.isArray(asset.variants)) {
+        for (const variant of asset.variants) {
+          if (variant.variant_id) variantIds.add(variant.variant_id);
+          if (variant.nna_address) variantIds.add(variant.nna_address);
+          if (variant.variant_name) variantIds.add(variant.variant_name);
+        }
+      }
+      
+      variantMap.set(assetId, variantIds);
+    }
+    
+    // Find assets that are variants of each other
+    const toRemove = new Set<string>();
+    const toKeep = new Set<string>();
+    
+    // Check each pair of assets
+    for (let i = 0; i < assets.length; i++) {
+      const assetA = assets[i];
+      const idA = assetA.asset_id || assetA.nna_address || assetA.asset_name;
+      if (!idA || toRemove.has(idA) || toKeep.has(idA)) continue;
+      
+      const variantsA = variantMap.get(idA);
+      if (!variantsA) continue;
+      
+      // Check if assetA is a variant of any other asset
+      for (let j = i + 1; j < assets.length; j++) {
+        const assetB = assets[j];
+        const idB = assetB.asset_id || assetB.nna_address || assetB.asset_name;
+        if (!idB || toRemove.has(idB) || toKeep.has(idB)) continue;
+        
+        const variantsB = variantMap.get(idB);
+        if (!variantsB) continue;
+        
+        // Check if assetA and assetB are variants of each other
+        const aIsVariantOfB = variantsB.has(idA) || 
+          (assetA.nna_address && variantsB.has(assetA.nna_address)) ||
+          (assetA.asset_name && variantsB.has(assetA.asset_name));
+        
+        const bIsVariantOfA = variantsA.has(idB) ||
+          (assetB.nna_address && variantsA.has(assetB.nna_address)) ||
+          (assetB.asset_name && variantsA.has(assetB.asset_name));
+        
+        // Also check if they share significant overlap in variants (likely same variant group)
+        const sharedVariants = Array.from(variantsA).filter(v => variantsB.has(v));
+        const minVariants = Math.min(variantsA.size, variantsB.size);
+        const variantOverlapThreshold = minVariants > 2 ? Math.ceil(minVariants * 0.7) : minVariants;
+        const significantOverlap = sharedVariants.length >= variantOverlapThreshold;
+        
+        if (aIsVariantOfB || bIsVariantOfA || significantOverlap) {
+          // They're variants - decide which to keep
+          let keepA = false;
+          
+          // Prefer current asset if it matches one of them
+          if (currentAsset) {
+            const currentMatchesA = dualAddressEqual(
+              { nna_address: assetA.nna_address, name: assetA.asset_name || assetA.name },
+              { nna_address: currentAsset.nna_address, name: currentAsset.asset_name }
+            );
+            const currentMatchesB = dualAddressEqual(
+              { nna_address: assetB.nna_address, name: assetB.asset_name || assetB.name },
+              { nna_address: currentAsset.nna_address, name: currentAsset.asset_name }
+            );
+            
+            if (currentMatchesA && !currentMatchesB) {
+              keepA = true;
+            } else if (currentMatchesB && !currentMatchesA) {
+              keepA = false;
+            } else {
+              // Neither is current, prefer higher compatibility_score
+              const scoreA = assetA.compatibility_score || 0;
+              const scoreB = assetB.compatibility_score || 0;
+              keepA = scoreA >= scoreB;
+            }
+          } else {
+            // No current asset, prefer higher compatibility_score
+            const scoreA = assetA.compatibility_score || 0;
+            const scoreB = assetB.compatibility_score || 0;
+            keepA = scoreA >= scoreB;
+          }
+          
+          if (keepA) {
+            toKeep.add(idA);
+            toRemove.add(idB);
+          } else {
+            toKeep.add(idB);
+            toRemove.add(idA);
+          }
+        }
+      }
+    }
+    
+    // Filter out removed assets
+    return assets.filter((asset) => {
+      const assetId = asset.asset_id || asset.nna_address || asset.asset_name;
+      if (!assetId) return true; // Keep assets without IDs
+      return !toRemove.has(assetId);
+    });
   }
 
   private async getLayerAssets(
