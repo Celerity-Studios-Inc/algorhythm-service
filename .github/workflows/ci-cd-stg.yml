@@ -65,7 +65,7 @@ jobs:
             --set-secrets=MONGODB_URI=algorhythm-mongodb-uri-stg:latest \
             --set-secrets=REDIS_URL=algorhythm-redis-url-stg:latest \
             --set-secrets=JWT_SECRET=algorhythm-jwt-secret-stg:latest \
-            --set-secrets=NNA_REGISTRY_JWT_SECRET=algorhythm-nna-jwt-secret-stg:latest \
+            --set-secrets=NNA_REGISTRY_JWT_SECRET=JWT_SECRET_STG:latest \
             --set-secrets=NNA_REGISTRY_API_KEY=algorhythm-nna-api-key-stg:latest \
             --set-secrets=WEBHOOK_SECRET=algorhythm-webhook-secret-stg:latest \
             --set-secrets=ALGORHYTHM_WEBHOOK_SECRET=algorhythm-webhook-secret-stg:latest \

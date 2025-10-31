@@ -68,7 +68,7 @@ jobs:
             --region ${{ env.REGION }} \
             --platform managed \
             --allow-unauthenticated \
-            --set-secrets="MONGODB_URI=algorhythm-mongodb-uri-dev:latest,REDIS_URL=algorhythm-redis-url-dev:latest,JWT_SECRET=algorhythm-jwt-secret-dev:latest,NNA_REGISTRY_URL=algorhythm-nna-registry-url-dev:latest,NNA_API_KEY=algorhythm-nna-api-key-dev:latest,NNA_REGISTRY_TIMEOUT=algorhythm-nna-registry-timeout-dev:latest" \
+            --set-secrets="MONGODB_URI=algorhythm-mongodb-uri-dev:latest,REDIS_URL=algorhythm-redis-url-dev:latest,JWT_SECRET=algorhythm-jwt-secret-dev:latest,NNA_REGISTRY_JWT_SECRET=JWT_SECRET_DEV:latest,NNA_REGISTRY_URL=algorhythm-nna-registry-url-dev:latest,NNA_API_KEY=algorhythm-nna-api-key-dev:latest,NNA_REGISTRY_TIMEOUT=algorhythm-nna-registry-timeout-dev:latest" \
             --set-env-vars="NODE_ENV=development,LOG_LEVEL=info" \
             --timeout=300 \
             --memory=1Gi \
