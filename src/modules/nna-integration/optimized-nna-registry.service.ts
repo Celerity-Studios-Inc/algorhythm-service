@@ -855,6 +855,145 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
   }
 
   /**
+   * 🎯 REVIZ INTEGRATION: Resolve or generate composite from component IDs
+   * 
+   * This method calls the NNA Registry composite resolution endpoint to either
+   * find an existing composite or trigger generation for the provided components.
+   */
+  async resolveOrGenerateComposite(componentIds: string[]): Promise<any> {
+    const startTime = Date.now();
+    
+    try {
+      this.logger.debug(`🔍 [RESOLVE OR GENERATE] Resolving/generating composite for components: ${componentIds.join(', ')}`);
+      
+      // Map component IDs to components object expected by NNA Registry
+      // Expected format: { song: "1.018.003.002", star: "2.009.001.001", look: "3.003.010.002", move: "4.022.002.003", world: "5.004.004.002" }
+      const components = this.mapComponentIdsToComponents(componentIds);
+      
+      if (!components || Object.keys(components).length < 2) {
+        throw new Error(`Invalid component IDs provided. Need at least 2 components.`);
+      }
+      
+      const url = `${this.baseUrl}/api/v1/composites/resolve-or-generate`;
+      this.logger.debug(`🔍 [RESOLVE OR GENERATE] Calling NNA Registry: ${url}`);
+      
+      const requestBody = {
+        components: components,
+        user_context: {
+          user_id: 'system',
+          email: 'system@algorhythm.media'
+        },
+        generation_options: {
+          priority: 'standard',
+          quality: 'standard'
+        }
+      };
+      
+      this.logger.debug(`🔍 [RESOLVE OR GENERATE] Request body:`, JSON.stringify(requestBody, null, 2));
+      
+      const response = await this.circuitBreaker.executeWithCircuitBreaker(
+        () => firstValueFrom(
+          this.httpService.post(url, requestBody, {
+            headers: {
+              'x-api-key': this.apiKey,
+              'Content-Type': 'application/json',
+            },
+            timeout: this.timeout
+          }).pipe(
+            timeout(this.timeout),
+            catchError(error => {
+              this.logger.error(`❌ [RESOLVE OR GENERATE] NNA Registry call failed: ${error.message}`);
+              throw error;
+            })
+          )
+        ),
+        () => {
+          this.logger.warn(`⚠️ [RESOLVE OR GENERATE] Circuit breaker fallback`);
+          return { 
+            data: { success: false, error: 'Circuit breaker fallback' },
+            status: 503,
+            statusText: 'Service Unavailable',
+            headers: {} as any,
+            config: { headers: {} } as any
+          } as any;
+        },
+        `resolveOrGenerateComposite-${componentIds.join('-')}`
+      );
+
+      const data = response.data;
+      const queryTime = Date.now() - startTime;
+      
+      this.logger.debug(`✅ [RESOLVE OR GENERATE] NNA Registry response in ${queryTime}ms: ${JSON.stringify(data).substring(0, 200)}...`);
+
+      if (!data || !data.success) {
+        this.logger.warn(`Composite resolution/generation failed`);
+        return { success: false, error: data?.error || 'Resolution/generation failed' };
+      }
+
+      // Return normalized response
+      return {
+        success: true,
+        status: data.data?.status || 'found', // 'found' or 'generating'
+        composite_id: data.data?.composite_id || data.data?.compositeId,
+        composite_name: data.data?.composite_name || data.data?.compositeName,
+        gcp_storage_url: data.data?.gcp_storage_url || data.data?.gcpStorageUrl,
+        thumbnail_url: data.data?.thumbnail_url || data.data?.thumbnailUrl,
+        duration_seconds: data.data?.duration_seconds || data.data?.durationSeconds,
+        file_size_mb: data.data?.file_size_mb || data.data?.fileSizeMb,
+        resolution: data.data?.resolution || '1080p',
+        format: data.data?.format || 'mp4'
+      };
+    } catch (error) {
+      this.logger.error(`❌ [RESOLVE OR GENERATE] Failed to resolve or generate composite: ${error.message}`);
+      throw error;
+    }
+  }
+
+  /**
+   * Map component IDs array to components object expected by NNA Registry
+   * Component IDs format: ["1.018.003.002", "2.009.001.001", "3.003.010.002", "4.022.002.003", "5.004.004.002"]
+   * Mapped to: { song: "...", star: "...", look: "...", move: "...", world: "..." }
+   */
+  private mapComponentIdsToComponents(componentIds: string[]): Record<string, string> | null {
+    const components: Record<string, string> = {};
+    
+    for (const componentId of componentIds) {
+      // Determine layer based on MFA prefix
+      // Format: {layer}.{category}.{subcategory}.{sequential}
+      const parts = componentId.split('.');
+      if (parts.length < 4) {
+        this.logger.warn(`Invalid component ID format: ${componentId}`);
+        continue;
+      }
+      
+      const layerPrefix = parts[0];
+      
+      // Map layer prefix to component name
+      // 1 = Song (G), 2 = Star (S), 3 = Look (L), 4 = Move (M), 5 = World (W)
+      const layerMap: Record<string, string> = {
+        '1': 'song',
+        '2': 'star',
+        '3': 'look',
+        '4': 'move',
+        '5': 'world'
+      };
+      
+      const componentName = layerMap[layerPrefix];
+      if (componentName) {
+        components[componentName] = componentId;
+      } else {
+        this.logger.warn(`Unknown layer prefix: ${layerPrefix} for component ID: ${componentId}`);
+      }
+    }
+    
+    if (Object.keys(components).length < 2) {
+      return null;
+    }
+    
+    return components;
+  }
+
+  /**
    * 🎯 REVIZ INTEGRATION: Get composite pattern recommendations from NNA Registry
    * 
    * This method calls the new NNA Registry composite pattern recommendations endpoint
