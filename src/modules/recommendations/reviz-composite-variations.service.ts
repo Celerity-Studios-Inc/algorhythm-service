@@ -70,26 +70,52 @@ export class ReVizCompositeVariationsService {
       
       this.logger.debug(`Using composite ID: ${actualCompositeId} (original: ${request.composite_id})`);
       
-      // 2. Process each requested layer
+      // 2. Normalize layer keys and process layers
+      const layerKeyToCode: Record<string, string> = { stars: 'S', looks: 'L', moves: 'M', worlds: 'W' };
+      const requestedLayers: string[] = (request.vary_layers || [])
+        .map((k) => (typeof k === 'string' ? k.toLowerCase() : k))
+        .filter((k) => ['stars', 'looks', 'moves', 'worlds'].includes(k));
+
       const layerResults = await Promise.all(
-        request.vary_layers.map(async (layer) => {
-          // Get current asset for this layer (composite exists, so use normal flow)
-          const currentAsset = await this.getCurrentLayerAsset(actualCompositeId, layer);
-          
-          // Get assets for this layer (use resolved composite_id)
+        requestedLayers.map(async (layerKey) => {
+          // Get current asset; degrade gracefully if missing
+          let currentAsset: any | null = null;
+          try {
+            currentAsset = await this.getCurrentLayerAsset(actualCompositeId, layerKey);
+          } catch (err) {
+            this.logger.warn(`⚠️ Missing current component for layer ${layerKey}: ${err?.message || err}`);
+          }
+
+          // Fetch candidate assets for this layer
           const assets = await this.getLayerAssets(
             actualCompositeId,
-            layer,
+            layerKey,
             request.assets_per_layer || 5,
             request.variants_per_asset || 3,
             request.user_context
           );
-          
+
+          // Ensure current asset is present and first (match by MFA or HFN)
+          if (currentAsset) {
+            const idx = assets.findIndex((a: any) =>
+              a?.nna_address === currentAsset?.nna_address ||
+              a?.asset_name === currentAsset?.asset_name ||
+              a?.name === currentAsset?.asset_name
+            );
+            if (idx === -1) {
+              // Prepend a virtual current asset to stabilize UI
+              assets.unshift(currentAsset);
+            } else if (idx > 0) {
+              const [cur] = assets.splice(idx, 1);
+              assets.unshift(cur);
+            }
+          }
+
           return {
-            layer,
-            current_asset: currentAsset,
+            layer: layerKey,
+            current_asset: currentAsset || null,
             assets,
-            total_available: assets.length
+            total_available: assets.length,
           };
         })
       );
@@ -366,15 +392,18 @@ export class ReVizCompositeVariationsService {
       const currentAsset = this.findCurrentLayerAsset(composite, layer);
       
       if (!currentAsset) {
-        throw new NotFoundException(`No current asset found for layer ${layer} in composite ${compositeId}`);
+        // Graceful degradation: let caller decide how to proceed
+        this.logger.warn(`No current asset found for layer ${layer} in composite ${compositeId}`);
+        return null as any;
       }
 
       return {
-        asset_id: currentAsset.asset_id || currentAsset.id,
+        // Prefer NNA address as stable identifier when present
+        asset_id: currentAsset.nna_address || currentAsset.asset_id || currentAsset.id,
         asset_name: currentAsset.name || `${layer} Asset`,
         nna_address: currentAsset.nna_address || currentAsset.id,
-        gcp_storage_url: currentAsset.gcp_storage_url || `https://storage.googleapis.com/algorhythm-assets/${layer}/${currentAsset.asset_id || currentAsset.id}.mp4`,
-        thumbnail_url: currentAsset.thumbnail_url || `https://storage.googleapis.com/algorhythm-assets/thumbnails/${layer}/${currentAsset.asset_id || currentAsset.id}.jpg`,
+        gcp_storage_url: currentAsset.gcp_storage_url || `https://storage.googleapis.com/algorhythm-assets/${layer}/${currentAsset.nna_address || currentAsset.asset_id || currentAsset.id}.mp4`,
+        thumbnail_url: currentAsset.thumbnail_url || `https://storage.googleapis.com/algorhythm-assets/thumbnails/${layer}/${currentAsset.nna_address || currentAsset.asset_id || currentAsset.id}.jpg`,
         layer: layer,
         metadata: {
           tags: currentAsset.tags || [],
@@ -435,24 +464,25 @@ export class ReVizCompositeVariationsService {
       
       const component = components.find(comp => {
         const compLayer = comp.layer || comp.layer_type || comp.type;
-        this.logger.debug(`🔍 [DEBUG] Checking component: ${comp.name || comp.id}, layer: ${compLayer}, matches ${layerCode}: ${compLayer === layerCode}`);
         return compLayer === layerCode;
       });
       
       if (component) {
         this.logger.debug(`🔍 [DEBUG] Found matching component: ${JSON.stringify(component, null, 2)}`);
+        const nna = component.nna_address || component.nnaAddress;
+        const name = component.name || component.friendlyName;
         return {
-          id: component.id || component._id,
-          asset_id: component.id || component._id,
-          name: component.name || component.friendlyName,
-          nna_address: component.nnaAddress || component.nna_address,
+          id: nna || component.id || component._id,
+          asset_id: nna || component.id || component._id,
+          name,
+          nna_address: nna,
           layer: layer,
           category: component.category,
           subcategory: component.subcategory,
-          gcp_storage_url: `https://storage.googleapis.com/algorhythm-assets/${layer}/${component.id || component._id}.mp4`,
-          thumbnail_url: `https://storage.googleapis.com/algorhythm-assets/thumbnails/${layer}/${component.id || component._id}.jpg`,
+          gcp_storage_url: `https://storage.googleapis.com/algorhythm-assets/${layer}/${nna || component.id || component._id}.mp4`,
+          thumbnail_url: `https://storage.googleapis.com/algorhythm-assets/thumbnails/${layer}/${nna || component.id || component._id}.jpg`,
           tags: component.tags || [],
-          ai_description: component.name || component.friendlyName,
+          ai_description: name,
           duration_seconds: 10,
           file_size_mb: 5.1,
           resolution: '1080p',
