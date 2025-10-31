@@ -461,11 +461,12 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
     }
 
     // Generate service account JWT token
-    // Payload matches what NNA Registry expects for service accounts
+    // Payload matches what NNA Registry expects (based on JWT_SHARING_GUIDE.md examples)
+    // NNA Registry expects: userId (camelCase), email, role, iat, exp
     const payload = {
       userId: 'system',
       email: 'system@algorhythm.media',
-      role: 'service',
+      role: 'user', // Changed from 'service' to 'user' - NNA Registry expects 'user' role
       iat: Math.floor(Date.now() / 1000),
       exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60) // 24 hours
     };
