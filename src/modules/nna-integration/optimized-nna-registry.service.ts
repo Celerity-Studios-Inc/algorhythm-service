@@ -8,6 +8,7 @@ import { AxiosResponse } from 'axios';
 import { CacheService } from '../caching/cache.service';
 import { CACHE_KEYS, CACHE_TTL } from '../../common/constants/cache-keys';
 import { CircuitBreakerService } from './circuit-breaker.service';
+import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class OptimizedNnaRegistryService implements OnModuleInit {
@@ -443,6 +444,44 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
   private getHeaders() {
     return {
       'x-api-key': this.apiKey,
+      'Content-Type': 'application/json',
+    };
+  }
+
+  /**
+   * 🔐 Generate JWT token for service-to-service authentication with NNA Registry
+   * Used for endpoints that require JWT Bearer token instead of API key
+   */
+  private getServiceJwtToken(): string {
+    const nnaJwtSecret = this.configService.get<string>('NNA_REGISTRY_JWT_SECRET');
+    
+    if (!nnaJwtSecret) {
+      this.logger.warn(`⚠️ [JWT] NNA_REGISTRY_JWT_SECRET not configured, cannot generate service token`);
+      throw new Error('NNA Registry JWT secret not configured');
+    }
+
+    // Generate service account JWT token
+    // Payload matches what NNA Registry expects for service accounts
+    const payload = {
+      userId: 'system',
+      email: 'system@algorhythm.media',
+      role: 'service',
+      iat: Math.floor(Date.now() / 1000),
+      exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60) // 24 hours
+    };
+
+    const token = jwt.sign(payload, nnaJwtSecret);
+    this.logger.debug(`🔐 [JWT] Generated service token for NNA Registry`);
+    return token;
+  }
+
+  /**
+   * 🔐 Get headers with JWT Bearer token for endpoints requiring JWT auth
+   */
+  private getJwtHeaders() {
+    const token = this.getServiceJwtToken();
+    return {
+      'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json',
     };
   }
@@ -904,12 +943,13 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
       const response = await this.circuitBreaker.executeWithCircuitBreaker(
         () => {
           this.logger.log(`📊 [DEBUG] Making HTTP POST request to: ${url}`);
+          // 🔐 CRITICAL FIX: Use JWT Bearer token instead of API key for this endpoint
+          const jwtHeaders = this.getJwtHeaders();
+          this.logger.log(`📊 [DEBUG] Using JWT Bearer authentication (token length: ${jwtHeaders.Authorization.length})`);
+          
           return firstValueFrom(
             this.httpService.post(url, requestBody, {
-              headers: {
-                'x-api-key': this.apiKey,
-                'Content-Type': 'application/json',
-              },
+              headers: jwtHeaders,
               timeout: this.timeout
             }).pipe(
               timeout(this.timeout),
