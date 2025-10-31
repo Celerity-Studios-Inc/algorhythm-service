@@ -76,11 +76,11 @@ export class ReVizCompositeVariationsService {
       const requestedLayers = normalizeLayerKeys(request.vary_layers);
 
       // Build current-by-layer map once
-      let currentByLayer = new Map<string, {nna_address?: string, name?: string}>();
+      let currentByLayer = new Map<string, {nna?: string; hfn?: string}>();
       try {
         const compositeRaw = await this.optimizedNnaRegistryService.getCompositeById(actualCompositeId);
-        const comps = compositeRaw?.components || compositeRaw?.data?.components || Array.isArray(compositeRaw?.data) ? compositeRaw?.data : [];
-        currentByLayer = buildCurrentByLayer(comps);
+        const comps = compositeRaw?.components || compositeRaw?.data?.components || (Array.isArray(compositeRaw?.data) ? compositeRaw?.data : []);
+        currentByLayer = buildCurrentByLayer(comps as any);
       } catch (e) {
         this.logger.warn(`⚠️ Unable to prefetch composite components for ${actualCompositeId}`);
         warnings.push({ code: 'COMPONENTS_PREFETCH_FAILED', message: 'Could not prefetch composite components' });
@@ -92,13 +92,13 @@ export class ReVizCompositeVariationsService {
           let currentAsset: any | null = null;
           try {
             // Prefer precomputed map if available
-            const code = layerKeyToCode(layerKey);
+            const code = layerKey === 'stars' ? 'S' : layerKey === 'looks' ? 'L' : layerKey === 'moves' ? 'M' : 'W';
             const cur = currentByLayer.get(code);
             if (cur) {
               currentAsset = {
-                asset_id: cur.nna_address || cur.name,
-                asset_name: cur.name,
-                nna_address: cur.nna_address,
+                asset_id: cur.nna || cur.hfn,
+                asset_name: cur.hfn,
+                nna_address: cur.nna,
                 layer: layerKey,
               };
             } else {
@@ -163,7 +163,7 @@ export class ReVizCompositeVariationsService {
             cache_hit: false,
           },
           // Non-breaking: attach warnings for client visibility
-          ...(warnings.length ? { warnings } : {}),
+          ...(warnings.length ? { warnings: warnings.map((w: any) => ({ layer: w.layer || 'unknown', reason: (w.reason || w.code || 'info') })) } : {}),
         },
         metadata: {
           request_id: `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -185,7 +185,18 @@ export class ReVizCompositeVariationsService {
     
     try {
       // Get composite by ID from NNA Registry
-      const composite = await this.optimizedNnaRegistryService.getCompositeById(compositeId);
+      let composite = await this.optimizedNnaRegistryService.getCompositeById(compositeId);
+      
+      // NEW: If caller provided a Composite HFN (e.g., C.FUL.ALL.082), resolve to actual _id first
+      if ((!composite || (composite as any).statusCode === 404) && /^C\./.test(compositeId)) {
+        this.logger.debug(`🔍 HFN detected (${compositeId}). Resolving to composite _id via Registry...`);
+        const byHfn = await this.optimizedNnaRegistryService.getCompositeByHfn(compositeId);
+        const resolvedId = byHfn?._id || byHfn?.id;
+        if (resolvedId) {
+          this.logger.debug(`✅ Resolved HFN ${compositeId} to _id ${resolvedId}. Fetching by id...`);
+          composite = await this.optimizedNnaRegistryService.getCompositeById(resolvedId);
+        }
+      }
       
       if (!composite || (composite as any).statusCode === 404) {
         // 🔧 ISSUE #2 FIX: Try to resolve or generate composite when not found

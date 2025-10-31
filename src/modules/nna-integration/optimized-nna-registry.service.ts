@@ -680,6 +680,37 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
   }
 
   /**
+   * Look up a composite by HFN (e.g., C.FUL.ALL.082) using the Registry assets endpoint.
+   * Returns the first matching composite payload or null.
+   */
+  async getCompositeByHfn(hfn: string): Promise<any | null> {
+    try {
+      const url = `${this.baseUrl}/api/v1/assets`;
+      this.logger.debug(`🔍 [COMPOSITE BY HFN] Querying ${url} layer=C name=${hfn}`);
+      const response: AxiosResponse = await firstValueFrom(
+        this.httpService.get(url, {
+          headers: this.getHeaders(),
+          params: {
+            layer: 'C',
+            name: hfn,
+            limit: 1,
+          },
+          timeout: this.timeout,
+        })
+      );
+
+      const list = response.data?.data;
+      if (Array.isArray(list) && list.length > 0) {
+        return list[0];
+      }
+      return null;
+    } catch (error) {
+      this.logger.warn(`⚠️ [COMPOSITE BY HFN] Lookup failed for ${hfn}: ${error?.message}`);
+      return null;
+    }
+  }
+
+  /**
    * Backend team's exact method name for compatibility
    */
   async getCompositesBySongAlgoRhythmFormat(songId: string, options?: any) {
