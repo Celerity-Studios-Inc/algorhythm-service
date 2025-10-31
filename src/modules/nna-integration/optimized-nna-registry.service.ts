@@ -940,10 +940,23 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
             )
           );
         },
-        () => {
-          this.logger.warn(`⚠️ [RESOLVE OR GENERATE] Circuit breaker fallback triggered - circuit is likely OPEN`);
+        (error?: any) => {
+          this.logger.warn(`⚠️ [RESOLVE OR GENERATE] Circuit breaker fallback triggered - circuit is likely OPEN or operation failed`);
+          
+          // Include error details in fallback response if available
+          const errorDetails = error ? {
+            http_status: error.response?.status || error.status || null,
+            error_code: error.code || null,
+            error_message: error.message || null,
+            response_data: error.response?.data || null
+          } : null;
+          
           return { 
-            data: { success: false, error: 'Circuit breaker fallback' },
+            data: { 
+              success: false, 
+              error: 'Circuit breaker fallback',
+              error_details: errorDetails
+            },
             status: 503,
             statusText: 'Service Unavailable',
             headers: {} as any,
@@ -967,7 +980,22 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
 
       if (!data.success) {
         this.logger.warn(`⚠️ [RESOLVE OR GENERATE] Composite resolution/generation failed: ${data.error || 'Unknown error'}`);
-        return { success: false, error: data.error || 'Resolution/generation failed', status: data.status || 'not_found' };
+        
+        // Include error details from circuit breaker if available
+        const lastError = this.circuitBreaker.getLastError();
+        const errorDetails = lastError ? {
+          http_status: lastError.status,
+          error_code: lastError.code,
+          error_message: lastError.message,
+          response_data: lastError.responseData
+        } : null;
+        
+        return { 
+          success: false, 
+          error: data.error || 'Resolution/generation failed', 
+          status: data.status || 'not_found',
+          error_details: data.error_details || errorDetails
+        };
       }
 
       // Return normalized response

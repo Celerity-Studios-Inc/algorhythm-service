@@ -149,6 +149,9 @@ export class ReVizCompositeVariationsController {
       
       const result = await this.optimizedNnaRegistryService.resolveOrGenerateComposite(componentIds);
       
+      // Get last error from circuit breaker for debugging
+      const lastError = this.circuitBreakerService.getLastError();
+      
       return {
         success: true,
         input: {
@@ -156,6 +159,10 @@ export class ReVizCompositeVariationsController {
           componentIds
         },
         result: result,
+        debug_info: {
+          circuit_breaker_status: this.circuitBreakerService.getStatus(),
+          last_error: lastError
+        },
         timestamp: new Date().toISOString()
       };
     } catch (error) {
@@ -187,6 +194,8 @@ export class ReVizCompositeVariationsController {
   })
   async getCircuitBreakerStatus(): Promise<any> {
     const status = this.circuitBreakerService.getStatus();
+    const lastError = this.circuitBreakerService.getLastError();
+    
     return {
       success: true,
       circuit_breaker: {
@@ -194,7 +203,8 @@ export class ReVizCompositeVariationsController {
         state: status.isOpen ? 'OPEN' : 'CLOSED',
         message: status.isOpen 
           ? `Circuit breaker is OPEN. Will auto-close after ${status.resetTimeout - status.timeSinceLastFailure}ms`
-          : 'Circuit breaker is CLOSED. Requests are being processed normally.'
+          : 'Circuit breaker is CLOSED. Requests are being processed normally.',
+        last_error: lastError
       },
       timestamp: new Date().toISOString()
     };

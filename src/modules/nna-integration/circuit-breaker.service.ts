@@ -32,8 +32,10 @@ export class CircuitBreakerService {
       return result;
     } catch (error) {
       this.logger.error(`❌ ${operationName} threw error during execution`);
+      this.lastError = error; // Store error for debugging
       this.onFailure(operationName, error);
       this.logger.warn(`⚠️ ${operationName} failed, using fallback`);
+      
       return fallback();
     }
   }
@@ -81,8 +83,23 @@ export class CircuitBreakerService {
       failureCount: this.failureCount,
       isOpen: this.isCircuitOpen(),
       timeSinceLastFailure: Date.now() - this.lastFailureTime,
-      resetTimeout: this.resetTimeout
+      resetTimeout: this.resetTimeout,
+      lastError: this.lastError || null
     };
+  }
+
+  private lastError: any = null;
+
+  /**
+   * Get last error details for debugging
+   */
+  getLastError() {
+    return this.lastError ? {
+      message: this.lastError.message,
+      status: this.lastError.response?.status || this.lastError.status || null,
+      code: this.lastError.code || null,
+      responseData: this.lastError.response?.data || null
+    } : null;
   }
 
   /**
@@ -92,6 +109,7 @@ export class CircuitBreakerService {
     this.logger.log(`🔄 [CIRCUIT BREAKER] Manual reset requested`);
     this.failureCount = 0;
     this.lastFailureTime = 0;
+    this.lastError = null; // Clear last error on reset
     this.logger.log(`✅ [CIRCUIT BREAKER] Circuit breaker reset successfully`);
   }
 }
