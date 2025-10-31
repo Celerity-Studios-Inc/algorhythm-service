@@ -2,7 +2,7 @@ import { Controller, Post, Body, HttpStatus, Logger, Get, Query } from '@nestjs/
 import { ApiTags, ApiOperation, ApiResponse, ApiHeader, ApiBody } from '@nestjs/swagger';
 import { ReVizCompositeVariationsService } from './reviz-composite-variations.service';
 import { ReVizCompositeVariationDto, ReVizCompositeVariationResponse } from './dto/reviz-composite-variation.dto';
-import { OptimizedNnaRegistryService } from '../../nna-integration/optimized-nna-registry.service';
+import { OptimizedNnaRegistryService } from '../nna-integration/optimized-nna-registry.service';
 
 /**
  * 🔧 REVIZ DEVELOPER REQUEST: Composite-Specific Layer Variations
