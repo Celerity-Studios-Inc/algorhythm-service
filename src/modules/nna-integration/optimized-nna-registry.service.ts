@@ -864,18 +864,23 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
     const startTime = Date.now();
     
     try {
-      this.logger.debug(`🔍 [RESOLVE OR GENERATE] Resolving/generating composite for components: ${componentIds.join(', ')}`);
+      this.logger.log(`🔍 [RESOLVE OR GENERATE] Starting resolution for ${componentIds.length} component IDs: ${componentIds.join(', ')}`);
       
       // Map component IDs to components object expected by NNA Registry
       // Expected format: { song: "1.018.003.002", star: "2.009.001.001", look: "3.003.010.002", move: "4.022.002.003", world: "5.004.004.002" }
+      this.logger.log(`📊 [DEBUG] Parsing component IDs: ${JSON.stringify(componentIds)}`);
       const components = this.mapComponentIdsToComponents(componentIds);
       
+      this.logger.log(`📊 [DEBUG] Mapped components: ${JSON.stringify(components)}`);
+      
       if (!components || Object.keys(components).length < 2) {
-        throw new Error(`Invalid component IDs provided. Need at least 2 components.`);
+        this.logger.error(`❌ [RESOLVE OR GENERATE] Invalid component IDs. Components mapped: ${JSON.stringify(components)}`);
+        throw new Error(`Invalid component IDs provided. Need at least 2 components. Got: ${Object.keys(components || {}).length}`);
       }
       
       const url = `${this.baseUrl}/api/v1/composites/resolve-or-generate`;
-      this.logger.debug(`🔍 [RESOLVE OR GENERATE] Calling NNA Registry: ${url}`);
+      this.logger.log(`🔍 [RESOLVE OR GENERATE] Calling NNA Registry: ${url}`);
+      this.logger.log(`📊 [DEBUG] Base URL: ${this.baseUrl}, API Key: ${this.apiKey ? 'SET' : 'MISSING'}`);
       
       const requestBody = {
         components: components,
@@ -889,42 +894,54 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
         }
       };
       
-      this.logger.debug(`🔍 [RESOLVE OR GENERATE] Request body:`, JSON.stringify(requestBody, null, 2));
+      this.logger.log(`📊 [DEBUG] Request body: ${JSON.stringify(requestBody, null, 2)}`);
+      
+      // Check circuit breaker state before making call
+      this.logger.log(`📊 [DEBUG] Circuit breaker key: resolveOrGenerateComposite-${componentIds.join('-')}`);
+      
+      this.logger.log(`📊 [DEBUG] Executing HTTP request with timeout: ${this.timeout}ms`);
       
       const response = await this.circuitBreaker.executeWithCircuitBreaker(
-        () => firstValueFrom(
-          this.httpService.post(url, requestBody, {
-            headers: {
-              'x-api-key': this.apiKey,
-              'Content-Type': 'application/json',
-            },
-            timeout: this.timeout
-          }).pipe(
-            timeout(this.timeout),
-            catchError(error => {
-              // Handle 404 (composite not found) gracefully - this is expected for CUSTOMIZE flow
-              if (error.response?.status === 404) {
-                this.logger.debug(`ℹ️ [RESOLVE OR GENERATE] Composite not found (404) - this is expected`);
-                // Return a response that indicates composite not found (not an error for CUSTOMIZE)
-                return of({
-                  data: {
-                    success: false,
-                    error: 'Composite not found',
-                    status: 'not_found'
-                  },
-                  status: 404,
-                  statusText: 'Not Found',
-                  headers: {} as any,
-                  config: { headers: {} } as any
-                } as any);
-              }
-              this.logger.error(`❌ [RESOLVE OR GENERATE] NNA Registry call failed: ${error.message}`);
-              throw error;
-            })
-          )
-        ),
         () => {
-          this.logger.warn(`⚠️ [RESOLVE OR GENERATE] Circuit breaker fallback`);
+          this.logger.log(`📊 [DEBUG] Making HTTP POST request to: ${url}`);
+          return firstValueFrom(
+            this.httpService.post(url, requestBody, {
+              headers: {
+                'x-api-key': this.apiKey,
+                'Content-Type': 'application/json',
+              },
+              timeout: this.timeout
+            }).pipe(
+              timeout(this.timeout),
+              catchError(error => {
+                // Handle 404 (composite not found) gracefully - this is expected for CUSTOMIZE flow
+                if (error.response?.status === 404) {
+                  this.logger.log(`ℹ️ [RESOLVE OR GENERATE] Composite not found (404) - this is expected for non-existent composites`);
+                  this.logger.log(`📊 [DEBUG] 404 Response: ${JSON.stringify(error.response?.data || {})}`);
+                  // Return a response that indicates composite not found (not an error for CUSTOMIZE)
+                  return of({
+                    data: {
+                      success: false,
+                      error: 'Composite not found',
+                      status: 'not_found'
+                    },
+                    status: 404,
+                    statusText: 'Not Found',
+                    headers: {} as any,
+                    config: { headers: {} } as any
+                  } as any);
+                }
+                this.logger.error(`❌ [RESOLVE OR GENERATE] NNA Registry HTTP call failed`);
+                this.logger.error(`📊 [DEBUG] Error status: ${error.response?.status || 'unknown'}`);
+                this.logger.error(`📊 [DEBUG] Error message: ${error.message}`);
+                this.logger.error(`📊 [DEBUG] Error response data: ${JSON.stringify(error.response?.data || {})}`);
+                throw error;
+              })
+            )
+          );
+        },
+        () => {
+          this.logger.warn(`⚠️ [RESOLVE OR GENERATE] Circuit breaker fallback triggered - circuit is likely OPEN`);
           return { 
             data: { success: false, error: 'Circuit breaker fallback' },
             status: 503,
@@ -935,6 +952,8 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
         },
         `resolveOrGenerateComposite-${componentIds.join('-')}`
       );
+      
+      this.logger.log(`📊 [DEBUG] HTTP response received. Status: ${response.status}, StatusText: ${response.statusText}`);
 
       const data = response.data;
       const queryTime = Date.now() - startTime;

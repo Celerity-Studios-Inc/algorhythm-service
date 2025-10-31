@@ -1,7 +1,8 @@
-import { Controller, Post, Body, HttpStatus, Logger } from '@nestjs/common';
+import { Controller, Post, Body, HttpStatus, Logger, Get, Query } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiHeader, ApiBody } from '@nestjs/swagger';
 import { ReVizCompositeVariationsService } from './reviz-composite-variations.service';
 import { ReVizCompositeVariationDto, ReVizCompositeVariationResponse } from './dto/reviz-composite-variation.dto';
+import { OptimizedNnaRegistryService } from '../../nna-integration/optimized-nna-registry.service';
 
 /**
  * 🔧 REVIZ DEVELOPER REQUEST: Composite-Specific Layer Variations
@@ -17,7 +18,8 @@ export class ReVizCompositeVariationsController {
   private readonly logger = new Logger(ReVizCompositeVariationsController.name);
 
   constructor(
-    private readonly revizCompositeVariationsService: ReVizCompositeVariationsService
+    private readonly revizCompositeVariationsService: ReVizCompositeVariationsService,
+    private readonly optimizedNnaRegistryService: OptimizedNnaRegistryService
   ) {}
 
   /**
@@ -105,6 +107,67 @@ export class ReVizCompositeVariationsController {
         error.stack
       );
       throw error;
+    }
+  }
+
+  /**
+   * 🐛 DEBUG ENDPOINT: Test composite resolution directly
+   * 
+   * This endpoint allows isolated testing of the composite resolution flow
+   * without going through the full variations service.
+   * 
+   * Usage: GET /api/v1/reviz/composite/debug/test-resolution?ids=1.018.003.002,2.009.001.001,3.003.010.002
+   */
+  @Get('debug/test-resolution')
+  @ApiOperation({
+    summary: '[DEBUG] Test composite resolution directly',
+    description: 'Isolated test endpoint for composite resolution. Pass component IDs as comma-separated query parameter.'
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Resolution test result'
+  })
+  async testCompositeResolution(
+    @Query('ids') componentIdsString: string,
+  ): Promise<any> {
+    this.logger.log(`🐛 [DEBUG] Testing composite resolution for: ${componentIdsString}`);
+    
+    try {
+      const componentIds = componentIdsString.split(',').map(id => id.trim()).filter(Boolean);
+      
+      if (componentIds.length < 2) {
+        return {
+          success: false,
+          error: 'Need at least 2 component IDs',
+          componentIds: componentIds
+        };
+      }
+
+      this.logger.log(`🐛 [DEBUG] Parsed component IDs: ${JSON.stringify(componentIds)}`);
+      
+      const result = await this.optimizedNnaRegistryService.resolveOrGenerateComposite(componentIds);
+      
+      return {
+        success: true,
+        input: {
+          componentIdsString,
+          componentIds
+        },
+        result: result,
+        timestamp: new Date().toISOString()
+      };
+    } catch (error) {
+      this.logger.error(`❌ [DEBUG] Resolution test failed:`, error.stack);
+      return {
+        success: false,
+        error: error.message,
+        stack: error.stack,
+        input: {
+          componentIdsString,
+          componentIds: componentIdsString.split(',').map(id => id.trim()).filter(Boolean)
+        },
+        timestamp: new Date().toISOString()
+      };
     }
   }
 }
