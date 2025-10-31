@@ -14,21 +14,26 @@ export class CircuitBreakerService {
     fallback: () => T,
     operationName: string = 'operation'
   ): Promise<T> {
-    if (this.isCircuitOpen()) {
+    const circuitState = this.isCircuitOpen();
+    
+    if (circuitState) {
+      const status = this.getStatus();
       this.logger.warn(`🔴 Circuit breaker OPEN for ${operationName}, using fallback`);
+      this.logger.warn(`📊 [CIRCUIT BREAKER] Failure count: ${status.failureCount}, Time since last failure: ${status.timeSinceLastFailure}ms`);
       return fallback();
     }
 
     try {
-      this.logger.debug(`🟢 Executing ${operationName} with circuit breaker`);
+      this.logger.log(`🟢 Executing ${operationName} with circuit breaker (CLOSED state, failures: ${this.failureCount}/${this.failureThreshold})`);
       
       const result = await operation();
       
       this.onSuccess(operationName);
       return result;
     } catch (error) {
+      this.logger.error(`❌ ${operationName} threw error during execution`);
       this.onFailure(operationName, error);
-      this.logger.warn(`⚠️ ${operationName} failed, using fallback: ${error.message}`);
+      this.logger.warn(`⚠️ ${operationName} failed, using fallback`);
       return fallback();
     }
   }
@@ -50,10 +55,24 @@ export class CircuitBreakerService {
     this.failureCount++;
     this.lastFailureTime = Date.now();
     
-    this.logger.warn(`❌ ${operationName} failed (${this.failureCount}/${this.failureThreshold}): ${error.message}`);
+    // Enhanced error logging
+    const errorDetails = {
+      message: error.message,
+      status: error.response?.status || error.status || 'unknown',
+      statusText: error.response?.statusText || error.statusText || 'unknown',
+      responseData: error.response?.data ? JSON.stringify(error.response.data).substring(0, 200) : 'none',
+      code: error.code || 'unknown',
+      stack: error.stack ? error.stack.substring(0, 300) : 'none'
+    };
+    
+    this.logger.error(`❌ ${operationName} failed (${this.failureCount}/${this.failureThreshold})`);
+    this.logger.error(`📊 [ERROR DETAILS] Status: ${errorDetails.status}, Code: ${errorDetails.code}`);
+    this.logger.error(`📊 [ERROR DETAILS] Message: ${errorDetails.message}`);
+    this.logger.error(`📊 [ERROR DETAILS] Response: ${errorDetails.responseData}`);
     
     if (this.failureCount >= this.failureThreshold) {
       this.logger.error(`🔴 Circuit breaker OPEN for ${operationName} after ${this.failureCount} failures`);
+      this.logger.error(`📊 [CIRCUIT BREAKER] Will auto-close after ${this.resetTimeout}ms`);
     }
   }
 
