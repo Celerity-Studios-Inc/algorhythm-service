@@ -53,19 +53,31 @@ update_secret() {
     fi
 }
 
-# Step 2: Create/update secrets
-echo "▶ Step 2: Creating/updating JWT secrets in Secret Manager..."
-update_secret "algorhythm-nna-jwt-secret-dev" "$DEV_SECRET_VALUE" "Development NNA Registry JWT secret"
-update_secret "algorhythm-nna-jwt-secret-stg" "$STG_SECRET_VALUE" "Staging NNA Registry JWT secret"
-update_secret "algorhythm-nna-jwt-secret" "$PROD_SECRET_VALUE" "Production NNA Registry JWT secret"
-echo "✅ All secrets created/updated"
+# Step 2: Verify NNA Registry secrets exist (we'll use them directly)
+echo "▶ Step 2: Verifying NNA Registry JWT secrets exist..."
+echo ""
+echo "Note: We use NNA Registry's secrets directly (JWT_SECRET_DEV, JWT_SECRET_STG, JWT_SECRET)"
+echo "      instead of creating duplicate secrets. This ensures we're always in sync."
 echo ""
 
-# Step 3: Grant service account access
-echo "▶ Step 3: Granting service account access to secrets..."
+for SECRET_NAME in "JWT_SECRET_DEV" "JWT_SECRET_STG" "JWT_SECRET"; do
+  if gcloud secrets describe "$SECRET_NAME" --project="$PROJECT_ID" >/dev/null 2>&1; then
+    VERSION=$(gcloud secrets versions list "$SECRET_NAME" --limit=1 --format="value(name)" --project="$PROJECT_ID" 2>/dev/null || echo "unknown")
+    echo "  ✅ $SECRET_NAME exists (latest version: $VERSION)"
+  else
+    echo "  ❌ $SECRET_NAME NOT FOUND - NNA Registry must create this first"
+    exit 1
+  fi
+done
+echo ""
+echo "✅ All NNA Registry secrets verified"
+echo ""
+
+# Step 3: Grant service account access to NNA Registry secrets
+echo "▶ Step 3: Granting service account access to NNA Registry secrets..."
 SERVICE_ACCOUNT="algorhythm-service@revize-453014.iam.gserviceaccount.com"
 
-for secret_name in algorhythm-nna-jwt-secret-dev algorhythm-nna-jwt-secret-stg algorhythm-nna-jwt-secret; do
+for secret_name in JWT_SECRET_DEV JWT_SECRET_STG JWT_SECRET; do
     echo "  Granting access to: $secret_name"
     gcloud secrets add-iam-policy-binding "$secret_name" \
         --member="serviceAccount:$SERVICE_ACCOUNT" \
@@ -77,32 +89,35 @@ echo "✅ Service account access configured"
 echo ""
 
 # Step 4: Wire secrets to Cloud Run services
-echo "▶ Step 4: Wiring secrets to Cloud Run services..."
+# NOTE: We use NNA Registry's secrets directly (JWT_SECRET_DEV, JWT_SECRET_STG, JWT_SECRET)
+# instead of duplicate algorhythm-nna-jwt-secret-* secrets. This ensures we're always
+# in sync with NNA Registry's JWT secret values.
+echo "▶ Step 4: Wiring NNA Registry secrets directly to Cloud Run services..."
 
-# Dev
-echo "  Updating algorhythm-service-dev..."
+# Dev - Use JWT_SECRET_DEV directly
+echo "  Updating algorhythm-service-dev (using JWT_SECRET_DEV directly)..."
 gcloud run services update algorhythm-service-dev \
     --region "$REGION" \
     --project "$PROJECT_ID" \
-    --set-secrets="NNA_REGISTRY_JWT_SECRET=algorhythm-nna-jwt-secret-dev:latest" \
+    --set-secrets="NNA_REGISTRY_JWT_SECRET=JWT_SECRET_DEV:latest" \
     --quiet >/dev/null 2>&1 || echo "    ⚠️  Update may have failed - check logs"
 echo "    ✅ Dev service updated"
 
-# Staging
-echo "  Updating algorhythm-service-staging..."
+# Staging - Use JWT_SECRET_STG directly
+echo "  Updating algorhythm-service-staging (using JWT_SECRET_STG directly)..."
 gcloud run services update algorhythm-service-staging \
     --region "$REGION" \
     --project "$PROJECT_ID" \
-    --set-secrets="NNA_REGISTRY_JWT_SECRET=algorhythm-nna-jwt-secret-stg:latest" \
+    --set-secrets="NNA_REGISTRY_JWT_SECRET=JWT_SECRET_STG:latest" \
     --quiet >/dev/null 2>&1 || echo "    ⚠️  Update may have failed - check logs"
 echo "    ✅ Staging service updated"
 
-# Production
-echo "  Updating algorhythm-service..."
+# Production - Use JWT_SECRET directly
+echo "  Updating algorhythm-service (using JWT_SECRET directly)..."
 gcloud run services update algorhythm-service \
     --region "$REGION" \
     --project "$PROJECT_ID" \
-    --set-secrets="NNA_REGISTRY_JWT_SECRET=algorhythm-nna-jwt-secret:latest" \
+    --set-secrets="NNA_REGISTRY_JWT_SECRET=JWT_SECRET:latest" \
     --quiet >/dev/null 2>&1 || echo "    ⚠️  Update may have failed - check logs"
 echo "    ✅ Production service updated"
 
@@ -113,8 +128,8 @@ echo ""
 echo "▶ Step 5: Verifying configuration..."
 echo ""
 
-echo "Secret status:"
-for secret_name in algorhythm-nna-jwt-secret-dev algorhythm-nna-jwt-secret-stg algorhythm-nna-jwt-secret; do
+echo "Secret status (NNA Registry secrets we're using):"
+for secret_name in JWT_SECRET_DEV JWT_SECRET_STG JWT_SECRET; do
     if gcloud secrets describe "$secret_name" --project="$PROJECT_ID" >/dev/null 2>&1; then
         LATEST_VERSION=$(gcloud secrets versions list "$secret_name" --limit=1 --format="value(name)" --project="$PROJECT_ID")
         echo "  ✅ $secret_name (latest: $LATEST_VERSION)"
