@@ -66,6 +66,28 @@ export class ReVizCompositeVariationsService {
       // If generation was triggered, compositeInfo.composite_id will be the new composite ID
       const actualCompositeId = compositeInfo.composite_id || request.composite_id;
       
+      // 🔧 ISSUE #2 FIX: Validate that we have a real composite ID, not component IDs
+      // If actualCompositeId contains '+', it's still component IDs and composite wasn't resolved
+      if (actualCompositeId.includes('+')) {
+        const componentIds = this.parseComponentIds(actualCompositeId);
+        const hasPersonalize = componentIds?.some(id => id.startsWith('P.')) || false;
+        
+        if (hasPersonalize) {
+          throw new NotFoundException(
+            `Composite not found: ${actualCompositeId}. ` +
+            `Component IDs provided include Personalize component, but composite generation is not yet implemented. ` +
+            `Please use an existing composite ID or provide component IDs for an existing composite.`
+          );
+        } else {
+          throw new NotFoundException(
+            `Composite not found: ${actualCompositeId}. ` +
+            `No existing composite found for the provided component IDs: ${componentIds?.join(', ') || actualCompositeId}. ` +
+            `Composite generation is not yet available for standard component combinations. ` +
+            `Please use an existing composite ID.`
+          );
+        }
+      }
+      
       this.logger.debug(`Using composite ID: ${actualCompositeId} (original: ${request.composite_id})`);
       
       // 2. Process each requested layer
@@ -216,15 +238,28 @@ export class ReVizCompositeVariationsService {
         throw new NotFoundException(`Composite not found: ${compositeId}. Please ensure the composite exists or provide valid component IDs (with Personalize component for generation).`);
       }
 
+      // Validate that composite has valid data (not just an error response)
+      if (!composite.data && !composite._id) {
+        // If no data and compositeId contains '+', it's component IDs - should have been handled above
+        if (compositeId.includes('+')) {
+          throw new NotFoundException(
+            `Composite not found: ${compositeId}. ` +
+            `Component IDs provided but no existing composite found. ` +
+            `Please use an existing composite ID.`
+          );
+        }
+        throw new NotFoundException(`Composite not found: ${compositeId}`);
+      }
+
       return {
-        composite_id: composite.data?._id || compositeId,
-        composite_name: composite.data?.name || `Composite ${compositeId}`,
-        gcp_storage_url: composite.data?.gcpStorageUrl || `https://storage.googleapis.com/algorhythm-assets/composites/${compositeId}.mp4`,
-        thumbnail_url: composite.data?.thumbnailUrl || `https://storage.googleapis.com/algorhythm-assets/thumbnails/composites/${compositeId}.jpg`,
-        duration_seconds: composite.data?.duration_seconds || 30,
-        file_size_mb: composite.data?.file_size_mb || 15.2,
-        resolution: composite.data?.resolution || '1080p',
-        format: composite.data?.format || 'mp4'
+        composite_id: composite.data?._id || composite._id || compositeId,
+        composite_name: composite.data?.name || composite.name || `Composite ${compositeId}`,
+        gcp_storage_url: composite.data?.gcpStorageUrl || composite.gcpStorageUrl || `https://storage.googleapis.com/algorhythm-assets/composites/${compositeId}.mp4`,
+        thumbnail_url: composite.data?.thumbnailUrl || composite.thumbnailUrl || `https://storage.googleapis.com/algorhythm-assets/thumbnails/composites/${compositeId}.jpg`,
+        duration_seconds: composite.data?.duration_seconds || composite.duration_seconds || 30,
+        file_size_mb: composite.data?.file_size_mb || composite.file_size_mb || 15.2,
+        resolution: composite.data?.resolution || composite.resolution || '1080p',
+        format: composite.data?.format || composite.format || 'mp4'
       };
     } catch (error) {
       if (error instanceof NotFoundException) {
