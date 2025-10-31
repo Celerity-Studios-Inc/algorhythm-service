@@ -969,13 +969,14 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
       const layerPrefix = parts[0];
       
       // Map layer prefix to component name
-      // 1 = Song (G), 2 = Star (S), 3 = Look (L), 4 = Move (M), 5 = World (W)
+      // 1 = Song (G), 2 = Star (S), 3 = Look (L), 4 = Move (M), 5 = World (W), P = Personalize
       const layerMap: Record<string, string> = {
         '1': 'song',
         '2': 'star',
         '3': 'look',
         '4': 'move',
-        '5': 'world'
+        '5': 'world',
+        'P': 'personalize'  // Personalize component for generation
       };
       
       const componentName = layerMap[layerPrefix];
