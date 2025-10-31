@@ -31,28 +31,48 @@ export class ReVizCompositeVariationsService {
       // 1. Get the specific composite information (may trigger generation)
       const compositeInfo = await this.getCompositeInfo(request.composite_id);
       
+      // 🔧 ISSUE #2 FIX: Early return if composite is being generated
+      // Cannot build variations for a composite that doesn't exist yet
+      if (compositeInfo.generation_status === 'generating') {
+        const responseTime = Date.now() - startTime;
+        this.logger.log(
+          `⏳ Composite generation in progress: ${request.composite_id}. Returning generating status.`
+        );
+        
+        return {
+          success: true,
+          data: {
+            composite_info: compositeInfo,
+            layers: [], // No layers available during generation
+            total_assets: 0,
+            performance_metrics: {
+              response_time_ms: responseTime,
+              assets_evaluated: 0,
+              cache_hit: false,
+            },
+            generation_status: 'generating' as const,
+            message: 'Composite is being generated. Please retry the request once generation is complete.',
+            estimated_completion_seconds: 30, // Rough estimate
+          },
+          metadata: {
+            request_id: `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+            timestamp: new Date().toISOString(),
+            version: '1.0.0',
+          },
+        } as ReVizCompositeVariationResponse;
+      }
+      
       // 🔧 ISSUE #2 FIX: Use resolved composite_id (from generation) instead of original request
       // If generation was triggered, compositeInfo.composite_id will be the new composite ID
       const actualCompositeId = compositeInfo.composite_id || request.composite_id;
-      const isGenerating = compositeInfo.generation_status === 'generating';
       
-      // 🔧 ISSUE #2 FIX: Store component IDs for generating case
-      const componentIds = this.parseComponentIds(request.composite_id);
-      
-      this.logger.debug(`Using composite ID: ${actualCompositeId} (original: ${request.composite_id}, generating: ${isGenerating})`);
+      this.logger.debug(`Using composite ID: ${actualCompositeId} (original: ${request.composite_id})`);
       
       // 2. Process each requested layer
       const layerResults = await Promise.all(
         request.vary_layers.map(async (layer) => {
-          // Get current asset for this layer
-          let currentAsset;
-          if (isGenerating && componentIds) {
-            // 🔧 ISSUE #2 FIX: If generating, extract current asset from component IDs
-            currentAsset = await this.getCurrentLayerAssetFromComponents(componentIds, layer);
-          } else {
-            // Normal flow: get from existing composite
-            currentAsset = await this.getCurrentLayerAsset(actualCompositeId, layer);
-          }
+          // Get current asset for this layer (composite exists, so use normal flow)
+          const currentAsset = await this.getCurrentLayerAsset(actualCompositeId, layer);
           
           // Get assets for this layer (use resolved composite_id)
           const assets = await this.getLayerAssets(
@@ -127,20 +147,36 @@ export class ReVizCompositeVariationsService {
             this.logger.log(`🔍 Attempting to resolve composite from component IDs: ${componentIds.join(', ')}`);
             const resolved = await this.optimizedNnaRegistryService.resolveOrGenerateComposite(componentIds);
             
-            if (resolved && resolved.success && resolved.status === 'found') {
-              // Composite found via CUSTOMIZE flow - return it
-              this.logger.log(`✅ Found existing composite: ${resolved.composite_id}`);
-              return {
-                composite_id: resolved.composite_id || compositeId,
-                composite_name: resolved.composite_name || `Composite ${compositeId}`,
-                gcp_storage_url: resolved.gcp_storage_url || `https://storage.googleapis.com/algorhythm-assets/composites/${compositeId}.mp4`,
-                thumbnail_url: resolved.thumbnail_url || `https://storage.googleapis.com/algorhythm-assets/thumbnails/composites/${compositeId}.jpg`,
-                duration_seconds: resolved.duration_seconds || 30,
-                file_size_mb: resolved.file_size_mb || 15.2,
-                resolution: resolved.resolution || '1080p',
-                format: resolved.format || 'mp4',
-                generation_status: undefined // Generation not implemented yet
-              };
+            if (resolved && resolved.success) {
+              if (resolved.status === 'found') {
+                // Composite found via CUSTOMIZE flow - return it
+                this.logger.log(`✅ Found existing composite: ${resolved.composite_id}`);
+                return {
+                  composite_id: resolved.composite_id || compositeId,
+                  composite_name: resolved.composite_name || `Composite ${compositeId}`,
+                  gcp_storage_url: resolved.gcp_storage_url || `https://storage.googleapis.com/algorhythm-assets/composites/${compositeId}.mp4`,
+                  thumbnail_url: resolved.thumbnail_url || `https://storage.googleapis.com/algorhythm-assets/thumbnails/composites/${compositeId}.jpg`,
+                  duration_seconds: resolved.duration_seconds || 30,
+                  file_size_mb: resolved.file_size_mb || 15.2,
+                  resolution: resolved.resolution || '1080p',
+                  format: resolved.format || 'mp4',
+                  generation_status: undefined
+                };
+              } else if (resolved.status === 'generating') {
+                // Composite generation in progress - return with generating status
+                this.logger.log(`⏳ Composite generation in progress: ${resolved.composite_id || compositeId}`);
+                return {
+                  composite_id: resolved.composite_id || compositeId,
+                  composite_name: resolved.composite_name || `Composite ${compositeId}`,
+                  gcp_storage_url: resolved.gcp_storage_url || `https://storage.googleapis.com/algorhythm-assets/composites/${compositeId}.mp4`,
+                  thumbnail_url: resolved.thumbnail_url || `https://storage.googleapis.com/algorhythm-assets/thumbnails/composites/${compositeId}.jpg`,
+                  duration_seconds: resolved.duration_seconds || 30,
+                  file_size_mb: resolved.file_size_mb || 15.2,
+                  resolution: resolved.resolution || '1080p',
+                  format: resolved.format || 'mp4',
+                  generation_status: 'generating'
+                };
+              }
             }
             
             // Composite not found - provide helpful error message

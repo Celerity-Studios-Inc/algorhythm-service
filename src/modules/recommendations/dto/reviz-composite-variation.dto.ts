@@ -213,6 +213,9 @@ export class ReVizCompositeVariationResponse {
       assets_evaluated: number;
       cache_hit: boolean;
     };
+    generation_status?: 'generating'; // Optional: Present when composite is being generated
+    message?: string; // Optional: Message for generating status
+    estimated_completion_seconds?: number; // Optional: Estimated completion time for generation
   };
 
   @ApiProperty({ description: 'Response metadata' })
