@@ -149,6 +149,8 @@ export class ReVizCompositeVariationsService {
             this.logger.log(`🔍 Attempting to resolve composite from component IDs: ${componentIds.join(', ')}`);
             const resolved = await this.optimizedNnaRegistryService.resolveOrGenerateComposite(componentIds);
             
+            this.logger.log(`📊 [DEBUG] resolveOrGenerateComposite result: success=${resolved?.success}, status=${resolved?.status}, composite_id=${resolved?.composite_id}, error=${resolved?.error || 'none'}`);
+            
             if (resolved && resolved.success) {
               if (resolved.status === 'found') {
                 // Composite found via CUSTOMIZE flow - return it
@@ -219,9 +221,32 @@ export class ReVizCompositeVariationsService {
       }
 
       // Validate that composite has valid data (not just an error response)
-      if (!composite.data && !composite._id) {
-        // If no data and compositeId contains '+', it's component IDs - should have been handled above
+      // Note: If we reach here with component IDs, resolution should have been attempted above
+      // If resolution failed, an error should have been thrown. This is a safety check.
+      if (!composite.data && !composite._id && !composite.id) {
+        // If no data and compositeId contains '+', resolution attempt should have happened above
+        // If we reach here, it means getCompositeById didn't throw and resolution wasn't triggered
         if (compositeId.includes('+')) {
+          this.logger.error(`⚠️ [WARNING] Component IDs detected but resolution not attempted. composite=${JSON.stringify(composite)}`);
+          // Try resolution one more time
+          const componentIds = this.parseComponentIds(compositeId);
+          if (componentIds && componentIds.length >= 2) {
+            this.logger.log(`🔄 Retrying resolution for component IDs: ${componentIds.join(', ')}`);
+            const resolved = await this.optimizedNnaRegistryService.resolveOrGenerateComposite(componentIds);
+            if (resolved && resolved.success && resolved.status === 'found') {
+              return {
+                composite_id: resolved.composite_id || compositeId,
+                composite_name: resolved.composite_name || `Composite ${compositeId}`,
+                gcp_storage_url: resolved.gcp_storage_url || `https://storage.googleapis.com/algorhythm-assets/composites/${compositeId}.mp4`,
+                thumbnail_url: resolved.thumbnail_url || `https://storage.googleapis.com/algorhythm-assets/thumbnails/composites/${compositeId}.jpg`,
+                duration_seconds: resolved.duration_seconds || 30,
+                file_size_mb: resolved.file_size_mb || 15.2,
+                resolution: resolved.resolution || '1080p',
+                format: resolved.format || 'mp4',
+                generation_status: undefined
+              };
+            }
+          }
           throw new NotFoundException(
             `Composite not found: ${compositeId}. ` +
             `Component IDs provided but no existing composite found. ` +

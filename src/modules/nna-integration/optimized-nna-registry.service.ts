@@ -939,18 +939,23 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
       const data = response.data;
       const queryTime = Date.now() - startTime;
       
-      this.logger.debug(`✅ [RESOLVE OR GENERATE] NNA Registry response in ${queryTime}ms: ${JSON.stringify(data).substring(0, 200)}...`);
+      this.logger.log(`✅ [RESOLVE OR GENERATE] NNA Registry response in ${queryTime}ms: ${JSON.stringify(data).substring(0, 500)}...`);
 
-      if (!data || !data.success) {
-        this.logger.warn(`Composite resolution/generation failed`);
-        return { success: false, error: data?.error || 'Resolution/generation failed' };
+      if (!data) {
+        this.logger.warn(`⚠️ [RESOLVE OR GENERATE] No data in response`);
+        return { success: false, error: 'No response data from NNA Registry', status: 'not_found' };
+      }
+
+      if (!data.success) {
+        this.logger.warn(`⚠️ [RESOLVE OR GENERATE] Composite resolution/generation failed: ${data.error || 'Unknown error'}`);
+        return { success: false, error: data.error || 'Resolution/generation failed', status: data.status || 'not_found' };
       }
 
       // Return normalized response
-      return {
+      const result = {
         success: true,
         status: data.data?.status || 'found', // 'found' or 'generating'
-        composite_id: data.data?.composite_id || data.data?.compositeId,
+        composite_id: data.data?.composite_id || data.data?.compositeId || data.data?.composite_id,
         composite_name: data.data?.composite_name || data.data?.compositeName,
         gcp_storage_url: data.data?.gcp_storage_url || data.data?.gcpStorageUrl,
         thumbnail_url: data.data?.thumbnail_url || data.data?.thumbnailUrl,
@@ -959,6 +964,9 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
         resolution: data.data?.resolution || '1080p',
         format: data.data?.format || 'mp4'
       };
+      
+      this.logger.log(`✅ [RESOLVE OR GENERATE] Successfully resolved composite: ${result.composite_id}, status: ${result.status}`);
+      return result;
     } catch (error) {
       this.logger.error(`❌ [RESOLVE OR GENERATE] Failed to resolve or generate composite: ${error.message}`);
       throw error;
