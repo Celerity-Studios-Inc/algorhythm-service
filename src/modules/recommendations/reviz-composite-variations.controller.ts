@@ -3,6 +3,7 @@ import { ApiTags, ApiOperation, ApiResponse, ApiHeader, ApiBody } from '@nestjs/
 import { ReVizCompositeVariationsService } from './reviz-composite-variations.service';
 import { ReVizCompositeVariationDto, ReVizCompositeVariationResponse } from './dto/reviz-composite-variation.dto';
 import { OptimizedNnaRegistryService } from '../nna-integration/optimized-nna-registry.service';
+import { CircuitBreakerService } from '../nna-integration/circuit-breaker.service';
 
 /**
  * 🔧 REVIZ DEVELOPER REQUEST: Composite-Specific Layer Variations
@@ -19,7 +20,8 @@ export class ReVizCompositeVariationsController {
 
   constructor(
     private readonly revizCompositeVariationsService: ReVizCompositeVariationsService,
-    private readonly optimizedNnaRegistryService: OptimizedNnaRegistryService
+    private readonly optimizedNnaRegistryService: OptimizedNnaRegistryService,
+    private readonly circuitBreakerService: CircuitBreakerService
   ) {}
 
   /**
@@ -169,5 +171,64 @@ export class ReVizCompositeVariationsController {
         timestamp: new Date().toISOString()
       };
     }
+  }
+
+  /**
+   * 🔧 CIRCUIT BREAKER STATUS: Check circuit breaker state
+   */
+  @Get('debug/circuit-breaker-status')
+  @ApiOperation({
+    summary: '[DEBUG] Check circuit breaker status',
+    description: 'Returns current circuit breaker state, failure count, and reset timeout'
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Circuit breaker status'
+  })
+  async getCircuitBreakerStatus(): Promise<any> {
+    const status = this.circuitBreakerService.getStatus();
+    return {
+      success: true,
+      circuit_breaker: {
+        ...status,
+        state: status.isOpen ? 'OPEN' : 'CLOSED',
+        message: status.isOpen 
+          ? `Circuit breaker is OPEN. Will auto-close after ${status.resetTimeout - status.timeSinceLastFailure}ms`
+          : 'Circuit breaker is CLOSED. Requests are being processed normally.'
+      },
+      timestamp: new Date().toISOString()
+    };
+  }
+
+  /**
+   * 🔧 CIRCUIT BREAKER RESET: Manually reset circuit breaker
+   */
+  @Get('debug/reset-circuit-breaker')
+  @ApiOperation({
+    summary: '[DEBUG] Reset circuit breaker',
+    description: 'Manually resets the circuit breaker to CLOSED state. Use this if circuit breaker is stuck OPEN.'
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Circuit breaker reset result'
+  })
+  async resetCircuitBreaker(): Promise<any> {
+    const statusBefore = this.circuitBreakerService.getStatus();
+    this.circuitBreakerService.resetCircuitBreaker();
+    const statusAfter = this.circuitBreakerService.getStatus();
+    
+    return {
+      success: true,
+      message: 'Circuit breaker reset successfully',
+      before: {
+        state: statusBefore.isOpen ? 'OPEN' : 'CLOSED',
+        failure_count: statusBefore.failureCount
+      },
+      after: {
+        state: statusAfter.isOpen ? 'OPEN' : 'CLOSED',
+        failure_count: statusAfter.failureCount
+      },
+      timestamp: new Date().toISOString()
+    };
   }
 }
