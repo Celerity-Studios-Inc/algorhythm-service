@@ -121,63 +121,57 @@ export class ReVizCompositeVariationsService {
         const componentIds = this.parseComponentIds(compositeId);
         
         if (componentIds && componentIds.length >= 2) {
-          // Try to resolve or generate the composite
+          // Try to resolve existing composite (CUSTOMIZE flow)
+          // Note: Generation (PERSONALIZE flow) is not implemented yet
           try {
+            this.logger.log(`🔍 Attempting to resolve composite from component IDs: ${componentIds.join(', ')}`);
             const resolved = await this.optimizedNnaRegistryService.resolveOrGenerateComposite(componentIds);
             
-            if (resolved && resolved.success) {
-              if (resolved.status === 'found' || resolved.status === 'generating') {
-                // If found or generating, return the composite info
-                // For generating status, we return a placeholder that indicates generation is in progress
-                return {
-                  composite_id: resolved.composite_id || compositeId,
-                  composite_name: resolved.composite_name || `Composite ${compositeId}`,
-                  gcp_storage_url: resolved.gcp_storage_url || `https://storage.googleapis.com/algorhythm-assets/composites/${compositeId}.mp4`,
-                  thumbnail_url: resolved.thumbnail_url || `https://storage.googleapis.com/algorhythm-assets/thumbnails/composites/${compositeId}.jpg`,
-                  duration_seconds: resolved.duration_seconds || 30,
-                  file_size_mb: resolved.file_size_mb || 15.2,
-                  resolution: resolved.resolution || '1080p',
-                  format: resolved.format || 'mp4',
-                  generation_status: resolved.status === 'generating' ? 'generating' : undefined
-                };
-              }
+            if (resolved && resolved.success && resolved.status === 'found') {
+              // Composite found via CUSTOMIZE flow - return it
+              this.logger.log(`✅ Found existing composite: ${resolved.composite_id}`);
+              return {
+                composite_id: resolved.composite_id || compositeId,
+                composite_name: resolved.composite_name || `Composite ${compositeId}`,
+                gcp_storage_url: resolved.gcp_storage_url || `https://storage.googleapis.com/algorhythm-assets/composites/${compositeId}.mp4`,
+                thumbnail_url: resolved.thumbnail_url || `https://storage.googleapis.com/algorhythm-assets/thumbnails/composites/${compositeId}.jpg`,
+                duration_seconds: resolved.duration_seconds || 30,
+                file_size_mb: resolved.file_size_mb || 15.2,
+                resolution: resolved.resolution || '1080p',
+                format: resolved.format || 'mp4',
+                generation_status: undefined // Generation not implemented yet
+              };
             }
             
-            // Generation/resolution failed - check if Personalize component is required
+            // Composite not found - provide helpful error message
             const hasPersonalize = componentIds.some(id => id.startsWith('P.'));
-            if (!hasPersonalize && resolved?.error) {
+            if (hasPersonalize) {
+              // Personalize component provided but generation not implemented yet
               throw new NotFoundException(
                 `Composite not found: ${compositeId}. ` +
-                `To trigger generation, include a Personalize component (P.xxx.xxx.xxx) in your component IDs. ` +
-                `Standard component combinations without Personalize cannot be auto-generated.`
+                `Component IDs provided include Personalize component, but composite generation is not yet implemented. ` +
+                `Please use an existing composite ID or provide component IDs for an existing composite.`
+              );
+            } else {
+              // Standard components - composite doesn't exist
+              throw new NotFoundException(
+                `Composite not found: ${compositeId}. ` +
+                `No existing composite found for the provided component IDs: ${componentIds.join(', ')}. ` +
+                `Composite generation is not yet available for standard component combinations. ` +
+                `Please use an existing composite ID.`
               );
             }
-            
-            throw new NotFoundException(
-              `Composite generation failed: ${resolved?.error || 'Unknown error'}. ` +
-              `Please ensure all component IDs are valid and include a Personalize component for generation.`
-            );
           } catch (resolveError) {
             // Check if it's already a NotFoundException (rethrow)
             if (resolveError instanceof NotFoundException) {
               throw resolveError;
             }
             
-            // Check if Personalize component is required
-            const hasPersonalize = componentIds.some(id => id.startsWith('P.'));
-            if (!hasPersonalize) {
-              throw new NotFoundException(
-                `Composite not found: ${compositeId}. ` +
-                `Component IDs provided but no Personalize component found. ` +
-                `Generation requires a Personalize component (P.xxx.xxx.xxx). ` +
-                `Provided components: ${componentIds.join(', ')}`
-              );
-            }
-            
-            // Re-throw with context
-            this.logger.error(`Composite resolution/generation failed: ${resolveError.message}`);
+            // Handle unexpected errors
+            this.logger.error(`Composite resolution failed: ${resolveError.message}`);
             throw new NotFoundException(
-              `Composite not found: ${compositeId}. Generation failed: ${resolveError.message}`
+              `Composite not found: ${compositeId}. ` +
+              `Failed to resolve composite from component IDs: ${resolveError.message}`
             );
           }
         }

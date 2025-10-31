@@ -2,7 +2,7 @@ import { Injectable, Logger, Inject, Optional, OnModuleInit } from '@nestjs/comm
 import { HttpService } from '@nestjs/axios';
 import * as https from 'https';
 import { ConfigService } from '@nestjs/config';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, of } from 'rxjs';
 import { timeout, catchError } from 'rxjs/operators';
 import { AxiosResponse } from 'axios';
 import { CacheService } from '../caching/cache.service';
@@ -902,6 +902,22 @@ export class OptimizedNnaRegistryService implements OnModuleInit {
           }).pipe(
             timeout(this.timeout),
             catchError(error => {
+              // Handle 404 (composite not found) gracefully - this is expected for CUSTOMIZE flow
+              if (error.response?.status === 404) {
+                this.logger.debug(`ℹ️ [RESOLVE OR GENERATE] Composite not found (404) - this is expected`);
+                // Return a response that indicates composite not found (not an error for CUSTOMIZE)
+                return of({
+                  data: {
+                    success: false,
+                    error: 'Composite not found',
+                    status: 'not_found'
+                  },
+                  status: 404,
+                  statusText: 'Not Found',
+                  headers: {} as any,
+                  config: { headers: {} } as any
+                } as any);
+              }
               this.logger.error(`❌ [RESOLVE OR GENERATE] NNA Registry call failed: ${error.message}`);
               throw error;
             })
