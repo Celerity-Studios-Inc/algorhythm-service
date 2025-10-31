@@ -96,8 +96,38 @@ export class ReVizCompositeVariationsService {
       // Get composite by ID from NNA Registry
       const composite = await this.optimizedNnaRegistryService.getCompositeById(compositeId);
       
-      if (!composite) {
-        throw new NotFoundException(`Composite not found: ${compositeId}`);
+      if (!composite || (composite as any).statusCode === 404) {
+        // 🔧 ISSUE #2 FIX: Try to resolve or generate composite when not found
+        this.logger.log(`⚠️ Composite not found: ${compositeId}. Attempting to resolve or generate...`);
+        
+        // Check if compositeId looks like component IDs (e.g., "1.018.003.002+2.009.001.001")
+        const componentIds = this.parseComponentIds(compositeId);
+        
+        if (componentIds && componentIds.length >= 2) {
+          // Try to resolve or generate the composite
+          const resolved = await this.optimizedNnaRegistryService.resolveOrGenerateComposite(componentIds);
+          
+          if (resolved && resolved.success) {
+            if (resolved.status === 'found' || resolved.status === 'generating') {
+              // If found or generating, return the composite info
+              // For generating status, we return a placeholder that indicates generation is in progress
+              return {
+                composite_id: resolved.composite_id || compositeId,
+                composite_name: resolved.composite_name || `Composite ${compositeId}`,
+                gcp_storage_url: resolved.gcp_storage_url || `https://storage.googleapis.com/algorhythm-assets/composites/${compositeId}.mp4`,
+                thumbnail_url: resolved.thumbnail_url || `https://storage.googleapis.com/algorhythm-assets/thumbnails/composites/${compositeId}.jpg`,
+                duration_seconds: resolved.duration_seconds || 30,
+                file_size_mb: resolved.file_size_mb || 15.2,
+                resolution: resolved.resolution || '1080p',
+                format: resolved.format || 'mp4',
+                generation_status: resolved.status === 'generating' ? 'generating' : undefined
+              };
+            }
+          }
+        }
+        
+        // If resolution failed or compositeId is not parseable as component IDs, throw NotFoundException
+        throw new NotFoundException(`Composite not found: ${compositeId}. Please ensure the composite exists or provide valid component IDs for generation.`);
       }
 
       return {
@@ -111,9 +141,34 @@ export class ReVizCompositeVariationsService {
         format: composite.data?.format || 'mp4'
       };
     } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
       this.logger.error(`Failed to get composite info for ${compositeId}:`, error);
       throw new NotFoundException(`Composite not found: ${compositeId}`);
     }
+  }
+  
+  /**
+   * Parse component IDs from composite ID string
+   * Supports formats:
+   * - "1.018.003.002+2.009.001.001+3.003.010.002" (component IDs separated by +)
+   * - "9.002.025.558" (composite MFA - return null)
+   */
+  private parseComponentIds(compositeId: string): string[] | null {
+    // If contains +, assume it's component IDs
+    if (compositeId.includes('+')) {
+      return compositeId.split('+').map(id => id.trim()).filter(Boolean);
+    }
+    
+    // Check if it's a composite MFA (format: 9.xxx.xxx.xxx)
+    // If it starts with 9, it's likely a composite MFA, not component IDs
+    if (/^9\./.test(compositeId)) {
+      return null;
+    }
+    
+    // For now, return null - we'll need to enhance this based on actual composite ID formats
+    return null;
   }
 
   private async getCurrentLayerAsset(compositeId: string, layer: string) {
