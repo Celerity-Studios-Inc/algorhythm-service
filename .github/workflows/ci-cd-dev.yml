@@ -77,6 +77,37 @@ jobs:
             --min-instances=0 \
             --project=${{ env.PROJECT_ID }}
 
+      - name: Verify secret binding (NNA_REGISTRY_JWT_SECRET)
+        run: |
+          REVISION=$(gcloud run services describe ${{ env.SERVICE_NAME }} \
+            --region ${{ env.REGION }} --project ${{ env.PROJECT_ID }} \
+            --format='value(status.latestReadyRevisionName)')
+          echo "Latest ready revision: $REVISION"
+          ENV_YAML=$(gcloud run revisions describe "$REVISION" --region ${{ env.REGION }} --project ${{ env.PROJECT_ID }} --format='yaml(spec.containers[0].env)')
+          echo "$ENV_YAML" | grep -q "NNA_REGISTRY_JWT_SECRET" || { echo "Missing NNA_REGISTRY_JWT_SECRET on revision $REVISION"; exit 1; }
+          echo "✅ NNA_REGISTRY_JWT_SECRET is bound on $REVISION"
+
+      - name: Post-deploy smoke test (variations)
+        env:
+          API_KEY: reviz-dev-30390-13220-4896-9516-9001
+        run: |
+          SERVICE_URL=$(gcloud run services describe ${{ env.SERVICE_NAME }} \
+            --region ${{ env.REGION }} --format='value(status.url)' --project=${{ env.PROJECT_ID }})
+          echo "Service URL: $SERVICE_URL"
+          # 1) Component IDs path
+          RES=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$SERVICE_URL/api/v1/reviz/composite/variations" \
+            -H "x-api-key: $API_KEY" -H "Content-Type: application/json" \
+            -d '{"composite_id":"1.018.003.002+2.009.001.001+3.003.010.002+4.022.002.008+5.015.001.003","vary_layers":["stars","looks","moves","worlds"],"assets_per_layer":2}')
+          echo "Smoke test (components) HTTP: $RES"
+          [ "$RES" = "200" ] || { echo "Smoke test failed for components path"; exit 1; }
+          # 2) Known composite HFN path
+          RES2=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$SERVICE_URL/api/v1/reviz/composite/variations" \
+            -H "x-api-key: $API_KEY" -H "Content-Type: application/json" \
+            -d '{"composite_id":"9.002.025.082","vary_layers":["stars","looks","moves","worlds"],"assets_per_layer":2}')
+          echo "Smoke test (hfn) HTTP: $RES2"
+          [ "$RES2" = "200" ] || { echo "Smoke test failed for HFN path"; exit 1; }
+          echo "✅ Smoke tests passed"
+
       - name: Post-deploy health check
         run: |
           SERVICE_URL=$(gcloud run services describe ${{ env.SERVICE_NAME }} \
