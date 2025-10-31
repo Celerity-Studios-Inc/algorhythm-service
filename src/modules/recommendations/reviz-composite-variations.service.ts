@@ -64,29 +64,9 @@ export class ReVizCompositeVariationsService {
       
       // 🔧 ISSUE #2 FIX: Use resolved composite_id (from generation) instead of original request
       // If generation was triggered, compositeInfo.composite_id will be the new composite ID
+      // Note: getCompositeInfo already handles resolution and throws NotFoundException if resolution fails,
+      // so if we reach here, we have a valid composite (either existing or being generated)
       const actualCompositeId = compositeInfo.composite_id || request.composite_id;
-      
-      // 🔧 ISSUE #2 FIX: Validate that we have a real composite ID, not component IDs
-      // If actualCompositeId contains '+', it's still component IDs and composite wasn't resolved
-      if (actualCompositeId.includes('+')) {
-        const componentIds = this.parseComponentIds(actualCompositeId);
-        const hasPersonalize = componentIds?.some(id => id.startsWith('P.')) || false;
-        
-        if (hasPersonalize) {
-          throw new NotFoundException(
-            `Composite not found: ${actualCompositeId}. ` +
-            `Component IDs provided include Personalize component, but composite generation is not yet implemented. ` +
-            `Please use an existing composite ID or provide component IDs for an existing composite.`
-          );
-        } else {
-          throw new NotFoundException(
-            `Composite not found: ${actualCompositeId}. ` +
-            `No existing composite found for the provided component IDs: ${componentIds?.join(', ') || actualCompositeId}. ` +
-            `Composite generation is not yet available for standard component combinations. ` +
-            `Please use an existing composite ID.`
-          );
-        }
-      }
       
       this.logger.debug(`Using composite ID: ${actualCompositeId} (original: ${request.composite_id})`);
       
